@@ -1,0 +1,218 @@
+---
+title: "WFA8XX3 Natural Resource & Conservation Decision Making"
+date: Spring 2017
+output:
+  html_document:
+    theme: flatly
+    highlight: espresso
+    toc: FALSE
+---
+
+## Contact
+
+Instructor: Dr. Michael E. Colvin   
+Office: Thompson 215
+Office phone: 662-325-3592
+Email: michael.colvin@msstate.edu
+Office hour(s): By appointment
+Lecture: Monday, Wednesday, Friday: xx:00 to xx:50
+Location: TBD
+
+
+## Catalog description
+
+Three hours lecture.
+Natural resource and conservation decision making including rapid prototyping
+of decision problems, structuring objectives, structured decision making, adaptive
+management, and relevant case studies of successful natural resource decision making.  
+
+
+## Required textbooks
+
+* Conroy, M. and J.T. Peterson. 2014.
+Decision Making in Natural Resource Management: A Structured, Adaptive Approach.  
+Wiley-Blackwell.  ISBN: 978-0-470-67174-0
+* Hammond, J.S., R.L. Keeney, and H. Raiffa. 1999.
+Smart choices: a practical guide to making better life decisions.
+Broadway Books. New York. ISBN: 978-0767908863
+* Powell, L. and G. Gale. Parameter estimation for animal populations.
+Caught Napping Publications. Lincoln. ISBN: 978-1329061514
+* Supplemental PDFs provided on course website
+
+
+## Course background and rational
+
+Natural resource managers increasingly work with diverse stakeholder groups and
+incorporate their values and objectives when developing management and conservation plans.
+Such decisions are fraught with the complexity and uncertainty associated with
+ecological system dynamics and multiple and potentially conflicting objectives
+under consideration. Structured decision making (SDM) is an approach that can
+incorporate multiple competing objectives and ecological uncertainties in a framework
+that is transparent and adaptable. It also is an ideal framework for interdisciplinary
+management teams to cooperate and create the most effective management strategies.
+The Department of the Interior (DOI) has recognized the importance of SDM and has
+directed DOI bureaus and offices to incorporate SDM and adaptive management strategies
+into their land and resource management decision making. However, there are few courses
+on SDM and adaptive management available to students in natural resources and related
+fields.  This course is intended to provide graduate students from diverse backgrounds
+(natural resources, ecological economics, civil engineering, political science,
+and others) with an understanding of the SDM process used for making natural
+resource management and conservation decisions regardless of the level of complexity
+or uncertainty.  Primary focus is exposing students to the logic and conceptual basis
+of each step of the SDM process to understand when an SDM process is appropriate and
+how the process produces and optimal decision when properly implemented to a natural
+resource management or conservation problem. 
+
+
+## Course objectives
+
+The class materials are intended to develop the skills needed to create basic
+decision models for predicting the outcomes of management actions.
+The culmination of this course is the course project where students are required
+to integrate the skills.  By the end of this course, all students should be able to:
+
+1. Recognize and incorporate different stakeholder viewpoints into decision making 
+2. Work effectively with stakeholder groups using an SDM approach and recognize and
+ameliorate impediments to the process 
+3. Identify and classify stakeholder objectives and create diagrams representing
+their relationships 
+4. Quantify stakeholder objectives and identify measurable outcomes from natural 
+resource decisions  
+5. Use the structured decision making process to work through a management problem
+with rapid-prototyping methods 
+6. Create and interpret graphical models of natural resource decisions 
+7. Use ecological methods to estimate current state conditions and integrate
+decision-making with monitoring
+8. Use models to predict likely outcomes and associated uncertainties
+9. Identify the different types of uncertainty and understand how each can be
+represented in a model 
+10. Use adaptive management to reduce system uncertainty and improve future decisions 
+11. Understand and describe the principles of structured decision making and
+adaptive management 
+
+## Academic misconduct
+
+Academic integrity is serious and all disciplinary action will be taken in the event
+of academic dishonesty.  Mississippi State has an approved Honor Code that applies
+to all students. The code is as follows: "As a Mississippi State University student,
+I will conduct myself with honor and integrity at all times. I will not lie, cheat,
+or steal, nor will I accept the actions of those who do." Upon accepting admission to
+Mississippi State University, a student immediately assumes a commitment to uphold the
+Honor Code, to accept responsibility for learning, and to follow the philosophy and
+rules of the Honor Code. Student will be required to state their commitment on
+examinations, research papers, and other academic work. Ignorance of the rules does
+not exclude any member of the MSU community from the requirements or the processes
+of the Honor Code. For additional information, please visit:
+http://honorcode.msstate.edu/policy.
+
+
+## Cell Phone Policy
+
+In accordance with Academic Operating Policy 10.08 (approved July 12, 2005) and
+in order to limit classroom disruptions, as well as to protect against academic
+misconduct, the use by students of cell phones, messaging devices and other
+electronic devices is prohibited. In this class, students are required to put
+cell phone in the silent mode and stow in backpack while attending class and
+laboratory sessions. 
+
+## Professional Expectations for Students in the Wildlife, Fisheries and Aquaculture Program 
+
+http://www.cfr.msstate.edu/wildlife/documents/professional_expectations.pdf
+
+## Assessment of student progress
+
+Student performance will be based on weekly assignments (50%; 50 total points;
+10 assignments each worth 5 points), a small group project that involves the
+development and evaluation of a model to inform a natural resource management
+or conservation decision (40%; 40 total points), and presentation of the small
+group project to the class (10%; 10 total points).  Total assessment points equal 100.  
+
+
+1. Homework problem sets (50 points).&emdash During the course you will be given
+homework exercises to reinforce course topics and assess student progress.
+There will be 10 homework exercises worth 5 points each.
+All homework due 1 week from date assigned unless otherwise specified.
+2. Final project report (40 points).&emdash The course project is intended to evaluate
+the student’s ability to synthesize the individual course elements and create a
+decision model to predict the outcomes of alternative natural resource management actions.
+To complete the course project, each student group will choose a unique natural resource
+management issue and will create a model that will be used to identify the optimal
+management action. The model can correspond to the topic chosen for the group project
+in the lecture portion of the course or can be a unique management or conservation issue
+of interest. The instructor must approve of the topic before the project is initiated.
+Each student will write a final report describing the model in detail including: the
+data sources, justification for including individual model components and their relations,
+results of sensitivity analysis, and the optimal management decision.
+Project will be graded based on the appropriateness of the decision, how well students
+described and justified the model structure, and the results and interpretation of
+sensitivity analysis.  An example of a final report will be available on Blackboard
+along with a detailed report scoring rubric outlining expectations.  
+3. Presentation (10 points).&emdash During the final exam period you will be required
+to present the details of your project as a 30 minute oral presentation.  
+
+
+## Summary of evaluations:
+
+Task						Points	
+Homework problem sets  			50 (10 exercises x 5 points per exercise)
+Project report	 	  			40
+Report presentation     	  		10
+Total						100
+
+## Grading Scale
+
+A= 90 to 100  	B = 80 to 89.9		C = 70 to 79.9		D = 69.9 to 69.9
+F = 0 to 59.9
+
+## Late assignment policy
+Late assignments and missed exams: All assignments must be turned in on time.
+Late assignments may be graded, but the maximum point value will be reduced by 10%
+for every day the assignment is late; however, assignments will not be graded if
+they are turned in after assignments grades are posted on blackboard.
+If for some reason there is a timing conflict associated with a course due date,
+discuss these conflicts with me at least two weeks prior to the scheduled date.
+
+Important Dates
+
+* Last day to drop a class without a grade:  13 January 2017
+* Last day to add a class: 17 January 2017
+* First progress reporting:  20 February 2017
+* Last day to course with a "W" grade:  28 February 2017
+* Second progress reporting:  24 March 2017
+* Last day to withdraw from the university:  11 April 2017
+* Classes end:  26 April 2017
+* Reading day:  27 April 2017 
+* Final Exam:  TBD 28 April – 4 May 2017
+
+
+## Students with Disabilities
+
+Accommodations are collaborative efforts between students, faculty and Disability
+Support Services (DSS). Students with accommodations approved through DSS are
+responsible for contacting the faculty member in charge of the course prior to
+or during the first week of the term to discuss accommodations.
+Students who believe they are eligible for accommodations but who have not yet
+obtained approval through DSS should contact DSS immediately at (662) 325-3335.
+
+
+## Title IX
+
+MSU is committed to complying with Title IX, a federal law that prohibits discrimination,
+including violence and harassment, based on sex.
+This means that MSU' s educational programs and activities must be free
+from sex discrimination, sexual harassment, and other forms of sexual misconduct.
+If you or someone you know has experienced sex discrimination, sexual violence
+and/or harassment by any member of the University community, you are encouraged to
+report the conduct to MSU's Director of Title IX/EEO Programs at 325-8124 or by e-mail
+to titleix@msstate.edu. Additional resources are available at:
+
+* http://www.msstate.edu/web/security/title9-12.pdf, or 
+* http://students.msstate.edu/sexualmisconduct/.
+
+
+## Class Schedule
+
+Course is comprised of 45 contact hours, divided over the semester.
+All homework due 1 week from date assigned unless otherwise specified.
+
+Set up excel sheet and read in...

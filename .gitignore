@@ -14,6 +14,12 @@ $RECYCLE.BIN/
 *.msm
 *.msp
 
+# Office files
+*.docx
+*.pptx
+*.xlsx
+
+
 # Windows shortcuts
 *.lnk
 
