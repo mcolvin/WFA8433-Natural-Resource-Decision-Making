@@ -3,7 +3,11 @@ title: "Introduction to decision making"
 author: Michael E. Colvin
 date: 9 January 2015
 output: 
-  revealjs::revealjs_presentation:
+html_document:
+    theme: flatly
+    highlight: espresso
+    toc: FALSE
+revealjs::revealjs_presentation:
     theme: white
     highlight: pygments
     center: false
@@ -22,6 +26,10 @@ link to syllabus....
 
 1. Kick ass
 2. Take names
+
+```{r,echo=FALSE}
+plot(runif(10))
+```
 
 
 

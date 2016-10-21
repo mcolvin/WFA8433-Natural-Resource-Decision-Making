@@ -1,0 +1,14 @@
+---
+title: "Introduction to decision making"
+author: Michael E. Colvin
+date: 9 January 2015
+output: 
+html_document:
+    theme: flatly
+    highlight: espresso
+    toc: FALSE
+revealjs::revealjs_presentation:
+    theme: white
+    highlight: pygments
+    center: false
+---
