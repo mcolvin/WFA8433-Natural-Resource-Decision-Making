@@ -1,12 +1,12 @@
 
-library(rmarkdown)
-library(knitr)
-library(pander)
-
-
 setwd('C:/Users/mcolvin/Google Drive/WFA8433-Natural-Resource-Decision-Making/Course-Materials')
-render("index.Rmd",
-    output_format='all',
-    output_dir='C:/Users/mcolvin/Google Drive/WFA8433-Natural-Resource-Decision-Making/Docs')
-
-
+# RENDER SITE
+rmarkdown::render_site()# build website
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Google Drive/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Google Drive/WFA8433-Natural-Resource-Decision-Making/Docs"',
+    "/E /C /H /R /K /O /Y")) 
+    
+    
+    

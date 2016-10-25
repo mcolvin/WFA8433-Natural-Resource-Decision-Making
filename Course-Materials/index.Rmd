@@ -1,12 +1,5 @@
 ---
 title: "WFA8433 - Natural Resource and Conservation Decision Making"
-author: Michael E. Colvin
-date: 1 September 2016
-output:
-  html_document:
-    theme: flatly
-    highlight: espresso
-    toc: FALSE
 ---
 
 # Syllabus
@@ -16,3 +9,5 @@ output:
 ## Class - 01 Stuff
 
 Link to class stuff
+
+C:\Users\mcolvin\Documents\projects\Lake-Washington-YPR

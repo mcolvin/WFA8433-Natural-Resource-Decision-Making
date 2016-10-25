@@ -1,0 +1,49 @@
+name: "my-website"
+navbar:
+  title: "My Website"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Course information"
+      menu: 
+        - text: "Course Syllabus"
+          href: "syllabus.html"
+    - text: "Module 1"
+      icon: ion-navicon
+      menu:
+        - text: "Heading 1"
+        - text: "Class 1"
+          href: Module-01-Class-01.html
+        - text: "Page B"
+          href: page_b.html
+        - text: "---------"
+        - text: "Heading 2"
+        - text: "Page C"
+          href: page_c.html
+        - text: "Page D"
+          href: page_d.html
+      
+    - text: "More"
+      icon: fa-gear
+      menu:
+        - text: "Heading 1"
+        - text: "Page A"
+          href: page_a.html
+        - text: "Page B"
+          href: page_b.html
+        - text: "---------"
+        - text: "Heading 2"
+        - text: "Page C"
+          href: page_c.html
+        - text: "Page D"
+          href: page_d.html
+  
+  right:
+    - icon: fa-question fa-lg
+      href: https://example.com
+output_dir: "_site"
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    
