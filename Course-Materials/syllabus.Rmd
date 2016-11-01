@@ -1,22 +1,16 @@
 ---
-title: "WFA8XX3 Natural Resource & Conservation Decision Making"
-date: Spring 2017
-output:
-  html_document:
-    theme: flatly
-    highlight: espresso
-    toc: FALSE
+title: "WFA8433 - Syllabus"
 ---
 
 ## Contact
 
-Instructor: Dr. Michael E. Colvin   
-Office: Thompson 215
-Office phone: 662-325-3592
-Email: michael.colvin@msstate.edu
-Office hour(s): By appointment
-Lecture: Monday, Wednesday, Friday: xx:00 to xx:50
-Location: TBD
+Instructor: Dr. Michael E. Colvin     
+Office: Thompson 215  
+Office phone: 662-325-3592  
+Email: michael.colvin@msstate.edu  
+Office hour(s): By appointment  
+Lecture: Monday, Wednesday, Friday: xx:00 to xx:50  
+Location: TBD  
 
 
 ## Catalog description
@@ -128,11 +122,11 @@ or conservation decision (40%; 40 total points), and presentation of the small
 group project to the class (10%; 10 total points).  Total assessment points equal 100.  
 
 
-1. Homework problem sets (50 points).&emdash During the course you will be given
+1. Homework problem sets (50 points). During the course you will be given
 homework exercises to reinforce course topics and assess student progress.
 There will be 10 homework exercises worth 5 points each.
 All homework due 1 week from date assigned unless otherwise specified.
-2. Final project report (40 points).&emdash The course project is intended to evaluate
+2. Final project report (40 points). The course project is intended to evaluate
 the student’s ability to synthesize the individual course elements and create a
 decision model to predict the outcomes of alternative natural resource management actions.
 To complete the course project, each student group will choose a unique natural resource
@@ -147,17 +141,17 @@ Project will be graded based on the appropriateness of the decision, how well st
 described and justified the model structure, and the results and interpretation of
 sensitivity analysis.  An example of a final report will be available on Blackboard
 along with a detailed report scoring rubric outlining expectations.  
-3. Presentation (10 points).&emdash During the final exam period you will be required
+3. Presentation (10 points). During the final exam period you will be required
 to present the details of your project as a 30 minute oral presentation.  
 
 
 ## Summary of evaluations:
 
-Task						Points	
-Homework problem sets  			50 (10 exercises x 5 points per exercise)
-Project report	 	  			40
-Report presentation     	  		10
-Total						100
+Task (Points)
+Homework problem sets (50 Points (10 exercises x 5 points per exercise))
+Project report (40 Points)
+Report presentation (10 Points)
+*Total (100 Points)*
 
 ## Grading Scale
 
@@ -177,12 +171,12 @@ Important Dates
 * Last day to drop a class without a grade:  13 January 2017
 * Last day to add a class: 17 January 2017
 * First progress reporting:  20 February 2017
-* Last day to course with a "W" grade:  28 February 2017
+* Last day to course with a 'W' grade:  28 February 2017
 * Second progress reporting:  24 March 2017
 * Last day to withdraw from the university:  11 April 2017
 * Classes end:  26 April 2017
 * Reading day:  27 April 2017 
-* Final Exam:  TBD 28 April – 4 May 2017
+* Final Exam:  TBD 28 April to 4 May 2017
 
 
 ## Students with Disabilities

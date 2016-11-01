@@ -2,12 +2,15 @@
 title: "WFA8433 - Natural Resource and Conservation Decision Making"
 ---
 
+<img src="media/boat.jpg" ALIGN="center" width=25%/>
+
 # Syllabus
 
-# XX
- 
+[Sillybus](syllabus.html)
+
 ## Class - 01 Stuff
 
-Link to class stuff
+[Class 01](Module-01-Class-01.html)
+[Class 02](Module-01-Class-02.html)
 
-C:\Users\mcolvin\Documents\projects\Lake-Washington-YPR
+

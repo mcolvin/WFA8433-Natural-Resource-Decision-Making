@@ -1,6 +1,6 @@
-name: "my-website"
+name: "wfa8433"
 navbar:
-  title: "My Website"
+  title: "WFA8433 Nat. Res. & Cons. Decision Making"
   left:
     - text: "Home"
       href: index.html
@@ -9,22 +9,18 @@ navbar:
         - text: "Course Syllabus"
           href: "syllabus.html"
     - text: "Module 1"
-      icon: ion-navicon
       menu:
-        - text: "Heading 1"
         - text: "Class 1"
           href: Module-01-Class-01.html
-        - text: "Page B"
-          href: page_b.html
+        - text: "Class 2"
+          href: Module-01-Class-02.html
         - text: "---------"
-        - text: "Heading 2"
         - text: "Page C"
           href: page_c.html
         - text: "Page D"
           href: page_d.html
       
-    - text: "More"
-      icon: fa-gear
+    - text: "Module 2"
       menu:
         - text: "Heading 1"
         - text: "Page A"
