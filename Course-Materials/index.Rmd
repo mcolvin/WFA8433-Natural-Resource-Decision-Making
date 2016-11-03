@@ -65,7 +65,7 @@ NOTE: each lower case sub topic represents 1 contact hour
 
 ### Module	5. Adaptive management (AM)-learning from management actions (9 contact hours)
 
-1. [Conflict Resolution and Knowledge Acquisition through adaptive management](Module-05-01.html)
+1. [Conflict resolution and knowledge acquisition through adaptive management](Module-05-01.html)
 2. [AM:  More than just trial and error](Module-05-02.html)
 3. [Learning from monitoring in AM](Module-05-03.html)
 4. [Prioritizing learning: Passive versus active AM](Module-05-04.html)

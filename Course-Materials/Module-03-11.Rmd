@@ -1,11 +1,22 @@
 ---
-title: "Introduction to decision making"
+title: ""
 ---
 
-# Housekeeping
+<img src="media/banner-05.jpg" ALIGN="center" width=99%/>
+
+# Estimating current states (unmarked populations): Occupancy
+
+Content in progress
 
 ## For next class
-Reading for next class: Hammond et al.: Chapters(s) 1-3
+
+TBD
+
+
+## Learning objectives
+
+1. Objective 1
+2. Objective 2
 
 
 * [Imperfect 1](/Module-03/PDF/imperfect-detection-I.pdf)

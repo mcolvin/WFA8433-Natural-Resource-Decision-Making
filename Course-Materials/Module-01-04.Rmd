@@ -4,7 +4,7 @@ title: ""
 
 <img src="media/banner-05.jpg" ALIGN="center" width=99%/>
 
-# Decision trees and decision making under uncertainty
+# Influence diagrams and decision alternatives
 
 Content in progress
 
