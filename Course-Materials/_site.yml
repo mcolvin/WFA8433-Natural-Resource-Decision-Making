@@ -2,8 +2,6 @@ name: "wfa8433"
 navbar:
   title: "WFA8433 Nat. Res. & Cons. Decision Making"
   left:
-    - text: "Home"
-      href: index.html
     - text: "Course information"
       menu: 
         - text: "Course Syllabus"
