@@ -7,7 +7,7 @@ navbar:
         - text: "Course Syllabus"
           href: "syllabus.html"
         - text: "About final project"
-          href: "final-proj.html"
+          href: "final-project.html"
     - text: "Module 1"
       menu:
         - text: "Topic 1"
