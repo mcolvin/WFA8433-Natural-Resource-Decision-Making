@@ -1,126 +1,18 @@
 ---
-title: "Introduction to decision making"
-author: Michael E. Colvin
-date: 9 January 2015
-output: 
-html_document:
-    theme: flatly
-    highlight: espresso
-    toc: FALSE
-revealjs::revealjs_presentation:
-    theme: white
-    highlight: pygments
-    center: false
+title: ""
 ---
 
-<!--
-http://www1.umassd.edu/SpecialPrograms/ArtsLinks/hunter.html
-The Madeline Hunter "seven step lesson plan." The basic lesson plan outline
-given above contains the so-called "Hunter direct instruction lesson plan
-elements:" 
-1) objectives, 
-2) standards, 
-3) anticipatory set, 
-4) teaching [input, modeling, and check for understanding], 
-5) guided practice, 
-6) closure, and 
-7) independent practice. 
-If you count input, modeling, and check for understanding as three steps,
-there are nine elements...not the seven in the usual title.
-Madeline Hunter did not create a seven step lesson plan model. She suggested
-various elements that might be considered in planning for effective instruction. 
-In practice, these elements were compiled by others as the "Seven Step Lesson 
-Plan, "taught through teachers inservice, and used as a check list of items that
-must be contained in each lesson.
--->
+<img src="media/banner-06.jpg" ALIGN="center" width=99%/>
 
-<!-- link objectives with sections better. 
-https://www.uwo.ca/tsc/graduate_student_programs/pdf/LearningObjectivesArreola.pdf
--->
+# Being a decision maker
 
-## Class objectives
+Content in progress
 
-1. For next class
-2. Rational for class
-3. Syllabus
-4. Class rational-you can make decisions & learn...
+## For next class
 
+TBD
 
-## 1. For next class
-Reading for next class: Hammond et al.: Chapters(s) 1-3
+## Learning objectives
 
-## 2. Rational for class
-
-## 3. Syllabus overview
-
-link to syllabus....
-
-
-## 4. Decision-making, uncertainty, & learning
-
-### Battleship
-
-
-
-
-
-
-```{r,echo=FALSE}
-plot(runif(10))
-```
-
-
-
-
-# Why is decision making important
-
-## Managing public trust resources
-
-- Eat spaghetti
-- Drink wine
-
-## Using public funds
-- Nat Geo costs example...
-
-## Stakeholders are watching
-
-![Alt text](Figures/steakholder.jpg)
-
-## Stakeholders are interested
-
-<img src="Figures/steakholder.jpg" alt="" style="height: 450px;"/>
-
-## Example: Pallid Sturgeon in the Missouri River
-- Pallid Sturgeon recover is expected to cost 700 million USD over the next 10 years
-
-## Example: Least Terns and Piping Plovers
-- Terns/plovers
-
-
-## Slide 2 
-```{r,echo=FALSE,fig.width=8,fig.height=4.5,dpi=300,out.width="1920px",height="1080px"}
-plot(runif(10))
-```
-
-
-
-# How do we make decisions in natural resources?
-
-## put an app in?
-
- <iframe src = 'https://mcolvin.shinyapps.io/pallid_sturgeon/' width='1920px' height='900px'></iframe>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+1. Objective 1
+2. Objective 2

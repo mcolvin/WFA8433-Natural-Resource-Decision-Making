@@ -2,7 +2,7 @@
 title: ""
 ---
 
-<img src="media/banner.jpg" ALIGN="center" width=99%/>
+<img src="media/banner-01.jpg" ALIGN="center" width=99%/>
 
 ## Syllabus
 
