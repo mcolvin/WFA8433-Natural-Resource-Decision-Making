@@ -8,37 +8,104 @@ navbar:
       menu: 
         - text: "Course Syllabus"
           href: "syllabus.html"
-        - text: "---------"
         - text: "About final project"
           href: "final-proj.html"
-        - text: "---------"
     - text: "Module 1"
       menu:
         - text: "Topic 1"
           href: Module-01-01.html
-        - text: "---------"
         - text: "Topic 2"
           href: Module-01-02.html
-        - text: "---------"
         - text: "Topic 3"
           href: Module-01-03.html
-        - text: "---------"        
         - text: "Topic 4"
           href: Module-01-04.html
-        - text: "---------"
         - text: "Topic 5"
-        href: Module-01-05.html        
-        - text: "---------"
+          href: Module-01-05.html        
         - text: "Topic 6"
-        href: Module-01-06.html
+          href: Module-01-06.html
     - text: "Module 2"
       menu:
         - text: "Topic 1"
-          href: page_a.html
-        - text: "---------"
+          href: Module-02-01.html
         - text: "Topic 2"
-          href: page_b.html
-        - text: "---------"
+          href: Module-02-02.html
+        - text: "Topic 3"
+          href: Module-02-03.html
+        - text: "Topic 4"
+          href: Module-02-04.html
+        - text: "Topic 5"
+          href: Module-02-05.html        
+    - text: "Module 3"
+      menu:
+        - text: "Topic 1"
+          href: Module-03-01.html
+        - text: "Topic 2"
+          href: Module-03-02.html
+        - text: "Topic 3"
+          href: Module-03-03.html
+        - text: "Topic 4"
+          href: Module-03-04.html
+        - text: "Topic 5"
+          href: Module-03-05.html        
+        - text: "Topic 6"
+          href: Module-03-06.html        
+        - text: "Topic 7"
+          href: Module-03-07.html        
+        - text: "Topic 8"
+          href: Module-03-08.html        
+        - text: "Topic 9"
+          href: Module-03-09.html        
+        - text: "Topic 10"
+          href: Module-03-10.html        
+        - text: "Topic 11"
+          href: Module-03-11.html        
+        - text: "Topic 12"
+          href: Module-03-12.html        
+        - text: "Topic 13"
+          href: Module-03-13.html        
+        - text: "Topic 14"
+          href: Module-03-14.html          
+        - text: "Topic 15"
+          href: Module-03-15.html          
+        - text: "Topic 16"
+          href: Module-03-16.html  
+    - text: "Module 4"
+      menu:
+        - text: "Topic 1"
+          href: Module-04-01.html
+        - text: "Topic 2"
+          href: Module-04-02.html
+        - text: "Topic 3"
+          href: Module-04-03.html
+        - text: "Topic 4"
+          href: Module-04-04.html
+        - text: "Topic 5"
+          href: Module-04-05.html        
+        - text: "Topic 6"
+          href: Module-04-06.html
+        - text: "Topic 7"
+          href: Module-04-07.html 
+    - text: "Module 5"
+      menu:
+        - text: "Topic 1"
+          href: Module-05-01.html
+        - text: "Topic 2"
+          href: Module-05-02.html
+        - text: "Topic 3"
+          href: Module-05-03.html
+        - text: "Topic 4"
+          href: Module-05-04.html
+        - text: "Topic 5"
+          href: Module-05-05.html        
+        - text: "Topic 6"
+          href: Module-05-06.html
+        - text: "Topic 7"
+          href: Module-05-07.html        
+        - text: "Topic 8"
+          href: Module-05-08.html
+        - text: "Topic 9"
+          href: Module-05-09.html
 output_dir: "_site"
 output:
   html_document:
