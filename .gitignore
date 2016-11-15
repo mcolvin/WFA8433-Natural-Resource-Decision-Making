@@ -9,6 +9,7 @@ Desktop.ini
 $RECYCLE.BIN/
 # ignore output folder
 _archive/
+_potential-readings/
 
 # Windows Installer files
 *.cab
@@ -21,6 +22,10 @@ _archive/
 *.pptx
 *.xlsx
 
+*.jpg
+*.png
+*.gif
+*.jpeg
 
 # Windows shortcuts
 *.lnk
