@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/textmate.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.0/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">WFA8433 Nat. Res. & Cons. Decision Making</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Course information
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="syllabus.html">Course Syllabus</a>
+    </li>
+    <li>
+      <a href="final-project.html">About final project</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-01-01.html">Topic 1</a>
+    </li>
+    <li>
+      <a href="Module-01-02.html">Topic 2</a>
+    </li>
+    <li>
+      <a href="Module-01-03.html">Topic 3</a>
+    </li>
+    <li>
+      <a href="Module-01-04.html">Topic 4</a>
+    </li>
+    <li>
+      <a href="Module-01-05.html">Topic 5</a>
+    </li>
+    <li>
+      <a href="Module-01-06.html">Topic 6</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-02-01.html">Topic 1</a>
+    </li>
+    <li>
+      <a href="Module-02-02.html">Topic 2</a>
+    </li>
+    <li>
+      <a href="Module-02-03.html">Topic 3</a>
+    </li>
+    <li>
+      <a href="Module-02-04.html">Topic 4</a>
+    </li>
+    <li>
+      <a href="Module-02-05.html">Topic 5</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 3
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-03-01.html">Topic 1</a>
+    </li>
+    <li>
+      <a href="Module-03-02.html">Topic 2</a>
+    </li>
+    <li>
+      <a href="Module-03-03.html">Topic 3</a>
+    </li>
+    <li>
+      <a href="Module-03-04.html">Topic 4</a>
+    </li>
+    <li>
+      <a href="Module-03-05.html">Topic 5</a>
+    </li>
+    <li>
+      <a href="Module-03-06.html">Topic 6</a>
+    </li>
+    <li>
+      <a href="Module-03-07.html">Topic 7</a>
+    </li>
+    <li>
+      <a href="Module-03-08.html">Topic 8</a>
+    </li>
+    <li>
+      <a href="Module-03-09.html">Topic 9</a>
+    </li>
+    <li>
+      <a href="Module-03-10.html">Topic 10</a>
+    </li>
+    <li>
+      <a href="Module-03-11.html">Topic 11</a>
+    </li>
+    <li>
+      <a href="Module-03-12.html">Topic 12</a>
+    </li>
+    <li>
+      <a href="Module-03-13.html">Topic 13</a>
+    </li>
+    <li>
+      <a href="Module-03-14.html">Topic 14</a>
+    </li>
+    <li>
+      <a href="Module-03-15.html">Topic 15</a>
+    </li>
+    <li>
+      <a href="Module-03-16.html">Topic 16</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 4
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-04-01.html">Topic 1</a>
+    </li>
+    <li>
+      <a href="Module-04-02.html">Topic 2</a>
+    </li>
+    <li>
+      <a href="Module-04-03.html">Topic 3</a>
+    </li>
+    <li>
+      <a href="Module-04-04.html">Topic 4</a>
+    </li>
+    <li>
+      <a href="Module-04-05.html">Topic 5</a>
+    </li>
+    <li>
+      <a href="Module-04-06.html">Topic 6</a>
+    </li>
+    <li>
+      <a href="Module-04-07.html">Topic 7</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 5
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-05-01.html">Topic 1</a>
+    </li>
+    <li>
+      <a href="Module-05-02.html">Topic 2</a>
+    </li>
+    <li>
+      <a href="Module-05-03.html">Topic 3</a>
+    </li>
+    <li>
+      <a href="Module-05-04.html">Topic 4</a>
+    </li>
+    <li>
+      <a href="Module-05-05.html">Topic 5</a>
+    </li>
+    <li>
+      <a href="Module-05-06.html">Topic 6</a>
+    </li>
+    <li>
+      <a href="Module-05-07.html">Topic 7</a>
+    </li>
+    <li>
+      <a href="Module-05-08.html">Topic 8</a>
+    </li>
+    <li>
+      <a href="Module-05-09.html">Topic 9</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><img src="media/banner-04.jpg" ALIGN="center" width=99%/></p>
+<div id="wfa8433---syllabus" class="section level1">
+<h1>WFA8433 - Syllabus</h1>
+<div id="contact" class="section level2">
+<h2>Contact</h2>
+<p>Instructor: Dr. Michael E. Colvin<br />
+Office: Thompson 215<br />
+Office phone: 662-325-3592<br />
+Email: <a href="mailto:michael.colvin@msstate.edu">michael.colvin@msstate.edu</a><br />
+Office hour(s): By appointment<br />
+Lecture: Monday, Wednesday, Friday: xx:00 to xx:50<br />
+Location: TBD</p>
+</div>
+<div id="catalog-description" class="section level2">
+<h2>Catalog description</h2>
+<p>Three hours lecture. Natural resource and conservation decision making including rapid prototyping of decision problems, structuring objectives, structured decision making, adaptive management, and relevant case studies of successful natural resource decision making.</p>
+</div>
+<div id="required-textbooks" class="section level2">
+<h2>Required textbooks</h2>
+<ul>
+<li>Conroy, M. and J.T. Peterson. 2014. Decision Making in Natural Resource Management: A Structured, Adaptive Approach.<br />
+Wiley-Blackwell. ISBN: 978-0-470-67174-0</li>
+<li>Hammond, J.S., R.L. Keeney, and H. Raiffa. 1999. Smart choices: a practical guide to making better life decisions. Broadway Books. New York. ISBN: 978-0767908863</li>
+<li>Powell, L. and G. Gale. Parameter estimation for animal populations. Caught Napping Publications. Lincoln. ISBN: 978-1329061514</li>
+<li>Supplemental PDFs provided on course website</li>
+</ul>
+</div>
+<div id="course-background-and-rational" class="section level2">
+<h2>Course background and rational</h2>
+<p>Natural resource managers increasingly work with diverse stakeholder groups and incorporate their values and objectives when developing management and conservation plans. Such decisions are fraught with the complexity and uncertainty associated with ecological system dynamics and multiple and potentially conflicting objectives under consideration. Structured decision making (SDM) is an approach that can incorporate multiple competing objectives and ecological uncertainties in a framework that is transparent and adaptable. It also is an ideal framework for interdisciplinary management teams to cooperate and create the most effective management strategies. The Department of the Interior (DOI) has recognized the importance of SDM and has directed DOI bureaus and offices to incorporate SDM and adaptive management strategies into their land and resource management decision making. However, there are few courses on SDM and adaptive management available to students in natural resources and related fields. This course is intended to provide graduate students from diverse backgrounds (natural resources, ecological economics, civil engineering, political science, and others) with an understanding of the SDM process used for making natural resource management and conservation decisions regardless of the level of complexity or uncertainty. Primary focus is exposing students to the logic and conceptual basis of each step of the SDM process to understand when an SDM process is appropriate and how the process produces and optimal decision when properly implemented to a natural resource management or conservation problem.</p>
+</div>
+<div id="course-objectives" class="section level2">
+<h2>Course objectives</h2>
+<p>The class materials are intended to develop the skills needed to create basic decision models for predicting the outcomes of management actions. The culmination of this course is the course project where students are required to integrate the skills. By the end of this course, all students should be able to:</p>
+<ol style="list-style-type: decimal">
+<li>Recognize and incorporate different stakeholder viewpoints into decision making</li>
+<li>Work effectively with stakeholder groups using an SDM approach and recognize and ameliorate impediments to the process</li>
+<li>Identify and classify stakeholder objectives and create diagrams representing their relationships</li>
+<li>Quantify stakeholder objectives and identify measurable outcomes from natural resource decisions<br />
+</li>
+<li>Use the structured decision making process to work through a management problem with rapid-prototyping methods</li>
+<li>Create and interpret graphical models of natural resource decisions</li>
+<li>Use ecological methods to estimate current state conditions and integrate decision-making with monitoring</li>
+<li>Use models to predict likely outcomes and associated uncertainties</li>
+<li>Identify the different types of uncertainty and understand how each can be represented in a model</li>
+<li>Use adaptive management to reduce system uncertainty and improve future decisions</li>
+<li>Understand and describe the principles of structured decision making and adaptive management</li>
+</ol>
+</div>
+<div id="academic-misconduct" class="section level2">
+<h2>Academic misconduct</h2>
+<p>Academic integrity is serious and all disciplinary action will be taken in the event of academic dishonesty. Mississippi State has an approved Honor Code that applies to all students. The code is as follows: “As a Mississippi State University student, I will conduct myself with honor and integrity at all times. I will not lie, cheat, or steal, nor will I accept the actions of those who do.” Upon accepting admission to Mississippi State University, a student immediately assumes a commitment to uphold the Honor Code, to accept responsibility for learning, and to follow the philosophy and rules of the Honor Code. Student will be required to state their commitment on examinations, research papers, and other academic work. Ignorance of the rules does not exclude any member of the MSU community from the requirements or the processes of the Honor Code. For additional information, please visit: <a href="http://honorcode.msstate.edu/policy" class="uri">http://honorcode.msstate.edu/policy</a>.</p>
+</div>
+<div id="cell-phone-policy" class="section level2">
+<h2>Cell Phone Policy</h2>
+<p>In accordance with Academic Operating Policy 10.08 (approved July 12, 2005) and in order to limit classroom disruptions, as well as to protect against academic misconduct, the use by students of cell phones, messaging devices and other electronic devices is prohibited. In this class, students are required to put cell phone in the silent mode and stow in backpack while attending class and laboratory sessions.</p>
+</div>
+<div id="professional-expectations-for-students-in-the-wildlife-fisheries-and-aquaculture-program" class="section level2">
+<h2>Professional Expectations for Students in the Wildlife, Fisheries and Aquaculture Program</h2>
+<p><a href="http://www.cfr.msstate.edu/wildlife/documents/professional_expectations.pdf" class="uri">http://www.cfr.msstate.edu/wildlife/documents/professional_expectations.pdf</a></p>
+</div>
+<div id="assessment-of-student-progress" class="section level2">
+<h2>Assessment of student progress</h2>
+<p>Student performance will be based on weekly assignments (50%; 50 total points; 10 assignments each worth 5 points), a small group project that involves the development and evaluation of a model to inform a natural resource management or conservation decision (40%; 40 total points), and presentation of the small group project to the class (10%; 10 total points). Total assessment points equal 100.</p>
+<ol style="list-style-type: decimal">
+<li>Homework problem sets (50 points). During the course you will be given homework exercises to reinforce course topics and assess student progress. There will be 10 homework exercises worth 5 points each. All homework due 1 week from date assigned unless otherwise specified.</li>
+<li>Final project report (40 points). The course project is intended to evaluate the studentâ€™s ability to synthesize the individual course elements and create a decision model to predict the outcomes of alternative natural resource management actions. To complete the course project, each student group will choose a unique natural resource management issue and will create a model that will be used to identify the optimal management action. The model can correspond to the topic chosen for the group project in the lecture portion of the course or can be a unique management or conservation issue of interest. The instructor must approve of the topic before the project is initiated. Each student will write a final report describing the model in detail including: the data sources, justification for including individual model components and their relations, results of sensitivity analysis, and the optimal management decision. Project will be graded based on the appropriateness of the decision, how well students described and justified the model structure, and the results and interpretation of sensitivity analysis. An example of a final report will be available on Blackboard along with a detailed report scoring rubric outlining expectations.<br />
+</li>
+<li>Presentation (10 points). During the final exam period you will be required to present the details of your project as a 30 minute oral presentation.</li>
+</ol>
+</div>
+<div id="summary-of-evaluations" class="section level2">
+<h2>Summary of evaluations:</h2>
+<p>Task (Points) Homework problem sets (50 Points (10 exercises x 5 points per exercise)) Project report (40 Points) Report presentation (10 Points) <em>Total (100 Points)</em></p>
+</div>
+<div id="grading-scale" class="section level2">
+<h2>Grading Scale</h2>
+<p>A= 90 to 100 B = 80 to 89.9 C = 70 to 79.9 D = 69.9 to 69.9 F = 0 to 59.9</p>
+</div>
+<div id="late-assignment-policy" class="section level2">
+<h2>Late assignment policy</h2>
+<p>Late assignments and missed exams: All assignments must be turned in on time. Late assignments may be graded, but the maximum point value will be reduced by 10% for every day the assignment is late; however, assignments will not be graded if they are turned in after assignments grades are posted on blackboard. If for some reason there is a timing conflict associated with a course due date, discuss these conflicts with me at least two weeks prior to the scheduled date.</p>
+<p>Important Dates</p>
+<ul>
+<li>Last day to drop a class without a grade: 13 January 2017</li>
+<li>Last day to add a class: 17 January 2017</li>
+<li>First progress reporting: 20 February 2017</li>
+<li>Last day to course with a ‘W’ grade: 28 February 2017</li>
+<li>Second progress reporting: 24 March 2017</li>
+<li>Last day to withdraw from the university: 11 April 2017</li>
+<li>Classes end: 26 April 2017</li>
+<li>Reading day: 27 April 2017</li>
+<li>Final Exam: TBD 28 April to 4 May 2017</li>
+</ul>
+</div>
+<div id="students-with-disabilities" class="section level2">
+<h2>Students with Disabilities</h2>
+<p>Accommodations are collaborative efforts between students, faculty and Disability Support Services (DSS). Students with accommodations approved through DSS are responsible for contacting the faculty member in charge of the course prior to or during the first week of the term to discuss accommodations. Students who believe they are eligible for accommodations but who have not yet obtained approval through DSS should contact DSS immediately at (662) 325-3335.</p>
+</div>
+<div id="title-ix" class="section level2">
+<h2>Title IX</h2>
+<p>MSU is committed to complying with Title IX, a federal law that prohibits discrimination, including violence and harassment, based on sex. This means that MSU’ s educational programs and activities must be free from sex discrimination, sexual harassment, and other forms of sexual misconduct. If you or someone you know has experienced sex discrimination, sexual violence and/or harassment by any member of the University community, you are encouraged to report the conduct to MSU’s Director of Title IX/EEO Programs at 325-8124 or by e-mail to <a href="mailto:titleix@msstate.edu">titleix@msstate.edu</a>. Additional resources are available at:</p>
+<ul>
+<li><a href="http://www.msstate.edu/web/security/title9-12.pdf" class="uri">http://www.msstate.edu/web/security/title9-12.pdf</a>, or</li>
+<li><a href="http://students.msstate.edu/sexualmisconduct/" class="uri">http://students.msstate.edu/sexualmisconduct/</a>.</li>
+</ul>
+</div>
+<div id="class-schedule" class="section level2">
+<h2>Class Schedule</h2>
+<p>Course is comprised of 45 contact hours, divided over the semester. All homework due 1 week from date assigned unless otherwise specified.</p>
+<p>Set up excel sheet and read in…</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
