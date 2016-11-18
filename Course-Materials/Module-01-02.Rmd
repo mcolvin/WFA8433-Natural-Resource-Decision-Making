@@ -1,16 +1,24 @@
 ---
 title: ""
-output: revealjs::revealjs_presentation
+output: ioslides_presentation
 ---
-
+<!--
 <img src="media/banner-03.jpg" ALIGN="center" width=99%/>
+-->
 
 # PrOACT process
 
 Content in progress
- <aside class="notes">
-    I'm your Notes :)
-  </aside>
+
+<div class="notes">
+This is my *note*.
+
+- It can contain markdown
+- like this list
+
+</div>
+
+
 ## For next class
 
 TBD
