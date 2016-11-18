@@ -1,5 +1,6 @@
 ---
 title: ""
+output: revealjs::revealjs_presentation
 ---
 
 <img src="media/banner-03.jpg" ALIGN="center" width=99%/>
@@ -7,7 +8,9 @@ title: ""
 # PrOACT process
 
 Content in progress
-
+ <aside class="notes">
+    I'm your Notes :)
+  </aside>
 ## For next class
 
 TBD
