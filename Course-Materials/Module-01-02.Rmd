@@ -4,6 +4,9 @@ output: ioslides_presentation
 ---
 <!--
 <img src="media/banner-03.jpg" ALIGN="center" width=99%/>
+
+$presentme=TRUE
+press p to toggle presentor mode
 -->
 
 # PrOACT process
