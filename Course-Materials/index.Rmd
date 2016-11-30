@@ -24,7 +24,7 @@ system(paste("xcopy",
 
 ## Class overview
 
-NOTE: each lower case sub topic represents 1 contact hour
+NOTE: each module topic represents 1 contact hour
 
 ### Module 1: A formal decision making process (6 contact hours)
 

@@ -12,6 +12,17 @@ _archive/
 _potential-readings/
 _code/
 
+Course-Materials/_archive/
+Course-Materials/_potential-readings/
+Course-Materials/_site/
+Course-Materials/site_libs/
+Course-Materials/media/
+Course-Materials/Module-01/media/
+Course-Materials/Module-02/media/
+Course-Materials/Module-03/media/
+Course-Materials/Module-04/media/
+Course-Materials/Module-05/media/
+
 # Windows Installer files
 *.cab
 *.msi
@@ -23,10 +34,7 @@ _code/
 *.pptx
 *.xlsx
 
-*.jpg
-*.png
-*.gif
-*.jpeg
+
 
 # Windows shortcuts
 *.lnk
