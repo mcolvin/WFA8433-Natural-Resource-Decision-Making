@@ -4,6 +4,19 @@ title: ""
 ```{r echo=FALSE, out.width="95%"}
 include_graphics("media/banner-04.jpg")
 ```
+<!--
+
+library(knitr)
+rmarkdown::render_site("syllabus.Rmd")# build website
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no")  
+
+-->
+
 
 # WFA8433 - Syllabus
 
@@ -11,10 +24,10 @@ include_graphics("media/banner-04.jpg")
 
 Instructor: Dr. Michael E. Colvin     
 Office: Thompson 215  
-Office phone: 662-325-3592  
-Email: michael.colvin@msstate.edu  
-Office hour(s): By appointment  
-Lecture: TBD 
+Office phone: 662-325-3592   
+Email: michael.colvin@msstate.edu   
+Office hour(s): By appointment   
+Lecture: TBD  
 Location: TBD  
 
 

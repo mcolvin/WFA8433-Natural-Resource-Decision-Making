@@ -384,7 +384,18 @@ $(document).ready(function () {
 </div>
 
 
-<p><img src="media/banner-04.jpg" width="95%" /></p>
+<p><img src="media/banner-04.jpg" width="95%" /> <!--
+
+library(knitr)
+rmarkdown::render_site("syllabus.Rmd")# build website
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no")  
+
+--></p>
 <div id="wfa8433---syllabus" class="section level1">
 <h1>WFA8433 - Syllabus</h1>
 <div id="contact" class="section level2">
@@ -394,7 +405,8 @@ Office: Thompson 215<br />
 Office phone: 662-325-3592<br />
 Email: <a href="mailto:michael.colvin@msstate.edu">michael.colvin@msstate.edu</a><br />
 Office hour(s): By appointment<br />
-Lecture: TBD Location: TBD</p>
+Lecture: TBD<br />
+Location: TBD</p>
 </div>
 <div id="catalog-description" class="section level2">
 <h2>Catalog description</h2>
