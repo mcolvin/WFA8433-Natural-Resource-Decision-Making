@@ -1,112 +1,118 @@
 name: "wfa8433"
 navbar:
-  title: "WFA8433 Nat. Res. & Cons. Decision Making"
+  title: "Course home"
   left:
     - text: "Course information"
-      menu: 
+      menu:
+        - text: "Course home"
+          href: "index.html"      
         - text: "Course Syllabus"
           href: "syllabus.html"
         - text: "About final project"
           href: "final-project.html"
     - text: "Module 1"
-      menu:
-        - text: "Topic 1"
-          href: Module-01-01.html
-        - text: "Topic 2"
-          href: Module-01-02.html
-        - text: "Topic 3"
-          href: Module-01-03.html
-        - text: "Topic 4"
-          href: Module-01-04.html
-        - text: "Topic 5"
-          href: Module-01-05.html        
-        - text: "Topic 6"
-          href: Module-01-06.html
+      menu: 
+        - text: "Introduction to decision making"
+          href: "Module-01-01.html"         
+        - text: "PrOACT process"
+          href: "Module-01-02.html"         
+        - text: "Making decisions: uncertainty, risk, and linked decisions"
+          href: "Module-01-03.html" 
+        - text: "Decision trees and decision making under uncertainty"
+          href: "Module-01-04.html" 
+        - text: "Being a decision maker"
+          href: "Module-01-05.html" 
+        - text: "Decision trees and decision models"
+          href: "Module-01-06.html" 
     - text: "Module 2"
-      menu:
-        - text: "Topic 1"
-          href: Module-02-01.html
-        - text: "Topic 2"
-          href: Module-02-02.html
-        - text: "Topic 3"
-          href: Module-02-03.html
-        - text: "Topic 4"
-          href: Module-02-04.html
-        - text: "Topic 5"
-          href: Module-02-05.html        
+      menu: 
+        - text: "Introduction to structured decision making in natural resources management"
+          href: "Module-02-01.html"   
+        - text: "History, rational, and applications of decision making in natural resources and conservation"
+          href: "Module-02-02.html"   
+        - text: "Types of decision making philosophies in natural resources"
+          href: "Module-02-03.html" 
+        - text: "Structuring and quantifying objectives"
+          href: "Module-02-04.html"   
+        - text: "Decision making and working with stakeholders"
+          href: "Module-02-05.html"   
     - text: "Module 3"
-      menu:
-        - text: "Topic 1"
-          href: Module-03-01.html
-        - text: "Topic 2"
-          href: Module-03-02.html
-        - text: "Topic 3"
-          href: Module-03-03.html
-        - text: "Topic 4"
-          href: Module-03-04.html
-        - text: "Topic 5"
-          href: Module-03-05.html        
-        - text: "Topic 6"
-          href: Module-03-06.html        
-        - text: "Topic 7"
-          href: Module-03-07.html        
-        - text: "Topic 8"
-          href: Module-03-08.html        
-        - text: "Topic 9"
-          href: Module-03-09.html        
-        - text: "Topic 10"
-          href: Module-03-10.html        
-        - text: "Topic 11"
-          href: Module-03-11.html        
-        - text: "Topic 12"
-          href: Module-03-12.html        
-        - text: "Topic 13"
-          href: Module-03-13.html        
-        - text: "Topic 14"
-          href: Module-03-14.html          
-        - text: "Topic 15"
-          href: Module-03-15.html          
-        - text: "Topic 16"
-          href: Module-03-16.html  
+      menu: 
+        - text: "Statistics and decision making:  Estimating current system states-I"
+          href: "Module-03-01.html"
+        - text: "Statistics and decision making:  Estimating current system states-II"
+          href: "Module-03-02.html"         
+        - text: "Using data to estimate parameters and quantify uncertainty"
+          href: "Module-03-03.html"
+        - text: "Predicting outcomes in a decision context: linear models"
+          href: "Module-03-04.html"
+        - text: "Predicting outcomes in a decision context: generalized linear models"
+          href: "Module-03-05.html"
+        - text: "Predicting outcomes in a decision context: hierarchical linear models"
+          href: "Module-03-06.html"
+        - text: "Estimating current states (marked populations): abundance"
+          href: "Module-03-07.html"
+        - text: "Estimating current states (marked populations): survival"
+          href: "Module-03-08.html"
+        - text: "Estimating current states (marked populations): survival & abundanc"
+          href: "Module-03-09.html"
+        - text: "Estimating current states (marked populations): multi-state"
+          href: "Module-03-10.html"
+        - text: "Estimating current states (unmarked populations): Occupancy"
+          href: "Module-03-11.html"
+        - text: "Estimating current states (unmarked populations): multi season and state occupancy models"
+          href: "Module-03-12.html"
+        - text: "Estimating current states (unmarked populations): Closed and open N-mixture models"
+          href: "Module-03-13.html" 
+        - text: "Introduction to influence diagrams"
+          href: "Module-03-14.html" 
+        - text: "Using graphical models to predict outcomes"
+          href: "Module-03-15.html" 
+        - text: "Eliciting and quantifying expert judgment"
+          href: "Module-03-16.html" 
     - text: "Module 4"
-      menu:
-        - text: "Topic 1"
-          href: Module-04-01.html
-        - text: "Topic 2"
-          href: Module-04-02.html
-        - text: "Topic 3"
-          href: Module-04-03.html
-        - text: "Topic 4"
-          href: Module-04-04.html
-        - text: "Topic 5"
-          href: Module-04-05.html        
-        - text: "Topic 6"
-          href: Module-04-06.html
-        - text: "Topic 7"
-          href: Module-04-07.html 
+      menu: 
+        - text: "Influence diagrams and decision alternatives"
+          href: "Module-04-01.html"
+        - text: "Choosing the best decision alternative and evaluating the effect of uncertainty-I"
+          href: "Module-04-02.html"          
+        - text: "Choosing the best decision alternative and evaluating the effect of uncertainty-II Monte Carlo Simulation"
+          href: "Module-04-03.html"          
+        - text: "Sensitivity analysis and estimating the value of information"
+          href: "Module-04-04.html"
+        - text: "Introduction to optimization"
+          href: "Module-04-05.html"
+        - text: "Case study I-Setting harvest regulations"
+          href: "Module-04-06.html"
+        - text: "Case study II-Invasive species control"
+          href: "Module-04-07.html"
     - text: "Module 5"
-      menu:
-        - text: "Topic 1"
-          href: Module-05-01.html
-        - text: "Topic 2"
-          href: Module-05-02.html
-        - text: "Topic 3"
-          href: Module-05-03.html
-        - text: "Topic 4"
-          href: Module-05-04.html
-        - text: "Topic 5"
-          href: Module-05-05.html        
-        - text: "Topic 6"
-          href: Module-05-06.html
-        - text: "Topic 7"
-          href: Module-05-07.html        
-        - text: "Topic 8"
-          href: Module-05-08.html
-        - text: "Topic 9"
-          href: Module-05-09.html
+      menu: 
+        - text: "Conflict resolution and knowledge acquisition through adaptive management"
+          href: "Module-05-01.html"
+        - text: "AM:  More than just trial and error"
+          href: "Module-05-02.html"
+        - text: "Learning from monitoring in AM"
+          href: "Module-05-03.html"
+        - text: "Prioritizing learning: Passive versus active AM"
+          href: "Module-05-04.html"
+        - text: "Case study-black duck management"
+          href: "Module-05-05.html"
+        - text: "Case study-Golden Eagles and trail closures in Denali National Park"
+          href: "Module-05-06.html"
+        - text: "Case study-reconnection of fragmented habitats"
+          href: "Module-05-07.html"
+        - text: "Case study-Adaptive management of horseshoe crabs and red knots"
+          href: "Module-05-08.html"
+        - text: "Advanced topics in SDM and AM: Risk and extreme uncertainty"
+          href: "Module-05-09.html"
 output_dir: "_site"
 output:
   html_document:
     theme: cosmo
     highlight: textmate
+    
+    
+    
+
     

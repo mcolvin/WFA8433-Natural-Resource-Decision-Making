@@ -6,5 +6,7 @@ title: ""
 
 # Final project
 
-Content in progress
 
+<!--source progress code-->
+```{r child='in-progress.Rmd', eval=TRUE}
+``` 

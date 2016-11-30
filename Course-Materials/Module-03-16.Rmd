@@ -1,19 +1,12 @@
 ---
 title: ""
 ---
-
-<img src="media/banner-05.jpg" ALIGN="center" width=99%/>
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-09.jpg")
+```
 
 # Eliciting and quantifying expert judgment
 
-Content in progress
-
-## For next class
-
-TBD
-
-
-## Learning objectives
-
-1. Objective 1
-2. Objective 2
+<!--source progress code-->
+```{r child='in-progress.Rmd', eval=TRUE}
+``` 

@@ -10,7 +10,10 @@ $RECYCLE.BIN/
 # ignore output folder
 _archive/
 _potential-readings/
-media
+_site/
+site_libs
+
+media/
 
 # Windows Installer files
 *.cab

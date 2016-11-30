@@ -1,13 +1,12 @@
 ---
 title: ""
 ---
-
-<img src="media/banner-05.jpg" ALIGN="center" width=99%/>
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-02.jpg")
+```
 
 # Estimating current states (marked populations): survival & abundance
-
-Content in progress
-
+<!--
 ## For next class
 
 TBD
@@ -17,3 +16,4 @@ TBD
 
 1. Objective 1
 2. Objective 2
+-->

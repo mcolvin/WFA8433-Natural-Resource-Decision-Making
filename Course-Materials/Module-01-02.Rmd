@@ -1,18 +1,24 @@
 ---
 title: ""
-output: ioslides_presentation
 ---
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-03.jpg")
+```
+# PrOACT process
+<!--source progress code-->
+```{r child='in-progress.Rmd', eval=TRUE}
+``` 
+
 <!--
 <img src="media/banner-03.jpg" ALIGN="center" width=99%/>
-
+output: ioslides_presentation
 $presentme=TRUE
 press p to toggle presentor mode
 -->
 
-# PrOACT process
 
-Content in progress
-
+<!--
 <div class="notes">
 This is my *note*.
 
@@ -31,3 +37,5 @@ TBD
 
 1. Objective 1
 2. Objective 2
+-->
+

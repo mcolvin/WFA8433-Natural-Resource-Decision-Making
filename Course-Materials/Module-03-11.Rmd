@@ -1,24 +1,22 @@
 ---
 title: ""
 ---
-
-<img src="media/banner-05.jpg" ALIGN="center" width=99%/>
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-04.jpg")
+```
 
 # Estimating current states (unmarked populations): Occupancy
 
-Content in progress
 
-## For next class
-
-TBD
-
-
-## Learning objectives
-
-1. Objective 1
-2. Objective 2
+<!--source progress code-->
+```{r child='in-progress.Rmd', eval=TRUE}
+``` 
 
 
+<!--
 * [Imperfect 1](/Module-03/PDF/imperfect-detection-I.pdf)
 * [Imperfect 2](/Module-03/PDF/imperfect-detection-II.pdf)
 * [Imperfect 3](/Module-03/PDF/imperfect-detection-III.pdf)
+-->
+
+

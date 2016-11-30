@@ -1,9 +1,9 @@
 ---
 title: ""
 ---
-
-<img src="media/banner-04.jpg" ALIGN="center" width=99%/>
-
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-04.jpg")
+```
 
 # WFA8433 - Syllabus
 
@@ -214,4 +214,6 @@ to titleix@msstate.edu. Additional resources are available at:
 Course is comprised of 45 contact hours, divided over the semester.
 All homework due 1 week from date assigned unless otherwise specified.
 
+<!--
 Set up excel sheet and read in...
+-->
