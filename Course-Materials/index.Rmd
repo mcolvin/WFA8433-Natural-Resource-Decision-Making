@@ -22,6 +22,12 @@ system(paste("xcopy",
 
 [Course syllabus](syllabus.html)
 
+## Additional resources
+
+[Some R Help](https://sites.google.com/site/rforfishandwildlifegrads/)
+
+
+
 ## Class overview
 
 NOTE: each module topic represents 1 contact hour

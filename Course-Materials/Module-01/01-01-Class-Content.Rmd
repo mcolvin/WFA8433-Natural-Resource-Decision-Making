@@ -1,0 +1,413 @@
+## Learning objectives
+
+1. Objective 1
+2. Objective 2
+
+
+# There will be challenges
+
+<img src="Module-01/media/challenges.jpg" alt="" style="height: 450px;"/>
+
+# Challenges
+
+1. Communication
+2. Stakeholder involvement
+3. Data-too little, too much
+4. Finite resources
+
+
+# 1. Communications
+
+<img src="Module-01/media/mental-model.gif" alt="" style="height: 450px;"/>
+
+# 1. Communications
+
+<img src="Module-01/media/nichols.png" alt="" style="height: 450px;"/>
+
+
+
+# 1. Communications
+
+'I think the inefficiency comes via a lack of communication and a lack
+of a central program within which everyone works.' J. Nichols
+
+<img src="Module-01/media/problem-01.png" alt="" style="height: 450px;"/>
+<img src="Module-01/media/problem-02.png" alt="" style="height: 450px;"/>
+<img src="Module-01/media/problem-03.png" alt="" style="height: 450px;"/>
+<img src="Module-01/media/problem-04.png" alt="" style="height: 450px;"/>
+<img src="Module-01/media/problem-05.png" alt="" style="height: 450px;"/>
+
+
+# 2. Stakeholder involvement
+
+<img src="Module-01/media/steakholder.jpg" alt="" style="height: 450px;"/>
+
+
+## Stakeholders are interested
+
+
+
+
+<img src="Module-01/media/actual-stakeholders.png" alt="" style="height: 450px;"/>
+
+# Stakeholders Increasingly Interested & Judicious
+Ideker.png
+defenders-of-wildlife-suite.png
+
+# Consider alternative management
+
+Elewha.png
+
+# Managers need to make decisions that are transparent & repeatable
+
+transparent-decisions.png
+
+# Black box management
+
+black-box.png
+
+
+# Managers have a model, even if they don’t realize it
+Mental models
+- Increase habitat & population will increase
+- Increase harvest & population will compensate
+
+mental model image
+
+# Unstated assumptions
+
+assumptions.jpg
+
+# 3. Data limitations
+
+Fisheries biologist never complain about collecting too much data—Dr. Joe Bonneau
+
+- What do we do with the data?
+- Is it collected to meet objectives?
+- How is it incorporated into management?
+
+# Many times data are not collected in a way that can be used to make a decision
+
+“sites were statistically
+different"
+
+# Formalize learning from data collected?
+
+Make smarter 
+decisions…
+
+fish-school.png
+
+
+# 4. Finite resources
+
+How do we prioritize monitoring?
+How do we prioritize research?
+If something has to be cut what should it be?
+Will it impact decision making & management?
+
+# Managers need to do more with less & prioritize monitoring & research in a way that contributes to management decisions
+
+more-with-less.png
+
+
+# Managers need to figure out how to best allocate finite resources
+
+finite-resources.png
+
+# Solutions
+
+All MacGyver needed was a ball point pen and a paper clip
+
+macgyver.jpg
+
+# Biologists & ecologists spend time reading biology & ecology books
+ecology-books.jpg
+
+# Biologists & ecologists spend time reading methods & statistics books
+
+statistics-books.jpg
+
+# We do not read books about decision making & analysis
+decision-books.jpg
+
+# A Central Program
+3-legged-stool.png
+
+# ??
+water-decisions.jpg
+
+
+# A structured process:  PrOACT
+Problem
+Objectives
+Actions
+Consequences
+Tradeoffs
+proact.png
+
+# Suite of tools
+Models
+Decision trees & networks
+Decision models
+Sensitivity analysis
+Value of information
+
+
+# Malheur Carp management
+malheur.jpg
+
+# This stuff is complicated & dynamic!
+malheur-dynamics.png
+
+# Conceptualizing population dynamics
+carp-dynamics.png
+
+
+# Coupling populations
+coupled-carp-dynamics.png
+
+# Strategies
+Reduce connectivity 
+Refuges
+Movement
+Reduce biomass
+fish-ladder.jpg
+dead-carp.jpg
+
+# To A Simulation Model
+Spatial representation
+Logistic population  model
+Allows  movement 
+simulation-model.png
+
+
+# Powerful tool for communicating with managers and stakeholders
+real-time-simulation.png
+
+# Outcomes
+Clear objectives
+Identified alternatives
+Explicit assumptions
+System understanding
+Stakeholder involved in process
+
+# Clear lake ecosystem management
+clear-lake.jpg
+
+
+# Clear Lake is valuable
+
+Visitors spend an average $43.36 million annually 
+$1-3 million USD recreational fishery
+
+# Lake restoration in Iowa
+
+State Legislation HF2782 (2006)
+1.4 m Secchi disc transparency 50% of the time
+Water quality and public use benefits sustained at least 50 years.
+
+# Water quality: internal processes
+water-quality.png
+
+# Managing carp biomass
+Pulsed intense removals over a short period
+Large removals
+Short duration
+Spring and fall
+
+# Zebra Mussels 
+clear-lake-zebra-mussels.png
+
+
+# Clear Lake: a complex system
+clear-lake-conceptual.jpg
+
+# The Clear Lake Food Web
+
+clear-lake-food-web.jpg
+
+
+# The Clear Lake Ecosystem Model (CLESM)
+clesm.png
+
+# Lots of equations nobody will use… or ever look at
+
+equations.png
+
+
+# Decison support tool
+clesm-interface.png
+
+# ??
+decision-support-1.png
+
+# Water quality
+secchi-sims.png
+
+# Recreational fishery yield
+yield.png
+
+# Outcomes
+Finite resources-where to target restoration efforts
+Transparency 
+Explicit assumptions
+Communication with stakeholders & managers
+
+# Spring chinook salmon recovery
+usa-willamette-basin.png
+
+
+# Willamette basin spring Chinook
+
+Anadromous species of conservation need
+-Threatened status 1999
+- Anthropogenic modifications
+
+willamette.png
+
+# Limited natural reproduction
+
+willamette-dams.png
+
+# Just to die before spawning
+dead-nookie.jpg
+
+# Lots of money in Chinook Recovery
+Tagging
+Transporting
+Monitoring
+30+million a year
+fish-tag.jpg
+transport-truck.jpg
+
+# Data & sources
+psm-data-sources.png
+
+
+# A simulation model to assimilate all the information
+
+psm-modules.png
+
+# A decision framework
+Structured decision making approach
+Simulation model
+Decision model
+psm-decision-model.png
+
+# What is the optimal decision?
+psm-optimal.png
+
+
+# Mainstem temperature
+psm-senstivity.png
+
+# Informing research and monitoring
+psm-sensi-2.png
+
+# Outcomes
+Finite resources-where to target restoration & monitoring
+Transparency 
+Explicit assumptions
+Communication with stakeholders and managers
+Using monitoring to learn
+
+# Pallid sturgeon recovery
+pallid-mo-river.png
+
+# Ongoing over several decades
+53+ Million annually recovery 
+Active stakeholder group-MRRIC
+Multi attribute decisions
+Human considerations
+Recovery
+Terns & Plovers
+
+## Example: Pallid Sturgeon in the Missouri River
+- Pallid Sturgeon recover is expected to cost 700 million USD over the next 10 years
+
+
+
+
+# Complicated life history
+pdsg-life-history.jpg
+
+#Stage based model
+
+pdsg-stage-based-model.png
+
+# Collaborative model
+
+Build on existing work-stage based matrix type
+Collaborative
+Flexible
+Fits within Effects Analysis
+
+tools.png
+
+# Conceptual Ecological Models
+
+CEMS.png
+
+# Linking CEMs
+linking-cems.png
+
+# Spatial extent
+pdsg-spatial-extent.png
+
+# Spatial grain
+
+pdsg-spatial-grain.png
+
+# Linking management & science
+cems-links.png
+
+
+# Effects function
+equation-ea.gif
+Can estimate  parameters by capture-recapture (monitoring), field experiments, or expert elicitation
+
+# Linking Information
+ea-learning.png
+
+# Effects function
+ea-learning-2.png
+
+
+# Formalize learning…
+
+ea-learning-3.png
+
+# Population monitoring
+monitoring.png
+
+# Population monitoring
+monitoring-sims.png
+
+
+# Integrated population model
+
+ipm.png
+
+
+# Pallid IBM
+
+ <iframe src = 'https://mcolvin.shinyapps.io/pallid_sturgeon/' width='1920px' height='900px'></iframe>
+
+
+# Outcomes
+Finite resources-where to target restoration & monitoring
+Transparency
+Explicit assumptions
+Communication with stakeholders and managers
+Using monitoring  & science to learn 
+
+# A Central Program
+
+3 legged stool
+
+
+
+## Using public funds
+- Nat Geo costs example...
+

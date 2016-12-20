@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/textmate.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.0/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Course home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Course information
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Course home</a>
+    </li>
+    <li>
+      <a href="syllabus.html">Course Syllabus</a>
+    </li>
+    <li>
+      <a href="final-project.html">About final project</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 1
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-01-01.html">Introduction to decision making</a>
+    </li>
+    <li>
+      <a href="Module-01-02.html">PrOACT process</a>
+    </li>
+    <li>
+      <a href="Module-01-03.html">Making decisions: uncertainty, risk, and linked decisions</a>
+    </li>
+    <li>
+      <a href="Module-01-04.html">Decision trees and decision making under uncertainty</a>
+    </li>
+    <li>
+      <a href="Module-01-05.html">Being a decision maker</a>
+    </li>
+    <li>
+      <a href="Module-01-06.html">Decision trees and decision models</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 2
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-02-01.html">Introduction to structured decision making in natural resources management</a>
+    </li>
+    <li>
+      <a href="Module-02-02.html">History, rational, and applications of decision making in natural resources and conservation</a>
+    </li>
+    <li>
+      <a href="Module-02-03.html">Types of decision making philosophies in natural resources</a>
+    </li>
+    <li>
+      <a href="Module-02-04.html">Structuring and quantifying objectives</a>
+    </li>
+    <li>
+      <a href="Module-02-05.html">Decision making and working with stakeholders</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 3
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-03-01.html">Statistics and decision making:  Estimating current system states-I</a>
+    </li>
+    <li>
+      <a href="Module-03-02.html">Statistics and decision making:  Estimating current system states-II</a>
+    </li>
+    <li>
+      <a href="Module-03-03.html">Using data to estimate parameters and quantify uncertainty</a>
+    </li>
+    <li>
+      <a href="Module-03-04.html">Predicting outcomes in a decision context: linear models</a>
+    </li>
+    <li>
+      <a href="Module-03-05.html">Predicting outcomes in a decision context: generalized linear models</a>
+    </li>
+    <li>
+      <a href="Module-03-06.html">Predicting outcomes in a decision context: hierarchical linear models</a>
+    </li>
+    <li>
+      <a href="Module-03-07.html">Estimating current states (marked populations): abundance</a>
+    </li>
+    <li>
+      <a href="Module-03-08.html">Estimating current states (marked populations): survival</a>
+    </li>
+    <li>
+      <a href="Module-03-09.html">Estimating current states (marked populations): survival &amp; abundanc</a>
+    </li>
+    <li>
+      <a href="Module-03-10.html">Estimating current states (marked populations): multi-state</a>
+    </li>
+    <li>
+      <a href="Module-03-11.html">Estimating current states (unmarked populations): Occupancy</a>
+    </li>
+    <li>
+      <a href="Module-03-12.html">Estimating current states (unmarked populations): multi season and state occupancy models</a>
+    </li>
+    <li>
+      <a href="Module-03-13.html">Estimating current states (unmarked populations): Closed and open N-mixture models</a>
+    </li>
+    <li>
+      <a href="Module-03-14.html">Introduction to influence diagrams</a>
+    </li>
+    <li>
+      <a href="Module-03-15.html">Using graphical models to predict outcomes</a>
+    </li>
+    <li>
+      <a href="Module-03-16.html">Eliciting and quantifying expert judgment</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 4
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-04-01.html">Influence diagrams and decision alternatives</a>
+    </li>
+    <li>
+      <a href="Module-04-02.html">Choosing the best decision alternative and evaluating the effect of uncertainty-I</a>
+    </li>
+    <li>
+      <a href="Module-04-03.html">Choosing the best decision alternative and evaluating the effect of uncertainty-II Monte Carlo Simulation</a>
+    </li>
+    <li>
+      <a href="Module-04-04.html">Sensitivity analysis and estimating the value of information</a>
+    </li>
+    <li>
+      <a href="Module-04-05.html">Introduction to optimization</a>
+    </li>
+    <li>
+      <a href="Module-04-06.html">Case study I-Setting harvest regulations</a>
+    </li>
+    <li>
+      <a href="Module-04-07.html">Case study II-Invasive species control</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Module 5
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Module-05-01.html">Conflict resolution and knowledge acquisition through adaptive management</a>
+    </li>
+    <li>
+      <a href="Module-05-02.html">AM:  More than just trial and error</a>
+    </li>
+    <li>
+      <a href="Module-05-03.html">Learning from monitoring in AM</a>
+    </li>
+    <li>
+      <a href="Module-05-04.html">Prioritizing learning: Passive versus active AM</a>
+    </li>
+    <li>
+      <a href="Module-05-05.html">Case study-black duck management</a>
+    </li>
+    <li>
+      <a href="Module-05-06.html">Case study-Golden Eagles and trail closures in Denali National Park</a>
+    </li>
+    <li>
+      <a href="Module-05-07.html">Case study-reconnection of fragmented habitats</a>
+    </li>
+    <li>
+      <a href="Module-05-08.html">Case study-Adaptive management of horseshoe crabs and red knots</a>
+    </li>
+    <li>
+      <a href="Module-05-09.html">Advanced topics in SDM and AM: Risk and extreme uncertainty</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><img src="media/banner-02.jpg" width="95%" /></p>
+<div id="introduction-to-decision-making" class="section level1">
+<h1>Introduction to decision making</h1>
+<!--source progress code-->
+<!--
+Front matter
+-->
+<div id="announcements" class="section level2">
+<h2>Announcements</h2>
+<ul>
+<li>None today</li>
+</ul>
+</div>
+<div id="read-prior-to-class" class="section level2">
+<h2>Read prior to class</h2>
+<ol style="list-style-type: decimal">
+<li>20 Years later, humans still no match for comptuters on the chessboard. <a href="/Module-01/PDF/chess-ai-npr.pdf">PDF</a> chess-ai-npr.pdf</li>
+<li>Integrating science into conservation decision-making: an interview with Jim Nichols <a href="/Module-01/PDF/Nichols-interview.pdf">PDF</a></li>
+<li></li>
+</ol>
+</div>
+<div id="for-next-class" class="section level2">
+<h2>For next class</h2>
+<p>Reading for next class: Hammond et al.: Chapters(s) 1-3</p>
+<!--source progress code-->
+<p>Content in progress and will be uploaded prior to class period</p>
+</div>
+<div id="for-next-class-1" class="section level2">
+<h2>For next class</h2>
+<p>TBD</p>
+</div>
+<div id="learning-objectives" class="section level2">
+<h2>Learning objectives</h2>
+<ol style="list-style-type: decimal">
+<li>TBD</li>
+<li>TBD</li>
+</ol>
+<!--
+hare Rmd fragments you should name them with a leading underscore (_) 
+then include them within their parent Rmd document using the child chunk option
+run as a child with a deck and narrative...
+## For next class
+get content from archive.
+using img source was messing shit up use knitr include 
+-->
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
