@@ -8,6 +8,8 @@ navbar:
           href: "index.html"      
         - text: "Course Syllabus"
           href: "syllabus.html"
+        - text: "Course Overview"
+          href: "course-overview.html"
         - text: "About final project"
           href: "final-project.html"
     - text: "Module 1"
@@ -106,6 +108,10 @@ navbar:
           href: "Module-05-08.html"
         - text: "Advanced topics in SDM and AM: Risk and extreme uncertainty"
           href: "Module-05-09.html"
+    - text: "Additional Resources"
+      menu: 
+        - text: "R tutorials"
+          href: "R-tutorials.html"
 output_dir: "_site"
 output:
   html_document:

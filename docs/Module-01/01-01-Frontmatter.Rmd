@@ -1,0 +1,21 @@
+
+<!--
+Front matter
+-->
+
+## Announcements
+
+* None today
+
+## Read prior to class
+
+1. 20 Years later, humans still no match for comptuters on the chessboard. [PDF](/Module-01/PDF/chess-ai-npr.pdf)
+chess-ai-npr.pdf
+2. Integrating science into conservation decision-making: an interview with Jim Nichols [PDF](/Module-01/PDF/Nichols-interview.pdf)
+3. 
+
+
+## For next class
+
+Reading for next class: Hammond et al.: Chapters(s) 1-3
+

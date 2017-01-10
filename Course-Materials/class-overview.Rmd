@@ -1,0 +1,91 @@
+---
+title: ""
+---
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-04.jpg")
+```
+<!--
+
+library(knitr)
+rmarkdown::render_site()# build website
+
+rmarkdown::render_site("index.Rmd")# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no")  
+
+-->
+
+
+## Class overview
+
+NOTE: each module topic represents 1 contact hour
+
+### Module 1: A formal decision making process (6 contact hours)
+
+1. [Introduction to decision making](Module-01-01.html)  
+2. [PrOACT process](Module-01-02.html)
+3. [Making decisions: uncertainty, risk, and linked decisions](Module-01-03.html)
+4. [Decision trees and decision making under uncertainty](Module-01-04.html)
+5. [Being a decision maker](Module-01-05.html)
+6. [Decision trees and decision models](Module-01-06.html)
+
+
+### Module 2: Decision making in natural resources and conservation contexts (5 contact hours)
+
+1. [Introduction to structured decision making in natural resources management](Module-01-06.html)
+2. [History, rational, and applications of decision making in natural resources and conservation](Module-01-06.html)
+3. [Types of decision making philosophies in natural resources](Module-01-06.html)
+4. [Structuring and quantifying objectives](Module-01-06.html)
+5. [Decision making and working with stakeholders](Module-01-06.html)
+
+
+### Module 3. Assembling and parameterizing decision models (16 contact hours)
+
+1. [Statistics and decision making:  Estimating current system states-I](Module-03-01.html)
+2. [Statistics and decision making:  Estimating current system states-II](Module-03-02.html)
+3. [Using data to estimate parameters and quantify uncertainty](Module-03-03.html)
+4. [Predicting outcomes in a decision context: linear models](Module-03-04.html)
+5. [Predicting outcomes in a decision context: generalized linear models](Module-03-05.html)
+6. [Predicting outcomes in a decision context: hierarchical linear models](Module-03-06.html)
+7. [Estimating current states (marked populations): abundance](Module-03-07.html)
+8. [Estimating current states (marked populations): survival](Module-03-08.html)
+9. [Estimating current states (marked populations): survival & abundance](Module-03-09.html)
+10. [Estimating current states (marked populations): multi-state](Module-03-10.html)
+11. [Estimating current states (unmarked populations): Occupancy](Module-03-11.html)
+12. [Estimating current states (unmarked populations): multi season and state occupancy models](Module-03-12.html)
+13. [Estimating current states (unmarked populations): Closed and open N-mixture models ](Module-03-13.html)
+14. [Introduction to influence diagrams](Module-03-14.html)
+15. [Using graphical models to predict outcomes](Module-03-15.html)
+16. [Eliciting and quantifying expert judgment](Module-03-16.html)
+
+
+### Module 4. Identifying optimal decisions (7 contact hours)
+
+1. [Influence diagrams and decision alternatives](Module-04-01.html)
+2. [Choosing the best decision alternative and evaluating the effect of uncertainty-I](Module-04-02.html)
+3. [Choosing the best decision alternative and evaluating the effect of uncertainty-II Monte Carlo
+ Simulation](Module-04-03.html)
+4. [Sensitivity analysis and estimating the value of information](Module-04-04.html)
+5. [Introduction to optimization](Module-04-05.html)
+6. [Case study I-Setting harvest regulations](Module-04-06.html)
+7. [Case study II-Invasive species control](Module-04-07.html)
+
+
+### Module	5. Adaptive management (AM)-learning from management actions (9 contact hours)
+
+1. [Conflict resolution and knowledge acquisition through adaptive management](Module-05-01.html)
+2. [AM:  More than just trial and error](Module-05-02.html)
+3. [Learning from monitoring in AM](Module-05-03.html)
+4. [Prioritizing learning: Passive versus active AM](Module-05-04.html)
+5. [Case study-black duck management](Module-05-05.html)
+6. [Case study-Golden Eagles and trail closures in Denali National Park](Module-05-06.html)
+7. [Case study-reconnection of fragmented habitats](Module-05-07.html)
+8. [Case study-Adaptive management of horseshoe crabs and red knots](Module-05-08.html)
+9. [Advanced topics in SDM and AM: Risk and extreme uncertainty](Module-05-09.html)
+
+

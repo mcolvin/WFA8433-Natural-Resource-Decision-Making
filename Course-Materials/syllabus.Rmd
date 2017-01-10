@@ -186,15 +186,18 @@ discuss these conflicts with me at least two weeks prior to the scheduled date.
 
 Important Dates
 
-* Last day to drop a class without a grade:  13 January 2017
-* Last day to add a class: 17 January 2017
-* First progress reporting:  20 February 2017
-* Last day to course with a 'W' grade:  28 February 2017
-* Second progress reporting:  24 March 2017
-* Last day to withdraw from the university:  11 April 2017
-* Classes end:  26 April 2017
-* Reading day:  27 April 2017 
-* Final Exam:  TBD 28 April to 4 May 2017
+| Description                               	| Date                             	|
+|--------------------------------------------	|----------------------------------	|
+| Last day to drop a   class without a grade   	| Friday, January 13, 2017       	|
+| Last day to add a class                    	| Tuesday, January   17, 2017      	|
+| First progress reporting                   	| Monday, February   20, 2017      	|
+| Last day to course with a "W"   grade      	| Tuesday, February   28, 2017     	|
+| Second progress reporting                  	| Friday, March 24,   2017         	|
+| Last day to withdraw from the university   	| Tuesday, April 11,   2017        	|
+| Classes end                                	| Wednesday, April   26, 2017      	|
+| Reading day(s)                             	| Thursday, April   27, 2017       	|
+| Final Exam                                 	| Thursday, May 04,   2017 8-11 am 	|
+
 
 
 ## Students with Disabilities
@@ -222,11 +225,28 @@ to titleix@msstate.edu. Additional resources are available at:
 * http://students.msstate.edu/sexualmisconduct/.
 
 
-## Class Schedule
+## Provisional Class Schedule 
 
+Classes subject to change with instructor availability. 
 Course is comprised of 45 contact hours, divided over the semester.
 All homework due 1 week from date assigned unless otherwise specified.
 
-<!--
-Set up excel sheet and read in...
--->
+
+| Week 	| Wednesday Class                                                                                                                                                            	| Friday Class                                                                                              	|
+|------	|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|-----------------------------------------------------------------------------------------------------------	|
+| 1    	| 1. Introduction to decision making                                                                                                                                         	| 2. PrOACT process; Making decisions: uncertainty, risk, and linked decisions                              	|
+| 2    	| 3. Decision trees and decision making under uncertainty; Being a decision maker                                                                                            	| 4. Decision trees and decision models                                                                     	|
+| 3    	| 5. Introduction to structured decision making in natural resources management; History, rational, and applications of decision making in natural resources and conservation 	| 6. Types of decision making philosophies in natural resources; Structuring and quantifying objectives     	|
+| 4    	| 7. Decision making and working with stakeholders                                                                                                                           	| 8. No class SDAFS                                                                                         	|
+| 5    	| 9. Statistics and decision making:  Estimating current system states; Using data to estimate parameters and quantify uncertainty                                           	| 10. Predicting outcomes in a decision context: linear and generalized linear models                       	|
+| 6    	| 11. Predicting outcomes in a decision context: hierarchical linear models                                                                                                  	| 12. Estimating current states (marked populations): abundance, survival, and both                         	|
+| 7    	| 13. No class-instructor out of town                                                                                                                                        	| 14. No class-instructor out of town                                                                       	|
+| 8    	| 15. Estimating current states (unmarked populations): Occupancy                                                                                                            	| 16. Estimating current states (unmarked populations): multi season and state occupancy models             	|
+| 9    	| 17. Estimating current states (unmarked populations): Closed and open N-mixture models                                                                                     	| 18. Introduction to influence diagrams, Using graphical models to predict outcomes                        	|
+| 10   	| 19. No class spring break                                                                                                                                                  	| 20. No class spring break                                                                                 	|
+| 11   	| 21. Eliciting and quantifying expert judgment                                                                                                                              	| 22. Influence diagrams and decision alternatives                                                          	|
+| 12   	| 23. Choosing the best decision alternative and evaluating the effect of uncertainty-I & II                                                                                 	| 24. Sensitivity analysis and estimating the value of information                                          	|
+| 13   	| 25. Introduction to optimization                                                                                                                                           	| 26. Case study I-Setting harvest regulations & Case study II-Invasive species control                     	|
+| 14   	| 27. Conflict resolution and knowledge acquisition through adaptive management; AM:  More than just trial and error                                                         	| 28. No class university holiday                                                                           	|
+| 15   	| 29. Learning from monitoring in AM; Prioritizing learning: Passive versus active AM                                                                                        	| 30. Case study-black duck management; Case study-Golden Eagles and trail closures in Denali National Park 	|
+| 16   	| 31. Case study-reconnection of fragmented habitats; Case study-Adaptive management of horseshoe crabs and red knots                                                        	| 32. Advanced topics in SDM and AM: Risk and extreme uncertainty                                           	|

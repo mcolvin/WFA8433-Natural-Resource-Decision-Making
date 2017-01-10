@@ -8,21 +8,20 @@ include_graphics("media/banner-02.jpg")
 
 # Introduction to decision making
 
+ 
+* To read prior to class
+    * [Humans still no match for computers on the chessboard](Module-01/PDF/chess-ai-npr.pdf)
+    * [An interview with Dr. Jim Nichols](Module-01/PDF/Nichols-interview.pdf)
+* Assignment due: None
+* For next class(es): Read Chapters 1-7 in Smart Decisions
+* Group work: Randomly assign to groups
+* Link to class deck- 
 
-<!--source progress code-->
-```{r child='/Module-01/01-01-Frontmatter.Rmd', eval=TRUE}
-``` 
 
 
-
-
-
-
-<!--source progress code-->
-```{r child='in-progress.Rmd', eval=TRUE}
-``` 
 
 <!--
+<!--source progress code-->
 hare Rmd fragments you should name them with a leading underscore (_) 
 then include them within their parent Rmd document using the child chunk option
 run as a child with a deck and narrative...

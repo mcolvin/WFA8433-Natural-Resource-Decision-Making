@@ -368,6 +368,18 @@ $(document).ready(function () {
     </li>
   </ul>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Additional Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="R-tutorials.html">R tutorials</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -388,6 +400,8 @@ $(document).ready(function () {
 
 library(knitr)
 rmarkdown::render_site()# build website
+
+rmarkdown::render_site("index.Rmd")# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
 system(paste("xcopy", 
     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
@@ -400,13 +414,28 @@ system(paste("xcopy",
 <h2>Syllabus</h2>
 <p><a href="syllabus.html">Course syllabus</a></p>
 </div>
+<div id="additional-resources" class="section level2">
+<h2>Additional resources</h2>
+<p><a href="https://sites.google.com/site/rforfishandwildlifegrads/">Some R Help</a></p>
+</div>
 <div id="class-overview" class="section level2">
 <h2>Class overview</h2>
 <p>NOTE: each module topic represents 1 contact hour</p>
 <div id="module-1-a-formal-decision-making-process-6-contact-hours" class="section level3">
 <h3>Module 1: A formal decision making process (6 contact hours)</h3>
 <ol style="list-style-type: decimal">
-<li><a href="Module-01-01.html">Introduction to decision making</a></li>
+<li><a href="Module-01-01.html">Introduction to decision making</a>
+<ul>
+<li>To read prior to class
+<ul>
+<li><a href="Module-01/PDF/chess-ai-npr.pdf">Humans still no match for computers on the chessboard</a></li>
+<li><a href="Module-01/PDF/Nichols-interview.pdf">An interview with Dr. Jim Nichols</a></li>
+</ul></li>
+<li>Assignment due: None</li>
+<li>For next class(es): Read Chapters 1-7 in Smart Decisions</li>
+<li>Group work: Randomly assign to groups</li>
+<li>Link to class deck-</li>
+</ul></li>
 <li><a href="Module-01-02.html">PrOACT process</a></li>
 <li><a href="Module-01-03.html">Making decisions: uncertainty, risk, and linked decisions</a></li>
 <li><a href="Module-01-04.html">Decision trees and decision making under uncertainty</a></li>
