@@ -10,7 +10,7 @@ include_graphics("media/banner-04.jpg")
 library(knitr)
 rmarkdown::render_site()# build website
 
-rmarkdown::render_site("index.Rmd")# build webpage
+rmarkdown::render_site("course-overview.Rmd")# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
 system(paste("xcopy", 
     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 

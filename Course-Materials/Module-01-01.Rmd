@@ -2,6 +2,21 @@
 title: ""
 ---
 
+<!--
+library(knitr)
+rmarkdown::render_site("Module-01-01.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+
+
 ```{r echo=FALSE, out.width="95%"}
 include_graphics("media/banner-02.jpg")
 ```
@@ -9,19 +24,19 @@ include_graphics("media/banner-02.jpg")
 # Introduction to decision making
 
  
-* To read prior to class
+* Supplemental reading
     * [Humans still no match for computers on the chessboard](Module-01/PDF/chess-ai-npr.pdf)
     * [An interview with Dr. Jim Nichols](Module-01/PDF/Nichols-interview.pdf)
 * Assignment due: None
-* For next class(es): Read Chapters 1-7 in Smart Decisions
-* Group work: Randomly assign to groups
-* Link to class deck- 
+* Supplemental background reading for next class(es): Read Chapters 1-7 in Smart Decisions
+* Group work: Randomly assign to groups, if time allows
+* Link to class deck-pending 
 
 
 
 
 <!--
-<!--source progress code-->
+
 hare Rmd fragments you should name them with a leading underscore (_) 
 then include them within their parent Rmd document using the child chunk option
 run as a child with a deck and narrative...
