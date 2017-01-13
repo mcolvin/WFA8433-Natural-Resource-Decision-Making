@@ -1,0 +1,46 @@
+---
+title: ""
+---
+
+<!--
+library(knitr)
+rmarkdown::render_site("Class-02.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-03.jpg")
+```
+
+# Class 2: The PrOACT Process
+
+ 
+* Supplemental reading
+    * Smart Choices: Chapters 1-6
+* Assignment due: None
+* Supplemental background reading for next class(es): Read Chapter(s) 7 in Smart Choices
+* Group work: None
+* Link to class deck [PDF](class-02.pdf)
+
+
+
+<!--
+
+hare Rmd fragments you should name them with a leading underscore (_) 
+then include them within their parent Rmd document using the child chunk option
+run as a child with a deck and narrative...
+## For next class
+get content from archive.
+using img source was messing shit up use knitr include 
+-->
+
+

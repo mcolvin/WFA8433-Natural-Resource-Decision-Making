@@ -4,7 +4,7 @@ title: ""
 
 <!--
 library(knitr)
-rmarkdown::render_site("Module-01-01.Rmd")# build website
+rmarkdown::render_site("Class-01.Rmd")# build website
 
 # rmarkdown::render_site()# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
@@ -21,16 +21,16 @@ system(paste("xcopy",
 include_graphics("media/banner-02.jpg")
 ```
 
-# Introduction to decision making
+# Class 1: Introduction to decision making
 
  
 * Supplemental reading
     * [Humans still no match for computers on the chessboard](Module-01/PDF/chess-ai-npr.pdf)
     * [An interview with Dr. Jim Nichols](Module-01/PDF/Nichols-interview.pdf)
 * Assignment due: None
-* Supplemental background reading for next class(es): Read Chapters 1-7 in Smart Decisions
-* Group work: Randomly assign to groups, if time allows
-* Link to class deck-pending 
+* Supplemental background reading for next class(es): Read Chapters 1-6 in Smart Decisions
+* Group work: None
+* Link to class deck [PDF](class-01.pdf)
 
 
 

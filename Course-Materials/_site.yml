@@ -15,7 +15,9 @@ navbar:
     - text: "Classes"
       menu: 
         - text: "Class 1: Introduction to decision making"
-          href: "Module-01-01.html"         
+          href: "Class-01.html"      
+        - text: "Class 2: The PrOACT Process"
+          href: "Class-02.html"            
     - text: "Additional Resources"
       menu: 
         - text: "R tutorials"
