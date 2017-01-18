@@ -17,7 +17,9 @@ navbar:
         - text: "Class 1: Introduction to decision making"
           href: "Class-01.html"      
         - text: "Class 2: The PrOACT Process"
-          href: "Class-02.html"            
+          href: "Class-02.html"  
+        - text: "Class 3: Uncertainty and decision making"
+          href: "Class-03.html"            
     - text: "Additional Resources"
       menu: 
         - text: "R tutorials"
