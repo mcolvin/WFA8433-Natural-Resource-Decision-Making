@@ -22,5 +22,6 @@ system(paste("xcopy",
 
 ## Announcements
 
+* Deck and recording from Class 3 is posted. Click [here](Class-03.html) 20170118
 * Deck from Class 1 and 2 are posted. Click [here](Class-01.html) for class 1 and [here](Class-02.html) for class 2 20170113
 * Welcome to WFA8433 Natural Resource And Conservation Decision Making! 200170111

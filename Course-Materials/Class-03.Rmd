@@ -21,7 +21,7 @@ system(paste("xcopy",
 include_graphics("media/banner-03.jpg")
 ```
 
-# Class 3: Making decisions: uncertainty, risk, and linked decisions
+# Class 3: Making decisions: uncertainty, and risk
 
 <!--
 Hammond et al.: Chapters(s) 7-9
@@ -33,17 +33,7 @@ Assign students to groups
 * Assignment due: None
 * Group work: None
 * Link to class deck [PDF](class-03.pdf)
+* Link to class recording [YouTube](https://youtu.be/b1VvCwOfOY4)
 
-
-
-<!--
-
-hare Rmd fragments you should name them with a leading underscore (_) 
-then include them within their parent Rmd document using the child chunk option
-run as a child with a deck and narrative...
-## For next class
-get content from archive.
-using img source was messing shit up use knitr include 
--->
 
 
