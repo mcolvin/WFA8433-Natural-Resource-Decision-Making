@@ -21,7 +21,9 @@ system(paste("xcopy",
 -->
 
 ## Announcements
-
+* Couple of Items for Class 4. 20170119
+    * We will begin playing with Netica on Friday. It is available as a free limited mode (sufficient for our purposes) for Windows and Mac [https://www.norsys.com/download.html]( https://www.norsys.com/download.html)
+    * Class is from 3:30 to 4:45 on Wednesday and 8 to 9:15 on Friday, Banner has some discrepancy
 * Deck and recording from Class 3 is posted. Click [here](Class-03.html) 20170118
 * Deck from Class 1 and 2 are posted. Click [here](Class-01.html) for class 1 and [here](Class-02.html) for class 2 20170113
 * Welcome to WFA8433 Natural Resource And Conservation Decision Making! 200170111
