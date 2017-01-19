@@ -1,0 +1,80 @@
+---
+title: ""
+---
+
+<!--
+library(knitr)
+rmarkdown::render_site("Class-04.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-03.jpg")
+```
+
+# Class 4: Decision tress and networks
+
+<!--
+Hammond et al.: Chapters(s) 7-9
+Assign students to groups
+-->
+ 
+* Supplemental background reading for next class(es):
+    * Smart choices: Pending
+* Assignment due: None
+* Group work: None
+
+<!--
+* Link to class deck [PDF](class-03.pdf)
+* Link to class recording [YouTube](https://youtu.be/b1VvCwOfOY4)
+-->
+
+
+
+```{r}
+# SOME CODE TO GENERATE GROUPS
+
+# FIRST SET A SEED SO WILL NOT CHANGE
+set.seed(8433)
+
+class<-data.frame(
+   last=c('Carolina', 'Terrel', 'Stephen', 'Giancarlo', 'Daniel', 'Mariela', 'Chelsea', 'Emmet', 'Bryant', 'Hunter', 'Matthew', 'Johannah', 'Leah', 'Marian', 'Ciera', 'Michael', 'Bradley', 'Andrew', 'Andrew', 'Shannon', 'Treyvon'),
+   first = c('Baruzzi','Christie', 'Clements', 'Coppola', 'Firth', 'Gantchoff', 'Gilliland', 'Guy', 'Haley', 'Hatcher', 'Ivey', 'Mccollum', 'Moran', 'Morris', 'Rhodes', 'Rhodes', 'Richardson', 'Shamaskin', 'Smith', 'Westlake', 'Strange'))
+
+# how many in class?
+nrow(class)
+ 
+```
+There are 21 folks in class, Lets assign 5 groups, 4 groups of 4 and 1 group of 5. 
+
+```{r}
+# make vector of groups
+groups<- c(rep(c(1:4),4),rep(5,5))
+groups
+```
+Now assign group to person in class which can be done by shuffling the vector.
+
+```{r}
+# Shuffle the vector of groups and assign to class group
+
+class$group<- sample(groups,21,replace=FALSE)
+class
+```
+Would be much easier if it was sorted by group, right?
+
+```{r}
+class<- class[order(class$group),]
+class
+```
+Much better.
+
+
