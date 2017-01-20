@@ -32,10 +32,12 @@ Assign students to groups
     * Smart choices: 7-9
 * Assignment due: None
 * Group work: Assign group and discuss potential class projects
+* Link to class deck [PDF](class-04.pdf)
+* Link to class recording [YouTube](https://youtu.be/_UEuizyVEw8)
+
 
 <!--
-* Link to class deck [PDF](class-03.pdf)
-* Link to class recording [YouTube](https://youtu.be/b1VvCwOfOY4)
+
 -->
 
 ## Code to randomly assign groups
@@ -47,8 +49,8 @@ Assign students to groups
 set.seed(8433)
 
 class<-data.frame(
-   last=c('Carolina', 'Terrel', 'Stephen', 'Giancarlo', 'Daniel', 'Mariela', 'Chelsea', 'Emmet', 'Bryant', 'Hunter', 'Matthew', 'Johannah', 'Leah', 'Marian', 'Ciera', 'Michael', 'Bradley', 'Andrew', 'Andrew', 'Shannon', 'Treyvon'),
-   first = c('Baruzzi','Christie', 'Clements', 'Coppola', 'Firth', 'Gantchoff', 'Gilliland', 'Guy', 'Haley', 'Hatcher', 'Ivey', 'Mccollum', 'Moran', 'Morris', 'Rhodes', 'Rhodes', 'Richardson', 'Shamaskin', 'Smith', 'Westlake', 'Strange'))
+   first=c('Carolina', 'Terrel', 'Stephen', 'Giancarlo', 'Daniel', 'Mariela', 'Chelsea', 'Emmet', 'Bryant', 'Hunter', 'Matthew', 'Johannah', 'Leah', 'Marian', 'Ciera', 'Michael', 'Bradley', 'Andrew', 'Andrew', 'Shannon', 'Treyvon'),
+   last = c('Baruzzi','Christie', 'Clements', 'Coppola', 'Firth', 'Gantchoff', 'Gilliland', 'Guy', 'Haley', 'Hatcher', 'Ivey', 'Mccollum', 'Moran', 'Morris', 'Rhodes', 'Rhodes', 'Richardson', 'Shamaskin', 'Smith', 'Westlake', 'Strange'))
 
 # how many in class?
 nrow(class)

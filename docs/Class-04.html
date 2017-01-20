@@ -272,10 +272,11 @@ Assign students to groups
 </ul></li>
 <li>Assignment due: None</li>
 <li>Group work: Assign group and discuss potential class projects</li>
+<li>Link to class deck <a href="class-04.pdf">PDF</a></li>
+<li>Link to class recording <a href="https://youtu.be/_UEuizyVEw8">YouTube</a></li>
 </ul>
 <!--
-* Link to class deck [PDF](class-03.pdf)
-* Link to class recording [YouTube](https://youtu.be/b1VvCwOfOY4)
+
 -->
 <div id="code-to-randomly-assign-groups" class="section level2">
 <h2>Code to randomly assign groups</h2>
@@ -285,8 +286,8 @@ Assign students to groups
 set.seed(8433)
 
 class&lt;-data.frame(
-   last=c(&#39;Carolina&#39;, &#39;Terrel&#39;, &#39;Stephen&#39;, &#39;Giancarlo&#39;, &#39;Daniel&#39;, &#39;Mariela&#39;, &#39;Chelsea&#39;, &#39;Emmet&#39;, &#39;Bryant&#39;, &#39;Hunter&#39;, &#39;Matthew&#39;, &#39;Johannah&#39;, &#39;Leah&#39;, &#39;Marian&#39;, &#39;Ciera&#39;, &#39;Michael&#39;, &#39;Bradley&#39;, &#39;Andrew&#39;, &#39;Andrew&#39;, &#39;Shannon&#39;, &#39;Treyvon&#39;),
-   first = c(&#39;Baruzzi&#39;,&#39;Christie&#39;, &#39;Clements&#39;, &#39;Coppola&#39;, &#39;Firth&#39;, &#39;Gantchoff&#39;, &#39;Gilliland&#39;, &#39;Guy&#39;, &#39;Haley&#39;, &#39;Hatcher&#39;, &#39;Ivey&#39;, &#39;Mccollum&#39;, &#39;Moran&#39;, &#39;Morris&#39;, &#39;Rhodes&#39;, &#39;Rhodes&#39;, &#39;Richardson&#39;, &#39;Shamaskin&#39;, &#39;Smith&#39;, &#39;Westlake&#39;, &#39;Strange&#39;))
+   first=c(&#39;Carolina&#39;, &#39;Terrel&#39;, &#39;Stephen&#39;, &#39;Giancarlo&#39;, &#39;Daniel&#39;, &#39;Mariela&#39;, &#39;Chelsea&#39;, &#39;Emmet&#39;, &#39;Bryant&#39;, &#39;Hunter&#39;, &#39;Matthew&#39;, &#39;Johannah&#39;, &#39;Leah&#39;, &#39;Marian&#39;, &#39;Ciera&#39;, &#39;Michael&#39;, &#39;Bradley&#39;, &#39;Andrew&#39;, &#39;Andrew&#39;, &#39;Shannon&#39;, &#39;Treyvon&#39;),
+   last = c(&#39;Baruzzi&#39;,&#39;Christie&#39;, &#39;Clements&#39;, &#39;Coppola&#39;, &#39;Firth&#39;, &#39;Gantchoff&#39;, &#39;Gilliland&#39;, &#39;Guy&#39;, &#39;Haley&#39;, &#39;Hatcher&#39;, &#39;Ivey&#39;, &#39;Mccollum&#39;, &#39;Moran&#39;, &#39;Morris&#39;, &#39;Rhodes&#39;, &#39;Rhodes&#39;, &#39;Richardson&#39;, &#39;Shamaskin&#39;, &#39;Smith&#39;, &#39;Westlake&#39;, &#39;Strange&#39;))
 
 # how many in class?
 nrow(class)</code></pre>
@@ -301,7 +302,7 @@ groups</code></pre>
 
 class$group&lt;- sample(groups,21,replace=FALSE)
 class</code></pre>
-<pre><code>##         last      first group
+<pre><code>##        first       last group
 ## 1   Carolina    Baruzzi     2
 ## 2     Terrel   Christie     4
 ## 3    Stephen   Clements     1
@@ -326,7 +327,7 @@ class</code></pre>
 <p>Would be much easier if it was sorted by group, right?</p>
 <pre class="r"><code>class&lt;- class[order(class$group),]
 class</code></pre>
-<pre><code>##         last      first group
+<pre><code>##        first       last group
 ## 3    Stephen   Clements     1
 ## 4  Giancarlo    Coppola     1
 ## 13      Leah      Moran     1
