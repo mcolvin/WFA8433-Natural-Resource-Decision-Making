@@ -29,16 +29,16 @@ Assign students to groups
 -->
  
 * Supplemental background reading for next class(es):
-    * Smart choices: Pending
+    * Smart choices: 7-9
 * Assignment due: None
-* Group work: None
+* Group work: Assign group and discuss potential class projects
 
 <!--
 * Link to class deck [PDF](class-03.pdf)
 * Link to class recording [YouTube](https://youtu.be/b1VvCwOfOY4)
 -->
 
-
+## Code to randomly assign groups
 
 ```{r}
 # SOME CODE TO GENERATE GROUPS
