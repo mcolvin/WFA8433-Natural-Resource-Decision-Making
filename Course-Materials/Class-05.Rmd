@@ -33,8 +33,8 @@ include_graphics("media/banner-03.jpg")
     * Conroy and Peterson-Chapter(s) 1
 * Assignment due: None
 * Group work: Discuss potential class projects
-* Link to class deck [PDF](class-05.pdf)
-* Link to class recording [YouTube]()
+* Link to class deck Pending<!-- [PDF](class-05.pdf) --> 
+* Link to class recording Pending<!-- [YouTube]() -->
 * Read for next class: [McFadden, J. E., T. L. Hiller, and A. J. Tyre. 2011. Evaluating the efficacy of
  adaptive management approaches: Is there a formula for success? Journal
  of Environmental Management 92:1354-1359.](M272.pdf)
