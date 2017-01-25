@@ -1,0 +1,45 @@
+
+---
+title: ""
+---
+
+<!--
+library(knitr)
+rmarkdown::render_site("Class-05.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-03.jpg")
+```
+
+
+
+# Class 5: Introduction to structured decision making in natural resources management; History, rational, and applications of decision making in natural resources
+
+
+
+ 
+* Supplemental background reading for next class(es):
+    * Conroy and Peterson-Chapter(s) 1
+* Assignment due: None
+* Group work: Discuss potential class projects
+* Link to class deck [PDF](class-05.pdf)
+* Link to class recording [YouTube]()
+* Read for next class: [McFadden, J. E., T. L. Hiller, and A. J. Tyre. 2011. Evaluating the efficacy of
+ adaptive management approaches: Is there a formula for success? Journal
+ of Environmental Management 92:1354-1359.](M272.pdf)
+ 
+ 
+<!--
+Conroy and Peterson-Chapters 1 & 2
+-->

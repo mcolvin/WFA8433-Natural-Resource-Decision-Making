@@ -22,6 +22,8 @@ navbar:
           href: "Class-03.html"            
         - text: "Class 4: Decision trees and nets"
           href: "Class-04.html"   
+        - text: "Class 5: Intro to SDM and ARM"
+          href: "Class-05.html"   
     - text: "Additional Resources"
       menu: 
         - text: "R tutorials"
