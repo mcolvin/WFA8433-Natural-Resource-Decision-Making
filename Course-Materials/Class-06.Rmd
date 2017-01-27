@@ -4,7 +4,7 @@ title: ""
 ---
 
 <!--
-setwd("C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials")
+
 library(knitr)
 rmarkdown::render_site("Class-06.Rmd")# build website
 
@@ -29,13 +29,23 @@ List of preliminary problems to instructor for review
 -->
 
 # Class 6. Types of decision making philosophies in natural resources; Structuring and quantifying objectives; Decision making and working with stakeholders
+ 
+* Supplemental background reading for next class(es):
+    * Conroy and Peterson-Chapter(s) 1-3
+* Assignment due: Homework-01: Personal means network
+    * Submit as a PDF you can use whatever you would like to create the figure (e.g., word, powerpoint). Create a means objectives network (maximum 25 objectives please) of your personal career aspirations. Identify your fundamental objectives and be sure to include two or more means objectives for each fundamental objective. DO NOT FORGET to use the key phrases.
+    * Due by next Friday by 5 pm 
+    * SUBMIT PDF TO: https://dropitto.me/WFA8433 The upload password is 'critter'  <u>Be sure to name the file as follows "lastname-homework-01.pdf"</u>
+* Group work: Discuss potential class projects
+* Link to class deck [PDF](class-06.pdf)
+* Link to class recording Pending Rendering<!-- [YouTube]() -->
 
 
-
-## Code to randomly assign groups
+<!--
+## Code to randomly assign to stakeholder groups
 
 ```{r}
-# SOME CODE TO GENERATE GROUPS
+# SOME CODE TO GENERATE STAKEHOLDER GROUPS
 
 # FIRST SET A SEED SO WILL NOT CHANGE
 set.seed(8433)
@@ -75,3 +85,4 @@ class<- class[order(class$group),]
 class
 ```
 Much better.
+-->

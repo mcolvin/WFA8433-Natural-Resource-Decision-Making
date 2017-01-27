@@ -24,6 +24,8 @@ navbar:
           href: "Class-04.html"   
         - text: "Class 5: Intro to SDM and ARM"
           href: "Class-05.html"   
+        - text: "Class 6: Structuring and quantifying objectives"
+          href: "Class-06.html"   
     - text: "Additional Resources"
       menu: 
         - text: "R tutorials"

@@ -36,7 +36,7 @@ add larkin's book link
 * Assignment due: None
 * Group work: Discuss potential class projects
 * Link to class deck [PDF](class-05.pdf)
-* Link to class recording Pending<!-- [YouTube]() -->
+* Link to class recording Pending [YouTube](https://youtu.be/r-sn2tgDEHc)
 * Read for next class: [McFadden, J. E., T. L. Hiller, and A. J. Tyre. 2011. Evaluating the efficacy of
  adaptive management approaches: Is there a formula for success? Journal
  of Environmental Management 92:1354-1359.](M272.pdf)
