@@ -250,8 +250,9 @@ $(document).ready(function () {
 
 
 <!--
+setwd("C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials")
 library(knitr)
-rmarkdown::render_site("Class-05.Rmd")# build website
+rmarkdown::render_site("Class-06.Rmd")# build website
 
 # rmarkdown::render_site()# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
@@ -261,18 +262,88 @@ system(paste("xcopy",
     "/E /C /H /R /K /O /Y")) 
   q(save="no") 
 -->
-<p><img src="media/banner-03.jpg" width="95%" /> List of preliminary problems to instructor for review</p>
-<p>Homework 1: Introduction to basic computing- R</p>
+<p><img src="media/banner-03.jpg" width="95%" /> <!--
+Homework 1:  Introduction to basic computing- R
+List of preliminary problems to instructor for review
+
+--></p>
 <div id="class-6.-types-of-decision-making-philosophies-in-natural-resources-structuring-and-quantifying-objectives-decision-making-and-working-with-stakeholders" class="section level1">
 <h1>Class 6. Types of decision making philosophies in natural resources; Structuring and quantifying objectives; Decision making and working with stakeholders</h1>
-<div id="types-of-decision-making-philosophies-in-natural-resources" class="section level2">
-<h2>Types of decision making philosophies in natural resources</h2>
-</div>
-<div id="structuring-and-quantifying-objectives" class="section level2">
-<h2>Structuring and quantifying objectives</h2>
-</div>
-<div id="decision-making-and-working-with-stakeholders" class="section level2">
-<h2>Decision making and working with stakeholders</h2>
+<div id="code-to-randomly-assign-groups" class="section level2">
+<h2>Code to randomly assign groups</h2>
+<pre class="r"><code># SOME CODE TO GENERATE GROUPS
+
+# FIRST SET A SEED SO WILL NOT CHANGE
+set.seed(8433)
+
+class&lt;-data.frame(
+   first=c(&#39;Carolina&#39;, &#39;Terrel&#39;, &#39;Stephen&#39;, &#39;Giancarlo&#39;, &#39;Daniel&#39;, &#39;Mariela&#39;, &#39;Chelsea&#39;, &#39;Emmet&#39;, &#39;Bryant&#39;, &#39;Hunter&#39;, &#39;Matthew&#39;, &#39;Johannah&#39;, &#39;Leah&#39;, &#39;Marian&#39;, &#39;Ciera&#39;, &#39;Michael&#39;, &#39;Bradley&#39;, &#39;Andrew&#39;, &#39;Andrew&#39;, &#39;Shannon&#39;, &#39;Treyvon&#39;),
+   last = c(&#39;Baruzzi&#39;,&#39;Christie&#39;, &#39;Clements&#39;, &#39;Coppola&#39;, &#39;Firth&#39;, &#39;Gantchoff&#39;, &#39;Gilliland&#39;, &#39;Guy&#39;, &#39;Haley&#39;, &#39;Hatcher&#39;, &#39;Ivey&#39;, &#39;Mccollum&#39;, &#39;Moran&#39;, &#39;Morris&#39;, &#39;Rhodes&#39;, &#39;Rhodes&#39;, &#39;Richardson&#39;, &#39;Shamaskin&#39;, &#39;Smith&#39;, &#39;Westlake&#39;, &#39;Strange&#39;))
+
+# how many in class?
+nrow(class)</code></pre>
+<pre><code>## [1] 21</code></pre>
+<p>There are 21 folks in class, Lets assign 5 groups, 4 groups of 4 and 1 group of 5.</p>
+<pre class="r"><code># make vector of stakeholders
+stakeholder&lt;- c(&quot;Animal welfare organizations (eg PETA)&quot;,
+    &quot;Concerned members of the general public&quot;,
+    &quot;N-G conservation organizations (eg TNC)&quot;,
+    &quot;Local animal control authority&quot;,
+&quot;Representatives from local governments&quot;,
+    &quot;State and local wildlife management agencies&quot;)</code></pre>
+<p>Now assign group to person in class which can be done by shuffling the vector.</p>
+<pre class="r"><code># Shuffle the vector of groups and assign to class group
+
+class$group&lt;- sample(stakeholder,21,replace=TRUE)
+class</code></pre>
+<pre><code>##        first       last                                   group
+## 1   Carolina    Baruzzi N-G conservation organizations (eg TNC)
+## 2     Terrel   Christie          Local animal control authority
+## 3    Stephen   Clements          Local animal control authority
+## 4  Giancarlo    Coppola  Animal welfare organizations (eg PETA)
+## 5     Daniel      Firth  Animal welfare organizations (eg PETA)
+## 6    Mariela  Gantchoff Concerned members of the general public
+## 7    Chelsea  Gilliland  Animal welfare organizations (eg PETA)
+## 8      Emmet        Guy Concerned members of the general public
+## 9     Bryant      Haley  Animal welfare organizations (eg PETA)
+## 10    Hunter    Hatcher Concerned members of the general public
+## 11   Matthew       Ivey  Animal welfare organizations (eg PETA)
+## 12  Johannah   Mccollum Concerned members of the general public
+## 13      Leah      Moran          Local animal control authority
+## 14    Marian     Morris N-G conservation organizations (eg TNC)
+## 15     Ciera     Rhodes          Local animal control authority
+## 16   Michael     Rhodes  Representatives from local governments
+## 17   Bradley Richardson N-G conservation organizations (eg TNC)
+## 18    Andrew  Shamaskin Concerned members of the general public
+## 19    Andrew      Smith Concerned members of the general public
+## 20   Shannon   Westlake          Local animal control authority
+## 21   Treyvon    Strange          Local animal control authority</code></pre>
+<p>Would be much easier if it was sorted by group, right?</p>
+<pre class="r"><code>class&lt;- class[order(class$group),]
+class</code></pre>
+<pre><code>##        first       last                                   group
+## 4  Giancarlo    Coppola  Animal welfare organizations (eg PETA)
+## 5     Daniel      Firth  Animal welfare organizations (eg PETA)
+## 7    Chelsea  Gilliland  Animal welfare organizations (eg PETA)
+## 9     Bryant      Haley  Animal welfare organizations (eg PETA)
+## 11   Matthew       Ivey  Animal welfare organizations (eg PETA)
+## 6    Mariela  Gantchoff Concerned members of the general public
+## 8      Emmet        Guy Concerned members of the general public
+## 10    Hunter    Hatcher Concerned members of the general public
+## 12  Johannah   Mccollum Concerned members of the general public
+## 18    Andrew  Shamaskin Concerned members of the general public
+## 19    Andrew      Smith Concerned members of the general public
+## 2     Terrel   Christie          Local animal control authority
+## 3    Stephen   Clements          Local animal control authority
+## 13      Leah      Moran          Local animal control authority
+## 15     Ciera     Rhodes          Local animal control authority
+## 20   Shannon   Westlake          Local animal control authority
+## 21   Treyvon    Strange          Local animal control authority
+## 1   Carolina    Baruzzi N-G conservation organizations (eg TNC)
+## 14    Marian     Morris N-G conservation organizations (eg TNC)
+## 17   Bradley Richardson N-G conservation organizations (eg TNC)
+## 16   Michael     Rhodes  Representatives from local governments</code></pre>
+<p>Much better.</p>
 </div>
 </div>
 

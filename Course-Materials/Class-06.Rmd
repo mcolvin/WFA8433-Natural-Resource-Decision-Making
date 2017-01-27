@@ -4,8 +4,9 @@ title: ""
 ---
 
 <!--
+setwd("C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials")
 library(knitr)
-rmarkdown::render_site("Class-05.Rmd")# build website
+rmarkdown::render_site("Class-06.Rmd")# build website
 
 # rmarkdown::render_site()# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
@@ -21,16 +22,56 @@ system(paste("xcopy",
 ```{r echo=FALSE, out.width="95%"}
 include_graphics("media/banner-03.jpg")
 ```
+<!--
+Homework 1:  Introduction to basic computing- R
 List of preliminary problems to instructor for review
 
-Homework 1:  Introduction to basic computing- R
-
+-->
 
 # Class 6. Types of decision making philosophies in natural resources; Structuring and quantifying objectives; Decision making and working with stakeholders
 
-## Types of decision making philosophies in natural resources
 
 
-## Structuring and quantifying objectives
+## Code to randomly assign groups
 
-## Decision making and working with stakeholders
+```{r}
+# SOME CODE TO GENERATE GROUPS
+
+# FIRST SET A SEED SO WILL NOT CHANGE
+set.seed(8433)
+
+class<-data.frame(
+   first=c('Carolina', 'Terrel', 'Stephen', 'Giancarlo', 'Daniel', 'Mariela', 'Chelsea', 'Emmet', 'Bryant', 'Hunter', 'Matthew', 'Johannah', 'Leah', 'Marian', 'Ciera', 'Michael', 'Bradley', 'Andrew', 'Andrew', 'Shannon', 'Treyvon'),
+   last = c('Baruzzi','Christie', 'Clements', 'Coppola', 'Firth', 'Gantchoff', 'Gilliland', 'Guy', 'Haley', 'Hatcher', 'Ivey', 'Mccollum', 'Moran', 'Morris', 'Rhodes', 'Rhodes', 'Richardson', 'Shamaskin', 'Smith', 'Westlake', 'Strange'))
+
+# how many in class?
+nrow(class)
+ 
+```
+There are 21 folks in class, Lets assign 5 groups, 4 groups of 4 and 1 group of 5. 
+
+```{r}
+# make vector of stakeholders
+stakeholder<- c("Animal welfare organizations (eg PETA)",
+    "Concerned members of the general public",
+    "N-G conservation organizations (eg TNC)",
+    "Local animal control authority",
+"Representatives from local governments",
+    "State and local wildlife management agencies")
+
+```
+Now assign group to person in class which can be done by shuffling the vector.
+
+```{r}
+# Shuffle the vector of groups and assign to class group
+
+class$group<- sample(stakeholder,21,replace=TRUE)
+class
+```
+Would be much easier if it was sorted by group, right?
+
+```{r}
+class<- class[order(class$group),]
+class
+```
+Much better.
