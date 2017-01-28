@@ -25,12 +25,12 @@ include_graphics("media/banner-02.jpg")
 
  
 * Supplemental reading
-    * [Humans still no match for computers on the chessboard](Module-01/PDF/chess-ai-npr.pdf)
-    * [An interview with Dr. Jim Nichols](Module-01/PDF/Nichols-interview.pdf)
+    * [Humans still no match for computers on the chessboard](pdfs/chess-ai-npr.pdf)
+    * [An interview with Dr. Jim Nichols](pdfs/Nichols-interview.pdf)
 * Assignment due: None
 * Supplemental background reading for next class(es): Read Chapters 1-6 in Smart Decisions
 * Group work: None
-* Link to class deck [PDF](class-01.pdf)
+* Link to class deck [PDF](pdfs/class-01.pdf)
 
 
 

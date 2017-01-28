@@ -29,7 +29,7 @@ include_graphics("media/banner-03.jpg")
 * Assignment due: None
 * Supplemental background reading for next class(es): Read Chapter(s) 7 in Smart Choices
 * Group work: None
-* Link to class deck [PDF](class-02.pdf)
+* Link to class deck [PDF](pdfs/class-02.pdf)
 
 
 

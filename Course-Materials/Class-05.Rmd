@@ -26,20 +26,15 @@ include_graphics("media/banner-03.jpg")
 
 # Class 5: Introduction to structured decision making in natural resources management; History, rational, and applications of decision making in natural resources
 
-
-<!--
-add larkin's book link
--->
- 
 * Supplemental background reading for next class(es):
     * Conroy and Peterson-Chapter(s) 1
 * Assignment due: None
 * Group work: Discuss potential class projects
-* Link to class deck [PDF](class-05.pdf)
+* Link to class deck [PDF](pdfs/class-05.pdf)
 * Link to class recording Pending [YouTube](https://youtu.be/r-sn2tgDEHc)
 * Read for next class: [McFadden, J. E., T. L. Hiller, and A. J. Tyre. 2011. Evaluating the efficacy of
  adaptive management approaches: Is there a formula for success? Journal
- of Environmental Management 92:1354-1359.](M272.pdf)
+ of Environmental Management 92:1354-1359.](pdfs/M272.pdf)
 * PDF of [Estimation of Parameters for Animal Populations](http://larkinpowell.wixsite.com/larkinpowell/estimation-of-parameters-for-animal-pop) 
  
 <!--

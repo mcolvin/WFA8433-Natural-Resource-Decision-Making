@@ -37,11 +37,10 @@ List of preliminary problems to instructor for review
     * Due by next Friday by 5 pm 
     * SUBMIT PDF TO: https://dropitto.me/WFA8433 The upload password is 'critter'  <u>Be sure to name the file as follows "lastname-homework-01.pdf"</u>
 * Group work: Discuss potential class projects
-* Link to class deck [PDF](class-06.pdf)
+* Link to class deck [PDF](pdfs/class-06.pdf)
 * Link to class recording [YouTube](https://youtu.be/E-ES3qN4e48)
 
 
-<!--
 ## Code to randomly assign to stakeholder groups
 
 ```{r}
@@ -58,7 +57,7 @@ class<-data.frame(
 nrow(class)
  
 ```
-There are 21 folks in class, Lets assign 5 groups, 4 groups of 4 and 1 group of 5. 
+There are 21 folks in class, Lets assign a stakeholder assignment to each person. 
 
 ```{r}
 # make vector of stakeholders
@@ -85,4 +84,5 @@ class<- class[order(class$group),]
 class
 ```
 Much better.
--->
+
+
