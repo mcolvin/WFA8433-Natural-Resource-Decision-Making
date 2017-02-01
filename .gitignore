@@ -35,6 +35,7 @@ _class-recordings/
 *.pptx
 *.xlsx
 
+*.Rdata
 *.neta
 
 # Windows shortcuts
