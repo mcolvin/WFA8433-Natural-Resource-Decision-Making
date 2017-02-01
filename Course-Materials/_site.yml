@@ -26,6 +26,8 @@ navbar:
           href: "Class-05.html"   
         - text: "Class 6: Structuring and quantifying objectives"
           href: "Class-06.html"   
+        - text: "Class 7: Structuring objectives & Intro to R"
+          href: "Class-07.html" 
     - text: "Additional Resources"
       menu: 
         - text: "R tutorials"
