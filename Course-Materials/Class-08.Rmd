@@ -38,7 +38,7 @@ List of preliminary problems to instructor for review
 * Group work: Continue discussing potential class projects
 * Link to class deck [PDF](pdfs/class-08.pdf)
 * Link to class recording 
-* Today's R script [Class-07.R](scripts/Class-08.R)
+* Today's R script [Class-08.R](scripts/Class-08.R)
 
 
 ## Introduction to R
