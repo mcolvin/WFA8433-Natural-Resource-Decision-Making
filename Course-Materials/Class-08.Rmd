@@ -20,6 +20,8 @@ system(paste("xcopy",
 
 ```{r echo=FALSE, out.width="95%"}
 include_graphics("media/banner-05.jpg")
+rm(list=objects())
+
 ```
 <!--
 Homework 1:  Introduction to basic computing- R

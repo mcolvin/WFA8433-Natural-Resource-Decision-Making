@@ -380,13 +380,7 @@ fish.condition = fish.length/fish.wt
 fish.condition</code></pre>
 <pre><code>## [1] 15</code></pre>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##  [1] &quot;aggregratem&quot;      &quot;binning_cont&quot;     &quot;binning_dis&quot;     
-##  [4] &quot;cleanGoogleTable&quot; &quot;convert&quot;          &quot;convertRate&quot;     
-##  [7] &quot;cpt&quot;              &quot;doy_months&quot;       &quot;expit&quot;           
-## [10] &quot;fish.condition&quot;   &quot;fish.length&quot;      &quot;fish.wt&quot;         
-## [13] &quot;logit&quot;            &quot;mmi&quot;              &quot;panLab&quot;          
-## [16] &quot;presPlot&quot;         &quot;readGoogleSheet&quot;  &quot;strip&quot;           
-## [19] &quot;vbgf&quot;             &quot;wdTable_mec&quot;</code></pre>
+<pre><code>## [1] &quot;fish.condition&quot; &quot;fish.length&quot;    &quot;fish.wt&quot;</code></pre>
 <p>Then select the commands and right click your mouse as:</p>
 <p><img src="media/figure10.png" width="95%" /></p>
 <p>Then choose “Run line or selection” (you could also hit Ctrl-R) and you should get the following in the console.</p>
@@ -399,13 +393,7 @@ fish.condition = fish.length/fish.wt
 fish.condition</code></pre>
 <pre><code>## [1] 15</code></pre>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##  [1] &quot;aggregratem&quot;      &quot;binning_cont&quot;     &quot;binning_dis&quot;     
-##  [4] &quot;cleanGoogleTable&quot; &quot;convert&quot;          &quot;convertRate&quot;     
-##  [7] &quot;cpt&quot;              &quot;doy_months&quot;       &quot;expit&quot;           
-## [10] &quot;fish.condition&quot;   &quot;fish.length&quot;      &quot;fish.wt&quot;         
-## [13] &quot;logit&quot;            &quot;mmi&quot;              &quot;panLab&quot;          
-## [16] &quot;presPlot&quot;         &quot;readGoogleSheet&quot;  &quot;strip&quot;           
-## [19] &quot;vbgf&quot;             &quot;wdTable_mec&quot;</code></pre>
+<pre><code>## [1] &quot;fish.condition&quot; &quot;fish.length&quot;    &quot;fish.wt&quot;</code></pre>
 <p>Everything to the right of the # is ignored by R when you submit the script. You can use more than one # as shown above. Using the comment character “#” also can be used to turn off parts of programs. For example, adding a # before fish.condition:</p>
 <pre class="r"><code># This program calculates the goofy Peterson and Colvin condition factor
 fish.wt = 10
@@ -414,13 +402,7 @@ fish.length = 150
 fish.condition = fish.length/fish.wt
 #fish.condition
 ls()</code></pre>
-<pre><code>##  [1] &quot;aggregratem&quot;      &quot;binning_cont&quot;     &quot;binning_dis&quot;     
-##  [4] &quot;cleanGoogleTable&quot; &quot;convert&quot;          &quot;convertRate&quot;     
-##  [7] &quot;cpt&quot;              &quot;doy_months&quot;       &quot;expit&quot;           
-## [10] &quot;fish.condition&quot;   &quot;fish.length&quot;      &quot;fish.wt&quot;         
-## [13] &quot;logit&quot;            &quot;mmi&quot;              &quot;panLab&quot;          
-## [16] &quot;presPlot&quot;         &quot;readGoogleSheet&quot;  &quot;strip&quot;           
-## [19] &quot;vbgf&quot;             &quot;wdTable_mec&quot;</code></pre>
+<pre><code>## [1] &quot;fish.condition&quot; &quot;fish.length&quot;    &quot;fish.wt&quot;</code></pre>
 <p>stops R from printing out fish.condition after it is calculated. Go ahead and try it. As we will find later, this feature is very useful for debugging programs. We heartily recommend using this feature to take notes during the course too. Go ahead and save this script, we may use it later.</p>
 <p>As we discussed earlier, the objects we created are written to the working directory. If you save the contents of the working directory (think: “massive database that I worked on for hours”), they will always be available when you start R. But where is the working directory? By default, it’s more than likely placed somewhere you don’t want it to be (but see profile below). Therefore, it’s always good practice to set the working directory at the beginning of your R session. We do this using the “setwd(path)” command, where path is the windows path to the folder where you want to write and read things. For example, lets say that I wanted to save this session to my memory stick and the memory stick was assigned as the “G” drive. I want to save it in a folder “RRRR” inside of “Jims class stuff”:</p>
 <pre class="r"><code>setwd(&quot;F:/lab1/RRRR&quot;) ## NOTICE USE OF FORWARD SLASH
@@ -432,13 +414,7 @@ fish.condition = fish.length/fish.wt
 fish.condition</code></pre>
 <pre><code>## [1] 15</code></pre>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##  [1] &quot;aggregratem&quot;      &quot;binning_cont&quot;     &quot;binning_dis&quot;     
-##  [4] &quot;cleanGoogleTable&quot; &quot;convert&quot;          &quot;convertRate&quot;     
-##  [7] &quot;cpt&quot;              &quot;doy_months&quot;       &quot;expit&quot;           
-## [10] &quot;fish.condition&quot;   &quot;fish.length&quot;      &quot;fish.wt&quot;         
-## [13] &quot;logit&quot;            &quot;mmi&quot;              &quot;panLab&quot;          
-## [16] &quot;presPlot&quot;         &quot;readGoogleSheet&quot;  &quot;strip&quot;           
-## [19] &quot;vbgf&quot;             &quot;wdTable_mec&quot;</code></pre>
+<pre><code>## [1] &quot;fish.condition&quot; &quot;fish.length&quot;    &quot;fish.wt&quot;</code></pre>
 <p>Or you could use the double back slash. R will not recognize single backslash format.</p>
 <pre class="r"><code>setwd(&quot;F:\\lab1\\RRRR&quot;)## NOTICE USE OF DOUBLE BACKSLASH
 # This program calculates the goofy Peterson and Colvin condition factor
@@ -449,13 +425,7 @@ fish.condition = fish.length/fish.wt
 fish.condition</code></pre>
 <pre><code>## [1] 15</code></pre>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##  [1] &quot;aggregratem&quot;      &quot;binning_cont&quot;     &quot;binning_dis&quot;     
-##  [4] &quot;cleanGoogleTable&quot; &quot;convert&quot;          &quot;convertRate&quot;     
-##  [7] &quot;cpt&quot;              &quot;doy_months&quot;       &quot;expit&quot;           
-## [10] &quot;fish.condition&quot;   &quot;fish.length&quot;      &quot;fish.wt&quot;         
-## [13] &quot;logit&quot;            &quot;mmi&quot;              &quot;panLab&quot;          
-## [16] &quot;presPlot&quot;         &quot;readGoogleSheet&quot;  &quot;strip&quot;           
-## [19] &quot;vbgf&quot;             &quot;wdTable_mec&quot;</code></pre>
+<pre><code>## [1] &quot;fish.condition&quot; &quot;fish.length&quot;    &quot;fish.wt&quot;</code></pre>
 <p>To save the all of the contents of your working directory you ca use “save.image(file =”myfilename.Rdata“)” command. This command saves everything to “myfilename.Rdata” where myfilename would be your file name. Alternatively, you can save specific objects in the working directory to a file using “save(file =”myfilename.Rdata“,list = c(names of objects in quotes separated by commas))”. For example, let say that we wanted to save everything we created using the above script to a file called “firstRclass.Rdata”:</p>
 <pre class="r"><code>setwd(&quot;F:\\lab1\\RRRR&quot;)
 # This program calculates the goofy Peterson and Colvin condition factor
@@ -466,13 +436,7 @@ fish.condition = fish.length/fish.wt
 fish.condition</code></pre>
 <pre><code>## [1] 15</code></pre>
 <pre class="r"><code>ls()</code></pre>
-<pre><code>##  [1] &quot;aggregratem&quot;      &quot;binning_cont&quot;     &quot;binning_dis&quot;     
-##  [4] &quot;cleanGoogleTable&quot; &quot;convert&quot;          &quot;convertRate&quot;     
-##  [7] &quot;cpt&quot;              &quot;doy_months&quot;       &quot;expit&quot;           
-## [10] &quot;fish.condition&quot;   &quot;fish.length&quot;      &quot;fish.wt&quot;         
-## [13] &quot;logit&quot;            &quot;mmi&quot;              &quot;panLab&quot;          
-## [16] &quot;presPlot&quot;         &quot;readGoogleSheet&quot;  &quot;strip&quot;           
-## [19] &quot;vbgf&quot;             &quot;wdTable_mec&quot;</code></pre>
+<pre><code>## [1] &quot;fish.condition&quot; &quot;fish.length&quot;    &quot;fish.wt&quot;</code></pre>
 <pre class="r"><code>### Here&#39;s where we save everything
 save.image(file = &quot;firstRclass.Rdata&quot;)</code></pre>
 <p>This would save all of the objects to firstRclass in the folder specified with the setwd command above. Alternatively, let’s say that we wanted to only save fish.wt and fish.condition. We would specify:</p>
