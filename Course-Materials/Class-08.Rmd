@@ -148,6 +148,7 @@ As we mentioned, you can enter commands directly in the R console. For
 example type in 2+2 and hit return. You should get something like that 
 below. 
 
+
 <center>
 
 ```{r echo=FALSE, out.width="45%"} 
@@ -336,7 +337,7 @@ of "Jims class stuff":
 
 
 ```{r}
-setwd("F:/lab1/RRRR") ## NOTICE USE OF FORWARD SLASH
+#setwd("F:/lab1/RRRR") ## NOTICE USE OF FORWARD SLASH
 # This program calculates the goofy Peterson and Colvin condition factor
 fish.wt = 10
 fish.length = 150
@@ -350,7 +351,7 @@ backslash format.
 
 
 ```{r}
-setwd("F:\\lab1\\RRRR")## NOTICE USE OF DOUBLE BACKSLASH
+#setwd("F:\\lab1\\RRRR")## NOTICE USE OF DOUBLE BACKSLASH
 # This program calculates the goofy Peterson and Colvin condition factor
 fish.wt = 10
 fish.length = 150
@@ -371,7 +372,7 @@ called "firstRclass.Rdata":
 
 
 ```{r}
-setwd("F:\\lab1\\RRRR")
+#setwd("F:\\lab1\\RRRR")
 # This program calculates the goofy Peterson and Colvin condition factor
 fish.wt = 10
 fish.length = 150
@@ -409,7 +410,7 @@ directory in the file path using "./" before the filename. For example:
 
 
 ```{r}
-load("./firstRclass.Rdata")
+load("firstRclass.Rdata")
 ```
  In the standard R GUI and Rstudio (more below), we won't have to use 
 "./" but it can come in handy later. 
@@ -420,7 +421,7 @@ the load command.
 
 ```{r}
 # Load objects from existing file, full path edition
-load("F:\\lab1\\RRRR\\firstRclass.Rdata")
+load("firstRclass.Rdata")
 
 ```
 

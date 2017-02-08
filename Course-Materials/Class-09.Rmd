@@ -1,0 +1,641 @@
+---
+title: ""
+---
+
+<!--
+
+library(knitr)
+rmarkdown::render_site("Class-09.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-04.jpg")
+rm(list=objects())
+
+```
+<!--
+Homework 1:  Introduction to basic computing- R
+List of preliminary problems to instructor for review
+-->
+
+# Class 9. Linear Models in Decision Contexts
+
+* Supplemental background reading for next class(es): 
+    * Conroy and Peterson-Chapter(s) 3, 5 (77-116)
+* Assignment due: None
+* Group work: Continue discussing potential class projects
+* Link to class recording 
+* Today's R script [Class-09.R](scripts/Class-09.R)
+
+
+## Introduction to linear models
+
+## Class overview
+
+### Objectives
+
+1. Understand the difference between predicting and evaluating effects
+2. Understand prediction and quantifying uncertainty 
+3. Parameters of linear models
+
+
+
+<center>  
+```{r echo=FALSE, out.width="45%"}
+include_graphics("media/cn-no-estimate-knows.png")
+```  
+</center>
+
+
+## Prediction versus effect
+
+Decisions require some prediction of an outcome and there is uncertainty 
+surrounding the potential outcome. In order to make predictions we need 
+some sort of estimator. This can be as simple as a calculating the mean 
+of some data that can be used to estimate the expected outcome. However 
+we need to account for uncertainty in the expected outcome. This can be 
+done by incorporating a statistical model that links the data to the 
+expectation including uncertainty. 
+
+
+
+Let's get a better idea of what we mean here. Suppose we have 20 
+observations of weights for a critter. While we never know what the true 
+mean and variance is, unless we perform a full census, we can easily 
+simulate a known mean and standard deviation in R. Let's assume that 
+weights are normally distributed, for now. 
+
+
+ 
+```{r}
+weight_mn<- 145
+weight_sd<- 10
+n<- 150 # number of samples
+weights<- rnorm(n,weight_mn,weight_sd)
+weights # lets look at the weights
+```
+
+Now we can look at the distribution of weights.
+
+```{r}
+hist(weights)
+```
+ Cool, that looks normal, it should, we generated it from a normal 
+distribution. Using those 15 observations of weight we can estimate the 
+mean as $\mu = \frac{1}{n}\cdot\sum_{i=1}^n Weight_i$. 
+
+The standard deviation is the square root of the average of the squared 
+deviations from the mean and calculated as $\sigma =\sqrt{\frac{1}{n} 
+\cdot\sum_{i=1}^n (Weight_i-\mu)^2}$ 
+
+Fortunately R has some built in functions to calculate the mean ($\mu$) 
+and standard deviation ($\sigma$). 
+
+
+
+
+```{r}
+# the mean
+mean(weights) # should be close to 145
+# the standard deviation
+sd(weights) # should be close to 10
+```
+
+Well this is great we can take several observations and calculate an 
+expectation ($\mu$) and the uncertainty ($\sigma$). In most cases when 
+we are doing science, we are interested in calculating the mean and 
+seeing if it is different than another. But in decision making, we are 
+more interested in estimating the expected value and the uncertainty. 
+Arguably, we did just that by estimating the mean and the standard 
+deviation using the formulas above. But that will only work for so long 
+as problems get more complex. 
+
+  
+
+Let's reframe the mean estimate as a linear model. The linear model for 
+a mean is 
+
+
+
+$$\mu = \beta_0$$ 
+
+So in this case $\beta_0$ is the intercept of the linear model. To be 
+clear this base linear model gives us the expected outcome. The model 
+can be fit by ordinary least squares using the `lm()` function in R. 
+
+
+
+Let's give that a shot.
+
+```{r}
+fit<- lm(weights~1)
+
+# THE SUMMARY OF THE LINEAR MODEL
+# THE INTERCEPT IS VERY CLOSE TO THE MEAN WE CALCULATED PREVIOUS
+summary(fit)
+```
+
+Let's confirm that the estimated mean is pretty darn close to the 
+estimate of the the intercept. In order to accomplish this we need to 
+extract the estimate of the intercept from the model output. The `lm()` 
+function returns an object that is a list. Let's confirm the output is a 
+list. 
+
+
+
+```{r}
+typeof(fit)
+
+```
+Good, just as we thought it was a `list` object. Now the hassle is 
+getting the estimate of the intercept out of the list. Why is this a 
+hassle? Well lists are ragged, they can house vectors, data.frames, and 
+matrices. So they are very flexible in their ability to store data, they 
+can be a bit tricky to get data out of. In this case we need to get the 
+coefficients estimated by the model. We can use the `names()` function 
+to get a list of the named objects in `fit`. 
+
+
+
+
+```{r}
+names(fit)
+```
+There it is, I see an object named `coefficients`, let's see if we can 
+get it using the `$`. 
+
+
+
+```{r}
+# THE VECTOR OF COEFFICIENTS
+fit$coefficients
+```
+We can assign the coefficient as an object called `beta0`.
+
+```{r}
+beta0<- fit$coefficients
+```
+
+and we can see how different the mean and the intercept are.
+
+```{r}
+mean(weights)-beta0
+```
+
+Well that is a very small number, well within rounding error.  
+
+
+So I have made the case that the linear model does the same thing as the 
+mean equation. But in all the output I do not see any value for 
+uncertainty? Let's double check and make sure we didn't miss it. We can 
+look at the object itself or use `summary()` to have R spit out 
+formatted output. 
+
+
+
+```{r}
+fit
+summary(fit)
+```
+Let's check the list elements again using the `names()` function.
+
+```{r}
+names(fit)
+```
+I don't see anything, where the heck is the uncertainty?
+Well, it is hidden in the summary. To get at it, we need to create an 
+object object of the model fit summary.
+
+```{r}
+output<- summary(fit)
+names(output)
+
+```
+
+Ohhh, there it is, I see an object named `sigma`. Let's get a hold of 
+that estimate. It should be close to 10, the value we generated from. 
+
+
+
+```{r}
+# SHOULD BE RIGHT ABOUT 10
+output$sigma
+```
+It was pretty close to the estimate of the standard deviation of the 
+sample. 
+
+
+
+```{r}
+sd(weights)-output$sigma
+```
+
+Again a very small number, well within rounding error.
+
+Ok, nowwe have 2 things that we need, the expectation (i.e., $\mu$) that 
+was estimated by $\beta_0$ and the uncertainty (i.e., $\sigma$).
+
+There are 2 things I want to highlight here. 1) we have a model that 
+generates an expected outcome and 2) we have quantified uncertainty in 
+that outcome. Now, this can be formalized as the linear model below: 
+
+
+$$Y_i=\beta_0 + \epsilon_i \text{  (eq. 3)} $$
+
+
+where 
+* $Y_i$ are the observed values
+* $\beta_0$ is the mean value, and 
+* $\epsilon$ is a normally distributed value with mean 0 and standard deviation of $\sigma$. 
+
+This is likely the model you were taught in biometry or statistics.
+A different way to think about the linear model to to first think of it as a 
+predictive model as:
+
+
+$$\mu = \beta_0 \text{  (eq. 4)}$$ 
+
+
+and then link the prediction to data using a statistical model to 
+account for uncertainty as: 
+
+
+
+$$Y_i \sim Normal(\mu,\sigma). \text{ (eq. 5)}$$. 
+
+
+Notice that equation 4 and 5 are linked by the prediction $\mu$ and the 
+statistical model links the data to the expectation incorporating 
+uncertainty. 
+
+
+
+Don't quite believe me? Let's do a quick simulation to see if we 
+generate data from the 2 different approaches they are in fact that 
+same. 
+
+First let's generate some data using equation 3 where $\mu$ and $\sigma$ 
+are as defined above. We are going to do this for many observations as 
+it will approximate the exact solution. So, for this demonstration we 
+will generate 500,000 observations from each approach and compare them. 
+
+
+
+```{r}
+n<- 500000
+weights_sim1<- weight_mn + rnorm(n,0,weight_sd)
+mean(weights_sim1)
+sd(weights_sim1)
+```
+
+Now let's try the second approach.  
+
+```{r}
+weights_sim2<- rnorm(n,weight_mn,weight_sd)
+mean(weights_sim2)
+sd(weights_sim2)
+```
+
+Both approaches return estimates of the mean and standard deviation that 
+are very close to the *true* value of `r weight_mn` and `r weight_sd`. 
+And both distributions look the same, illustrated below using the 
+`hist()` function. 
+
+
+
+
+
+```{r}
+hist(weights_sim1)
+hist(weights_sim2)
+```
+
+Thinking about predictions from models and using data to estimate 
+parameters and uncertainty makes a bit more sense using the second 
+approach (i.e., eq. 4 and 5), especially in a decision context and when 
+we start to deal with distributions that are not normally distributed 
+(e.g., binomial, Poisson). 
+
+
+## Furthering linear models
+
+Linear models are the basis for many ecological analyses that can be 
+used to predict outcomes and used in decision models. We are still 
+working on values that are assumed to be normally distributed but we 
+will soon see how linear model are the basis for generalized linear 
+models. Up to now we have used the linear model to predict the most 
+likely outcome for a sample weights (i.e., the mean) and the uncertainty 
+around the outcome. Rarely are problems this easy, typically we have to 
+include some other factors that we believe help reduce uncertainty. See, 
+that was subtle right? The idea of explanation versus the idea of 
+reducing uncertainty. That gets at the different mindset between 
+explanation (science) and prediction (decision making). 
+
+Let's work with a more concrete example. Suppose there is an invasive 
+critter (e.g., hogs, carp) that destroys habitat. Folks have gone out 
+and quantified the amount of habitat area destroyed and related the 
+amount destroyed to the density of invasive critters. But we also know 
+that the size of the habitat area effects the area destroyed. 
+Specifically, the critter will destroy larger habitats if there is more 
+habitat but also with increasing critter density. In netica this 
+relationship of habitat area and density on area destroyed looks like 
+this. 
+
+
+<!--
+Netica figure influence of density and habitat area
+-->
+
+
+Some stakeholders were nice enough to share data they had been 
+collecting to quantify damage. 
+
+
+```{r, echo=FALSE}
+
+b0<-0
+b1<- 0.02 # effect of group size
+b2<- 0.1 # effect of area size
+b3<- 0.006 # interaction
+set.seed(8433)
+n<-56
+areas<- round(runif(n,35,200))
+groupSize<- round(runif(n,2,50),0)
+
+Y<- b0+b1*groupSize +b2 * areas + b3*groupSize*areas
+Y<- round(rnorm(length(Y),Y,5),1)
+out<-data.frame(habitat_area=areas,group_size=groupSize,area_damaged=Y)
+write.csv(out,"damage-data.csv",row.names = FALSE)
+```
+
+Let's read in the data they provided and take a gander at it.
+We can read in a comma separated file (*.csv) using the `read.csv()` function.
+
+```{r}
+# THIS WILL READ IN THE CSV FILE FROM YOUR WORKING
+# DIRECTORY 
+damage_dat<- read.csv("damage-data.csv") 
+damage_dat
+```
+Ok, we have `r nrow(damage_dat)` observations (rows) and 3 columns. The columns are 
+`habitat_area`, `group_size`, and `area_damaged`. We can use R to plot the 
+data and get a feel for what is going on. Let's look at the relationship 
+between the area damaged and the habitat area using the `plot()` 
+function. 
+
+
+
+
+```{r}
+plot(area_damaged~habitat_area, damage_dat)
+```
+
+Cool, we made a plot, print it and hang in on your fridge. Maybe a sweet 
+valentines day gift? The `plot()` function takes a formula, in this case 
+`area_damaged~habitat_area` and a `data.frame`, which we read in from a 
+*.csv file and saved as the object `damage_dat`. The formula notation is 
+convient is common throughout R where response values are to the left of 
+the `~` and independent variables are to the right.  But that plot looks 
+like garbage. What is going on with the axs labels? I hate y-axis numbers
+that are not perpendicular to the x-axis. Let's fix those.
+
+
+
+```{r}
+plot(area_damaged~habitat_area, damage_dat,
+    xlab="Habitat area (ha)",
+    ylab="Area damaged (ha)",
+    las=1) # make y-axis labels perpendicular to x-axis
+```
+
+Ok, that is better, there are many ways to customize *publication 
+quality* figures in R. Note, this may make me a dinosaur but I prefer 
+vanilla R graphics over the graphics produced by R packages like 
+`ggplot`. Likely personal preference here but I have yet to see those 
+type of figures published in mainstream ecology journals. The figure 
+above looks pretty good, the relationship looks linear (i.e., a straight 
+line with `habitat_area`. 
+
+Let's check out the other variable we had `group_size`.We can modify the 
+code above to get the plot of area damaged versus group size. 
+
+```{r}
+plot(area_damaged~group_size, damage_dat,
+    xlab="Group size (#)",
+    ylab="Area damaged (ha)",
+    las=1)
+```
+
+Just for grins let's see if we can see an interaction of group size and 
+habitat area. This would suggest that as group size and area increases 
+then the area damaged increases. One way to do this is to use our first 
+plot where we plotted area damaged versus habitat area. We can then 
+scale the points to be related to group size such that larger points 
+represent damage by larger group sizes. Make sense? 
+
+
+
+We first thing we need to do is make a scale for our points. We can do 
+this by scaling the group size using our proportional scoring equation. 
+
+
+
+```{r}
+damage_dat$group_size_scl<- (damage_dat$group_size-0)/(max(damage_dat$group_size)-0)
+```
+
+I used a 0 in the equation above to preclude any 0 values for the scaled 
+group sizes. We can now use these new values as the size of the points 
+in the plot using the `cex` argument in plot. 
+
+
+
+```{r}
+plot(area_damaged~habitat_area, damage_dat,
+    xlab="Habitat area (ha)",
+    ylab="Area damaged (ha)",
+    las=1,
+    cex=damage_dat$group_size_scl)# point sizes scaled to group size
+``` 
+
+Boy those points are difficult to view. Let's make them 2x as big.
+
+```{r}
+plot(area_damaged~habitat_area, damage_dat,
+    xlab="Habitat area (ha)",
+    ylab="Area damaged (ha)",
+    las=1,
+    cex=damage_dat$group_size_scl*2)# double the scale
+``` 
+
+That is better. Looks like some interaction is present. The larger 
+points are on the top of the cloud of points. If they were randomly 
+distributed throughout it would be suggestive of no interaction. 
+
+
+### Predicting area damaged from a linear model
+
+
+Recall from above where I made the case for thinking about models a bit 
+differently than in equation 3. Suppose we want to fit a linear model to 
+the data. the plot suggested there might be an interaction, so let's go 
+ahead and fit a model that includes the parameters: 
+
+
+
+1. Intercept ($\beta_0}
+2. Effect of habitat area ($\beta_1$)
+3. Effect of group size ($\beta_2$)
+4. Interaction of habitat area and group size ($\beta_3$)
+
+The 4 parameters are put together as a linear model to predict the area 
+damaaged as: 
+
+
+    
+$$\mu = \beta_0 + 
+    \beta_1 \cdot \text{Habitat area} +
+    \beta_2 \cdot \text{Group size} +
+    \beta_3 \cdot \text{Habitat area}\cdot\text{Group size. (Eq. 6)}$$
+
+Ok, we have a model that will predict the amount of area damaged given 
+habitat area, group size, and the interaction of the 2. Now we need to 
+link the predictions to the observed data by a statistical model to 
+quantify uncertainty. If we assume the observations are normally 
+distributed around the prediction (i.e., normally distributed residuals) 
+the statistical model is: 
+
+
+
+
+$$\text{Area damage}_i \sim Normal(\mu, \sigma) \text{  (Eq. 7)}$$
+
+
+One of the assumptions to the linear model is that the predictor 
+variables are not correlated. It is always go to check this and make 
+sure. We can do this visually with a plot. 
+
+
+
+```{r}
+plot(group_size~habitat_area, damage_dat,
+    xlab="Habitat area (ha)",
+    ylab="Group size (#)",
+    las=1)
+``` 
+That looks good. No clear pattern.  R also has a nice built in function `pairs()` that
+evaluates a data.frame. Let's try it out.
+
+```{r}
+pairs(damage_dat)
+```
+
+
+
+We can fit that model using the `lm()` function again. This gets a bit 
+more complicated because we have to specify the model unlike before 
+where we just specified the intercept. Simlar to `plot()` we will use 
+formula notation that has the syntax `Y ~ X1 + X2 + X1:X2`. The `X1:X2` 
+use specifies the interaction we were looking at. Let's give this thing 
+a shot and fit the model. 
+
+
+
+```{r}
+fit<- lm(area_damaged~habitat_area+group_size+habitat_area:group_size,
+    data=damage_dat)
+```
+
+It is always good to look at the model diagnostics to make sure you are 
+not violating assumptions before you peek at the results. Fortunately R 
+has a nice built in diagnostic plot for linear models to evaluate 
+assumptions. It spits out 4 plots: 1) residuals vs. fitted - should be 
+centered around 0, 2) a Q-Q normal plot - should fall along a 1:1 line 
+with some wiggle at the end, 3) a scale location plot - good for 
+identifying outliers, and 4) a plot of the residuals vs. leverage - 
+useful for identifying points that are overly influential on parameter 
+estimates (i.e., outliers at the extremes). 
+
+
+```{r}
+plot(fit)
+```
+
+I also like to look at a plot of observed vs. fitted to evaluate whether 
+the model is linear - should be around a 1:1 line if it is. I can 
+extract the fitted values using the `fitted()` function and add them to 
+our `data.frame` damage_dat. 
+
+
+```{r}
+damage_dat$fitted <- fitted(fit)
+plot(area_damaged~fitted,data=damage_dat)
+abline(0,1)# add a 1:1 line for comparison
+```
+
+Well that looks legit, but not too legit to quit just yet. I also liek 
+to look at a histogram of the residuals to see if they are normally 
+distributed. But to do that we need to extract our residuals like we did 
+before using the `fitted()` function but this time using the `resid()` 
+function. 
+
+
+
+```{r}
+damage_dat$resids <- resid(fit)
+hist(damage_dat$resids )
+```
+Looks good, centered around 0. 
+We evaluated the assumptions of the linear model which were:
+
+1. The response is linearly related to the model
+2. Error had mean 0 and was normally distributed 
+3. The residuals were homoscedastic (constant variance, no fanning)
+4. No autocorrelation
+
+
+
+Ok, now that all that is done, we can look at our results, get the model 
+coefficients, and estimate of uncertainty. 
+
+
+
+```{r}
+summary(fit)
+betas<- summary(fit)$coefficients
+betas
+sigma<- summary(fit)$sigma
+sigma
+```
+
+#### Putting it together
+
+Using the values from above we have our predictive model:
+
+
+$$\mu = `r round(betas[1,1],2)` + 
+    `r round(betas[2,1],3)` \cdot \text{Habitat area} +
+    `r round(betas[3,1],3)` \cdot \text{Group size} +
+    `r round(betas[4,1],4)` \cdot \text{Habitat area}\cdot\text{Group size. (Eq. 8).}$$
+    
+And we have our statistical model that links the predictions to the data 
+and quantifies uncertainty. 
+
+
+
+$$\text{Area damage}_i \sim Normal(\mu, `r round(sigma,1)`) \text{  (Eq. 9)}$$
+
+The whole thing can be put into Netica where you can propagate the 
+uncertainty in the decision making process! More on how to do this will
+follow in classes.
+

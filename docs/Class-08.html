@@ -228,6 +228,9 @@ $(document).ready(function () {
     <li>
       <a href="Class-08.html">Class 8: Intro to R</a>
     </li>
+    <li>
+      <a href="Class-09.html">Class 9: Linear Models</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -405,7 +408,7 @@ ls()</code></pre>
 <pre><code>## [1] &quot;fish.condition&quot; &quot;fish.length&quot;    &quot;fish.wt&quot;</code></pre>
 <p>stops R from printing out fish.condition after it is calculated. Go ahead and try it. As we will find later, this feature is very useful for debugging programs. We heartily recommend using this feature to take notes during the course too. Go ahead and save this script, we may use it later.</p>
 <p>As we discussed earlier, the objects we created are written to the working directory. If you save the contents of the working directory (think: “massive database that I worked on for hours”), they will always be available when you start R. But where is the working directory? By default, it’s more than likely placed somewhere you don’t want it to be (but see profile below). Therefore, it’s always good practice to set the working directory at the beginning of your R session. We do this using the “setwd(path)” command, where path is the windows path to the folder where you want to write and read things. For example, lets say that I wanted to save this session to my memory stick and the memory stick was assigned as the “G” drive. I want to save it in a folder “RRRR” inside of “Jims class stuff”:</p>
-<pre class="r"><code>setwd(&quot;F:/lab1/RRRR&quot;) ## NOTICE USE OF FORWARD SLASH
+<pre class="r"><code>#setwd(&quot;F:/lab1/RRRR&quot;) ## NOTICE USE OF FORWARD SLASH
 # This program calculates the goofy Peterson and Colvin condition factor
 fish.wt = 10
 fish.length = 150
@@ -416,7 +419,7 @@ fish.condition</code></pre>
 <pre class="r"><code>ls()</code></pre>
 <pre><code>## [1] &quot;fish.condition&quot; &quot;fish.length&quot;    &quot;fish.wt&quot;</code></pre>
 <p>Or you could use the double back slash. R will not recognize single backslash format.</p>
-<pre class="r"><code>setwd(&quot;F:\\lab1\\RRRR&quot;)## NOTICE USE OF DOUBLE BACKSLASH
+<pre class="r"><code>#setwd(&quot;F:\\lab1\\RRRR&quot;)## NOTICE USE OF DOUBLE BACKSLASH
 # This program calculates the goofy Peterson and Colvin condition factor
 fish.wt = 10
 fish.length = 150
@@ -427,7 +430,7 @@ fish.condition</code></pre>
 <pre class="r"><code>ls()</code></pre>
 <pre><code>## [1] &quot;fish.condition&quot; &quot;fish.length&quot;    &quot;fish.wt&quot;</code></pre>
 <p>To save the all of the contents of your working directory you ca use “save.image(file =”myfilename.Rdata“)” command. This command saves everything to “myfilename.Rdata” where myfilename would be your file name. Alternatively, you can save specific objects in the working directory to a file using “save(file =”myfilename.Rdata“,list = c(names of objects in quotes separated by commas))”. For example, let say that we wanted to save everything we created using the above script to a file called “firstRclass.Rdata”:</p>
-<pre class="r"><code>setwd(&quot;F:\\lab1\\RRRR&quot;)
+<pre class="r"><code>#setwd(&quot;F:\\lab1\\RRRR&quot;)
 # This program calculates the goofy Peterson and Colvin condition factor
 fish.wt = 10
 fish.length = 150
@@ -445,11 +448,11 @@ save(file = &quot;firstRclass.Rdata&quot;, list = c(&quot;fish.condition&quot;,&
 <p>Whew, we saved all of that work, turned off the computer, and headed to Bombs Away for happy hour. How do we access the objects that we saved? No problem, we use the “load” command, but first we have to set the working directory.</p>
 <pre class="r"><code>load(&quot;firstRclass.Rdata&quot;)</code></pre>
 <p>You also may encounter another method of specifying the current working directory in the file path using “./” before the filename. For example:</p>
-<pre class="r"><code>load(&quot;./firstRclass.Rdata&quot;)</code></pre>
+<pre class="r"><code>load(&quot;firstRclass.Rdata&quot;)</code></pre>
 <p>In the standard R GUI and Rstudio (more below), we won’t have to use “./” but it can come in handy later.</p>
 <p>Another way we could have loaded the file was to specify the path inside the load command.</p>
 <pre class="r"><code># Load objects from existing file, full path edition
-load(&quot;F:\\lab1\\RRRR\\firstRclass.Rdata&quot;)</code></pre>
+load(&quot;firstRclass.Rdata&quot;)</code></pre>
 </div>
 <div id="rstudio" class="section level2">
 <h2>RSTUDIO</h2>
