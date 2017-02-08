@@ -39,6 +39,12 @@ List of preliminary problems to instructor for review
 * Today's R script [Class-09.R](scripts/Class-09.R)
 
 
+<center>  
+```{r echo=FALSE, out.width="35%"}
+include_graphics("media/cn-no-estimate-knows.png")
+```  
+</center>
+
 ## Introduction to linear models
 
 ### Some preliminaries
@@ -59,11 +65,7 @@ sure it is where your folder is.
 
 
 
-<center>  
-```{r echo=FALSE, out.width="45%"}
-include_graphics("media/cn-no-estimate-knows.png")
-```  
-</center>
+
 
 
 ## Prediction versus effect
