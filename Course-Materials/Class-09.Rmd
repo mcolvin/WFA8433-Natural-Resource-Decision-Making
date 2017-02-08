@@ -31,10 +31,11 @@ List of preliminary problems to instructor for review
 # Class 9. Linear Models in Decision Contexts
 
 * Supplemental background reading for next class(es): 
-    * Conroy and Peterson-Chapter(s) 3, 5 (77-116)
-* Assignment due: None
+    * Breiman, L. 2001. Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author). Statistical Science 25: 199-231.[PDF](pdfs/breiman-2001.pdf)
+    * Shmueli, G. 2010. To Explain or to Predict?. Statistical Science 25: 289-310. [pdf](pdfs/shmueli-2010.pdf)
+* Assignment due: Submit a review of the objectives network randomly assigned to you. See details [here](hw-01.html)
 * Group work: Continue discussing potential class projects
-* Link to class recording 
+* Link to class recording  [Pending]()
 * Today's R script [Class-09.R](scripts/Class-09.R)
 
 
@@ -342,19 +343,20 @@ reducing uncertainty. That gets at the different mindset between
 explanation (science) and prediction (decision making). 
 
 Let's work with a more concrete example. Suppose there is an invasive 
-critter (e.g., hogs, carp) that destroys habitat. Folks have gone out 
+critter (e.g., hogs, carp) that damages habitat. Folks have gone out 
 and quantified the amount of habitat area destroyed and related the 
-amount destroyed to the density of invasive critters. But we also know 
+amount destroyed to the abundance of invasive critters. But we also know 
 that the size of the habitat area effects the area destroyed. 
 Specifically, the critter will destroy larger habitats if there is more 
-habitat but also with increasing critter density. In netica this 
-relationship of habitat area and density on area destroyed looks like 
+habitat but also with increasing critter abundance. In Netica this 
+relationship of habitat area and abundance on area destroyed looks like 
 this. 
 
 
-<!--
-Netica figure influence of density and habitat area
--->
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/cl09-netica.png")
+```
 
 
 Some stakeholders were nice enough to share data they had been 

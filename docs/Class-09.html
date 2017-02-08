@@ -283,11 +283,12 @@ List of preliminary problems to instructor for review
 <ul>
 <li>Supplemental background reading for next class(es):
 <ul>
-<li>Conroy and Peterson-Chapter(s) 3, 5 (77-116)</li>
+<li>Breiman, L. 2001. Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author). Statistical Science 25: 199-231.<a href="pdfs/breiman-2001.pdf">PDF</a></li>
+<li>Shmueli, G. 2010. To Explain or to Predict?. Statistical Science 25: 289-310. <a href="pdfs/shmueli-2010.pdf">pdf</a></li>
 </ul></li>
-<li>Assignment due: None</li>
+<li>Assignment due: Submit a review of the objectives network randomly assigned to you. See details <a href="hw-01.html">here</a></li>
 <li>Group work: Continue discussing potential class projects</li>
-<li>Link to class recording</li>
+<li>Link to class recording <a href="">Pending</a></li>
 <li>Today’s R script <a href="scripts/Class-09.R">Class-09.R</a></li>
 </ul>
 <div id="introduction-to-linear-models" class="section level2">
@@ -316,28 +317,28 @@ weight_sd&lt;- 10
 n&lt;- 150 # number of samples
 weights&lt;- rnorm(n,weight_mn,weight_sd)
 weights # lets look at the weights</code></pre>
-<pre><code>##   [1] 146.8534 140.8239 156.9790 137.9831 146.5624 159.4970 148.9718
-##   [8] 144.6731 132.8170 129.4111 144.5396 139.3867 141.0547 134.5978
-##  [15] 144.2618 124.5617 145.2259 146.3573 149.7917 164.4086 149.8080
-##  [22] 153.9405 148.5945 128.1777 131.0202 142.5441 128.1211 143.9570
-##  [29] 149.2118 139.7285 129.2927 145.4583 125.2565 152.9082 139.2794
-##  [36] 140.4336 158.7335 122.3629 131.2571 146.2125 148.0184 144.4371
-##  [43] 153.3248 141.5338 161.2394 131.7189 150.4894 144.5961 136.2260
-##  [50] 146.3887 121.6687 141.9772 139.0761 137.4558 137.0890 150.9400
-##  [57] 149.0710 149.5173 153.9419 131.4547 139.3586 132.8737 141.8171
-##  [64] 149.4819 151.1753 157.0645 139.6318 138.7533 139.0923 157.4696
-##  [71] 142.2221 116.8562 138.9960 140.7563 148.2737 151.1528 149.3848
-##  [78] 132.1028 135.9035 142.8178 145.0717 151.1759 158.9637 131.8393
-##  [85] 143.4099 147.5105 140.9223 149.1656 138.3462 139.8819 147.7014
-##  [92] 149.3229 151.0863 138.4032 147.0305 131.7070 145.1965 146.4015
-##  [99] 159.0815 137.2256 142.1400 143.8121 149.0388 152.9342 158.5867
-## [106] 149.2300 170.1684 140.4124 167.7040 142.7311 132.3707 140.7432
-## [113] 140.2773 141.4627 150.7655 141.8342 131.6895 135.9873 140.8156
-## [120] 137.7832 154.0448 128.6677 133.2663 154.0743 142.4447 135.8630
-## [127] 130.0791 129.0127 152.6961 153.1464 143.1231 150.6809 146.7592
-## [134] 146.8015 127.0836 141.1929 145.7246 133.1955 140.2890 146.7682
-## [141] 154.8844 154.1466 144.7281 144.1029 141.3937 152.3769 148.9090
-## [148] 147.3706 133.0492 142.0881</code></pre>
+<pre><code>##   [1] 134.4575 145.2525 135.0786 165.7425 141.4578 145.5667 144.6913
+##   [8] 155.1324 136.5907 147.9669 133.7211 157.3295 147.9951 144.4960
+##  [15] 134.8588 142.2927 156.5839 149.9368 136.4019 132.6281 158.0824
+##  [22] 137.4302 152.2101 132.1269 136.9339 145.5962 153.1152 135.0633
+##  [29] 143.9706 141.2333 141.5335 166.3964 144.9061 145.0781 151.0501
+##  [36] 166.2594 168.1535 135.1844 144.1516 144.7193 139.6374 137.9336
+##  [43] 121.2690 155.1392 136.8121 145.2717 148.3260 156.9948 142.2797
+##  [50] 146.2588 151.6386 163.8792 148.0401 149.1720 138.8780 147.3176
+##  [57] 166.2756 148.8849 132.1278 138.4271 154.6601 144.4882 150.7940
+##  [64] 162.5626 151.4696 144.3821 135.1788 150.7220 155.6671 148.2361
+##  [71] 152.0453 127.9112 156.1719 129.7237 148.3472 151.0675 134.9996
+##  [78] 148.3121 159.2942 141.0902 154.5370 141.5022 139.8529 143.2619
+##  [85] 148.3857 147.6954 145.7536 139.3649 139.8629 138.6679 140.5039
+##  [92] 117.0743 135.1100 149.5117 152.0617 148.7395 137.4737 147.3208
+##  [99] 152.0708 128.6389 145.3226 157.5246 155.2164 136.2236 150.8388
+## [106] 137.8837 167.2052 167.4323 162.6242 132.3761 156.8488 143.9991
+## [113] 133.0178 153.6604 149.6242 142.0476 133.3757 151.7977 151.5087
+## [120] 135.0539 133.3478 147.5435 157.9657 142.7928 141.8043 140.5551
+## [127] 156.1960 146.4531 160.9222 151.0581 150.3985 141.8964 138.0594
+## [134] 130.5325 137.5628 139.8313 146.2388 124.5421 153.6763 130.5762
+## [141] 144.3562 144.7294 127.9688 151.6899 148.3771 144.2910 142.7308
+## [148] 132.9812 141.0240 154.0500</code></pre>
 <p>Now we can look at the distribution of weights.</p>
 <pre class="r"><code>hist(weights)</code></pre>
 <p><img src="Class-09_files/figure-html/unnamed-chunk-4-1.png" width="672" /> Cool, that looks normal, it should, we generated it from a normal distribution. Using those 15 observations of weight we can estimate the mean as <span class="math inline">\(\mu = \frac{1}{n}\cdot\sum_{i=1}^n Weight_i\)</span>.</p>
@@ -345,10 +346,10 @@ weights # lets look at the weights</code></pre>
 <p>Fortunately R has some built in functions to calculate the mean (<span class="math inline">\(\mu\)</span>) and standard deviation (<span class="math inline">\(\sigma\)</span>).</p>
 <pre class="r"><code># the mean
 mean(weights) # should be close to 145</code></pre>
-<pre><code>## [1] 143.3886</code></pre>
+<pre><code>## [1] 145.3879</code></pre>
 <pre class="r"><code># the standard deviation
 sd(weights) # should be close to 10</code></pre>
-<pre><code>## [1] 9.286945</code></pre>
+<pre><code>## [1] 9.852909</code></pre>
 <p>Well this is great we can take several observations and calculate an expectation (<span class="math inline">\(\mu\)</span>) and the uncertainty (<span class="math inline">\(\sigma\)</span>). In most cases when we are doing science, we are interested in calculating the mean and seeing if it is different than another. But in decision making, we are more interested in estimating the expected value and the uncertainty. Arguably, we did just that by estimating the mean and the standard deviation using the formulas above. But that will only work for so long as problems get more complex.</p>
 <p>Let’s reframe the mean estimate as a linear model. The linear model for a mean is</p>
 <p><span class="math display">\[\mu = \beta_0\]</span></p>
@@ -365,15 +366,15 @@ summary(fit)</code></pre>
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -26.5324  -5.0282   0.2224   5.9110  26.7798 
+## -28.3136  -7.2366  -0.2226   6.2182  22.7656 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 143.3886     0.7583   189.1   &lt;2e-16 ***
+## (Intercept) 145.3879     0.8045   180.7   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 9.287 on 149 degrees of freedom</code></pre>
+## Residual standard error: 9.853 on 149 degrees of freedom</code></pre>
 <p>Let’s confirm that the estimated mean is pretty darn close to the estimate of the the intercept. In order to accomplish this we need to extract the estimate of the intercept from the model output. The <code>lm()</code> function returns an object that is a list. Let’s confirm the output is a list.</p>
 <pre class="r"><code>typeof(fit)</code></pre>
 <pre><code>## [1] &quot;list&quot;</code></pre>
@@ -386,13 +387,13 @@ summary(fit)</code></pre>
 <pre class="r"><code># THE VECTOR OF COEFFICIENTS
 fit$coefficients</code></pre>
 <pre><code>## (Intercept) 
-##    143.3886</code></pre>
+##    145.3879</code></pre>
 <p>We can assign the coefficient as an object called <code>beta0</code>.</p>
 <pre class="r"><code>beta0&lt;- fit$coefficients</code></pre>
 <p>and we can see how different the mean and the intercept are.</p>
 <pre class="r"><code>mean(weights)-beta0</code></pre>
-<pre><code>##   (Intercept) 
-## -2.842171e-14</code></pre>
+<pre><code>## (Intercept) 
+##           0</code></pre>
 <p>Well that is a very small number, well within rounding error.</p>
 <p>So I have made the case that the linear model does the same thing as the mean equation. But in all the output I do not see any value for uncertainty? Let’s double check and make sure we didn’t miss it. We can look at the object itself or use <code>summary()</code> to have R spit out formatted output.</p>
 <pre class="r"><code>fit</code></pre>
@@ -402,7 +403,7 @@ fit$coefficients</code></pre>
 ## 
 ## Coefficients:
 ## (Intercept)  
-##       143.4</code></pre>
+##       145.4</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>## 
 ## Call:
@@ -410,15 +411,15 @@ fit$coefficients</code></pre>
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -26.5324  -5.0282   0.2224   5.9110  26.7798 
+## -28.3136  -7.2366  -0.2226   6.2182  22.7656 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 143.3886     0.7583   189.1   &lt;2e-16 ***
+## (Intercept) 145.3879     0.8045   180.7   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 9.287 on 149 degrees of freedom</code></pre>
+## Residual standard error: 9.853 on 149 degrees of freedom</code></pre>
 <p>Let’s check the list elements again using the <code>names()</code> function.</p>
 <pre class="r"><code>names(fit)</code></pre>
 <pre><code>##  [1] &quot;coefficients&quot;  &quot;residuals&quot;     &quot;effects&quot;       &quot;rank&quot;         
@@ -433,10 +434,10 @@ names(output)</code></pre>
 <p>Ohhh, there it is, I see an object named <code>sigma</code>. Let’s get a hold of that estimate. It should be close to 10, the value we generated from.</p>
 <pre class="r"><code># SHOULD BE RIGHT ABOUT 10
 output$sigma</code></pre>
-<pre><code>## [1] 9.286945</code></pre>
+<pre><code>## [1] 9.852909</code></pre>
 <p>It was pretty close to the estimate of the standard deviation of the sample.</p>
 <pre class="r"><code>sd(weights)-output$sigma</code></pre>
-<pre><code>## [1] -1.776357e-15</code></pre>
+<pre><code>## [1] 1.776357e-15</code></pre>
 <p>Again a very small number, well within rounding error.</p>
 <p>Ok, nowwe have 2 things that we need, the expectation (i.e., <span class="math inline">\(\mu\)</span>) that was estimated by <span class="math inline">\(\beta_0\)</span> and the uncertainty (i.e., <span class="math inline">\(\sigma\)</span>).</p>
 <p>There are 2 things I want to highlight here. 1) we have a model that generates an expected outcome and 2) we have quantified uncertainty in that outcome. Now, this can be formalized as the linear model below:</p>
@@ -452,15 +453,15 @@ output$sigma</code></pre>
 <pre class="r"><code>n&lt;- 500000
 weights_sim1&lt;- weight_mn + rnorm(n,0,weight_sd)
 mean(weights_sim1)</code></pre>
-<pre><code>## [1] 145.0048</code></pre>
+<pre><code>## [1] 145.0104</code></pre>
 <pre class="r"><code>sd(weights_sim1)</code></pre>
-<pre><code>## [1] 10.01375</code></pre>
+<pre><code>## [1] 10.01669</code></pre>
 <p>Now let’s try the second approach.</p>
 <pre class="r"><code>weights_sim2&lt;- rnorm(n,weight_mn,weight_sd)
 mean(weights_sim2)</code></pre>
-<pre><code>## [1] 144.9935</code></pre>
+<pre><code>## [1] 145.0134</code></pre>
 <pre class="r"><code>sd(weights_sim2)</code></pre>
-<pre><code>## [1] 10.01165</code></pre>
+<pre><code>## [1] 9.993198</code></pre>
 <p>Both approaches return estimates of the mean and standard deviation that are very close to the <em>true</em> value of 145 and 10. And both distributions look the same, illustrated below using the <code>hist()</code> function.</p>
 <pre class="r"><code>hist(weights_sim1)</code></pre>
 <p><img src="Class-09_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
@@ -471,10 +472,8 @@ mean(weights_sim2)</code></pre>
 <div id="furthering-linear-models" class="section level2">
 <h2>Furthering linear models</h2>
 <p>Linear models are the basis for many ecological analyses that can be used to predict outcomes and used in decision models. We are still working on values that are assumed to be normally distributed but we will soon see how linear model are the basis for generalized linear models. Up to now we have used the linear model to predict the most likely outcome for a sample weights (i.e., the mean) and the uncertainty around the outcome. Rarely are problems this easy, typically we have to include some other factors that we believe help reduce uncertainty. See, that was subtle right? The idea of explanation versus the idea of reducing uncertainty. That gets at the different mindset between explanation (science) and prediction (decision making).</p>
-<p>Let’s work with a more concrete example. Suppose there is an invasive critter (e.g., hogs, carp) that destroys habitat. Folks have gone out and quantified the amount of habitat area destroyed and related the amount destroyed to the density of invasive critters. But we also know that the size of the habitat area effects the area destroyed. Specifically, the critter will destroy larger habitats if there is more habitat but also with increasing critter density. In netica this relationship of habitat area and density on area destroyed looks like this.</p>
-<!--
-Netica figure influence of density and habitat area
--->
+<p>Let’s work with a more concrete example. Suppose there is an invasive critter (e.g., hogs, carp) that damages habitat. Folks have gone out and quantified the amount of habitat area destroyed and related the amount destroyed to the abundance of invasive critters. But we also know that the size of the habitat area effects the area destroyed. Specifically, the critter will destroy larger habitats if there is more habitat but also with increasing critter abundance. In Netica this relationship of habitat area and abundance on area destroyed looks like this.</p>
+<p><img src="media/cl09-netica.png" width="95%" /></p>
 <p>Some stakeholders were nice enough to share data they had been collecting to quantify damage.</p>
 <p>Let’s read in the data they provided and take a gander at it. We can read in a comma separated file (*.csv) using the <code>read.csv()</code> function.</p>
 <pre class="r"><code># THIS WILL READ IN THE CSV FILE FROM YOUR WORKING
@@ -540,20 +539,20 @@ damage_dat</code></pre>
 ## 56          126          6         11.4</code></pre>
 <p>Ok, we have 56 observations (rows) and 3 columns. The columns are <code>habitat_area</code>, <code>group_size</code>, and <code>area_damaged</code>. We can use R to plot the data and get a feel for what is going on. Let’s look at the relationship between the area damaged and the habitat area using the <code>plot()</code> function.</p>
 <pre class="r"><code>plot(area_damaged~habitat_area, damage_dat)</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-22-1.png" width="672" /></p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
 <p>Cool, we made a plot, print it and hang in on your fridge. Maybe a sweet valentines day gift? The <code>plot()</code> function takes a formula, in this case <code>area_damaged~habitat_area</code> and a <code>data.frame</code>, which we read in from a *.csv file and saved as the object <code>damage_dat</code>. The formula notation is convient is common throughout R where response values are to the left of the <code>~</code> and independent variables are to the right. But that plot looks like garbage. What is going on with the axs labels? I hate y-axis numbers that are not perpendicular to the x-axis. Let’s fix those.</p>
 <pre class="r"><code>plot(area_damaged~habitat_area, damage_dat,
     xlab=&quot;Habitat area (ha)&quot;,
     ylab=&quot;Area damaged (ha)&quot;,
     las=1) # make y-axis labels perpendicular to x-axis</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
 <p>Ok, that is better, there are many ways to customize <em>publication quality</em> figures in R. Note, this may make me a dinosaur but I prefer vanilla R graphics over the graphics produced by R packages like <code>ggplot</code>. Likely personal preference here but I have yet to see those type of figures published in mainstream ecology journals. The figure above looks pretty good, the relationship looks linear (i.e., a straight line with <code>habitat_area</code>.</p>
 <p>Let’s check out the other variable we had <code>group_size</code>.We can modify the code above to get the plot of area damaged versus group size.</p>
 <pre class="r"><code>plot(area_damaged~group_size, damage_dat,
     xlab=&quot;Group size (#)&quot;,
     ylab=&quot;Area damaged (ha)&quot;,
     las=1)</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>Just for grins let’s see if we can see an interaction of group size and habitat area. This would suggest that as group size and area increases then the area damaged increases. One way to do this is to use our first plot where we plotted area damaged versus habitat area. We can then scale the points to be related to group size such that larger points represent damage by larger group sizes. Make sense?</p>
 <p>We first thing we need to do is make a scale for our points. We can do this by scaling the group size using our proportional scoring equation.</p>
 <pre class="r"><code>damage_dat$group_size_scl&lt;- (damage_dat$group_size-0)/(max(damage_dat$group_size)-0)</code></pre>
@@ -563,14 +562,14 @@ damage_dat</code></pre>
     ylab=&quot;Area damaged (ha)&quot;,
     las=1,
     cex=damage_dat$group_size_scl)# point sizes scaled to group size</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
 <p>Boy those points are difficult to view. Let’s make them 2x as big.</p>
 <pre class="r"><code>plot(area_damaged~habitat_area, damage_dat,
     xlab=&quot;Habitat area (ha)&quot;,
     ylab=&quot;Area damaged (ha)&quot;,
     las=1,
     cex=damage_dat$group_size_scl*2)# double the scale</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
 <p>That is better. Looks like some interaction is present. The larger points are on the top of the cloud of points. If they were randomly distributed throughout it would be suggestive of no interaction.</p>
 <div id="predicting-area-damaged-from-a-linear-model" class="section level3">
 <h3>Predicting area damaged from a linear model</h3>
@@ -593,24 +592,24 @@ damage_dat</code></pre>
     xlab=&quot;Habitat area (ha)&quot;,
     ylab=&quot;Group size (#)&quot;,
     las=1)</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-28-1.png" width="672" /> That looks good. No clear pattern. R also has a nice built in function <code>pairs()</code> that evaluates a data.frame. Let’s try it out.</p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-29-1.png" width="672" /> That looks good. No clear pattern. R also has a nice built in function <code>pairs()</code> that evaluates a data.frame. Let’s try it out.</p>
 <pre class="r"><code>pairs(damage_dat)</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>We can fit that model using the <code>lm()</code> function again. This gets a bit more complicated because we have to specify the model unlike before where we just specified the intercept. Simlar to <code>plot()</code> we will use formula notation that has the syntax <code>Y ~ X1 + X2 + X1:X2</code>. The <code>X1:X2</code> use specifies the interaction we were looking at. Let’s give this thing a shot and fit the model.</p>
 <pre class="r"><code>fit&lt;- lm(area_damaged~habitat_area+group_size+habitat_area:group_size,
     data=damage_dat)</code></pre>
 <p>It is always good to look at the model diagnostics to make sure you are not violating assumptions before you peek at the results. Fortunately R has a nice built in diagnostic plot for linear models to evaluate assumptions. It spits out 4 plots: 1) residuals vs. fitted - should be centered around 0, 2) a Q-Q normal plot - should fall along a 1:1 line with some wiggle at the end, 3) a scale location plot - good for identifying outliers, and 4) a plot of the residuals vs. leverage - useful for identifying points that are overly influential on parameter estimates (i.e., outliers at the extremes).</p>
 <pre class="r"><code>plot(fit)</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-31-1.png" width="672" /><img src="Class-09_files/figure-html/unnamed-chunk-31-2.png" width="672" /><img src="Class-09_files/figure-html/unnamed-chunk-31-3.png" width="672" /><img src="Class-09_files/figure-html/unnamed-chunk-31-4.png" width="672" /></p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-32-1.png" width="672" /><img src="Class-09_files/figure-html/unnamed-chunk-32-2.png" width="672" /><img src="Class-09_files/figure-html/unnamed-chunk-32-3.png" width="672" /><img src="Class-09_files/figure-html/unnamed-chunk-32-4.png" width="672" /></p>
 <p>I also like to look at a plot of observed vs. fitted to evaluate whether the model is linear - should be around a 1:1 line if it is. I can extract the fitted values using the <code>fitted()</code> function and add them to our <code>data.frame</code> damage_dat.</p>
 <pre class="r"><code>damage_dat$fitted &lt;- fitted(fit)
 plot(area_damaged~fitted,data=damage_dat)
 abline(0,1)# add a 1:1 line for comparison</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-33-1.png" width="672" /></p>
 <p>Well that looks legit, but not too legit to quit just yet. I also liek to look at a histogram of the residuals to see if they are normally distributed. But to do that we need to extract our residuals like we did before using the <code>fitted()</code> function but this time using the <code>resid()</code> function.</p>
 <pre class="r"><code>damage_dat$resids &lt;- resid(fit)
 hist(damage_dat$resids )</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-33-1.png" width="672" /> Looks good, centered around 0. We evaluated the assumptions of the linear model which were:</p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-34-1.png" width="672" /> Looks good, centered around 0. We evaluated the assumptions of the linear model which were:</p>
 <ol style="list-style-type: decimal">
 <li>The response is linearly related to the model</li>
 <li>Error had mean 0 and was normally distributed</li>

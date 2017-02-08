@@ -1,0 +1,71 @@
+---
+title: ""
+---
+
+<!--
+library(knitr)
+rmarkdown::render_site("hw-01.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-04.jpg")
+```
+
+# Homework 1: Personal means objectives
+
+## Part 2
+
+* Assignment due: Homework-01: Blind review of a personal means network
+* Careeer objectives has been anonymized and a assigned to a reviewer in the table below.
+* Review your assigned network and provide a 1 paragraph review. 
+    * Work through your assigned network and see if you can follow the logic.  
+    * Ask the questions 'how do I achieve this' and 'why is this important' as you move through the network.
+    * Was there anything missed? Is there a way to meet the fundamental objectives that was not specified?
+* Submit your review by 12 pm February 15th as a pdf. 
+* Name the pdf file as "lastname-firstinitial-homework-01.pdf". For example I would name mine colvin-m-homework-01.pdf.
+* SUBMIT your review TO: https://dropitto.me/WFA8433 (the upload password is 'critter')
+
+
+
+
+| Name         	| PDF assigned 	|           Link           	|
+|--------------	|:------------:	|:------------------------:	|
+| Baruzzi,C    	|       1      	|  [PDF](pdfs/HW01/1.pdf) 	|
+| Christie,T   	|       2      	|  [PDF](pdfs/HW01/2.pdf) 	|
+| Clements,S   	|       3      	|  [PDF](pdfs/HW01/3.pdf) 	|
+| Coppola,G    	|       4      	|  [PDF](pdfs/HW01/4.pdf) 	|
+| Firth,D      	|       5      	|  [PDF](pdfs/HW01/5.pdf) 	|
+| Gantchoff,M  	|       6      	|  [PDF](pdfs/HW01/6.pdf) 	|
+| Gilliland,C  	|       7      	|  [PDF](pdfs/HW01/7.pdf) 	|
+| Guy,E        	|       9      	|  [PDF](pdfs/HW01/9.pdf) 	|
+| Haley,B      	|       8      	|  [PDF](pdfs/HW01/8.pdf) 	|
+| Hatcher,H    	|      10      	| [PDF](pdfs/HW01/10.pdf) 	|
+| Ivey,M       	|      11      	| [PDF](pdfs/HW01/11.pdf) 	|
+| Mccollum,J   	|      12      	| [PDF](pdfs/HW01/12.pdf) 	|
+| Moran,L      	|      13      	| [PDF](pdfs/HW01/13.pdf) 	|
+| Morris,M     	|      14      	| [PDF](pdfs/HW01/14.pdf) 	|
+| Rhodes,C     	|      15      	| [PDF](pdfs/HW01/15.pdf) 	|
+| Rhodes,M     	|      16      	| [PDF](pdfs/HW01/16.pdf) 	|
+| Richardson,B 	|      17      	| [PDF](pdfs/HW01/17.pdf) 	|
+| Shamaskin,A  	|      18      	| [PDF](pdfs/HW01/18.pdf) 	|
+| Smith,A      	|      19      	| [PDF](pdfs/HW01/19.pdf) 	|
+| Strange,T    	|      21      	| [PDF](pdfs/HW01/21.pdf) 	|
+| Westlake,S   	|      20      	| [PDF](pdfs/HW01/20.pdf) 	|
+
+
+## Part 1
+
+* Assignment due: Homework-01: Personal means network
+    * Submit as a PDF you can use whatever you would like to create the figure (e.g., word, powerpoint). Create a means objectives network (maximum 25 objectives please) of your personal career aspirations. Identify your fundamental objectives and be sure to include two or more means objectives for each fundamental objective. DO NOT FORGET to use the key phrases.
+    * Due by Friday by 5 pm 
+    * SUBMIT PDF TO: https://dropitto.me/WFA8433 The upload password is 'critter' <u>Be sure to name the file as follows "lastname-homework-01.pdf"</u>

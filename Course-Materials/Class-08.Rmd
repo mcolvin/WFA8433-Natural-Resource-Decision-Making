@@ -39,7 +39,7 @@ List of preliminary problems to instructor for review
     * SUBMIT PDF TO: https://dropitto.me/WFA8433 The upload password is 'critter' <u>Be sure to name the file as follows "lastname-homework-01.pdf"</u>
 * Group work: Continue discussing potential class projects
 * Link to class deck [PDF](pdfs/class-08.pdf)
-* Link to class recording 
+* Link to class recording [YouTube](https://youtu.be/ZeqmZm7o08U)
 * Today's R script [Class-08.R](scripts/Class-08.R)
 
 
