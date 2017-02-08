@@ -293,9 +293,17 @@ List of preliminary problems to instructor for review
 </ul>
 <div id="introduction-to-linear-models" class="section level2">
 <h2>Introduction to linear models</h2>
+<div id="some-preliminaries" class="section level3">
+<h3>Some preliminaries</h3>
+<ul>
+<li>If you want to play along in class download this zipfile <a href="http://mec685.cfr.msstate.edu/class-09.zip">*.zip</a>.</li>
+<li>Be sure to unzip it before trying to use files and such</li>
+<li>The file contains the dataset used in class and an R script of all the code.</li>
+<li>Once you have it where you want open the R script and be sure to check the working directory <code>getwd()</code> and make sure it is where your folder is.<br />
+</li>
+<li>If your working directory is not correct, you can set it in Rstudio: “Session –&gt; Set Working Directory –&gt; To source file location”. Or you can use the <code>setwd()</code> in the console.</li>
+</ul>
 </div>
-<div id="class-overview" class="section level2">
-<h2>Class overview</h2>
 <div id="objectives" class="section level3">
 <h3>Objectives</h3>
 <ol style="list-style-type: decimal">
@@ -341,7 +349,8 @@ weights # lets look at the weights</code></pre>
 ## [148] 132.9812 141.0240 154.0500</code></pre>
 <p>Now we can look at the distribution of weights.</p>
 <pre class="r"><code>hist(weights)</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-4-1.png" width="672" /> Cool, that looks normal, it should, we generated it from a normal distribution. Using those 15 observations of weight we can estimate the mean as <span class="math inline">\(\mu = \frac{1}{n}\cdot\sum_{i=1}^n Weight_i\)</span>.</p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Cool, that looks normal, it should, we generated it from a normal distribution. Using those 15 observations of weight we can estimate the mean as <span class="math inline">\(\mu = \frac{1}{n}\cdot\sum_{i=1}^n Weight_i\)</span>.</p>
 <p>The standard deviation is the square root of the average of the squared deviations from the mean and calculated as <span class="math inline">\(\sigma =\sqrt{\frac{1}{n} \cdot\sum_{i=1}^n (Weight_i-\mu)^2}\)</span></p>
 <p>Fortunately R has some built in functions to calculate the mean (<span class="math inline">\(\mu\)</span>) and standard deviation (<span class="math inline">\(\sigma\)</span>).</p>
 <pre class="r"><code># the mean
@@ -439,7 +448,7 @@ output$sigma</code></pre>
 <pre class="r"><code>sd(weights)-output$sigma</code></pre>
 <pre><code>## [1] 1.776357e-15</code></pre>
 <p>Again a very small number, well within rounding error.</p>
-<p>Ok, nowwe have 2 things that we need, the expectation (i.e., <span class="math inline">\(\mu\)</span>) that was estimated by <span class="math inline">\(\beta_0\)</span> and the uncertainty (i.e., <span class="math inline">\(\sigma\)</span>).</p>
+<p>Ok, now we have 2 things that we need, the expectation (i.e., <span class="math inline">\(\mu\)</span>) that was estimated by <span class="math inline">\(\beta_0\)</span> and the uncertainty (i.e., <span class="math inline">\(\sigma\)</span>).</p>
 <p>There are 2 things I want to highlight here. 1) we have a model that generates an expected outcome and 2) we have quantified uncertainty in that outcome. Now, this can be formalized as the linear model below:</p>
 <p><span class="math display">\[Y_i=\beta_0 + \epsilon_i \text{  (eq. 3)} \]</span></p>
 <p>where * <span class="math inline">\(Y_i\)</span> are the observed values * <span class="math inline">\(\beta_0\)</span> is the mean value, and * <span class="math inline">\(\epsilon\)</span> is a normally distributed value with mean 0 and standard deviation of <span class="math inline">\(\sigma\)</span>.</p>
@@ -592,7 +601,8 @@ damage_dat</code></pre>
     xlab=&quot;Habitat area (ha)&quot;,
     ylab=&quot;Group size (#)&quot;,
     las=1)</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-29-1.png" width="672" /> That looks good. No clear pattern. R also has a nice built in function <code>pairs()</code> that evaluates a data.frame. Let’s try it out.</p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>That looks good. No clear pattern. R also has a nice built in function <code>pairs()</code> that evaluates a data.frame. Let’s try it out.</p>
 <pre class="r"><code>pairs(damage_dat)</code></pre>
 <p><img src="Class-09_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
 <p>We can fit that model using the <code>lm()</code> function again. This gets a bit more complicated because we have to specify the model unlike before where we just specified the intercept. Simlar to <code>plot()</code> we will use formula notation that has the syntax <code>Y ~ X1 + X2 + X1:X2</code>. The <code>X1:X2</code> use specifies the interaction we were looking at. Let’s give this thing a shot and fit the model.</p>
@@ -609,7 +619,8 @@ abline(0,1)# add a 1:1 line for comparison</code></pre>
 <p>Well that looks legit, but not too legit to quit just yet. I also liek to look at a histogram of the residuals to see if they are normally distributed. But to do that we need to extract our residuals like we did before using the <code>fitted()</code> function but this time using the <code>resid()</code> function.</p>
 <pre class="r"><code>damage_dat$resids &lt;- resid(fit)
 hist(damage_dat$resids )</code></pre>
-<p><img src="Class-09_files/figure-html/unnamed-chunk-34-1.png" width="672" /> Looks good, centered around 0. We evaluated the assumptions of the linear model which were:</p>
+<p><img src="Class-09_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<p>Looks good, centered around 0. We evaluated the assumptions of the linear model which were:</p>
 <ol style="list-style-type: decimal">
 <li>The response is linearly related to the model</li>
 <li>Error had mean 0 and was normally distributed</li>
@@ -657,8 +668,9 @@ sigma</code></pre>
     0.023 \cdot \text{Group size} +
     0.0057 \cdot \text{Habitat area}\cdot\text{Group size. (Eq. 8).}\]</span></p>
 <p>And we have our statistical model that links the predictions to the data and quantifies uncertainty.</p>
-<p><span class="math display">\[\text{Area damage}_i \sim Normal(\mu, 5) \text{  (Eq. 9)}\]</span></p>
-<p>The whole thing can be put into Netica where you can propagate the uncertainty in the decision making process! More on how to do this will follow in classes.</p>
+<p><span class="math display">\[\text{Area damage}_i \sim Normal(\mu, 5.027) \text{  (Eq. 9)}\]</span></p>
+<p>The whole thing can be put into Netica where you can propagate the uncertainty in the decision making process!</p>
+<p><img src="media/cl09-netica2.png" width="95%" /></p>
 </div>
 </div>
 </div>

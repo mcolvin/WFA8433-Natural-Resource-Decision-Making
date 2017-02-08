@@ -41,7 +41,15 @@ List of preliminary problems to instructor for review
 
 ## Introduction to linear models
 
-## Class overview
+### Some preliminaries
+
+* If you want to play along in class download this zipfile [*.zip](http://mec685.cfr.msstate.edu/class-09.zip).
+* Be sure to unzip it before trying to use files and such
+* The file contains the dataset used in class and an R script of all the code.
+* Once you have it where you want open the R script and be sure to check the working directory `getwd()` and make
+sure it is where your folder is.  
+* If your working directory is not correct, you can set it in Rstudio: "Session --> Set Working Directory --> To source file location". Or you can use the `setwd()` in the console.
+
 
 ### Objectives
 
@@ -91,6 +99,7 @@ Now we can look at the distribution of weights.
 ```{r}
 hist(weights)
 ```
+
  Cool, that looks normal, it should, we generated it from a normal 
 distribution. Using those 15 observations of weight we can estimate the 
 mean as $\mu = \frac{1}{n}\cdot\sum_{i=1}^n Weight_i$. 
@@ -158,6 +167,7 @@ list.
 typeof(fit)
 
 ```
+
 Good, just as we thought it was a `list` object. Now the hassle is 
 getting the estimate of the intercept out of the list. Why is this a 
 hassle? Well lists are ragged, they can house vectors, data.frames, and 
@@ -172,6 +182,7 @@ to get a list of the named objects in `fit`.
 ```{r}
 names(fit)
 ```
+
 There it is, I see an object named `coefficients`, let's see if we can 
 get it using the `$`. 
 
@@ -181,6 +192,7 @@ get it using the `$`.
 # THE VECTOR OF COEFFICIENTS
 fit$coefficients
 ```
+
 We can assign the coefficient as an object called `beta0`.
 
 ```{r}
@@ -208,11 +220,13 @@ formatted output.
 fit
 summary(fit)
 ```
+
 Let's check the list elements again using the `names()` function.
 
 ```{r}
 names(fit)
 ```
+
 I don't see anything, where the heck is the uncertainty?
 Well, it is hidden in the summary. To get at it, we need to create an 
 object object of the model fit summary.
@@ -243,7 +257,7 @@ sd(weights)-output$sigma
 
 Again a very small number, well within rounding error.
 
-Ok, nowwe have 2 things that we need, the expectation (i.e., $\mu$) that 
+Ok, now we have 2 things that we need, the expectation (i.e., $\mu$) that 
 was estimated by $\beta_0$ and the uncertainty (i.e., $\sigma$).
 
 There are 2 things I want to highlight here. 1) we have a model that 
@@ -535,6 +549,7 @@ plot(group_size~habitat_area, damage_dat,
     ylab="Group size (#)",
     las=1)
 ``` 
+
 That looks good. No clear pattern.  R also has a nice built in function `pairs()` that
 evaluates a data.frame. Let's try it out.
 
@@ -597,6 +612,7 @@ function.
 damage_dat$resids <- resid(fit)
 hist(damage_dat$resids )
 ```
+
 Looks good, centered around 0. 
 We evaluated the assumptions of the linear model which were:
 
@@ -635,9 +651,15 @@ and quantifies uncertainty.
 
 
 
-$$\text{Area damage}_i \sim Normal(\mu, `r round(sigma,1)`) \text{  (Eq. 9)}$$
+$$\text{Area damage}_i \sim Normal(\mu, `r round(sigma,3)`) \text{  (Eq. 9)}$$
 
 The whole thing can be put into Netica where you can propagate the 
-uncertainty in the decision making process! More on how to do this will
-follow in classes.
+uncertainty in the decision making process! 
+
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/cl09-netica2.png")
+```
+
 
