@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/textmate.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.0/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Course home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Course information
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Course home</a>
+    </li>
+    <li>
+      <a href="syllabus.html">Course Syllabus</a>
+    </li>
+    <li>
+      <a href="course-overview.html">Course Overview</a>
+    </li>
+    <li>
+      <a href="final-project.html">About final project</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Classes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Class-01.html">Class 1: Introduction to decision making</a>
+    </li>
+    <li>
+      <a href="Class-02.html">Class 2: The PrOACT Process</a>
+    </li>
+    <li>
+      <a href="Class-03.html">Class 3: Uncertainty and decision making</a>
+    </li>
+    <li>
+      <a href="Class-04.html">Class 4: Decision trees and nets</a>
+    </li>
+    <li>
+      <a href="Class-05.html">Class 5: Intro to SDM and ARM</a>
+    </li>
+    <li>
+      <a href="Class-06.html">Class 6: Structuring and quantifying objectives</a>
+    </li>
+    <li>
+      <a href="Class-07.html">Class 7: Structuring objectives</a>
+    </li>
+    <li>
+      <a href="Class-08.html">Class 8: Intro to R</a>
+    </li>
+    <li>
+      <a href="Class-09.html">Class 9: Linear Models</a>
+    </li>
+    <li>
+      <a href="Class-10.html">Class 10: LMs and GLMs</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Additional Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="R-tutorials.html">R tutorials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<!--
+
+library(knitr)
+rmarkdown::render_site("Class-10.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+<p><img src="media/banner-09.jpg" width="95%" /> <!--
+Homework 1:  Introduction to basic computing- R
+List of preliminary problems to instructor for review
+--></p>
+<div id="class-10.-lms-and-glms-in-decision-contexts" class="section level1">
+<h1>Class 10. LMs and GLMs in Decision Contexts</h1>
+<ul>
+<li>Supplemental background reading for next class(es):</li>
+<li>Assignment due: Objectives network part II (Wednesday by 12 pm). See details <a href="hw-01.html">here</a></li>
+<li>Group work: Continue discussing potential class projects</li>
+<li>Link to class recording <a href="">Pending</a></li>
+<li>Today’s R script <a href="scripts/Class-10.R">Class-10.R</a></li>
+</ul>
+<div id="objectives" class="section level2">
+<h2>Objectives</h2>
+<p>By the end of this tutorial you should be able to:</p>
+<ol style="list-style-type: decimal">
+<li>Understand linear models</li>
+<li>Understand log transformation</li>
+<li>Understand interactions in linear models</li>
+<li>The effect of varying distributions</li>
+</ol>
+<!--
+3. Using model selection for inference
+-->
+<center>
+<img src="media/best-bears.jpg" width="35%" />
+</center>
+</div>
+<div id="some-preliminaries" class="section level2">
+<h2>Some preliminaries</h2>
+<ul>
+<li>If you want to play along in class download this zipfile <a href="http://mec685.cfr.msstate.edu/class-10.zip">*.zip</a>.</li>
+<li>Be sure to unzip it before trying to use files and such</li>
+<li>The file contains the dataset used in class and an R script of all the code.</li>
+<li>Once you have it where you want open the R script and be sure to check the working directory <code>getwd()</code> and make sure it is where your folder is.<br />
+</li>
+<li>If your working directory is not correct, you can set it in Rstudio: “Session –&gt; Set Working Directory –&gt; To source file location”. Or you can use the <code>setwd()</code> in the console.</li>
+</ul>
+</div>
+<div id="background-and-the-data" class="section level2">
+<h2>Background and the data</h2>
+<p>Despite current debates about which bear is best <a href="https://youtu.be/N8d86Kjl1dg">1</a>, we will be modeling black bear home ranges using a linear model. Linear and generalized linear models are essentially the same thing. There is a response variable, home range in this case. Variability in home range is then explained using a linear combination of covariates. Recall, traditionally is can be expressed as:</p>
+<p><span class="math display">\[Y_i = \beta_{0} + \beta_{1}\cdot X_{i} + \epsilon_i\]</span></p>
+<p>where</p>
+<ul>
+<li>Y is home range in square kilometers,</li>
+<li><span class="math inline">\(\beta_{0}\)</span> is the model intercept,</li>
+<li><span class="math inline">\(\beta_{1}\)</span> is the effect of covariate <span class="math inline">\(X\)</span> on home range size,</li>
+<li><span class="math inline">\(i\)</span> indexes individual bear, and</li>
+<li><span class="math inline">\(\epsilon\)</span> is the error.</li>
+</ul>
+<p>The parameter <span class="math inline">\(\epsilon\)</span> is a normally distributed value with mean 0 and some level of variability represented as a standard deviation. Covariates in a linear model can be categorical (e.g., sex, stage) or continuous (e.g., weight). The model can also include an interaction of covariates.</p>
+<p>Preliminaries done, let’s look at the data. But first we need to read it in.</p>
+<pre class="r"><code>dat&lt;-read.csv(&quot;homerange-data.csv&quot;)</code></pre>
+<p>Let’s make sure things look good.</p>
+<pre class="r"><code>head(dat)</code></pre>
+<pre><code>##   X    sex    weight   homerange
+## 1 1 female  78.23331 0.002182498
+## 2 2 female 124.00695 0.874163579
+## 3 3 female 122.83473 0.218165462
+## 4 4 female 124.10415 0.279088639
+## 5 5 female 145.48238 3.906925690
+## 6 6 female 125.62795 0.307864648</code></pre>
+<p>and check the types of data that are read in</p>
+<pre class="r"><code>str(dat)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    78 obs. of  4 variables:
+##  $ X        : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ sex      : Factor w/ 2 levels &quot;female&quot;,&quot;male&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ weight   : num  78.2 124 122.8 124.1 145.5 ...
+##  $ homerange: num  0.00218 0.87416 0.21817 0.27909 3.90693 ...</code></pre>
+<p>Everything looks good. The sex variable is a factor, as it should be. The weight and the home range variable is a numeric.</p>
+<pre class="r"><code>boxplot(homerange~sex,data=dat)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<pre class="r"><code>hist(dat$homerange)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-6-2.png" width="672" /></p>
+<p>Ugggh. That does not look normal to me, but let’s go with it and fit a linear model and see what happens.</p>
+</div>
+<div id="a-basic-linear-model-of-a-normally-distributed-variable" class="section level2">
+<h2>A basic linear model of a normally distributed variable</h2>
+<p>Let’s fit a linear model to some the data. Suppose we are interested in predicting whether female bears have larger or smaller home ranges than male bears and the associated uncertainty. The model for this can be recast as:</p>
+<p><span class="math display">\[\mu = \beta_0 + \beta_1\cdot \text{Sex}\]</span></p>
+<p>where,</p>
+<ul>
+<li><span class="math inline">\(\beta_0\)</span> is the intercept of the model</li>
+<li><span class="math inline">\(\beta_1\)</span> is the effect of sex.</li>
+</ul>
+<p>We can link the predictive model to the data using a statistical model. In this case we are assuming a normal distribution with some uncertainty quantified as <span class="math inline">\(\sigma\)</span>. Recall was specific this as:</p>
+<p><span class="math display">\[Y_i \sim Normal(\mu,\sigma)\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> is the prediction</li>
+<li><span class="math inline">\(\sigma\)</span> is the standard deviation.</li>
+</ul>
+<p>Now, I crafted this comparison deliberately to refine some understanding of R and linear models. First we need to examine the default way R treats categorical variables, like sex. We can figure out which factor is ‘first’ using the <code>levels()</code> function.</p>
+<pre class="r"><code>levels(dat$sex)</code></pre>
+<pre><code>## [1] &quot;female&quot; &quot;male&quot;</code></pre>
+<p>Female is listed first then male. By default, R orders levels of categorical variables alphabetically. Let’s see how it is treated in a linear model.</p>
+<pre class="r"><code>fit&lt;-lm(homerange~sex,data=dat) # fit the model
+summary(fit) # model summary</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = homerange ~ sex, data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.8386 -0.7388 -0.1778 -0.1012  5.8082 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   0.8393     0.1969   4.261 5.76e-05 ***
+## sexmale      -0.6595     0.2653  -2.486   0.0151 *  
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.165 on 76 degrees of freedom
+## Multiple R-squared:  0.07523,    Adjusted R-squared:  0.06306 
+## F-statistic: 6.183 on 1 and 76 DF,  p-value: 0.0151</code></pre>
+<pre class="r"><code>coef(fit) # extract estimated coefficients</code></pre>
+<pre><code>## (Intercept)     sexmale 
+##   0.8392535  -0.6595451</code></pre>
+<pre class="r"><code>betas&lt;-coef(fit) # save betas</code></pre>
+<p>The estimate of the intercept is 0.839 and the effect of sex is -0.66. Notice the name of the effect of sex is called <code>sexmale</code>. This is the effect of being male on home range size. The intercept represents the expected home range of a female bear. The expected home range of a male bear is then 0.839+ -0.66 = 0.179 km, given this model. Recall we were interested in whether female bears had a larger or smaller home range. While you can evaluate with the model we fit, switching the order so male is the first level and would therefore be the intercept, would make sense. The second estimated coefficient is then the effect of being female. To do this we need to reorder the factor levels in R which can be done with the <code>factor()</code> function.</p>
+<pre class="r"><code>dat$sex&lt;- factor(dat$sex,levels=c(&quot;male&quot;,&quot;female&quot;)) # reorder factor levels</code></pre>
+<p>Now let’s refit the same model and see what happens now.</p>
+<pre class="r"><code>fit&lt;- lm(homerange~sex,data = dat)
+summary(fit) # model summary</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = homerange ~ sex, data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -0.8386 -0.7388 -0.1778 -0.1012  5.8082 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)  
+## (Intercept)   0.1797     0.1777   1.011   0.3150  
+## sexfemale     0.6595     0.2653   2.486   0.0151 *
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.165 on 76 degrees of freedom
+## Multiple R-squared:  0.07523,    Adjusted R-squared:  0.06306 
+## F-statistic: 6.183 on 1 and 76 DF,  p-value: 0.0151</code></pre>
+<pre class="r"><code>coef(fit) # estimated coefficients</code></pre>
+<pre><code>## (Intercept)   sexfemale 
+##   0.1797084   0.6595451</code></pre>
+<p>Now the expected homerange for a male bear is the intercept and a female bear is 0.18+ 0.66 = 0.84 km, given this model. Compare the expected home range for a female bear with the intercept for the first model fit, the are the same. Formally, the model estimates 3 parameters:</p>
+<ul>
+<li><span class="math inline">\(\beta_{0}\)</span> = 0.18 this is the average home range of a male bear</li>
+<li><span class="math inline">\(\beta_{1}\)</span> = 0.66 the effect of being a female on home range</li>
+<li><span class="math inline">\(\sigma\)</span> = 1.165 residual standard error</li>
+</ul>
+<p>Ok, now we also suspect there is an effect of weight on home range, larger bears have large home ranges. The effect of weight can be evaluated by adding weight to the linear model. The model parameters for this model are the same as before but there is a new parameter estimated, <span class="math inline">\(\beta_{2}\)</span> which is the effect of weight on home range. Let’s fit the model.</p>
+<pre class="r"><code>fit&lt;-lm(homerange~sex+weight,data=dat)
+summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = homerange ~ sex + weight, data = dat)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.0635 -0.5304 -0.2692  0.3202  4.8196 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) -2.837499   0.490476  -5.785 1.58e-07 ***
+## sexfemale    0.680472   0.214368   3.174  0.00218 ** 
+## weight       0.027901   0.004337   6.433 1.05e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.9415 on 75 degrees of freedom
+## Multiple R-squared:  0.4041, Adjusted R-squared:  0.3882 
+## F-statistic: 25.43 on 2 and 75 DF,  p-value: 3.71e-09</code></pre>
+<pre class="r"><code>coef(fit)</code></pre>
+<pre><code>## (Intercept)   sexfemale      weight 
+## -2.83749882  0.68047161  0.02790104</code></pre>
+<p>Well I’ll be the model fits pretty well. The r-squared value is 0.4040865 which is pretty good for ecological data, right? Either way the parameter estimates for the model are:</p>
+<ul>
+<li><span class="math inline">\(\beta_{0}\)</span> = -2.837 this is the average home range of a male bear</li>
+<li><span class="math inline">\(\beta_{1}\)</span> = 0.68 the effect of being a female on home range</li>
+<li><span class="math inline">\(\beta_{2}\)</span> = 0.028 the effect of weight on home range</li>
+<li><span class="math inline">\(\sigma\)</span> = 0.942 residual standard error</li>
+</ul>
+</div>
+<div id="making-predictions-from-the-model" class="section level2">
+<h2>Making predictions from the model</h2>
+<p>Neat, we have fit a model that estimates home range given bear sex and weight. We can use the model to predict home ranges for male and female bears of varying weights. Let’s do that and see how good our model works, the anticipation is killing me! First we need a dataset of male and female bears to predict for. Bear weights vary from 68.9 to 157.3 and therefor we should predict between those values. Above or below those values you are getting into the realm of extrapolation.</p>
+<pre class="r"><code>newdat&lt;- data.frame(weight=seq(min(dat$weight), max(dat$weight),1))
+head(newdat)</code></pre>
+<pre><code>##     weight
+## 1 68.85462
+## 2 69.85462
+## 3 70.85462
+## 4 71.85462
+## 5 72.85462
+## 6 73.85462</code></pre>
+<p>But wait, don’t we need sex in the <code>data.frame</code> too? Right you are, let’s add it. We can do this by</p>
+<pre class="r"><code>newdat$sex&lt;-&quot;male&quot;
+preddat&lt;- newdat
+newdat$sex&lt;-&quot;female&quot;
+preddat&lt;- rbind(preddat,newdat)</code></pre>
+<p>Let’s double check the data to make sure it is formatted correctly.</p>
+<pre class="r"><code>str(preddat)</code></pre>
+<pre><code>## &#39;data.frame&#39;:    178 obs. of  2 variables:
+##  $ weight: num  68.9 69.9 70.9 71.9 72.9 ...
+##  $ sex   : chr  &quot;male&quot; &quot;male&quot; &quot;male&quot; &quot;male&quot; ...</code></pre>
+<p>Hmmmm, that is not quite right. Sex is a character, it should be a factor. Let’s fix that.</p>
+<pre class="r"><code>preddat$sex&lt;- factor(preddat$sex,levels=c(&quot;male&quot;,&quot;female&quot;))
+levels(preddat$sex)</code></pre>
+<pre><code>## [1] &quot;male&quot;   &quot;female&quot;</code></pre>
+<p>Ok, that looks better, especially the ordering of the levels. Now back to the fun stuff, let’s get predicting with the <code>predict()</code> function.</p>
+<pre class="r"><code>preddat$pred&lt;- predict(fit,preddat)
+head(preddat)</code></pre>
+<pre><code>##     weight  sex       pred
+## 1 68.85462 male -0.9163836
+## 2 69.85462 male -0.8884826
+## 3 70.85462 male -0.8605815
+## 4 71.85462 male -0.8326805
+## 5 72.85462 male -0.8047795
+## 6 73.85462 male -0.7768784</code></pre>
+<p>Now we can plot the predictions.</p>
+<pre class="r"><code>plot(pred~weight,preddat,type=&#39;n&#39;,xlab=&quot;Weight&quot;,ylab=&quot;Home range (km)&quot;)
+points(pred~weight,preddat,subset=sex==&quot;male&quot;,type=&#39;l&#39;,lty=1)
+points(pred~weight,preddat,subset=sex==&quot;female&quot;,type=&#39;l&#39;,lty=2)
+legend(&#39;topleft&#39;,legend=c(&quot;Males&quot;,&quot;Female&quot;),pch=c(1,2))</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p>Ok, I am fisheries biologist not a rocket surgeon, but that does not seem right, how can home ranges be negative? Let’s plot it with the original data.</p>
+<pre class="r"><code>plot(homerange~weight,dat,type=&#39;n&#39;,xlab=&quot;Weight&quot;,ylab=&quot;Home range (km)&quot;,ylim=c(-1,10))
+points(homerange~weight,dat,subset=sex==&quot;male&quot;,pch=1)
+points(homerange~weight,dat,subset=sex==&quot;female&quot;,pch=2)
+
+points(pred~weight,preddat,subset=sex==&quot;male&quot;,type=&#39;l&#39;,lty=1)
+points(pred~weight,preddat,subset=sex==&quot;female&quot;,type=&#39;l&#39;,lty=2)
+legend(&#39;topleft&#39;,legend=c(&quot;Males&quot;,&quot;Female&quot;),pch=c(1,2))</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>That is a terrible fit. But, the r-squared value was 0.4040865? I probably should have looked at the data first, but that is part of the point of this example. There are a couple of things that might be going on here. First, the distribution could be wrong. That data does not look all the normally distributed. Second, the model could be wrong and home ranges are not linearly related to sex and weight. We can evaluate these 2 problems with plots of residuals versus predicted to evaluate distribution and observed versus predicted values to evaluate if the model is misspecified. Here we go.</p>
+<pre class="r"><code>dat$resids&lt;-resid(fit)
+dat$preds&lt;-fitted(fit)
+
+# plot of residuals versus predicted
+# should be normal and centered around 0
+plot(resids~preds,dat)
+abline(h=0)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>Well that does not good at all. The residuals are not centered around 0, the model tends to over predict at low values, under predict at intermediate values, and over predict at high values.</p>
+<pre class="r"><code># plot of observed versus predicted
+# should fall on a 1:1 line
+plot(homerange~preds,dat)
+abline(0,1)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p>That does not look good at all either. The model appears to be misspecified and some unaccounted for curvature in the model. Let’s tackle the distribution issue to see if that fixes things.</p>
+</div>
+<div id="messing-with-the-distribution" class="section level2">
+<h2>Messing with the distribution</h2>
+<p>Some cool kids told me that a Poisson might be the way to go because it models things 0 or greater. Home ranges are greater than 0 and it makes good sense to not let home range dip below 0. A linear model with a Poisson distribution can be fit using the <code>glm()</code> function. The syntax is similar to the <code>lm()</code> function.</p>
+<pre class="r"><code>fit&lt;- glm(homerange~sex+weight,dat, family=&quot;poisson&quot;)</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.002182</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.874164</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.218165</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.279089</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 3.906926</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.307865</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.000605</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.005136</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.349321</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.111824</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.669067</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.079837</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.010977</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 4.794870</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.009720</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 3.280750</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.020144</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.028594</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.003856</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.019881</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.011511</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.024846</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.015438</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.001305</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.005579</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 2.721337</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.395719</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 4.331059</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 6.647425</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.002734</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.096669</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.012386</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.014531</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.112937</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.007424</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.720486</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.001556</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.001407</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 1.444211</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.447223</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.034098</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.084480</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.004175</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.037262</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.004898</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.038507</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.172502</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.028437</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.002017</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.244960</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.000294</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.004342</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.198502</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.060440</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.001796</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.019993</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.027971</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.134458</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.002052</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.924955</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 1.904202</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.000492</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.003762</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.000321</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.001836</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.104921</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.004778</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.017057</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.000476</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.052792</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.000799</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.769173</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.000226</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.181447</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.000944</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.029715</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.013220</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.000277</code></pre>
+<p>What is going on with the warnings? That does not give me a warm fuzzy feeling about my analysis. Let’s see if the model was actually fit.</p>
+<pre class="r"><code>summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = homerange ~ sex + weight, family = &quot;poisson&quot;, data = dat)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -0.67395  -0.11986  -0.04437  -0.01000   1.87169  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept) -13.95964    2.12579  -6.567 5.14e-11 ***
+## sexfemale     1.61283    0.40460   3.986 6.71e-05 ***
+## weight        0.09393    0.01457   6.449 1.13e-10 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## (Dispersion parameter for poisson family taken to be 1)
+## 
+##     Null deviance: 119.0547  on 77  degrees of freedom
+## Residual deviance:   8.3676  on 75  degrees of freedom
+## AIC: Inf
+## 
+## Number of Fisher Scoring iterations: 6</code></pre>
+<p>Well there are estimates for the various parameters of the model. Let’s be diligent and check the assumptions and make sure things are ok with our assumptions. I will start with the plot of residuals versus predicted values.</p>
+<pre class="r"><code>plot(resid(fit)~fitted(fit))</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>I don’t go chasing waterfalls that often, but that <em>does</em> not look good. Or maybe it does? The variance of the Poisson is the mean so you would expect some fanning of residuals as the home range increases.</p>
+<p>Now, I hope the model is not misspecified. I will evaluate that by looking at a plot of observed versus the fitted values</p>
+<pre class="r"><code>dat$pred&lt;- predict(fit,dat)
+plot(homerange~pred,data = dat)
+abline(0,1)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-24-1.png" width="672" /></p>
+<p>That model fit is atrocious. What is going on with the predictions? Why are they negative? Well it turns out that the <code>glm()</code> function uses a log link to model the response. So the predictions are on log scale and we need to transform them back to home ranges. The <code>predict()</code> function does this by specifying the <code>type='response'</code> argument. The defaulat is <code>type='link'</code></p>
+<pre class="r"><code>dat$pred&lt;- predict(fit,dat,type=&#39;response&#39;)
+plot(homerange~pred,dat)
+abline(0,1)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>That looks a whole lot better. But I am still a concerned about all the warnings that happened during the model fitting. What is up with those. Let’s look at our data again.</p>
+<pre class="r"><code>head(dat)</code></pre>
+<pre><code>##   X    sex    weight   homerange      resids      preds        pred
+## 1 1 female  78.23331 0.002182498 -0.02358063 0.02576313 0.006750458
+## 2 2 female 124.00695 0.874163579 -0.42873153 1.30289511 0.497328408
+## 3 3 female 122.83473 0.218165462 -1.05202348 1.27018894 0.445474849
+## 4 4 female 124.10415 0.279088639 -1.02651854 1.30560718 0.501890092
+## 5 5 female 145.48238 3.906925690  2.00484361 1.90208208 3.738709744
+## 6 6 female 125.62795 0.307864648 -1.04025826 1.34812291 0.579123760</code></pre>
+<p>Ohhh, I think I see it. The Poisson distribution is only good for integers and home range is continuous. I wonder what happens is I round my home ranges to the nearest whole number and coerce it to an integer.</p>
+<pre class="r"><code>dat$hr_int&lt;- as.integer(round(dat$homerange,0))</code></pre>
+<p>Now let’s refit the model and see if the warnings persist.</p>
+<pre class="r"><code>fit&lt;- glm(hr_int~sex+weight,dat, family=&quot;poisson&quot;)</code></pre>
+<p>Awesome sauce, no warnings! <right> <img src="media/awesome-sauce.jpg" width="25%" /> </right></p>
+<p>It is always good to look at the model residuals and model fit.</p>
+<pre class="r"><code>dat$resid&lt;-resid(fit)
+dat$pred&lt;-exp(fitted(fit))# response link
+plot(hr_int~pred,dat)
+abline(0,1)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>The plot of observed versus predicted looks pretty good if you exclude values greater than 200. It looks linear which is what we want. Now let’s look at the residuals.</p>
+<pre class="r"><code>plot(resid~pred,dat)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p>Ummm, that looks weird. First there are some home ranges that are predicted to be 0, or at least close to it. Second, what is up with the extreme residuals? Maybe a Poisson was not a great idea. Let’s go back and look at the data. Recall we coerced home range from a numeric to an integer. Maybe that hand an unintended consequence. Let’s look at the first 10 lines of the data.</p>
+<pre class="r"><code>head(dat,10)</code></pre>
+<pre><code>##     X    sex    weight    homerange      resids       preds      pred
+## 1   1 female  78.23331 0.0021824984 -0.02358063  0.02576313  1.002025
+## 2   2 female 124.00695 0.8741635788 -0.42873153  1.30289511  1.397543
+## 3   3 female 122.83473 0.2181654615 -1.05202348  1.27018894  1.341339
+## 4   4 female 124.10415 0.2790886392 -1.02651854  1.30560718  1.402655
+## 5   5 female 145.48238 3.9069256902  2.00484361  1.90208208 39.571092
+## 6   6 female 125.62795 0.3078646484 -1.04025826  1.34812291  1.493461
+## 7   7 female  68.85462 0.0006050199  0.23651703 -0.23591201  1.000710
+## 8   8 female  88.92955 0.0051363679 -0.31906290  0.32419927  1.006697
+## 9   9 female 127.94754 0.3493210952 -1.06352061  1.41284170  1.681382
+## 10 10 female 114.28260 0.1118241467 -0.91975169  1.03157584  1.119703
+##    hr_int       resid
+## 1       0 -0.06360536
+## 2       1  0.92648763
+## 3       0 -0.76637850
+## 4       0 -0.82263801
+## 5       4  0.16548285
+## 6       0 -0.89565210
+## 7       0 -0.03768721
+## 8       0 -0.11553811
+## 9       0 -1.01942725
+## 10      0 -0.47552794</code></pre>
+<p>Recall we rounded <code>homerange</code> to the nearest integer and then coerced that value to an integer <code>hr_int</code>. Well that did have an unexpected effect. There are many home ranges that are 0. That seems biologically improbable for living bears.</p>
+<p>What can we do? Well we can maybe convert home ranges to a number that is less likely to round to 0. For example we can convert square km to square m and then round those values to get whole numbers so the Poisson does not yell at us and throw a bunch of warnings again. Let’s go for it and see what happens.</p>
+<pre class="r"><code>dat$hr_mm&lt;-dat$homerange*1000000
+fit&lt;-glm(hr_mm~sex+weight,dat,family=&quot;poisson&quot;)</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 2182.498411</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 874163.578845</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 218165.461513</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 279088.639234</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 307864.648419</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 605.019922</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 5136.367883</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 349321.095157</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 111824.146719</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 669066.922665</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 79837.276777</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 10976.754332</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 9720.150411</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 20143.742750</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 28593.795033</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 3856.014683</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 19880.644250</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 11511.129016</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 24846.425059</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 15437.602330</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 1305.171791</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 5579.247692</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 395718.546010</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 4331058.524404</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 2733.719896</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 96669.442904</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 12385.788785</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 14530.875347</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 112937.133848</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 7424.245213</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 720486.320198</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 1556.264520</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 1407.328426</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 1444210.592049</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 447222.942421</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 34097.635379</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 84480.027616</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 4175.261555</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 37262.114716</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 4897.835023</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 38507.331976</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 172502.267343</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 28436.544805</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 2017.277313</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 244960.379671</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 293.613871</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 4342.087774</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 198501.959092</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 60439.960987</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 1795.893259</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 19992.654896</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 27971.293019</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 134458.154342</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 2051.775483</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 924955.242264</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 492.496721</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 3762.318690</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 321.261925</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 1836.291278</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 104920.984773</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 4778.385525</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 17056.835916</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 475.526602</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 52792.438449</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 798.535707</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 769172.610076</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 226.471925</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 181446.636403</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 943.691825</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 29714.833612</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 13219.933123</code></pre>
+<pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 276.950588</code></pre>
+<p>Uggg, that didn’t work either. Maybe those cool kids were not as cool as I thought. Well, the link function for the Poisson was a log. It has some nice properties that when you take the anti-log (i.e., <code>exp()</code>) then you get a positive value. Let’s try it.</p>
+<pre class="r"><code>exp(-5)</code></pre>
+<pre><code>## [1] 0.006737947</code></pre>
+<pre class="r"><code>exp(2)</code></pre>
+<pre><code>## [1] 7.389056</code></pre>
+<p>Neat, all values greater than 0! That makes biological sense as homerange should be greater than 0. So what if we simply take the <code>log()</code> of the homeranges?</p>
+<pre class="r"><code>dat$lhomerange&lt;-log(dat$homerange)
+
+# plot our transformed data
+plot(lhomerange~weight, data= dat,
+    xlab=&quot;Weight&quot;,
+    ylab=&quot;ln(Homerange)&quot;,
+    type=&#39;n&#39;)
+points(lhomerange~weight,data=dat,subset=sex==&quot;male&quot;,pch=1)
+points(lhomerange~weight,data=dat,subset=sex==&quot;female&quot;,pch=2)
+legend(&#39;topleft&#39;,legend=c(&quot;Males&quot;,&quot;Female&quot;),pch=c(1,2))</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
+<p>Well that looks a whole lot better. Let’s fit a linear model and see how that goes.</p>
+<pre class="r"><code>fit&lt;- lm(lhomerange~weight+sex+weight:sex,data=dat)
+dat$pred&lt;- fitted(fit) # add predictions to dataset
+dat$resid&lt;- resid(fit) # add residuals to dataset</code></pre>
+<p>Let’s check the plot of residuals versus predicted values.</p>
+<pre class="r"><code>plot(resid~pred,data=dat)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<p>Cool, that looks legit. Now let’s check the model structure.</p>
+<pre class="r"><code>plot(lhomerange~pred,data=dat)
+abline(0,1)</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-38-1.png" width="672" /></p>
+<p>That curvature we saw before is gone, looks linear to me. Now we can get to the good stuff. The betas and the uncertainty.</p>
+<pre class="r"><code>summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = lhomerange ~ weight + sex + weight:sex, data = dat)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.80973 -0.32145 -0.07055  0.26493  1.20457 
+## 
+## Coefficients:
+##                    Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      -15.216567   0.323482 -47.040   &lt;2e-16 ***
+## weight             0.102077   0.002914  35.024   &lt;2e-16 ***
+## sexfemale          1.173290   0.491150   2.389   0.0195 *  
+## weight:sexfemale   0.003224   0.004447   0.725   0.4707    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.4779 on 74 degrees of freedom
+## Multiple R-squared:  0.9699, Adjusted R-squared:  0.9687 
+## F-statistic: 795.3 on 3 and 74 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Boy that is a pretty good fit!</p>
+<pre class="r"><code>betas&lt;- coef(fit)
+betas</code></pre>
+<pre><code>##      (Intercept)           weight        sexfemale weight:sexfemale 
+##    -15.216566841      0.102076727      1.173290169      0.003224222</code></pre>
+<pre class="r"><code>sigma&lt;- summary(fit)$sigma
+sigma</code></pre>
+<pre><code>## [1] 0.4778583</code></pre>
+<p>That sigma is a bit high, the sigma in this case is the same as the coefficient of variation. Because of the log transformation the variance increases with the mean (i.e., predicted value). Let’s make some predictions using the <code>predict()</code> function. Recall we made <code>preddat</code> to predict values for earlier?</p>
+<pre class="r"><code>preddat$pred&lt;- predict(fit, preddat)</code></pre>
+<p>Oh, I can’t wait, lets look at our predictions!</p>
+<pre class="r"><code>head(preddat)</code></pre>
+<pre><code>##     weight  sex      pred
+## 1 68.85462 male -8.188113
+## 2 69.85462 male -8.086036
+## 3 70.85462 male -7.983959
+## 4 71.85462 male -7.881883
+## 5 72.85462 male -7.779806
+## 6 73.85462 male -7.677729</code></pre>
+<p>What is going on? The homeranges are negative? Oh I remember we did a log transformation so the predicted values are on log scale. We need to take the antilog using the <code>exp()</code> function.</p>
+<pre class="r"><code>preddat$pred&lt;- exp(preddat$pred)
+head(preddat)</code></pre>
+<pre><code>##     weight  sex         pred
+## 1 68.85462 male 0.0002779379
+## 2 69.85462 male 0.0003078075
+## 3 70.85462 male 0.0003408871
+## 4 71.85462 male 0.0003775217
+## 5 72.85462 male 0.0004180933
+## 6 73.85462 male 0.0004630252</code></pre>
+<p>Those values look more like it. Now we can put it all together and see what we have going on.</p>
+<pre class="r"><code>plot(homerange~weight, data= dat,
+    xlab=&quot;Weight&quot;,
+    ylab=&quot;Homerange(km)&quot;,
+    type=&#39;n&#39;)
+points(homerange~weight,data=dat,subset=sex==&quot;male&quot;,pch=1)
+points(homerange~weight,data=dat,subset=sex==&quot;female&quot;,pch=2)
+
+points(pred~weight,data=preddat,subset=sex==&quot;male&quot;,type=&#39;l&#39;,lty=1)
+points(pred~weight,data=preddat,subset=sex==&quot;female&quot;,type=&#39;l&#39;,lty=2)
+
+legend(&#39;topleft&#39;,legend=c(&quot;Males&quot;,&quot;Female&quot;),pch=c(1,2))</code></pre>
+<p><img src="Class-10_files/figure-html/unnamed-chunk-44-1.png" width="672" /></p>
+<p>Ok, it all looks great. Now we can move on and get our coefficients and uncertainty.</p>
+<pre class="r"><code>betas</code></pre>
+<pre><code>##      (Intercept)           weight        sexfemale weight:sexfemale 
+##    -15.216566841      0.102076727      1.173290169      0.003224222</code></pre>
+<pre class="r"><code>sigma</code></pre>
+<pre><code>## [1] 0.4778583</code></pre>
+<p>Now the key here is that with the interaction of a factor (sex) we need to combine the betas so we essentially 2 equations. The model for males is</p>
+<p><span class="math display">\[exp(\beta_0 + \beta_1 \cdot \text{Weight})\]</span></p>
+<p>and females is</p>
+<p><span class="math display">\[exp((\beta_0+\beta_2) + (\beta_1+\beta_3)\cdot\text{weight}).\]</span></p>
+<p>The parameterized models are:</p>
+<ul>
+<li>Males: <span class="math inline">\(exp(-15.22+0.102\cdot \text{Weight})\)</span></li>
+<li>Females: <span class="math inline">\(exp(-14.04+0.105\cdot \text{Weight})\)</span></li>
+</ul>
+</div>
+<div id="linear-model-misconceptions-and-assumptions" class="section level2">
+<h2>Linear model misconceptions and assumptions</h2>
+<p>Couple of common misconceptions I have run into in the understanding of linear models</p>
+<ol style="list-style-type: decimal">
+<li>The covariates need to be normally distributed - <em>FALSE</em></li>
+<li>The response variable needs to be normally distributed - <em>FALSE</em> the model residuals do though!</li>
+</ol>
+<p>There are some assumptions that need to be addressed though:</p>
+<ol style="list-style-type: decimal">
+<li>The response variable is linearly related to the model</li>
+<li>The residuals are normally distributed - but this can be modified by assuming different distributions</li>
+<li>Distributional variances conform to assumptions</li>
+</ol>
+<p>These assumptions can be evaluated by visually inspecting the following plots</p>
+<ol style="list-style-type: decimal">
+<li>Plot of response variable (<em>y</em>-axis) to predicted variables (<em>x</em>-axis)</li>
+<li>Plot of residuals (<em>y</em>-axis) to predicted variables (<em>x</em>-axis)</li>
+</ol>
+<p>Now that we have a fitted model we can evaluate the assumptions. It is usually best to do this before looking at the output. R has some built in plots that can be viewed using the code <code>plot(fit)</code> but I prefer to do a couple of simple plots to assess model assumptions.</p>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

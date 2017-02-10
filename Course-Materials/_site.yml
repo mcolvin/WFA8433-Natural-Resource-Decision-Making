@@ -31,7 +31,9 @@ navbar:
         - text: "Class 8: Intro to R"
           href: "Class-08.html" 
         - text: "Class 9: Linear Models"
-          href: "Class-09.html" 
+          href: "Class-09.html"
+        - text: "Class 10: LMs and GLMs"
+          href: "Class-10.html"
     - text: "Additional Resources"
       menu: 
         - text: "R tutorials"

@@ -33,9 +33,11 @@ List of preliminary problems to instructor for review
 * Supplemental background reading for next class(es): 
     * Breiman, L. 2001. Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author). Statistical Science 25: 199-231.[PDF](pdfs/breiman-2001.pdf)
     * Shmueli, G. 2010. To Explain or to Predict?. Statistical Science 25: 289-310. [pdf](pdfs/shmueli-2010.pdf)
-* Assignment due: Submit a review of the objectives network randomly assigned to you. See details [here](hw-01.html)
+* Assignment due: Submit a review of the objectives network randomly 
+assigned to you. See details [here](hw-01.html) 
+
 * Group work: Continue discussing potential class projects
-* Link to class recording  [Pending]()
+* Link to class recording  [YouTube](https://youtu.be/UU7TrjD0I8Y)
 * Today's R script [Class-09.R](scripts/Class-09.R)
 
 
@@ -49,12 +51,16 @@ include_graphics("media/cn-no-estimate-knows.png")
 
 ### Some preliminaries
 
-* If you want to play along in class download this zipfile [*.zip](http://mec685.cfr.msstate.edu/class-09.zip).
+* If you want to play along in class download this zipfile 
+[*.zip](http://mec685.cfr.msstate.edu/class-09.zip). 
 * Be sure to unzip it before trying to use files and such
-* The file contains the dataset used in class and an R script of all the code.
+* The file contains the dataset used in class and an R script of all the 
+code. 
 * Once you have it where you want open the R script and be sure to check the working directory `getwd()` and make
 sure it is where your folder is.  
-* If your working directory is not correct, you can set it in Rstudio: "Session --> Set Working Directory --> To source file location". Or you can use the `setwd()` in the console.
+* If your working directory is not correct, you can set it in Rstudio: 
+"Session --> Set Working Directory --> To source file location". Or you 
+can use the `setwd()` in the console. 
 
 
 ### Objectives

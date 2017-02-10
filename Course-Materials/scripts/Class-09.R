@@ -27,6 +27,7 @@ fit<- lm(weights~1)
 # THE INTERCEPT IS VERY CLOSE TO THE MEAN WE CALCULATED PREVIOUS
 summary(fit)
  
+output<- summary(fit)
  
  
 ## ----unnamed-chunk-5---- ##
@@ -42,13 +43,14 @@ names(fit)
 ## ----unnamed-chunk-7---- ##
 # THE VECTOR OF COEFFICIENTS
 fit$coefficients
+ fit$residuals
  
- 
+ hist(fit$residuals)
  
 ## ----unnamed-chunk-8---- ##
 beta0<- fit$coefficients
  
- 
+ beta0
  
 ## ----unnamed-chunk-9---- ##
 mean(weights)-beta0
@@ -80,7 +82,7 @@ output$sigma
  
 ## ----unnamed-chunk-14---- ##
 sd(weights)-output$sigma
- 
+ sd(weights)
  
  
 ## ----unnamed-chunk-15---- ##
@@ -129,14 +131,16 @@ plot(area_damaged~habitat_area, damage_dat,
 plot(area_damaged~group_size, damage_dat,
     xlab="Group size (#)",
     ylab="Area damaged (ha)",
-    las=1)
+    las=1,
+    pch=20,
+    cex=2, col='red')
  
  
  
 ## ----unnamed-chunk-22---- ##
 damage_dat$group_size_scl<- (damage_dat$group_size-0)/(max(damage_dat$group_size)-0)
  
- 
+ min(damage_dat$group_size)
  
 ## ----unnamed-chunk-23---- ##
 plot(area_damaged~habitat_area, damage_dat,
@@ -170,10 +174,11 @@ pairs(damage_dat)
  
  
 ## ----unnamed-chunk-27---- ##
-fit<- lm(area_damaged~habitat_area+group_size+habitat_area:group_size,
+fit<- lm(area_damaged~habitat_area+
+    group_size+
+    habitat_area:group_size,
     data=damage_dat)
- 
- 
+
  
 ## ----unnamed-chunk-28---- ##
 plot(fit)
@@ -182,7 +187,8 @@ plot(fit)
  
 ## ----unnamed-chunk-29---- ##
 damage_dat$fitted <- fitted(fit)
-plot(area_damaged~fitted,data=damage_dat)
+plot(area_damaged~fitted,
+    data=damage_dat)
 abline(0,1)# add a 1:1 line for comparison
  
  

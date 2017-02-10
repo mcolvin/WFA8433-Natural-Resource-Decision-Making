@@ -231,6 +231,9 @@ $(document).ready(function () {
     <li>
       <a href="Class-09.html">Class 9: Linear Models</a>
     </li>
+    <li>
+      <a href="Class-10.html">Class 10: LMs and GLMs</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -286,10 +289,10 @@ List of preliminary problems to instructor for review
 <li>Breiman, L. 2001. Statistical Modeling: The Two Cultures (with comments and a rejoinder by the author). Statistical Science 25: 199-231.<a href="pdfs/breiman-2001.pdf">PDF</a></li>
 <li>Shmueli, G. 2010. To Explain or to Predict?. Statistical Science 25: 289-310. <a href="pdfs/shmueli-2010.pdf">pdf</a></li>
 </ul></li>
-<li>Assignment due: Submit a review of the objectives network randomly assigned to you. See details <a href="hw-01.html">here</a></li>
+<li><p>Assignment due: Submit a review of the objectives network randomly assigned to you. See details <a href="hw-01.html">here</a></p></li>
 <li>Group work: Continue discussing potential class projects</li>
-<li>Link to class recording <a href="">Pending</a></li>
-<li>Today’s R script <a href="scripts/Class-09.R">Class-09.R</a></li>
+<li>Link to class recording <a href="https://youtu.be/UU7TrjD0I8Y">YouTube</a></li>
+<li><p>Today’s R script <a href="scripts/Class-09.R">Class-09.R</a></p></li>
 </ul>
 <center>
 <img src="media/cn-no-estimate-knows.png" width="35%" />
@@ -325,28 +328,28 @@ weight_sd&lt;- 10
 n&lt;- 150 # number of samples
 weights&lt;- rnorm(n,weight_mn,weight_sd)
 weights # lets look at the weights</code></pre>
-<pre><code>##   [1] 134.4575 145.2525 135.0786 165.7425 141.4578 145.5667 144.6913
-##   [8] 155.1324 136.5907 147.9669 133.7211 157.3295 147.9951 144.4960
-##  [15] 134.8588 142.2927 156.5839 149.9368 136.4019 132.6281 158.0824
-##  [22] 137.4302 152.2101 132.1269 136.9339 145.5962 153.1152 135.0633
-##  [29] 143.9706 141.2333 141.5335 166.3964 144.9061 145.0781 151.0501
-##  [36] 166.2594 168.1535 135.1844 144.1516 144.7193 139.6374 137.9336
-##  [43] 121.2690 155.1392 136.8121 145.2717 148.3260 156.9948 142.2797
-##  [50] 146.2588 151.6386 163.8792 148.0401 149.1720 138.8780 147.3176
-##  [57] 166.2756 148.8849 132.1278 138.4271 154.6601 144.4882 150.7940
-##  [64] 162.5626 151.4696 144.3821 135.1788 150.7220 155.6671 148.2361
-##  [71] 152.0453 127.9112 156.1719 129.7237 148.3472 151.0675 134.9996
-##  [78] 148.3121 159.2942 141.0902 154.5370 141.5022 139.8529 143.2619
-##  [85] 148.3857 147.6954 145.7536 139.3649 139.8629 138.6679 140.5039
-##  [92] 117.0743 135.1100 149.5117 152.0617 148.7395 137.4737 147.3208
-##  [99] 152.0708 128.6389 145.3226 157.5246 155.2164 136.2236 150.8388
-## [106] 137.8837 167.2052 167.4323 162.6242 132.3761 156.8488 143.9991
-## [113] 133.0178 153.6604 149.6242 142.0476 133.3757 151.7977 151.5087
-## [120] 135.0539 133.3478 147.5435 157.9657 142.7928 141.8043 140.5551
-## [127] 156.1960 146.4531 160.9222 151.0581 150.3985 141.8964 138.0594
-## [134] 130.5325 137.5628 139.8313 146.2388 124.5421 153.6763 130.5762
-## [141] 144.3562 144.7294 127.9688 151.6899 148.3771 144.2910 142.7308
-## [148] 132.9812 141.0240 154.0500</code></pre>
+<pre><code>##   [1] 146.8534 140.8239 156.9790 137.9831 146.5624 159.4970 148.9718
+##   [8] 144.6731 132.8170 129.4111 144.5396 139.3867 141.0547 134.5978
+##  [15] 144.2618 124.5617 145.2259 146.3573 149.7917 164.4086 149.8080
+##  [22] 153.9405 148.5945 128.1777 131.0202 142.5441 128.1211 143.9570
+##  [29] 149.2118 139.7285 129.2927 145.4583 125.2565 152.9082 139.2794
+##  [36] 140.4336 158.7335 122.3629 131.2571 146.2125 148.0184 144.4371
+##  [43] 153.3248 141.5338 161.2394 131.7189 150.4894 144.5961 136.2260
+##  [50] 146.3887 121.6687 141.9772 139.0761 137.4558 137.0890 150.9400
+##  [57] 149.0710 149.5173 153.9419 131.4547 139.3586 132.8737 141.8171
+##  [64] 149.4819 151.1753 157.0645 139.6318 138.7533 139.0923 157.4696
+##  [71] 142.2221 116.8562 138.9960 140.7563 148.2737 151.1528 149.3848
+##  [78] 132.1028 135.9035 142.8178 145.0717 151.1759 158.9637 131.8393
+##  [85] 143.4099 147.5105 140.9223 149.1656 138.3462 139.8819 147.7014
+##  [92] 149.3229 151.0863 138.4032 147.0305 131.7070 145.1965 146.4015
+##  [99] 159.0815 137.2256 142.1400 143.8121 149.0388 152.9342 158.5867
+## [106] 149.2300 170.1684 140.4124 167.7040 142.7311 132.3707 140.7432
+## [113] 140.2773 141.4627 150.7655 141.8342 131.6895 135.9873 140.8156
+## [120] 137.7832 154.0448 128.6677 133.2663 154.0743 142.4447 135.8630
+## [127] 130.0791 129.0127 152.6961 153.1464 143.1231 150.6809 146.7592
+## [134] 146.8015 127.0836 141.1929 145.7246 133.1955 140.2890 146.7682
+## [141] 154.8844 154.1466 144.7281 144.1029 141.3937 152.3769 148.9090
+## [148] 147.3706 133.0492 142.0881</code></pre>
 <p>Now we can look at the distribution of weights.</p>
 <pre class="r"><code>hist(weights)</code></pre>
 <p><img src="Class-09_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
@@ -355,10 +358,10 @@ weights # lets look at the weights</code></pre>
 <p>Fortunately R has some built in functions to calculate the mean (<span class="math inline">\(\mu\)</span>) and standard deviation (<span class="math inline">\(\sigma\)</span>).</p>
 <pre class="r"><code># the mean
 mean(weights) # should be close to 145</code></pre>
-<pre><code>## [1] 145.3879</code></pre>
+<pre><code>## [1] 143.3886</code></pre>
 <pre class="r"><code># the standard deviation
 sd(weights) # should be close to 10</code></pre>
-<pre><code>## [1] 9.852909</code></pre>
+<pre><code>## [1] 9.286945</code></pre>
 <p>Well this is great we can take several observations and calculate an expectation (<span class="math inline">\(\mu\)</span>) and the uncertainty (<span class="math inline">\(\sigma\)</span>). In most cases when we are doing science, we are interested in calculating the mean and seeing if it is different than another. But in decision making, we are more interested in estimating the expected value and the uncertainty. Arguably, we did just that by estimating the mean and the standard deviation using the formulas above. But that will only work for so long as problems get more complex.</p>
 <p>Let’s reframe the mean estimate as a linear model. The linear model for a mean is</p>
 <p><span class="math display">\[\mu = \beta_0\]</span></p>
@@ -375,15 +378,15 @@ summary(fit)</code></pre>
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -28.3136  -7.2366  -0.2226   6.2182  22.7656 
+## -26.5324  -5.0282   0.2224   5.9110  26.7798 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 145.3879     0.8045   180.7   &lt;2e-16 ***
+## (Intercept) 143.3886     0.7583   189.1   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 9.853 on 149 degrees of freedom</code></pre>
+## Residual standard error: 9.287 on 149 degrees of freedom</code></pre>
 <p>Let’s confirm that the estimated mean is pretty darn close to the estimate of the the intercept. In order to accomplish this we need to extract the estimate of the intercept from the model output. The <code>lm()</code> function returns an object that is a list. Let’s confirm the output is a list.</p>
 <pre class="r"><code>typeof(fit)</code></pre>
 <pre><code>## [1] &quot;list&quot;</code></pre>
@@ -396,13 +399,13 @@ summary(fit)</code></pre>
 <pre class="r"><code># THE VECTOR OF COEFFICIENTS
 fit$coefficients</code></pre>
 <pre><code>## (Intercept) 
-##    145.3879</code></pre>
+##    143.3886</code></pre>
 <p>We can assign the coefficient as an object called <code>beta0</code>.</p>
 <pre class="r"><code>beta0&lt;- fit$coefficients</code></pre>
 <p>and we can see how different the mean and the intercept are.</p>
 <pre class="r"><code>mean(weights)-beta0</code></pre>
-<pre><code>## (Intercept) 
-##           0</code></pre>
+<pre><code>##   (Intercept) 
+## -2.842171e-14</code></pre>
 <p>Well that is a very small number, well within rounding error.</p>
 <p>So I have made the case that the linear model does the same thing as the mean equation. But in all the output I do not see any value for uncertainty? Let’s double check and make sure we didn’t miss it. We can look at the object itself or use <code>summary()</code> to have R spit out formatted output.</p>
 <pre class="r"><code>fit</code></pre>
@@ -412,7 +415,7 @@ fit$coefficients</code></pre>
 ## 
 ## Coefficients:
 ## (Intercept)  
-##       145.4</code></pre>
+##       143.4</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>## 
 ## Call:
@@ -420,15 +423,15 @@ fit$coefficients</code></pre>
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -28.3136  -7.2366  -0.2226   6.2182  22.7656 
+## -26.5324  -5.0282   0.2224   5.9110  26.7798 
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) 145.3879     0.8045   180.7   &lt;2e-16 ***
+## (Intercept) 143.3886     0.7583   189.1   &lt;2e-16 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 9.853 on 149 degrees of freedom</code></pre>
+## Residual standard error: 9.287 on 149 degrees of freedom</code></pre>
 <p>Let’s check the list elements again using the <code>names()</code> function.</p>
 <pre class="r"><code>names(fit)</code></pre>
 <pre><code>##  [1] &quot;coefficients&quot;  &quot;residuals&quot;     &quot;effects&quot;       &quot;rank&quot;         
@@ -443,10 +446,10 @@ names(output)</code></pre>
 <p>Ohhh, there it is, I see an object named <code>sigma</code>. Let’s get a hold of that estimate. It should be close to 10, the value we generated from.</p>
 <pre class="r"><code># SHOULD BE RIGHT ABOUT 10
 output$sigma</code></pre>
-<pre><code>## [1] 9.852909</code></pre>
+<pre><code>## [1] 9.286945</code></pre>
 <p>It was pretty close to the estimate of the standard deviation of the sample.</p>
 <pre class="r"><code>sd(weights)-output$sigma</code></pre>
-<pre><code>## [1] 1.776357e-15</code></pre>
+<pre><code>## [1] -1.776357e-15</code></pre>
 <p>Again a very small number, well within rounding error.</p>
 <p>Ok, now we have 2 things that we need, the expectation (i.e., <span class="math inline">\(\mu\)</span>) that was estimated by <span class="math inline">\(\beta_0\)</span> and the uncertainty (i.e., <span class="math inline">\(\sigma\)</span>).</p>
 <p>There are 2 things I want to highlight here. 1) we have a model that generates an expected outcome and 2) we have quantified uncertainty in that outcome. Now, this can be formalized as the linear model below:</p>
@@ -462,15 +465,15 @@ output$sigma</code></pre>
 <pre class="r"><code>n&lt;- 500000
 weights_sim1&lt;- weight_mn + rnorm(n,0,weight_sd)
 mean(weights_sim1)</code></pre>
-<pre><code>## [1] 145.0104</code></pre>
+<pre><code>## [1] 145.0048</code></pre>
 <pre class="r"><code>sd(weights_sim1)</code></pre>
-<pre><code>## [1] 10.01669</code></pre>
+<pre><code>## [1] 10.01375</code></pre>
 <p>Now let’s try the second approach.</p>
 <pre class="r"><code>weights_sim2&lt;- rnorm(n,weight_mn,weight_sd)
 mean(weights_sim2)</code></pre>
-<pre><code>## [1] 145.0134</code></pre>
+<pre><code>## [1] 144.9935</code></pre>
 <pre class="r"><code>sd(weights_sim2)</code></pre>
-<pre><code>## [1] 9.993198</code></pre>
+<pre><code>## [1] 10.01165</code></pre>
 <p>Both approaches return estimates of the mean and standard deviation that are very close to the <em>true</em> value of 145 and 10. And both distributions look the same, illustrated below using the <code>hist()</code> function.</p>
 <pre class="r"><code>hist(weights_sim1)</code></pre>
 <p><img src="Class-09_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>

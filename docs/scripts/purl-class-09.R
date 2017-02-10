@@ -3,7 +3,7 @@
 library(knitr)
 
 
-p<- purl("C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/Class-09.Rmd")
+p<- purl("C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/Class-10.Rmd")
 
 read_chunk(p)
 chunks <- knitr:::knit_code$get()
@@ -19,7 +19,7 @@ chunkss<- lapply(1:length(chunks),function(x)
 
 xxx<- unlist(chunkss)
 writeLines(xxx, 
-    "C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/scripts/Class-09.R")
+    "C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/scripts/Class-10.R")
 
     
     
