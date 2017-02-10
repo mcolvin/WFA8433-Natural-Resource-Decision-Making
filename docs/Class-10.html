@@ -358,11 +358,15 @@ List of preliminary problems to instructor for review
 <div id="a-basic-linear-model-of-a-normally-distributed-variable" class="section level2">
 <h2>A basic linear model of a normally distributed variable</h2>
 <p>Let’s fit a linear model to some the data. Suppose we are interested in predicting whether female bears have larger or smaller home ranges than male bears and the associated uncertainty. The model for this can be recast as:</p>
-<p><span class="math display">\[\mu = \beta_0 + \beta_1\cdot \text{Sex}\]</span></p>
+<p><span class="math display">\[\mu = \beta_0 + \beta_1\cdot \text{Sex}+
+    \beta_2\cdot\text{Weight}+
+    \beta_3\cdot\text{Weight}\cdot\text{Sex} \]</span></p>
 <p>where,</p>
 <ul>
 <li><span class="math inline">\(\beta_0\)</span> is the intercept of the model</li>
 <li><span class="math inline">\(\beta_1\)</span> is the effect of sex.</li>
+<li><span class="math inline">\(\beta_2\)</span> is the effect of weight.</li>
+<li><span class="math inline">\(\beta_3\)</span> is the interaction of sex and weight.</li>
 </ul>
 <p>We can link the predictive model to the data using a statistical model. In this case we are assuming a normal distribution with some uncertainty quantified as <span class="math inline">\(\sigma\)</span>. Recall was specific this as:</p>
 <p><span class="math display">\[Y_i \sim Normal(\mu,\sigma)\]</span></p>
@@ -432,36 +436,38 @@ summary(fit) # model summary</code></pre>
 <li><span class="math inline">\(\sigma\)</span> = 1.165 residual standard error</li>
 </ul>
 <p>Ok, now we also suspect there is an effect of weight on home range, larger bears have large home ranges. The effect of weight can be evaluated by adding weight to the linear model. The model parameters for this model are the same as before but there is a new parameter estimated, <span class="math inline">\(\beta_{2}\)</span> which is the effect of weight on home range. Let’s fit the model.</p>
-<pre class="r"><code>fit&lt;-lm(homerange~sex+weight,data=dat)
+<pre class="r"><code>fit&lt;-lm(homerange~sex+weight+sex:weight,data=dat)
 summary(fit)</code></pre>
 <pre><code>## 
 ## Call:
-## lm(formula = homerange ~ sex + weight, data = dat)
+## lm(formula = homerange ~ sex + weight + sex:weight, data = dat)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -1.0635 -0.5304 -0.2692  0.3202  4.8196 
+## -1.5483 -0.2282 -0.0520  0.1814  3.9842 
 ## 
 ## Coefficients:
-##              Estimate Std. Error t value Pr(&gt;|t|)    
-## (Intercept) -2.837499   0.490476  -5.785 1.58e-07 ***
-## sexfemale    0.680472   0.214368   3.174  0.00218 ** 
-## weight       0.027901   0.004337   6.433 1.05e-08 ***
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      -0.917105   0.538053  -1.704   0.0925 .  
+## sexfemale        -3.772067   0.816939  -4.617 1.60e-05 ***
+## weight            0.010143   0.004848   2.092   0.0398 *  
+## sexfemale:weight  0.041338   0.007396   5.589 3.61e-07 ***
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
-## Residual standard error: 0.9415 on 75 degrees of freedom
-## Multiple R-squared:  0.4041, Adjusted R-squared:  0.3882 
-## F-statistic: 25.43 on 2 and 75 DF,  p-value: 3.71e-09</code></pre>
+## Residual standard error: 0.7948 on 74 degrees of freedom
+## Multiple R-squared:  0.581,  Adjusted R-squared:  0.564 
+## F-statistic:  34.2 on 3 and 74 DF,  p-value: 5.623e-14</code></pre>
 <pre class="r"><code>coef(fit)</code></pre>
-<pre><code>## (Intercept)   sexfemale      weight 
-## -2.83749882  0.68047161  0.02790104</code></pre>
-<p>Well I’ll be the model fits pretty well. The r-squared value is 0.4040865 which is pretty good for ecological data, right? Either way the parameter estimates for the model are:</p>
+<pre><code>##      (Intercept)        sexfemale           weight sexfemale:weight 
+##      -0.91710478      -3.77206675       0.01014257       0.04133752</code></pre>
+<p>Well I’ll be the model fits pretty well. The r-squared value is 0.5809741 which is pretty good for ecological data, right? Either way the parameter estimates for the model are:</p>
 <ul>
-<li><span class="math inline">\(\beta_{0}\)</span> = -2.837 this is the average home range of a male bear</li>
-<li><span class="math inline">\(\beta_{1}\)</span> = 0.68 the effect of being a female on home range</li>
-<li><span class="math inline">\(\beta_{2}\)</span> = 0.028 the effect of weight on home range</li>
-<li><span class="math inline">\(\sigma\)</span> = 0.942 residual standard error</li>
+<li><span class="math inline">\(\beta_{0}\)</span> = -0.917 this is the average home range of a male bear</li>
+<li><span class="math inline">\(\beta_{1}\)</span> = -3.772 the effect of being a female on home range</li>
+<li><span class="math inline">\(\beta_{2}\)</span> = 0.01 the effect of weight on home range</li>
+<li><span class="math inline">\(\beta_{3}\)</span> = 0.041 the effect of weight on home range</li>
+<li><span class="math inline">\(\sigma\)</span> = 0.795 residual standard error</li>
 </ul>
 </div>
 <div id="making-predictions-from-the-model" class="section level2">
@@ -494,12 +500,12 @@ levels(preddat$sex)</code></pre>
 <pre class="r"><code>preddat$pred&lt;- predict(fit,preddat)
 head(preddat)</code></pre>
 <pre><code>##     weight  sex       pred
-## 1 68.85462 male -0.9163836
-## 2 69.85462 male -0.8884826
-## 3 70.85462 male -0.8605815
-## 4 71.85462 male -0.8326805
-## 5 72.85462 male -0.8047795
-## 6 73.85462 male -0.7768784</code></pre>
+## 1 68.85462 male -0.2187423
+## 2 69.85462 male -0.2085997
+## 3 70.85462 male -0.1984571
+## 4 71.85462 male -0.1883146
+## 5 72.85462 male -0.1781720
+## 6 73.85462 male -0.1680294</code></pre>
 <p>Now we can plot the predictions.</p>
 <pre class="r"><code>plot(pred~weight,preddat,type=&#39;n&#39;,xlab=&quot;Weight&quot;,ylab=&quot;Home range (km)&quot;)
 points(pred~weight,preddat,subset=sex==&quot;male&quot;,type=&#39;l&#39;,lty=1)
@@ -515,7 +521,7 @@ points(pred~weight,preddat,subset=sex==&quot;male&quot;,type=&#39;l&#39;,lty=1)
 points(pred~weight,preddat,subset=sex==&quot;female&quot;,type=&#39;l&#39;,lty=2)
 legend(&#39;topleft&#39;,legend=c(&quot;Males&quot;,&quot;Female&quot;),pch=c(1,2))</code></pre>
 <p><img src="Class-10_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
-<p>That is a terrible fit. But, the r-squared value was 0.4040865? I probably should have looked at the data first, but that is part of the point of this example. There are a couple of things that might be going on here. First, the distribution could be wrong. That data does not look all the normally distributed. Second, the model could be wrong and home ranges are not linearly related to sex and weight. We can evaluate these 2 problems with plots of residuals versus predicted to evaluate distribution and observed versus predicted values to evaluate if the model is misspecified. Here we go.</p>
+<p>That is a terrible fit. But, the r-squared value was 0.5809741? I probably should have looked at the data first, but that is part of the point of this example. There are a couple of things that might be going on here. First, the distribution could be wrong. That data does not look all the normally distributed. Second, the model could be wrong and home ranges are not linearly related to sex and weight. We can evaluate these 2 problems with plots of residuals versus predicted to evaluate distribution and observed versus predicted values to evaluate if the model is misspecified. Here we go.</p>
 <pre class="r"><code>dat$resids&lt;-resid(fit)
 dat$preds&lt;-fitted(fit)
 
@@ -534,8 +540,26 @@ abline(0,1)</code></pre>
 </div>
 <div id="messing-with-the-distribution" class="section level2">
 <h2>Messing with the distribution</h2>
-<p>Some cool kids told me that a Poisson might be the way to go because it models things 0 or greater. Home ranges are greater than 0 and it makes good sense to not let home range dip below 0. A linear model with a Poisson distribution can be fit using the <code>glm()</code> function. The syntax is similar to the <code>lm()</code> function.</p>
-<pre class="r"><code>fit&lt;- glm(homerange~sex+weight,dat, family=&quot;poisson&quot;)</code></pre>
+<p>Some cool kids told me that a Poisson might be the way to go because it models things 0 or greater. Home ranges are greater than 0 and it makes good sense to not let home range dip below 0. A linear model with a Poisson distribution can be fit using the <code>glm()</code> function.</p>
+<p>recast as:</p>
+<p><span class="math display">\[log(\mu) = \beta_0 + \beta_1\cdot \text{Sex}+
+    \beta_2\cdot\text{Weight}+
+    \beta_3\cdot\text{Weight}\cdot\text{Sex} \]</span></p>
+<p>where,</p>
+<ul>
+<li><span class="math inline">\(\beta_0\)</span> is the intercept of the model</li>
+<li><span class="math inline">\(\beta_1\)</span> is the effect of sex.</li>
+<li><span class="math inline">\(\beta_2\)</span> is the effect of weight.</li>
+<li><span class="math inline">\(\beta_3\)</span> is the interaction of sex and weight.</li>
+</ul>
+<p>We can link the predictive model to the data using a statistical model. In this case we are assuming a normal distribution with some uncertainty quantified as <span class="math inline">\(\sigma\)</span>. Recall was specific this as:</p>
+<p><span class="math display">\[Y_i \sim Poisson(\mu)\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> is the prediction</li>
+</ul>
+<p>The Poisson distribution assumes that the uncertainty is equal to the mean. The syntax is similar to the <code>lm()</code> function.</p>
+<pre class="r"><code>fit&lt;- glm(homerange~sex+weight+sex:weight,dat, family=&quot;poisson&quot;)</code></pre>
 <pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.002182</code></pre>
 <pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.874164</code></pre>
 <pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 0.218165</code></pre>
@@ -618,24 +642,26 @@ abline(0,1)</code></pre>
 <pre class="r"><code>summary(fit)</code></pre>
 <pre><code>## 
 ## Call:
-## glm(formula = homerange ~ sex + weight, family = &quot;poisson&quot;, data = dat)
+## glm(formula = homerange ~ sex + weight + sex:weight, family = &quot;poisson&quot;, 
+##     data = dat)
 ## 
 ## Deviance Residuals: 
 ##      Min        1Q    Median        3Q       Max  
-## -0.67395  -0.11986  -0.04437  -0.01000   1.87169  
+## -0.68998  -0.13150  -0.04767  -0.01447   1.87169  
 ## 
 ## Coefficients:
-##              Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept) -13.95964    2.12579  -6.567 5.14e-11 ***
-## sexfemale     1.61283    0.40460   3.986 6.71e-05 ***
-## weight        0.09393    0.01457   6.449 1.13e-10 ***
+##                   Estimate Std. Error z value Pr(&gt;|z|)    
+## (Intercept)      -13.57659    4.10047  -3.311  0.00093 ***
+## sexfemale          1.09791    4.77059   0.230  0.81798    
+## weight             0.09127    0.02848   3.205  0.00135 ** 
+## sexfemale:weight   0.00359    0.03318   0.108  0.91382    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
 ## (Dispersion parameter for poisson family taken to be 1)
 ## 
-##     Null deviance: 119.0547  on 77  degrees of freedom
-## Residual deviance:   8.3676  on 75  degrees of freedom
+##     Null deviance: 119.055  on 77  degrees of freedom
+## Residual deviance:   8.356  on 74  degrees of freedom
 ## AIC: Inf
 ## 
 ## Number of Fisher Scoring iterations: 6</code></pre>
@@ -655,13 +681,13 @@ abline(0,1)</code></pre>
 <p><img src="Class-10_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
 <p>That looks a whole lot better. But I am still a concerned about all the warnings that happened during the model fitting. What is up with those. Let’s look at our data again.</p>
 <pre class="r"><code>head(dat)</code></pre>
-<pre><code>##   X    sex    weight   homerange      resids      preds        pred
-## 1 1 female  78.23331 0.002182498 -0.02358063 0.02576313 0.006750458
-## 2 2 female 124.00695 0.874163579 -0.42873153 1.30289511 0.497328408
-## 3 3 female 122.83473 0.218165462 -1.05202348 1.27018894 0.445474849
-## 4 4 female 124.10415 0.279088639 -1.02651854 1.30560718 0.501890092
-## 5 5 female 145.48238 3.906925690  2.00484361 1.90208208 3.738709744
-## 6 6 female 125.62795 0.307864648 -1.04025826 1.34812291 0.579123760</code></pre>
+<pre><code>##   X    sex    weight   homerange     resids      preds        pred
+## 1 1 female  78.23331 0.002182498  0.6638967 -0.6617142 0.006359669
+## 2 2 female 124.00695 0.874163579 -0.8205531  1.6947167 0.488764239
+## 3 3 female 122.83473 0.218165462 -1.4162052  1.6343707 0.437330022
+## 4 4 female 124.10415 0.279088639 -1.4206321  1.6997207 0.493291641
+## 5 5 female 145.48238 3.906925690  1.1066516  2.8002741 3.747912212
+## 6 6 female 125.62795 0.307864648 -1.4703017  1.7781663 0.570003540</code></pre>
 <p>Ohhh, I think I see it. The Poisson distribution is only good for integers and home range is continuous. I wonder what happens is I round my home ranges to the nearest whole number and coerce it to an integer.</p>
 <pre class="r"><code>dat$hr_int&lt;- as.integer(round(dat$homerange,0))</code></pre>
 <p>Now let’s refit the model and see if the warnings persist.</p>
@@ -678,28 +704,28 @@ abline(0,1)</code></pre>
 <p><img src="Class-10_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 <p>Ummm, that looks weird. First there are some home ranges that are predicted to be 0, or at least close to it. Second, what is up with the extreme residuals? Maybe a Poisson was not a great idea. Let’s go back and look at the data. Recall we coerced home range from a numeric to an integer. Maybe that hand an unintended consequence. Let’s look at the first 10 lines of the data.</p>
 <pre class="r"><code>head(dat,10)</code></pre>
-<pre><code>##     X    sex    weight    homerange      resids       preds      pred
-## 1   1 female  78.23331 0.0021824984 -0.02358063  0.02576313  1.002025
-## 2   2 female 124.00695 0.8741635788 -0.42873153  1.30289511  1.397543
-## 3   3 female 122.83473 0.2181654615 -1.05202348  1.27018894  1.341339
-## 4   4 female 124.10415 0.2790886392 -1.02651854  1.30560718  1.402655
-## 5   5 female 145.48238 3.9069256902  2.00484361  1.90208208 39.571092
-## 6   6 female 125.62795 0.3078646484 -1.04025826  1.34812291  1.493461
-## 7   7 female  68.85462 0.0006050199  0.23651703 -0.23591201  1.000710
-## 8   8 female  88.92955 0.0051363679 -0.31906290  0.32419927  1.006697
-## 9   9 female 127.94754 0.3493210952 -1.06352061  1.41284170  1.681382
-## 10 10 female 114.28260 0.1118241467 -0.91975169  1.03157584  1.119703
-##    hr_int       resid
-## 1       0 -0.06360536
-## 2       1  0.92648763
-## 3       0 -0.76637850
-## 4       0 -0.82263801
-## 5       4  0.16548285
-## 6       0 -0.89565210
-## 7       0 -0.03768721
-## 8       0 -0.11553811
-## 9       0 -1.01942725
-## 10      0 -0.47552794</code></pre>
+<pre><code>##     X    sex    weight    homerange     resids      preds      pred hr_int
+## 1   1 female  78.23331 0.0021824984  0.6638967 -0.6617142  1.002025      0
+## 2   2 female 124.00695 0.8741635788 -0.8205531  1.6947167  1.397543      1
+## 3   3 female 122.83473 0.2181654615 -1.4162052  1.6343707  1.341339      0
+## 4   4 female 124.10415 0.2790886392 -1.4206321  1.6997207  1.402655      0
+## 5   5 female 145.48238 3.9069256902  1.1066516  2.8002741 39.571092      4
+## 6   6 female 125.62795 0.3078646484 -1.4703017  1.7781663  1.493461      0
+## 7   7 female  68.85462 0.0006050199  1.1451349 -1.1445299  1.000710      0
+## 8   8 female  88.92955 0.0051363679  0.1162073 -0.1110709  1.006697      0
+## 9   9 female 127.94754 0.3493210952 -1.5482576  1.8975787  1.681382      0
+## 10 10 female 114.28260 0.1118241467 -1.0822825  1.1941066  1.119703      0
+##          resid
+## 1  -0.06360536
+## 2   0.92648763
+## 3  -0.76637850
+## 4  -0.82263801
+## 5   0.16548285
+## 6  -0.89565210
+## 7  -0.03768721
+## 8  -0.11553811
+## 9  -1.01942725
+## 10 -0.47552794</code></pre>
 <p>Recall we rounded <code>homerange</code> to the nearest integer and then coerced that value to an integer <code>hr_int</code>. Well that did have an unexpected effect. There are many home ranges that are 0. That seems biologically improbable for living bears.</p>
 <p>What can we do? Well we can maybe convert home ranges to a number that is less likely to round to 0. For example we can convert square km to square m and then round those values to get whole numbers so the Poisson does not yell at us and throw a bunch of warnings again. Let’s go for it and see what happens.</p>
 <pre class="r"><code>dat$hr_mm&lt;-dat$homerange*1000000
@@ -776,7 +802,11 @@ fit&lt;-glm(hr_mm~sex+weight,dat,family=&quot;poisson&quot;)</code></pre>
 <pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 29714.833612</code></pre>
 <pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 13219.933123</code></pre>
 <pre><code>## Warning in dpois(y, mu, log = TRUE): non-integer x = 276.950588</code></pre>
-<p>Uggg, that didn’t work either. Maybe those cool kids were not as cool as I thought. Well, the link function for the Poisson was a log. It has some nice properties that when you take the anti-log (i.e., <code>exp()</code>) then you get a positive value. Let’s try it.</p>
+<p>Uggg, that didn’t work either. Maybe those cool kids were not as cool as I thought. You shouldn’t assume a variable is has a Poisson distribution if it is not an integer.</p>
+</div>
+<div id="more-messing-with-the-distribution" class="section level2">
+<h2>More messing with the distribution</h2>
+<p>Well, the link function for the Poisson was a log. It has some nice properties that when you take the anti-log (i.e., <code>exp()</code>) then you get a positive value. Let’s try it.</p>
 <pre class="r"><code>exp(-5)</code></pre>
 <pre><code>## [1] 0.006737947</code></pre>
 <pre class="r"><code>exp(2)</code></pre>
@@ -793,7 +823,25 @@ points(lhomerange~weight,data=dat,subset=sex==&quot;male&quot;,pch=1)
 points(lhomerange~weight,data=dat,subset=sex==&quot;female&quot;,pch=2)
 legend(&#39;topleft&#39;,legend=c(&quot;Males&quot;,&quot;Female&quot;),pch=c(1,2))</code></pre>
 <p><img src="Class-10_files/figure-html/unnamed-chunk-35-1.png" width="672" /></p>
-<p>Well that looks a whole lot better. Let’s fit a linear model and see how that goes.</p>
+<p>Well that looks a whole lot better. Let’s fit a linear model and see how that goes. Formally the linear model, or log-linear model in this case is recast as:</p>
+<p><span class="math display">\[log(\mu) = \beta_0 + \beta_1\cdot \text{Sex}+
+    \beta_2\cdot\text{Weight}+
+    \beta_3\cdot\text{Weight}\cdot\text{Sex} \]</span></p>
+<p>where,</p>
+<ul>
+<li><span class="math inline">\(\beta_0\)</span> is the intercept of the model</li>
+<li><span class="math inline">\(\beta_1\)</span> is the effect of sex.</li>
+<li><span class="math inline">\(\beta_2\)</span> is the effect of weight.</li>
+<li><span class="math inline">\(\beta_3\)</span> is the interaction of sex and weight.</li>
+</ul>
+<p>We can link the predictive model to the data using a statistical model. In this case we are assuming a normal distribution with some uncertainty quantified as <span class="math inline">\(\sigma\)</span>. Recall was specific this as:</p>
+<p><span class="math display">\[log(Y_i) \sim Normal(log(\mu),\sigma)\]</span></p>
+<p>where</p>
+<ul>
+<li><span class="math inline">\(log(\mu)\)</span> is the log of prediction</li>
+<li><span class="math inline">\(\sigma\)</span> is the standard deviation.</li>
+</ul>
+<p>Note here we are working on log scale so we need to log transform our observed data.</p>
 <pre class="r"><code>fit&lt;- lm(lhomerange~weight+sex+weight:sex,data=dat)
 dat$pred&lt;- fitted(fit) # add predictions to dataset
 dat$resid&lt;- resid(fit) # add residuals to dataset</code></pre>

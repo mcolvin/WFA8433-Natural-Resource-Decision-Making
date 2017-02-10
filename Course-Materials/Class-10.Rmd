@@ -150,12 +150,16 @@ male bears and the associated uncertainty. The model for this can be
 recast as: 
 
 
-$$\mu = \beta_0 + \beta_1\cdot \text{Sex}$$
+$$\mu = \beta_0 + \beta_1\cdot \text{Sex}+
+    \beta_2\cdot\text{Weight}+
+    \beta_3\cdot\text{Weight}\cdot\text{Sex} $$
 
 where,
 
 * $\beta_0$ is the intercept of the model
 * $\beta_1$ is the effect of sex.
+* $\beta_2$ is the effect of weight.
+* $\beta_3$ is the interaction of sex and weight.
 
 We can link the predictive model to the data using a statistical model. 
 In this case we are assuming a normal distribution with some uncertainty 
@@ -244,7 +248,7 @@ Let's fit the model.
 
 
 ```{r}
-fit<-lm(homerange~sex+weight,data=dat)
+fit<-lm(homerange~sex+weight+sex:weight,data=dat)
 summary(fit)
 coef(fit)
 ```
@@ -257,6 +261,7 @@ Either way the parameter estimates for the model are:
 * $\beta_{0}$ = `r round(coef(fit)[1],3)` this is the average home range of a male bear
 * $\beta_{1}$ = `r round(coef(fit)[2],3)` the effect of being a female on home range
 * $\beta_{2}$ = `r round(coef(fit)[3],3)` the effect of weight on home range
+* $\beta_{3}$ = `r round(coef(fit)[4],3)` the effect of weight on home range
 * $\sigma$ = `r round(summary(fit)$sigma,3)` residual standard error
 
 
@@ -379,11 +384,42 @@ tackle the distribution issue to see if that fixes things.
 Some cool kids told me that a Poisson might be the way to go because it 
 models things 0 or greater. Home ranges are greater than 0 and it makes 
 good sense to not let home range dip below 0. A linear model with a 
-Poisson distribution can be fit using the `glm()` function. The syntax 
-is similar to the `lm()` function. 
+Poisson distribution can be fit using the `glm()` function. 
+
+recast as: 
+
+
+$$log(\mu) = \beta_0 + \beta_1\cdot \text{Sex}+
+    \beta_2\cdot\text{Weight}+
+    \beta_3\cdot\text{Weight}\cdot\text{Sex} $$
+
+where,
+
+* $\beta_0$ is the intercept of the model
+* $\beta_1$ is the effect of sex.
+* $\beta_2$ is the effect of weight.
+* $\beta_3$ is the interaction of sex and weight.
+
+
+We can link the predictive model to the data using a statistical model. 
+In this case we are assuming a normal distribution with some uncertainty 
+quantified as $\sigma$. Recall was specific this as: 
+
+
+
+$$Y_i \sim Poisson(\mu)$$
+
+where
+
+* $\mu$ is the prediction
+
+The Poisson distribution assumes that the uncertainty is equal to the 
+mean. The syntax is similar to the `lm()` function. 
+
+
 
 ```{r}
-fit<- glm(homerange~sex+weight,dat, family="poisson")
+fit<- glm(homerange~sex+weight+sex:weight,dat, family="poisson")
 ```
 
 What is going on with the warnings? That does not give me a warm fuzzy 
@@ -514,7 +550,14 @@ fit<-glm(hr_mm~sex+weight,dat,family="poisson")
 ```
 
 Uggg, that didn't work either. Maybe those cool kids were not as cool as 
-I thought. Well, the link function for the Poisson was a log. It has 
+I thought. You shouldn't assume a variable is has a Poisson distribution 
+if it is not an integer. 
+
+
+## More messing with the distribution
+
+
+Well, the link function for the Poisson was a log. It has 
 some nice properties that when you take the anti-log (i.e., `exp()`) 
 then you get a positive value. Let's try it. 
 
@@ -539,8 +582,36 @@ points(lhomerange~weight,data=dat,subset=sex=="female",pch=2)
 legend('topleft',legend=c("Males","Female"),pch=c(1,2))
 ```
 
-Well that looks a whole lot better.
-Let's fit a linear model and see how that goes.
+Well that looks a whole lot better. Let's fit a linear model and see how 
+that goes. Formally the linear model, or log-linear model in this case 
+is recast as: 
+
+
+$$log(\mu) = \beta_0 + \beta_1\cdot \text{Sex}+
+    \beta_2\cdot\text{Weight}+
+    \beta_3\cdot\text{Weight}\cdot\text{Sex} $$
+
+where,
+
+* $\beta_0$ is the intercept of the model
+* $\beta_1$ is the effect of sex.
+* $\beta_2$ is the effect of weight.
+* $\beta_3$ is the interaction of sex and weight.
+
+We can link the predictive model to the data using a statistical model. 
+In this case we are assuming a normal distribution with some uncertainty 
+quantified as $\sigma$. Recall was specific this as: 
+
+
+
+$$log(Y_i) \sim Normal(log(\mu),\sigma)$$
+
+where
+
+* $log(\mu)$ is the log of prediction
+* $\sigma$ is the standard deviation.
+
+Note here we are working on log scale so we need to log transform our observed data.
 
 ```{r}
 fit<- lm(lhomerange~weight+sex+weight:sex,data=dat)
