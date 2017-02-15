@@ -34,6 +34,8 @@ navbar:
           href: "Class-09.html"
         - text: "Class 10: LMs and GLMs"
           href: "Class-10.html"
+        - text: "Class 11: Prediction and GLMs"
+          href: "Class-11.html"         
     - text: "Additional Resources"
       menu: 
         - text: "R tutorials"

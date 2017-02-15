@@ -33,7 +33,7 @@ List of preliminary problems to instructor for review
 * Assignment due: Objectives network part II (Wednesday by 12 pm). See 
 details [here](hw-01.html) 
 * Group work: Continue discussing potential class projects
-* Link to class recording  [Pending]()
+* Link to class recording  [YouTube](https://youtu.be/Wd4iGZcOuk8)
 * Today's R script [Class-10.R](scripts/Class-10.R)
 
 ## Objectives 

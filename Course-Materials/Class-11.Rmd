@@ -1,0 +1,918 @@
+---
+title: ""
+---
+
+ <!--
+
+library(knitr)
+rmarkdown::render_site("Class-11.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-11.jpg")
+rm(list=objects())
+```
+<!--
+Homework 1:  Introduction to basic computing- R
+List of preliminary problems to instructor for review
+-->
+
+# Class 11. LMs and GLMs in Decision Contexts
+
+* Supplemental background reading for next class(es): Conroy and Peterson Chapter 5.
+* Assignment due: None
+* Group work: Submit a concise summary of your proposed problem by 5 pm Friday.
+Email to me: michael.colvin@msstate.edu, only 1 per group needed.
+* Link to class recording  [Pending]()
+* Today's R script [Class-11.R](scripts/Class-11.R)
+
+## Objectives 
+
+By the end of this tutorial you should be able to:
+
+1. Understand functions in R
+1. Understand generalized linear models (GLMs)
+1. Understand logit and expit link functions
+1. Further understand interactions in linear models
+2. Predicting outcomes from GLMs
+
+
+## Some preliminaries
+
+* If you want to play along in class download this zipfile 
+[*.zip](http://mec685.cfr.msstate.edu/class-11.zip). 
+* Be sure to unzip it before trying to use files and such
+* The file contains the dataset used in class and an R script of all the 
+code. 
+* Once you have it where you want open the R script and be sure to check 
+the working directory `getwd()` and make sure it is where your folder 
+is. 
+* If your working directory is not correct, you can set it in Rstudio: 
+"Session --> Set Working Directory --> To source file location". Or you 
+can use the `setwd()` in the console. 
+
+
+## Anatomy of a function
+
+Okay. To this point I have introduced you to a number of object types in 
+R. You then used functions on those objects to get R to do complicated 
+things like fitting a linear model with `lm()`, extracting coefficients 
+with `coef()`, or getting residuals with `resid()`. All three of those 
+functions take an R object and preform some action the returns a value 
+or values. The values returned can be a single `value`, a `vector`, a 
+`data.frame`, or a `list`. There were a couple of functions that did not 
+take an input. Recall `getwd()` and `objects()`? 
+
+
+The basics of a function is R is that you make a function that does 
+something useful. The function can take if needed to perform the 
+function. The general format is 
+
+
+`myfunction<- function(arg1,arg2)
+    {
+    out<- 2*arg1 + arg2 # performs something
+    return(out) # tells R what to return
+    }`
+
+Let's make a simple function that adds 2 and 6.
+
+```{r}
+myfunction<- function()
+    {
+    out<- 2+6
+    return(out)
+    }
+```
+
+Notice there are no `inputs` in the function above. This is because we 
+specified everything we needed in the function, therefore no need for 
+additional `inputs`. Let's try it out. 
+
+
+```{r}
+myfunction()
+```
+
+Neat, it returned the value `r myfunction()`.
+
+Let's try to make a more sophisticated function, one that returns a 
+vector from 1 to 100!. 
+
+
+```{r}
+myfunction100<- function()
+    {
+    out<- 1:100
+    return(out)
+    }
+```
+Let's see if it works!
+
+```{r}
+myfunction100()
+```
+Hopefully you are beginning to see how these might be useful! But we can 
+go farther, suppose we want a function that will return a sequence of 
+numbers from a user specified start and stop. Let's call those x1 and x2 
+for start and stop respectively. The function to do this will look like. 
+
+
+
+```{r}
+myfunctionCustom<- function(x1,x2)
+    {
+    out<- x1:x2
+    return(out)
+    }
+```
+Let's see if it works!
+
+```{r}
+myfunctionCustom(x1=3,x2=55)
+```
+Boomtown! it returned a vector from 3 to 55!
+
+Now what happens if we forget to specify an input?
+
+```{r,eval=FALSE}
+myfunctionCustom(x1=3)
+```
+Well that is no fun.  
+
+What happens if we forget to tell the function which input is which?
+```{r}
+myfunctionCustom(3,55)
+```
+It did the same things as `myfunctionCustom(x1=3,x2=55)`. That is because 
+R simply applies the inputs to the same order as the function was created.
+
+```{r}
+myfunctionCustom(55,3)
+```
+Well, that is odd. The vector is not quite I was expecting, it is 55 to 3 
+rather than 3 to 55! That is because R is automatically assigning 55 to x1 and 3 to x2 becuase
+that was the original order of the inputs in the function.  Lets check to make sure.  To see the guts  of 
+most functions we can type the function in the console without `()` like this:
+
+```{r}
+myfunctionCustom
+```
+Yep it has x1 as being the first input and x2 as the second. The input 
+order does not matter if we specify the inputs in the function. 
+
+```{r}
+myfunctionCustom(x2=55,x1=3)
+```
+
+Now one last be before we are done with functions. Recall that when we ran
+`myfunctionCustom(x1=3)` it did not run and returned an error? That was because we
+did not specify x2.
+
+In the original function we can specify default values that R will use if there
+is no value present.  For example, let's set the default values for x1 and x2 in our function
+to 1 and 100 respectively.  
+
+```{r}
+myfunctionCustom<- function(x1=1,x2=100)
+    {
+    out<- x1:x2
+    return(out)
+    }
+```
+
+Now if I do not specify any inputs I will get a vector from 1 to 100.
+
+```{r}
+myfunctionCustom()
+```
+
+Or if I only specify x1 as 50 I will get a vector values from 50 to 100.
+
+```{r}
+myfunctionCustom(x1=50)
+```
+Alternatively I can only specify x2 as 66 and it returns a vector of 1 
+to 60. 
+
+
+```{r}
+myfunctionCustom(x2=66)
+```
+
+Why is knowing how function works important? Well, it will help out 
+immensely when we are dealing with discrete *outcomes* that result from 
+Bernoulli, Binomial, or Poisson distributions. But first let's revisit 
+our old friend the linear model that assumes a normal distribution. 
+Recall, the predictive model was: 
+
+
+$$\mu = \beta_0 + \beta_i\cdot X_i $$ 
+
+where 
+
+
+* $\beta_{0}$ is the model intercept, 
+* $\beta_{i}$ is the effect of covariate $i$, 
+* $X_i$ is a matrix of predictor covariates 
+* $i$ indexes each covariate.
+
+
+The link the prediction to data using a statistical model to 
+account for uncertainty as: 
+
+
+
+$$Y_i \sim Normal(\mu,\sigma)$$
+
+
+* $Y_i$ is the observed values
+* $\mu$ is the predicted value 
+* $\sigma$ is the standard deviation.
+
+## Prediction interval
+
+
+
+```{r}
+# THIS WILL READ IN THE CSV FILE FROM YOUR WORKING
+# DIRECTORY 
+damage_dat<- read.csv("damage-data.csv") 
+head(damage_dat)
+```
+
+Recall that we rescaled our group sizes so we could view the interaction of group size
+and area. Let's do that again and take a look.
+
+```{r}
+# scale group size
+damage_dat$group_size_scl<- (damage_dat$group_size-0)/(max(damage_dat$group_size)-0)
+```
+Now we can take a look at the plot again.
+
+```{r}
+plot(area_damaged~habitat_area, damage_dat,
+    xlab="Habitat area (ha)",
+    ylab="Area damaged (ha)",
+    las=1,
+    cex=damage_dat$group_size_scl*2)# double the scale
+``` 
+
+We go and fit that model again.
+
+```{r}
+fit<- lm(area_damaged~habitat_area+group_size+habitat_area:group_size,
+    data=damage_dat)
+```
+Now we can make predictions of possible outcomes using our statistical model.
+First we need some data to predict outcomes for.
+When we deal with interactions we generally want to make predictions for
+all possible combinations of habitat area and group size. The `expand.grid()` function
+will do this for us.
+
+```{r}
+preddat<- expand.grid(
+    habitat_area=c(min(damage_dat$habitat_area):max(damage_dat$habitat_area)),
+    group_size= c(min(damage_dat$group_size):max(damage_dat$group_size)))
+```
+
+Using the new data.frame `preddat` we can make 95% prediction intervals.
+Now these are different than confidence intervals, they are wider.
+
+```{r}
+predicted<- predict(fit, preddat, 
+    interval="prediction", 
+    level=0.95)
+    
+```
+Let's check and see what kind of object we are dealing with.
+
+```{r}
+class(predicted)
+```
+
+What? A matrix?  That is not what I was expecting. 
+If we convert the matrix to a data.frame it is easier to deal with because we
+can use `$` to get each column rather than `[]`
+
+```{r}
+predicted<- as.data.frame(predicted)
+```
+
+Now that we have coerced the matrix into a data.frame we can 
+add it to our predicted data.
+
+```{r}
+preddat$pred<-predicted$fit
+preddat$lci_exact<-predicted$lwr
+preddat$uci_exact<-predicted$upr
+```
+
+Let's take a look at them intervals.  
+
+```{r}
+plot(pred~habitat_area, preddat, 
+    subset=group_size==3,type='l',ylim=c(-20,50))
+
+# exact prediction intervals
+points( lci_exact~habitat_area, preddat,
+    subset=group_size==3,type='l',lty=2)
+points( uci_exact~habitat_area, preddat, 
+    subset=group_size==3,type='l',lty=2)
+```
+
+We can also approximate prediction intervals with our statisical model.
+
+Recall that: 
+
+$$Y_i \sim Normal(\mu,\sigma)$$
+
+
+If we grab our residual standard error and multiply by a critical t-value. A
+t-value of 2, or 1.96 if you want to be exact is multiplied by the residual 
+standard error gives approximate 95% prediction intervals.  
+
+```{r}
+sigma<- summary(fit)$sigma
+preddat$lci_approximate<- preddat$pred-2*sigma
+preddat$uci_approximate<-preddat$pred+2*sigma
+```
+Let's take a look and confirm this.
+
+
+ ```{r}
+plot(pred~habitat_area, preddat, 
+    subset=group_size==3,type='l',ylim=c(-20,50))
+
+# exact prediction intervals
+points( lci_exact~habitat_area, preddat, 
+    subset=group_size==3,type='l',lty=2)
+points( uci_exact~habitat_area, preddat, 
+    subset=group_size==3,type='l',lty=2)     
+
+# add approximate prediction intervals
+points(lci_approximate~habitat_area, preddat, 
+    subset=group_size==3,type='l',lty=2,col='red')
+points(uci_approximate~habitat_area, preddat, 
+    subset=group_size==3,type='l',lty=2,col='red')
+```
+
+What is up with the difference? Well the difference is in the additional 
+uncertainty around the estimates of the $\beta$. You can see them using 
+the `vcov()` function. 
+
+
+```{r}
+vcov(fit) # var-cov matrix of betas
+```
+Now when dealing with a linear model with a normal distribution these 
+uncertainties combine together pretty well. 
+But once you start dealing with discrete distributions prediction
+intervals are not as clear cut, especially when it comes to 
+uncertainty in the $\beta$. But one way around it is to randomly sample
+your data, fit your model, and then make predictions. If you do this 
+many many times you will approximate the prediction interval.  The `R` code
+below does this for our linear model using a function.
+
+
+```{r}
+
+bootpredata<- data.frame(habitat_area=100, group_size=3)
+
+bootSimFun <- function(preddata,obsdata) 
+    {
+    bootdat <- obsdata[sample(seq(nrow(obsdata)),# sample your data
+        size=nrow(obsdata),# how many samples?
+        replace=TRUE),] # sample with replacement
+    # fit the model    
+    bootfit <- lm(area_damaged~habitat_area+
+            group_size+
+            habitat_area:group_size,
+            data=bootdat)
+    # Make predictions
+    bootpred <- predict(bootfit,newdata=preddata)
+    sigma<- summary(bootfit)$sigma
+    # Add uncertainty to prediction 
+    out<- rnorm(length(bootpred),bootpred,sigma)
+    return(out)
+    }
+```
+
+So we can put in our data we want to predict from `bootpredata`
+and our observed data `damage_dat`.
+```{r}
+bootSimFun(preddat=bootpredata, obsdata=damage_dat)
+```
+And we a prediction. Yeah.
+
+If we do this many times, by many I mean 100s of thousands.
+I only do a few here because it takes a bit of computer time.
+Using the `for()` we can loop over each simulation, 1,2,3,...50 
+and get a simulation.  All we need to do is have an object to store
+our result in and we are good to go.  
+
+```{r}
+nsims<- 50
+pred<- vector(length=nsims)
+for(i in 1:nsims)
+    {
+    pred[i]<- bootSimFun(preddata=bootpredata, obsdata=damage_dat)
+    }
+
+```
+We can look at the predictions.
+
+```{r}
+hist(pred)
+abline(v=quantile(pred,c(0.025,0.975)),col="red",lwd=5)
+```
+
+
+
+Let's compare the exact solution and the bootstrap.
+
+```{r}
+# the exact solution
+preddat[preddat$group_size==3 & preddat$habitat_area==100,]
+```
+and the bootstrap solution
+
+```{r}
+quantile(pred,c(0.025,0.975))
+```
+
+If you do enough replicates it will get close to the exact solution. For 
+the sake of time the code below is optimized for speed to run many 
+bootstrap replicates. If you have some time to kill try running for 0.5 
+million replicates. 
+
+So what was the point of all this? We have uncertainty associated with 
+the estimates of the coefficients and overall uncertainty. By generating 
+prediction intervals we can estimate the likelihood of an outcome or 
+calculate the risk of an outcome. Long story short the linear model 
+coupled with the statistical model can be used to make predictions and 
+evaluate the likelihood of an outcome. The probability associated with 
+that outcome can be quantified by the linear model and calculated using 
+an exact solution or an approximate solution by simulation. This is all 
+very important for using data to make decisions. This will become useful 
+when we start to look at outcomes that are not continuous, like counts, 
+occupancy, and so on. But also realizing you are probably doing a good enough
+job with $\sigma$ as your uncertainty.  
+
+
+## Generalized linear models
+
+### Binomial data
+
+The previous example was a bit odd. When we calculated the prediction intervals
+were negative in some cases. It seems to me that you should not have a negative
+amount of habitat damaged as a possible outcome, even if that outcome has a very
+small probability of happening. Right? Well when you are trying to model proportions
+or parts of a whole a binomial distribution comes in pretty darn handy. Examples 
+of a binomially distributed value include:
+
+* Mortalities: number dead:total number
+* Area damaged: area damaged:total area
+* Captures: number captured:total number
+* Sex ratio: number of females:total number, and so on.
+
+The gist here is that you have integers that can be viewed as trials and 
+successes or failure. For example if you have 100 critters in a tank and 
+40 of them survive there were 40 successes and 60 failures. Similarly if 
+there are 100 critters in a plot and you capture 70 of them there were 
+70 successes and 30 failures. 
+
+
+
+Now you may be asking yourself why don't I just calculate the 
+probabilities and go from there? Well, 2 reasons come to mind. 
+
+
+
+1. Natural resource data is rarely equal sizes, for example the 
+precision around 5/10 versus 50/100 are very different and it seems a 
+shame to lose that information. 
+
+
+2. Many times we need to be able to predict an outcome given an input. 
+For example, if I have 1000 critters, how many might die if we 
+translocate them? The predictions from a binomial are a whole number 
+which makes biological sense. 
+
+
+#### The data
+
+Here we have a data set of with 4 columns quantifying temperature, what truck was used,
+number of critters translocated, and the number that survived.
+
+```{r,echo=FALSE}
+
+b<- c(1,-0.02,0.002,-0.0008)
+set.seed(8433)
+dat<- data.frame(temperature=round(runif(200,3,13),1),
+    truck=sample(c("truck 1","truck 2"),200,replace=TRUE))
+dat$n_translocated<- floor(runif(200,200,1000) )   
+
+mm<- model.matrix(as.formula("~temperature+truck+temperature:truck"),
+    data=dat)
+dat$y<- mm %*% b
+dat$S<-plogis(dat$y)
+
+dat$n_survived<- dat$n_translocated-rbinom(200,dat$n_translocated,plogis(dat$y))
+#dat$p<- dat$n_survived/dat$n_translocated
+dat<-dat [,-c(4,5)]
+write.csv(dat,"transport-mortality-data.csv",row.names=FALSE)
+
+```
+
+Go ahead and read in the data, assuming it is in your working directory.
+
+```{r}
+dat<- read.csv("transport-mortality-data.csv")
+```
+Take a look at the first couple of rows
+
+```{r}
+head(dat)
+```
+
+
+#### model
+
+The model looks familiar, we have seen the right hand side before, 
+the only new thing we are seeing is the `logit()` function and p.
+Well to fit a linear model to value that is bound between 0 and 1
+we need to transform those values. The most common way to do that is
+to take the log of of the odds $logit(p)\eq log(\frac{p}{1-p}) which 
+gives values that vary from about -20 to 20 or so.  
+
+$$\text{logit}(p) = \beta_{0}+
+    \beta_{1}\cdot\text{Temperature}+
+    \beta_{2}\cdot\text{Truck}+
+    \beta_{3}\cdot\text{Temperature}\cdot\text{Truck}$$
+
+where
+
+* $\beta_{0}$ is the intercept of the linear model  
+* $\beta_{1}$ is the effect of temperature
+* $\beta_{2}$ is the effect of truck
+* $\beta_{3}$ is the interaction of temperature and truck, and
+* $p$ is the predicted survival
+ 
+The statistical model linking the observed data to the linear model is:
+
+$$\text{Number Survived}\sim Binomial(\text{Number Translocated},p)$$    
+
+where,
+
+* $\text{Number Survived}$ is the number of critters surviving translocation
+* $\text{Number Translocated}$ is the number of critters translocated
+* $p$ is the probability of success (i.e., survival) 
+
+So in this case we are assuming the number of survivals is binomially distributed.
+
+#### Fitting the model to data
+
+Now things get a little funky here we need to input
+2 dependent variables into the model. Well based off the model above
+I bet it is the number that survived and the total number transported. 
+Let's give that a shot.  We can combine them using the `cbind()` function.
+
+
+```{r}
+fit<-glm(cbind(n_survived,n_translocated)~temperature+truck+temperature:truck,
+    data=dat, 
+    family="binomial")
+```    
+
+Now that we have the model fit we can extract fitted and residual values 
+just like we did for the linear model. Don't believe me? Well here we 
+go. 
+
+
+```{r}
+dat$pred<- fitted(fit) # get the fitted values
+```
+
+Now we have to get the observed values. In this examples it is the 
+proportion of fish that survived. We need to calculate that as the 
+number survived divided by the number translocated. 
+
+```{r}
+dat$p<- dat$n_survived/dat$n_translocated
+```
+We can also extract the residuals of to fitted model.
+
+```{r}
+dat$resids<- resid(fit)
+```
+Let's do some due diligence and look at some plots just to make sure things
+look OK. Keep in mind that when dealing with discrete distributions like the 
+binomial things get a bit tricky. So we evaluate the predicted proportion surviving
+that were predicted and observed.
+
+```{r}
+plot(resids~pred,dat,
+    xlab="Predicted survival",
+    ylab="Residual",
+    las=1)
+```
+
+That looks ok to me...
+
+```{r}
+plot(p~pred,data=dat,
+    xlab="Predicted survival",
+    ylab="Observed survival",
+    las=1)
+abline(0,1)
+```
+
+That does not look ok to me. What the heck is going on? Well, turns out 
+the glm function wants the dependent variable to be 
+`c(successes,failures)` and not `c(successes,total)`. Let's fix that and 
+see if makes things better. Ok. Here goes. 
+
+
+
+
+
+```{r}
+dat$n_mortalities<- dat$n_translocated-dat$n_survived
+fit<-glm(cbind(n_survived,n_mortalities)~temperature+truck+temperature:truck,
+    data=dat, family="binomial")
+dat$pred<- fitted(fit)
+dat$p<- dat$n_survived/dat$n_translocated
+dat$resids<- resid(fit)
+```
+
+Just like we did before we can plot the residuals.
+
+```{r}
+plot(resids~pred,dat,
+    xlab="Predicted survival",
+    ylab="Residual",
+    las=1)
+```
+
+They look good. Now we can plot the probability of surviving versus the 
+predicted probability. 
+
+
+
+```{r}
+plot(p~pred,data=dat,
+    xlab="Predicted survival",
+    ylab="Observed survival",
+    las=1)
+abline(0,1)
+```
+Oh that is much better!
+
+
+#### Prediction and uncertainty
+
+Recall that the statistical model for the binomial distribution was 
+
+$$Y_i \sim Binomial(N,p)$$
+
+where, 
+
+* $N$ is the number of trials (i.e., critters)
+* $p$ is the probability of success (i.e., survival), and
+* $Y_i$ is the observed number surviving.
+
+Well we can start to make predictions of likely outcomes from that model 
+given how many critters to translocate ($N$) and the probability of 
+survival ($p$). 
+
+```{r}
+pdat<- data.frame(temperature=10, 
+    truck=levels(dat$truck))
+```
+
+Now let's see if we can get prediction intervals like we did for the our 
+linear model!
+
+```{r}
+plink<-predict(fit,pdat,type="link", interval="prediction")
+presponse<-predict(fit,pdat,type="response", interval="prediction")
+```
+
+Well that ran without any warnings. Let's look at them.
+
+```{r}
+head(plink)
+head(presponse)
+```
+Boooo, no prediction intervals.... Well that is because prediction 
+intervals are not supported for `glm()` in R. This is in part due to the 
+difficult nature of constructing an interval for a discrete outcome and 
+the links involved to make the prediction. But it did give us 
+predictions of the expected survival which is nice. Lets see what is 
+going on there in a bit more detail. 
+
+We can reconstruct the predictions of we exact the coefficients and use 
+those to estimate the survival. In this example the effect of truck is a 
+'dummy' variable where truck 1 is equal to 0 and truck 2 is equal to 1. 
+So if we plug and play we can get the predicted survival for 
+translocating truck 1 and truck 2 of the temperature is 10 as follows. 
+
+```{r}
+betas<- coef(fit)
+temp<- 10
+tr1_est<- betas[1]+ betas[2]*temp + betas[3]*0 + betas[4]*0*temp
+tr2_est<- betas[1]+ betas[2]*temp + betas[3]*1 + betas[4]*1*temp
+```
+Cool beans[1](https://youtu.be/vc7VBVpl1SY).  Let's look at our predicted values.
+
+```{r}
+tr1_est
+tr2_est
+```
+That is weird, I was expecting the values to be somewheres between 0 and 
+1. Well we have to apply our link function. In the specification above 
+we used the logit link to make a probability a value that is not 
+constrained to live between 0 and 1. Similarly we can use the expit 
+function to transform a value to something that is bounded between 0 and 
+1. Logit and expit are related functions. The expit function is: 
+
+
+$$p = \frac{exp(y)}{1+exp(y)}$$
+
+whereas the logit function is
+
+$$y = log(\frac{p}{1-p}).$$
+
+Let's confirm that is the case.
+
+```{r}
+tr1_S<- exp(tr1_est)/(1+exp(tr1_est))# expit function
+tr2_S<- exp(tr2_est)/(1+exp(tr2_est))# expit function
+tr1_S
+tr2_S
+```
+
+Ok. That all seemed to work. Lets try to convert `tr1_S` and `tr2_S` to
+log odds using the logit link.
+
+```{r}
+try1<- log(tr1_S/(1-tr1_S))
+tr1_est
+try1 # should be close, within rounding error
+```
+
+Let's do the estimate for truck 2
+
+```{r}
+try2<- log(tr2_S/(1-tr2_S))
+tr2_est
+try2 # should be close, within rounding error
+```
+
+Cool, those functions are going to be really important. Be sure to 
+remember that function `exp(y)/(1+exp(y))`! It is the basis for most 
+capture recapture and occupancy models! 
+
+Now that we have a prediction of survival form our model we can estimate 
+what the likely outcomes would be if we needed to translocate 100 
+critters and the temperature was 10. 
+
+The easiest way to think about the expected outcomes if you are not 
+really good at probability is to simply simulate the potential outcomes 
+and confirm for yourself. Fortunately `R` and a builtin in function for 
+simulating from a binomial distribution `rbinom()` and all you have to 
+specify for inputs are the number of simulations to make, the number of 
+trials, and the probability of success. 
+
+First we will specify the number of trials, number of critters to translocate
+in this case.
+
+```{r}
+translocate<- 100 # num. critters to translocate
+```
+
+Now we can tell the `rbinom()` function how many simulations to make. We
+will go for 100000. Any large number will do to make sure you capture all
+the possible outcomes.
+
+```{r}
+outcomes<- rbinom(100000,translocate, tr1_S)
+```
+
+Let's look at the outcomes to make sure things are right. It should be a
+vector with 100k elements in it.
+
+```{r}
+length(outcomes)
+```
+
+Things look good. Now if we tabulate up the frequency of the outcomes we
+can get an idea of the uncertainty. The `table()` function will take a vector
+and count up the unique outcomes.
+
+```{r}
+N_survive<-table(outcomes)
+N_survive
+```
+
+We can also look at a histogram of the outcomes.
+
+```{r}
+hist(outcomes)
+```
+
+And we can calculate the probability of each outcome by summing the how many
+simulations we drew and dividing the frequency by the total.
+
+```{r}
+N_survive_p<-N_survive/sum(N_survive)
+```
+
+I need to note that these are conditional probabilities. They give the 
+probability of specific outcomes conditional on the inputs, number of 
+critters to transport, truck, and temperature in this case. For this 
+example the outcomes are conditional on temperature being 10, truck 1 
+being used, and 100 critters being translocated. Overall, they should 
+sum to 1 as this is all the possible outcomes. Let's check to make sure. 
+
+```{r}
+sum(N_survive_p)# check to see if it sums to 1
+```
+
+Yep, it does.  
+
+We could enter those values into a decision Model as the possible 
+outcomes for using truck 1 
+
+We can use these values to quantify risk. For example what is the 
+probability of mortality exceeding 35 critters? First we can count up 
+how many of our simulations had a mortality exceeding 35 critters using 
+the `length()` function. The `length()` function takes a vector and 
+returns how many elements are in it. 
+
+```{r}
+grt35<- length(outcomes[outcomes>35])
+```
+
+Now if we divide that by the number of simulations we did then we
+get the probability of that outcome occurring.
+
+```{r}
+grt35/length(outcomes)
+```
+
+
+
+#### Incorporating outcomes and decisions
+
+We can take our conditional probabilities and put them directly into a 
+decision model. More on that later in the semester. 
+
+An we can use R to figure out what all the conditional probabilities 
+would be for the network above. First we need to make all the possible 
+combinations of states we have in our network. 
+
+
+
+```{r}
+combos<- expand.grid(
+    temperature=c(8,10,12,14),
+    ntranslocate=c(100,250,500,1000),
+    truck=c("truck 1","truck 2"))
+```
+
+Then we need to get the survival estimate from our fitted model.
+
+```{r}
+combos$S<- predict(fit,combos,type="response")
+head(combos)
+```
+
+Now we just need to tabulate all the expected outcomes for each expected 
+survival in the `combos` data.frame. Let's see just how many 
+combinations we have to evaluate. 
+
+
+
+```{r}
+nrow(combos)
+```
+
+Whoa, that is a lot, remember that curse of dimensionality I talked 
+about earlier in the semester? 
+
+Next class we will go over how to deal with getting all the possible 
+outcomes and further dealing with this problem! 
+
+

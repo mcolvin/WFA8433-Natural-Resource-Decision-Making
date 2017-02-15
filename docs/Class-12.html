@@ -267,11 +267,107 @@ $(document).ready(function () {
 </div>
 
 
-<div id="course-materials-readme-file" class="section level1">
-<h1>Course materials readme file</h1>
-<div id="about" class="section level2">
-<h2>About</h2>
-<p>This folder contains the original source code for WFA8433. The source is rendered the folder _site and those files transfered to the folder by compile.R. Indvidual *.Rmd files are class materials.</p>
+<p><!--
+
+library(knitr)
+rmarkdown::render_site("Class-12.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+--></p>
+<p><img src="media/banner-09.jpg" width="95%" /> <!--
+Homework 1:  Introduction to basic computing- R
+List of preliminary problems to instructor for review
+--></p>
+<div id="class-12.-lms-and-glms-in-decision-contexts" class="section level1">
+<h1>Class 12. LMs and GLMs in Decision Contexts</h1>
+<ul>
+<li>Supplemental background reading for next class(es):</li>
+<li>Assignment due: Objectives network part II (Wednesday by 12 pm). See details <a href="hw-01.html">here</a></li>
+<li>Group work: Continue discussing potential class projects</li>
+<li>Link to class recording <a href="">Pending</a></li>
+<li>Today’s R script <a href="scripts/Class-10.R">Class-10.R</a></li>
+</ul>
+<div id="objectives" class="section level2">
+<h2>Objectives</h2>
+<div id="bernoulli" class="section level3">
+<h3>Bernoulli</h3>
+<div id="data" class="section level4">
+<h4>data</h4>
+</div>
+<div id="model" class="section level4">
+<h4>model</h4>
+</div>
+<div id="fitting" class="section level4">
+<h4>fitting</h4>
+</div>
+<div id="prediction-and-interval" class="section level4">
+<h4>prediction and interval</h4>
+</div>
+<div id="bdn" class="section level4">
+<h4>bdn</h4>
+</div>
+</div>
+<div id="poisson" class="section level3">
+<h3>poisson</h3>
+<div id="data-1" class="section level4">
+<h4>data</h4>
+</div>
+<div id="model-1" class="section level4">
+<h4>model</h4>
+</div>
+<div id="fitting-1" class="section level4">
+<h4>fitting</h4>
+</div>
+<div id="prediction-and-interval-1" class="section level4">
+<h4>prediction and interval</h4>
+</div>
+<div id="bdn-1" class="section level4">
+<h4>bdn</h4>
+<!--
+bootSimFun <- function(nsims=10000,preddata,obsdata) 
+    {
+    rep_data<- lapply(1:nsims,function(x)
+        {
+        bootdat <- obsdata[sample(seq(nrow(obsdata)),
+            size=nrow(obsdata),replace=TRUE),]
+        bootfit <- lm(area_damaged~habitat_area+
+                group_size+
+                habitat_area:group_size,
+                data=bootdat)
+        bootpred <- predict(bootfit,newdata=preddata)
+        sigma<- summary(bootfit)$sigma
+        out<- rnorm(length(bootpred),bootpred,sigma)
+        return(out)
+    })
+    return(rep_data)
+    }
+
+pred<- bootSimFun(nsim=100000,preddata=bootpredata, obsdata=damage_dat)
+
+preddat[preddat$group_size==3 & preddat$habitat_area==100,]
+hist(pred)
+abline(v=quantile(pred,c(0.025,0.975)),col="red",lwd=5)
+-->
+<!-- how r does prediction interval se
+http://stackoverflow.com/questions/38109501/how-does-predict-lm-compute-confidence-interval-and-prediction-interval
+
+betas<- coef(fit)
+mm<- model.matrix(as.formula("~habitat_area+group_size+habitat_area:group_size"),preddat)   
+y_hat<- mm%*%betas  
+V<-vcov(fit) # variance,covariance matrix
+se<- sqrt(rowSums((mm %*% V) * mm))
+preddat$uci <- y_hat + 2* sqrt(se^2 + summary(fit)$sigma^2) # variances add, ses do not
+preddat$lci <- y_hat - 2* sqrt(se^2 + summary(fit)$sigma^2) # variances add, ses do not
+alpha <- qt((1-0.9)/2, df = z$df)
+-->
+</div>
+</div>
 </div>
 </div>
 

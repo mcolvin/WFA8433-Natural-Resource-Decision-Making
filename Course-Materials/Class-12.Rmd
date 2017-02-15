@@ -1,0 +1,111 @@
+---
+title: ""
+---
+
+ <!--
+
+library(knitr)
+rmarkdown::render_site("Class-12.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-09.jpg")
+rm(list=objects())
+```
+<!--
+Homework 1:  Introduction to basic computing- R
+List of preliminary problems to instructor for review
+-->
+
+# Class 12. LMs and GLMs in Decision Contexts
+
+* Supplemental background reading for next class(es): 
+* Assignment due: Objectives network part II (Wednesday by 12 pm). See 
+details [here](hw-01.html) 
+* Group work: Continue discussing potential class projects
+* Link to class recording  [Pending]()
+* Today's R script [Class-10.R](scripts/Class-10.R)
+
+## Objectives 
+
+
+### Bernoulli
+
+#### data
+
+#### model
+
+#### fitting
+
+#### prediction and interval
+
+#### bdn
+
+
+### poisson
+
+#### data
+
+#### model
+
+#### fitting
+
+#### prediction and interval
+
+#### bdn
+
+
+
+<!--
+bootSimFun <- function(nsims=10000,preddata,obsdata) 
+    {
+    rep_data<- lapply(1:nsims,function(x)
+        {
+        bootdat <- obsdata[sample(seq(nrow(obsdata)),
+            size=nrow(obsdata),replace=TRUE),]
+        bootfit <- lm(area_damaged~habitat_area+
+                group_size+
+                habitat_area:group_size,
+                data=bootdat)
+        bootpred <- predict(bootfit,newdata=preddata)
+        sigma<- summary(bootfit)$sigma
+        out<- rnorm(length(bootpred),bootpred,sigma)
+        return(out)
+    })
+    return(rep_data)
+    }
+
+pred<- bootSimFun(nsim=100000,preddata=bootpredata, obsdata=damage_dat)
+
+preddat[preddat$group_size==3 & preddat$habitat_area==100,]
+hist(pred)
+abline(v=quantile(pred,c(0.025,0.975)),col="red",lwd=5)
+-->
+
+
+<!-- how r does prediction interval se
+http://stackoverflow.com/questions/38109501/how-does-predict-lm-compute-confidence-interval-and-prediction-interval
+
+betas<- coef(fit)
+mm<- model.matrix(as.formula("~habitat_area+group_size+habitat_area:group_size"),preddat)	
+y_hat<- mm%*%betas	
+V<-vcov(fit) # variance,covariance matrix
+se<- sqrt(rowSums((mm %*% V) * mm))
+preddat$uci <- y_hat + 2* sqrt(se^2 + summary(fit)$sigma^2) # variances add, ses do not
+preddat$lci <- y_hat - 2* sqrt(se^2 + summary(fit)$sigma^2) # variances add, ses do not
+alpha <- qt((1-0.9)/2, df = z$df)
+-->
+
+
+
+
