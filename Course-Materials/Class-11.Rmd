@@ -33,7 +33,7 @@ List of preliminary problems to instructor for review
 * Assignment due: None
 * Group work: Submit a concise summary of your proposed problem by 5 pm Friday.
 Email to me: michael.colvin@msstate.edu, only 1 per group needed.
-* Link to class recording  [Pending]()
+* Link to class recording  [YouTube](https://youtu.be/P2yImMMJWao)
 * Today's R script [Class-11.R](scripts/Class-11.R)
 
 ## Objectives 

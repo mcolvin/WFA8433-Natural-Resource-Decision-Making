@@ -293,7 +293,7 @@ List of preliminary problems to instructor for review
 <li>Supplemental background reading for next class(es): Conroy and Peterson Chapter 5.</li>
 <li>Assignment due: None</li>
 <li>Group work: Submit a concise summary of your proposed problem by 5 pm Friday. Email to me: <a href="mailto:michael.colvin@msstate.edu">michael.colvin@msstate.edu</a>, only 1 per group needed.</li>
-<li>Link to class recording <a href="">Pending</a></li>
+<li>Link to class recording <a href="https://youtu.be/P2yImMMJWao">YouTube</a></li>
 <li>Today’s R script <a href="scripts/Class-11.R">Class-11.R</a></li>
 </ul>
 <div id="objectives" class="section level2">
@@ -524,7 +524,7 @@ bootSimFun &lt;- function(preddata,obsdata)
     }</code></pre>
 <p>So we can put in our data we want to predict from <code>bootpredata</code> and our observed data <code>damage_dat</code>.</p>
 <pre class="r"><code>bootSimFun(preddat=bootpredata, obsdata=damage_dat)</code></pre>
-<pre><code>## [1] 10.88663</code></pre>
+<pre><code>## [1] 14.17596</code></pre>
 <p>And we a prediction. Yeah.</p>
 <p>If we do this many times, by many I mean 100s of thousands. I only do a few here because it takes a bit of computer time. Using the <code>for()</code> we can loop over each simulation, 1,2,3,…50 and get a simulation. All we need to do is have an object to store our result in and we are good to go.</p>
 <pre class="r"><code>nsims&lt;- 50
@@ -547,7 +547,7 @@ preddat[preddat$group_size==3 &amp; preddat$habitat_area==100,]</code></pre>
 <p>and the bootstrap solution</p>
 <pre class="r"><code>quantile(pred,c(0.025,0.975))</code></pre>
 <pre><code>##      2.5%     97.5% 
-##  3.916235 22.593093</code></pre>
+##  3.347002 20.621771</code></pre>
 <p>If you do enough replicates it will get close to the exact solution. For the sake of time the code below is optimized for speed to run many bootstrap replicates. If you have some time to kill try running for 0.5 million replicates.</p>
 <p>So what was the point of all this? We have uncertainty associated with the estimates of the coefficients and overall uncertainty. By generating prediction intervals we can estimate the likelihood of an outcome or calculate the risk of an outcome. Long story short the linear model coupled with the statistical model can be used to make predictions and evaluate the likelihood of an outcome. The probability associated with that outcome can be quantified by the linear model and calculated using an exact solution or an approximate solution by simulation. This is all very important for using data to make decisions. This will become useful when we start to look at outcomes that are not continuous, like counts, occupancy, and so on. But also realizing you are probably doing a good enough job with <span class="math inline">\(\sigma\)</span> as your uncertainty.</p>
 </div>

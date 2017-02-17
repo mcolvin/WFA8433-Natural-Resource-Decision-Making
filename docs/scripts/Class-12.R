@@ -3,9 +3,9 @@ dat<- read.csv("transport-mortality-data.csv")
  
  
  
+ 
 ## ----unnamed-chunk-2---- ##
 head(dat)
- 
  
  
 ## ----unnamed-chunk-3---- ##
@@ -41,7 +41,7 @@ outcomes<- matrix(0, # fill with 0s
     nrow=nrow(combos), # number of rows
     ncol=nsims) # number of columns
  
- 
+dim(outcomes) 
  
 ## ----unnamed-chunk-8---- ##
 for(i in 1:nrow(combos))
@@ -187,32 +187,40 @@ plot(success~n_survived,data=dat,
  
  
 ## ----unnamed-chunk-23---- ##
-par(mfrow=c(3,1),mar=c(1,1,1,1),oma=c(3,3,1,1))
+par(mfrow=c(3,1),mar=c(1,1,1,1),
+    oma=c(3,3,1,1))
 plot(success~n_survived,data=dat,
     xlab="",
     ylab="",
+    xlim=c(50,300),
     subset=habitat=="forest")
+text(50,0.9,"A)")
 plot(success~n_survived,data=dat,
     xlab="",
     ylab="",
+      xlim=c(50,300),
     subset=habitat=="field")
+text(50,0.9,"B)")
 plot(success~n_survived,data=dat,
     xlab="",
     ylab="",
+      xlim=c(50,300),
     subset=habitat=="swamp")  
+text(50,0.9,"C)")
 mtext(text="Number survived",
     side=1,# plot on the bottom outer margin
-    line=1,# what line to plot on 
+    line=2,# what line to plot on 
     outer=TRUE) # plot in the outer margin
 mtext(text="Translocation success",
     side=2, # plot on the left outer margin
     line=1, # what line to plot on 
     outer=TRUE) # plot in the outer margin
- 
+
  
  
 ## ----unnamed-chunk-24---- ##
-fit<- glm(success~n_survived+truck+habitat,
+fit<- glm(success~n_survived+
+      truck+habitat,
     data=dat,
     family="binomial")
  
@@ -261,41 +269,52 @@ head(preddat)
  
  
 ## ----unnamed-chunk-32---- ##
-preddat$pred<- predict(fit, newdata=preddat,
+preddat$pred<- predict(fit, 
+    newdata=preddat,
     type="response")# get probabilities, not log odds
  
- 
+head(preddat)
  
 ## ----unnamed-chunk-33---- ##
-plot(pred~n_survived,preddat,type="n",
+plot(pred~n_survived,
+    preddat,type="n",
     xlab="Number surviving",
     ylab="Probability of success",
     las=1)
 points(pred~n_survived,preddat,
     subset=truck=="truck 1" & habitat =="forest",
-    lty=1,type="l")
+    lty=1,
+    type="l")
 points(pred~n_survived,preddat,
     subset=truck=="truck 2" & habitat =="forest",
-    lty=2,type="l")    
+    lty=2,
+    type="l")    
 points(pred~n_survived,preddat,
     subset=truck=="truck 1" & habitat =="field",
-    lty=1,col="darkgrey",type="l")
+    lty=1,
+    col="darkgrey",
+    type="l")
 points(pred~n_survived,preddat,
     subset=truck=="truck 2" & habitat =="field",
-    lty=2,col="darkgrey",type="l")      
+    lty=2,
+    col="darkgrey",
+    type="l")      
  points(pred~n_survived,preddat,
     subset=truck=="truck 1" & habitat =="swamp",
     lty=1,col="lightgrey",type="l")
 points(pred~n_survived,preddat,
     subset=truck=="truck 2" & habitat =="swamp",
-    lty=2,col="lightgrey",type="l")    
+    lty=2,col="lightgrey",type="l",
+    lwd=3)    
 # PUT A LEGEND ON THIS AND CALL IT A NIGHT!    
-legend("topleft",c("Forest Truck 1","Forest Truck 2",
+legend("topleft",
+    c("Forest Truck 1","Forest Truck 2",
     "Field Truck 1","Field Truck 2",
     "Swamp Truck 1","Swamp Truck 2"),
     col=c("black","black",
         "darkgrey","darkgrey",
-        "lightgrey","lightgrey"),lty=c(1,2))
+        "lightgrey","lightgrey"),
+    lty=c(1,2))
  
  
  
