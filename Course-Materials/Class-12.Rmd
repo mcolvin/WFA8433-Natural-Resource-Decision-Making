@@ -17,9 +17,8 @@ system(paste("xcopy",
 -->
 
 
-
 ```{r echo=FALSE, out.width="95%"}
-include_graphics("media/banner-09.jpg")
+include_graphics("media/banner-05.jpg")
 rm(list=objects())
 ```
 <!--
@@ -27,85 +26,713 @@ Homework 1:  Introduction to basic computing- R
 List of preliminary problems to instructor for review
 -->
 
-# Class 12. LMs and GLMs in Decision Contexts
+# Class 12. GLMs in Decision Contexts Continued
 
-* Supplemental background reading for next class(es): 
-* Assignment due: Objectives network part II (Wednesday by 12 pm). See 
-details [here](hw-01.html) 
-* Group work: Continue discussing potential class projects
+* Supplemental background reading for next class(es): Conroy and Peterson Chapter 5.
+* Assignment due: None
+* Group work: Submit a concise summary of your proposed problem by 5 pm Friday.
+Email to me: michael.colvin@msstate.edu, only 1 per group needed.
 * Link to class recording  [Pending]()
-* Today's R script [Class-10.R](scripts/Class-10.R)
+* Today's R script [Class-12.R](scripts/Class-12.R)
 
 ## Objectives 
 
+By the end of this tutorial you should be able to:
+
+1. Understand generalized linear models (GLMs)
+1. Understand logit and expit link functions
+2. Predicting outcomes from GLMs
+2. Using analysis in decision contexts
+
+
+## Some preliminaries
+
+* If you want to play along in class download this zipfile 
+[*.zip](http://mec685.cfr.msstate.edu/class-12.zip). 
+* Be sure to unzip it before trying to use files and such
+* The file contains the dataset used in class and an R script of all the 
+code. 
+* Once you have it where you want open the R script and be sure to check 
+the working directory `getwd()` and make sure it is where your folder 
+is. 
+* If your working directory is not correct, you can set it in Rstudio: 
+"Session --> Set Working Directory --> To source file location". Or you 
+can use the `setwd()` in the console. 
+
+
+
+```{r}
+dat<- read.csv("transport-mortality-data.csv")
+```
+
+Take a look at the first couple of rows again and get a feel for what we 
+are looking at. 
+
+```{r}
+head(dat)
+```
+
+OK, looks like it did last class, that is good. Recall we need to 
+calculate the number of mortalities for the GLM to work correctly. That 
+is done below. 
+
+```{r}
+dat$n_mortalities<- dat$n_translocated-dat$n_survived
+```
+
+Now we can fit the model assuming the data has a binomial distribution. 
+Recall the prediction model was: 
+
+
+$$\text{logit}(p) = \beta_{0}+
+    \beta_{1}\cdot\text{Temperature}+
+    \beta_{2}\cdot\text{Truck}+
+    \beta_{3}\cdot\text{Temperature}\cdot\text{Truck}$$
+
+    
+where
+
+* $\beta_{0}$ is the intercept of the linear model  
+* $\beta_{1}$ is the effect of temperature
+* $\beta_{2}$ is the effect of truck
+* $\beta_{3}$ is the interaction of temperature and truck, and
+* $p$ is the predicted survival
+ 
+And the statistical model linking the observed data to the linear model 
+was: 
+
+
+$$\text{Number Survived}\sim Binomial(\text{Number Translocated},p)$$    
+
+
+where,
+
+* $\text{Number Survived}$ is the number of critters surviving 
+translocation 
+* $\text{Number Translocated}$ is the number of critters translocated 
+* $p$ is the probability of success (i.e., survival) 
+
+```{r}
+fit<-glm(cbind(n_survived,n_mortalities)~temperature+truck+temperature:truck,
+    data=dat, family="binomial")
+```
+
+We left off in the last class with using the `rbinom()` function to 
+simulate many realizations of the binomial distribution given a number 
+of critters to translocate and the probability of surviving. We made a 
+new object `combos` using the `expand.grid()` function to generate all 
+possible combinations of temperature, number of critters to translocate, 
+and which truck. That code is below. 
+
+```{r}
+combos<- expand.grid(
+    temperature=c(8,10,12,14),
+    ntranslocate=c(100,250,500,1000),
+    truck=c("truck 1","truck 2"))
+head(combos) # look at the combos
+```    
+
+Recall we used the`predict()` function to make predictions from the 
+fitted model and we specific that that `type="response"` and not 
+`type="link"` because we want the actual probabilities and not the log 
+odds (i.e., logit). Also recall that we could not get prediction 
+intervals using the `predict()` function for a `glm()` but as we saw 
+last time the we can pretty closely approximate it by simply simulating 
+from the distribution. If we really really wanted to we could bootstrap 
+it but that would take some time! The code below fits the `glm()` to the 
+data assuming the data is binomially distributed. 
+ 
+```{r}
+combos$S<- predict(fit, # predict survival for each input combination
+    newdata=combos,
+    type="response")
+```
+
+Now that we have the predicted survival we can simulate the expected outcomes 
+for each combination. In this example the outcomes are the number of critters that
+survive the translocation.  Now, we had `r nrow(combos)` possible combinations to 
+evaluate and as you recall we need to generate many values from `rbinom()` to begin
+to approximate the true distribution.  Fortunately computers are good at this type of 
+things so let's give it a go. 
+
+First we need an object to hold all our values. A matrix will work well
+because I can preallocate it and fill it with 0s. Let's do 10,000 replicates
+for each combo, so we will need a matrix with `r nrow(combos)` and 10,000
+columns to hold each replicate! The rows in the matrix correspond to each row
+in the `combos` `data.frame()`.
+
+Let's make that matrix.
+
+```{r}
+nsims<- 10000
+outcomes<- matrix(0, # fill with 0s
+    nrow=nrow(combos), # number of rows
+    ncol=nsims) # number of columns
+```
+
+Now that we have it made we can fill each row with replicate draws from 
+the binomial distribution given how many critters we want to translocate
+and the predicted survival. We are going to use the for `for()` function to
+loop over each row of `combos` and extract the predicted survival and number
+of critters to translocate to use as inputs to `rbinom()`.
+
+```{r}
+for(i in 1:nrow(combos))
+    {
+    S<- combos$S[i]
+    Nt<- combos$ntranslocate[i]
+    outcomes[i,]<-rbinom(nsims,Nt, S)
+    }
+```   
+
+Now that is done we can look at the outcomes using hist. Below are the expectations for 
+the 32nd combination. 
+
+```{r}
+hist(outcomes[32,])  
+```
+
+And we can calculate the probability of each outcome.
+
+```{r}
+table(outcomes[32,])/nsims
+```
+
+Now, there are quite a few possible outcomes. The number of survivors 
+varies from `r min(outcomes)` to `r max(outcomes)`. If we put that together as a
+decision tree, it would start with 32 branches and have an additional `r max(outcomes)-min(outcomes)`
+outcomes for each of those branches. Take it from me, it will be a big tree!
+If you are bored, make that tree and hang it on your fridge.
+
+### A decision model
+
+Fortunately a tool like Netica and help out here.  We take the predictive model and 
+statistical model an implement them in Netica to develop a formal decision making process.
+In this context we might be interest in which truck to use to translocate our critters
+so we maximize survival. This model looks like the image below.
+
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/cl12-translocation-network.png")
+```
+
+There is a whole lot being consolidated into 4 nature notes!
+Let's dig a bit deeper into this. The part of the model below 
+highlights the predictive model. Recall it was 
+
+
+$$\text{logit}(p) = \beta_{0}+
+    \beta_{1}\cdot\text{Temperature}+
+    \beta_{2}\cdot\text{Truck}+
+    \beta_{3}\cdot\text{Temperature}\cdot\text{Truck}$$
+
+    
+where
+
+* $\beta_{0}$ is the intercept of the linear model  
+* $\beta_{1}$ is the effect of temperature
+* $\beta_{2}$ is the effect of truck
+* $\beta_{3}$ is the interaction of temperature and truck, and
+* $p$ is the predicted survival
+
+The BDN below shows the inputs temperature and truck as predicting
+survival.
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/cl12-translocation-network-02.png")
+```
+
+But I don't see where the $\beta$s are? I mean I fit the model and 
+all, so how are they used to predict survival? Well that is because I was able
+to specify the equation in Netica, it is not pretty but it is pretty doable if you 
+do it in chunks.
+
+```{r echo=FALSE, out.width="45%"}
+include_graphics("media/cl12-translocation-network-02a.png")
+```
+
+The dialog box specifies what survival is depending on temperature and what truck is used!
+
+In the figure below we have that statistical model highlighted. Recall it was
+$$\text{Number Survived}\sim Binomial(\text{Number Translocated},p)$$    
+
+where,
+
+* $\text{Number Survived}$ is the number of critters surviving 
+translocation 
+* $\text{Number Translocated}$ is the number of critters translocated 
+* $p$ is the probability of success (i.e., survival) 
+
+Well that seems to jive with the inputs below!  Cool beans.
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/cl12-translocation-network-03.png")
+```
+
+Just like with survival there is an equation that calculates the probability 
+of the outcomes, number surviving, given survival and the number of critters to translocate.
+
+```{r echo=FALSE, out.width="45%"}
+include_graphics("media/cl12-translocation-network-03a.png")
+```
+
+Hopefully this has you thinking that you might be able to find information
+that can link to the temperature node, for example, you might be able to 
+use information on the average temperature from the day before to predict whate
+the temperature might be.  As we move along we will actually look at a way of 
+quantifying how valuable that information might be. But for now we will 
+return to leaning about 2 more GLMs as these are important tools to link system
+states (inputs) to expected outcomes.
 
 ### Bernoulli
 
-#### data
+The next distributional family we will look at is the Bernoulli which
+is very similar to the binomial. You can think of it as a binomial but with
+only 1 trial and therefore the outcomes are restricted to 0 and 1. We see this
+distribution in ecology associated with quantities that can be one of 2 possible
+outcomes such as
+
+* Present or absent
+* Infected or uninfected
+* Mature or immature
+* Male or female
+
+you get the drift. Each outcome above can be coded as a 0 or 1 and the probability
+of being a 0 or 1 modeled using a linear model. Specifically the model is:
+the predictive model was: 
+
+
+$$\text{logit}(p) = \beta_0 + \beta_i\cdot X_i $$ 
+
+where 
+
+
+* $\beta_{0}$ is the model intercept, 
+* $\beta_{i}$ is the effect of covariate $i$, 
+* $X_i$ is a matrix of predictor covariates 
+* $i$ indexes each covariate.
+
+
+The link the prediction to data using a statistical model to 
+account for uncertainty as: 
+
+
+$$Y_i \sim Bernoulli(p)$$
+
+
+* $Y_i$ is the observed values
+* $p$ is the probability of success (i.e., 1)
+
+Now this should look very familiar to the Binomial model we worked with in the 
+last class. In fact, $Bernoulli(p) = Binomial(1,p)$! Don't believe me? Let's verify it 
+with a quick simulation. Let's try simulating a probability of success of 0.3.
+
+Using the binomial we can simulation 100 outcomes using the code below.
+
+```{r}
+success<- rbinom(n=100,size=1,prob=0.3)
+```
+If all went to plan there should be about 30 success. Let's confirm
+
+```{r}
+table(success)
+```
+Nice, about 30 successes were returned per 100 independent trials.
+
+Now there is no corresponding `rbernoulli()` or `rbern()` function in 
+R because they are the same as `rbinom()` with `size=1`.
+
+
+#### The data
+
+Continuing with our translocation example from before, suppose after 
+translocation the population was monitored to see if the translocation 
+was successful. In this case success was defined as detecting 2 
+reproductive critters one year post translocation. 
+
+There are some factors that likely influence whether the translocation 
+was successful. For example, if you translocate more critters then you 
+are more likely to have a successful translocation. Also, the previous 
+example looked at short term mortality of translocation using the 
+binomial, however there may be delayed effects due to stressful 
+conditions encountered during the translocation event. 
+
+The data below represents data that one would expect if a conservation 
+translocation operation had been operating for a while. Actually, the 
+data matches up to our previous dataset. Except we have a couple of new 
+columns of data. The first column specifies whether that translocation 
+was successful or not, 1 or 0 respectively. Also included in the dataset 
+is the habitat type where the critters were released which has 3 levels: 
+forest, field, and swamp. 
+
+```{r,echo=FALSE}
+b<- c(1,-0.02,0.002,-0.0008)
+set.seed(8433)
+dat<- data.frame(temperature=round(runif(200,3,13),1),
+    truck=sample(c("truck 1","truck 2"),200,replace=TRUE))
+dat$n_translocated<- floor(runif(200,200,1000) )   
+
+mm<- model.matrix(as.formula("~temperature+truck+temperature:truck"),
+    data=dat)
+dat$y<- mm %*% b
+dat$S<-plogis(dat$y)
+
+dat$n_survived<- dat$n_translocated-rbinom(200,dat$n_translocated,plogis(dat$y))
+#dat$p<- dat$n_survived/dat$n_translocated
+dat<-dat [,-c(4,5)]
+dat$habitat<- as.factor(sample(c("forest","field","swamp"),nrow(dat),replace=TRUE))
+
+mm<- model.matrix(as.formula("~habitat+n_survived + truck "),dat)
+betas<- c(-5,-1.8,-0.4,0.03,-1.5)
+y<- plogis(mm %*% betas)
+
+dat$success<- rbinom(nrow(dat),1,y)
+write.csv(dat,"translocation-success-data.csv",row.names=FALSE)
+```
+
+
+```{r}
+dat<- read.csv("translocation-success-data.csv")
+```
+As usual let's take a look at the data and make sure things are ok.
+
+```{r}
+head(dat)
+str(dat)
+```
+Things look good we have a new factor for `habitat` and a field for `success`.
+
+We can look at the data with our plot function. Let's see if we can see 
+anything with success. 
+
+
+```{r}
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success")
+```
+Well that was not very helpful. But it does show that we do not have to 
+deal with complete separation issues. I know you are all probably 
+thinking separation issues only occur when you are away from your 
+computer for too long, but in this case if there is no overlap between 
+the 0s and 1s with the covariate we will not be able to fit the model. 
+
+Let's try to look at each habitat on a plot. We can use the subset 
+argument in the plot function to look at each habitat. To keep them all 
+straight I am going to add a title to them. 
+
+
+```{r}
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="forest",
+    main="Forest")
+```
+Now lets look at field habitat.
+
+```{r}
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="field",
+    main="Field")
+```
+And finally we can look at swamp.
+
+```{r}
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="swamp",
+    main="Swamp")
+```
+
+Let's use our points function to overlay the different habitat types. 
+First we make a blank plot using the argument `type="n"` and then 
+overlay our varying habitats using the `points()` function. 
+
+
+
+
+```{r}
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    type="n")
+points(success~n_survived,data=dat,
+      subset=habitat=="forest",
+      col="blue")
+points(success~n_survived,data=dat,
+      subset=habitat=="field",
+      col="red")
+points(success~n_survived,data=dat,
+      subset=habitat=="swamp",
+      col="green")
+```
+
+Well that is not super helpful either.
+
+Can we plot multiple panels on the same plot? Yes, I am gladd you asked. 
+We can use the `par()` function to tell `R` to plot several plots on the 
+same plot area. Specifically, the `mfrow` argument will allow us to specify
+how many row and columns to plot. Let's make each plot in 3 rows and 1 column.
+
+```{r}
+par(mfrow=c(3,1))
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="forest")
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="field")
+ plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="swamp")  
+```
+
+Well we can start to see some patterns here.
+Forest looks to be only successful if there are lots of critters translocated.
+swampy areas have success over a wide range of numbers stocked.
+
+Those plots are hard to read though. With some tweaking we can 
+adjust things to make them a bit more pleasant. First thing we need
+to adjust is the margins around each plot using the `mar` argument
+
+```{r}
+par(mfrow=c(3,1),mar=c(1,1,1,1))
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="forest")
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="field")
+ plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="swamp")  
+```
+
+Well that is better, but I lost my labels. What do the 4 numbers mean anyways?
+Well they indicate the margin size starting at the bottom (x-axis) and move 
+clockwise around so that 2 is the y-axis, 3 is the top, and 4 is the left margin.
+If was want to increase the bottom and right margins a bit we can change the first
+and second element in the `mar` argument.
+
+```{r}
+par(mfrow=c(3,1),mar=c(6,6,1,1))
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="forest")
+plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="field")
+ plot(success~n_survived,data=dat,
+    xlab="Number survived",
+    ylab="Translocation success",
+    subset=habitat=="swamp")  
+```
+
+That is better, but my axis labels are gross and redundant.
+We can add a little bit of outer margin and add some text to that
+to make them not so gross using the `oma` argument. And we can then
+use the `mtext()` function to add some text in that new margin area.
+
+```{r}
+par(mfrow=c(3,1),mar=c(1,1,1,1),oma=c(3,3,1,1))
+plot(success~n_survived,data=dat,
+    xlab="",
+    ylab="",
+    subset=habitat=="forest")
+plot(success~n_survived,data=dat,
+    xlab="",
+    ylab="",
+    subset=habitat=="field")
+plot(success~n_survived,data=dat,
+    xlab="",
+    ylab="",
+    subset=habitat=="swamp")  
+mtext(text="Number survived",
+    side=1,# plot on the bottom outer margin
+    line=1,# what line to plot on 
+    outer=TRUE) # plot in the outer margin
+mtext(text="Translocation success",
+    side=2, # plot on the left outer margin
+    line=1, # what line to plot on 
+    outer=TRUE) # plot in the outer margin
+```
+
+With tweaking you can get some really good graphics. Let's move on to
+the model.
 
 #### model
 
+Here we are going to fit a model to the 0s and 1s, success in the 
+dataset. Specifically we are going to fit the predictive model
+
+
+$$\text{logit}(p) = \beta_0 + \beta_1\cdot \text{Survivors} + 
+    \beta_2\cdot\text{Truck} +
+    \beta_3\cdot\text{Habitat}$$ 
+
+where 
+
+* $\beta_{0}$ is the model intercept, 
+* $\beta_{1}$ is the effect of the number of critters translocated 
+* $\beta_{2}$ is the effect of truck indicating a delayed mortality
+* $\beta_{3}$ is the effect of habitat the critter was stocked into
+
+The link the prediction to data using a statistical model to 
+account for uncertainty as: 
+
+
+$$Y_i \sim Bernoulli(p)$$
+
+where
+
+* $Y_i$ is the observed values
+* $p$ is the probability of translocation success (i.e., 1)
+
 #### fitting
 
-#### prediction and interval
+We fit that model as before using the`glm()` function.
 
-#### bdn
+```{r}
+fit<- glm(success~n_survived+truck+habitat,
+    data=dat,
+    family="binomial")
+```
 
-
-### poisson
-
-#### data
-
-#### model
-
-#### fitting
-
-#### prediction and interval
-
-#### bdn
+In this case we did not have to use the `cbind()` function to bind the 
+successes and failures together, the function interpreted the 0s as 
+failures and the 1s as successes for us. We can do all the cool things 
+as before like using `summary()`, `coef()`, and so on. 
 
 
+```{r}
+summary(fit)
+```
 
-<!--
-bootSimFun <- function(nsims=10000,preddata,obsdata) 
-    {
-    rep_data<- lapply(1:nsims,function(x)
-        {
-        bootdat <- obsdata[sample(seq(nrow(obsdata)),
-            size=nrow(obsdata),replace=TRUE),]
-        bootfit <- lm(area_damaged~habitat_area+
-                group_size+
-                habitat_area:group_size,
-                data=bootdat)
-        bootpred <- predict(bootfit,newdata=preddata)
-        sigma<- summary(bootfit)$sigma
-        out<- rnorm(length(bootpred),bootpred,sigma)
-        return(out)
-    })
-    return(rep_data)
-    }
-
-pred<- bootSimFun(nsim=100000,preddata=bootpredata, obsdata=damage_dat)
-
-preddat[preddat$group_size==3 & preddat$habitat_area==100,]
-hist(pred)
-abline(v=quantile(pred,c(0.025,0.975)),col="red",lwd=5)
--->
+We have a nice summary of the effects and the estimates of the $\beta$s. 
+We can extract those. 
 
 
-<!-- how r does prediction interval se
-http://stackoverflow.com/questions/38109501/how-does-predict-lm-compute-confidence-interval-and-prediction-interval
 
+```{r}
 betas<- coef(fit)
-mm<- model.matrix(as.formula("~habitat_area+group_size+habitat_area:group_size"),preddat)	
-y_hat<- mm%*%betas	
-V<-vcov(fit) # variance,covariance matrix
-se<- sqrt(rowSums((mm %*% V) * mm))
-preddat$uci <- y_hat + 2* sqrt(se^2 + summary(fit)$sigma^2) # variances add, ses do not
-preddat$lci <- y_hat - 2* sqrt(se^2 + summary(fit)$sigma^2) # variances add, ses do not
-alpha <- qt((1-0.9)/2, df = z$df)
--->
+```
+The summary provides p-values, which are nice, but some analysis prefer 
+confidence intervals of the parameter estimates. We can calculate those 
+using the `confint()` function. 
 
 
 
+```{r}
+confint(fit)
+```
+This approach profiles the likelihood, see Hilborn and Mangel's 
+Ecological Detective if you are interested in this. Regardless we can 
+see most estimates are reasonably precise and do not overlap 0. Habitat 
+is a bit suspect, but we are going to roll with it. 
 
+
+We can get things like residuals and fitted values.
+
+```{r}
+dat$residuals<- resid(fit)
+dat$fitted<- fitted(fit)
+```
+And now we can look at them.
+
+```{r}
+plot(residuals~fitted,
+    data=dat)
+```
+Well that is weird, but it illustrates there only 2 outcomes, 0 or 1. 
+The plot of predicted to observed is equally weird and not really any 
+use. 
+
+
+```{r}
+plot(success~fitted,
+    data=dat)
+```
+ The take home here is that it is difficult to evaluate binary outcomes, 
+but you can look at things like receiver operator curves to see if the 
+model does better than chance and other goodness of fit measures..
+
+#### Predictions
+
+We can make predictions just as we did before using the `predict()` function.
+First we need to make a dataset to predict from. The `expand.grid()` function
+worked well before to get all possible combinations, let's use that again.
+
+```{r}
+preddat<- expand.grid(
+    truck=c("truck 1", "truck 2"),
+    n_survived=c(min(dat$n_survived):max(dat$n_survived)),
+    habitat=c("forest","field","swamp"))
+head(preddat)
+```
+And then feed the new data to the `predict()` function.
+
+```{r}
+preddat$pred<- predict(fit, newdata=preddat,
+    type="response")# get probabilities, not log odds
+```
+
+To help visualize what is going on we can plot the prediction.
+
+```{r}
+plot(pred~n_survived,preddat,type="n",
+    xlab="Number surviving",
+    ylab="Probability of success",
+    las=1)
+points(pred~n_survived,preddat,
+    subset=truck=="truck 1" & habitat =="forest",
+    lty=1,type="l")
+points(pred~n_survived,preddat,
+    subset=truck=="truck 2" & habitat =="forest",
+    lty=2,type="l")    
+points(pred~n_survived,preddat,
+    subset=truck=="truck 1" & habitat =="field",
+    lty=1,col="darkgrey",type="l")
+points(pred~n_survived,preddat,
+    subset=truck=="truck 2" & habitat =="field",
+    lty=2,col="darkgrey",type="l")      
+ points(pred~n_survived,preddat,
+    subset=truck=="truck 1" & habitat =="swamp",
+    lty=1,col="lightgrey",type="l")
+points(pred~n_survived,preddat,
+    subset=truck=="truck 2" & habitat =="swamp",
+    lty=2,col="lightgrey",type="l")    
+# PUT A LEGEND ON THIS AND CALL IT A NIGHT!    
+legend("topleft",c("Forest Truck 1","Forest Truck 2",
+    "Field Truck 1","Field Truck 2",
+    "Swamp Truck 1","Swamp Truck 2"),
+    col=c("black","black",
+        "darkgrey","darkgrey",
+        "lightgrey","lightgrey"),lty=c(1,2))
+```
+
+One nice thing about the binomial is that we can directly 
+interpret the outcomes. 
+
+```{r}
+preddat[preddat$n_survived==200,]
+```
+Looks like the effect of truck 2 is pretty significant. We can also add 
+our new model to our existing decision network, like the figure below. 
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/cl12-translocation-network-04.png")
+```

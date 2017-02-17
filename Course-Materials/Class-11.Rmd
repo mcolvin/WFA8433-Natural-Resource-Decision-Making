@@ -79,11 +79,11 @@ something useful. The function can take if needed to perform the
 function. The general format is 
 
 
-`myfunction<- function(arg1,arg2)
-    {
-    out<- 2*arg1 + arg2 # performs something
-    return(out) # tells R what to return
-    }`
+`myfunction<- function(arg1,arg2)  
+    {  
+    out<- 2*arg1 + arg2 # performs something  
+    return(out) # tells R what to return  
+    }`  
 
 Let's make a simple function that adds 2 and 6.
 
