@@ -1,0 +1,98 @@
+---
+title: ""
+---
+
+<!--
+library(knitr)
+rmarkdown::render_site("hw-02.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+```{r,echo=FALSE}
+set.seed(8433)
+tmp<-data.frame(elevation=runif(167,10,300),
+    group=sample(c("g1","g2","g3"),167,replace=TRUE))
+betas<- c(1,0.002,1,-0.5,0.0003,0.0006)
+mm<- model.matrix(as.formula("~elevation+group+elevation:group"),
+    tmp)
+tmp$density<- exp(rnorm(167,mm %*% betas,0.2))
+fit<- lm(density~elevation+group+elevation:group,tmp)
+write.csv(tmp,"elevation-density.csv") 
+```
+
+
+
+```{r echo=FALSE, out.width="100%"}
+include_graphics("media/banner-06.jpg")
+```
+
+# Homework 2: Messing with R and predictions
+
+* Assignment due: Due by Wednesday by 5 pm (1 week)
+* The dataset required for Exercise 3 is available [here](elevation-density.csv)
+* Submit R script to: https://dropitto.me/WFA8433.
+The upload password is 'critter' <u>Be sure to name the file as
+follows "lastname-firstIntial-homework-02.R"</u>
+* If you have any questions or issues about coding feel free to 
+email me.  Please attach your R script so I can diagnose any issues.
+
+
+
+
+## Exercise 1 Working with stochastic values and expectations
+a. Generate a vector named `Y` with 1001 stochastic replicates for a 
+normal distribution with mean 10 and standard deviation of 1. 
+b. Calculate the mean and standard deviation of `Y` and assign them as 
+`Y_mean` and `Y_sd` respectively. 
+c. Make a histogram of `Y`, labeling the x-axis as `Y values` and the 
+y-axis as `Frequency` 
+d. Calculate the probability that `Y` is less than 11. (HINT: you can 
+use the `sort()` function to sort a vector in ascending order; `?sort`) 
+
+
+## Exercise 2 Making a function to do useful things
+a. Make a function that multiplies an input vector by 2, sums the vector 
+and then returns that sum. 
+b. Run the function created in 2a on the vector `Y` created in 1a. 
+c. Create another function called `risk` that returns the probability of 
+an achieving an expected outcome or less from a vector of stochastic 
+replicates. (HINT: `subset()` and `length()` functions might be useful). 
+d. Run the function created in 2d on the vector `Y` created in 1a for an 
+outcome of 11. How does it compare to the value you calculated for 1d? 
+
+
+## Exercise 3 Linear modeling and prediction
+a. Read in the dataset `elevation-density.csv` and assign it`ele_data`. 
+b. Plot density (y-axis) versus elevation (x-axis) and label each axis as 
+you see fit. 
+c. Create the same plot as above, but make group 1 red, group 2 blue, 
+and group 3 green. 
+d. Fit a linear model that predicts density from elevation, group, and an 
+interaction of group and elevation. 
+e. Plot the residuals (y-axis) versus the predicted to evaluate whether 
+you have violated any assumptions and a plot of the observed `density` 
+versus the fitted values. (HINT: recall `resid()` and `fitted()`) 
+f. Now create another field in `ele_data` named `ldensity` that is the 
+natural log of density. 
+g. Refit the linear model from 3a using `ldensity`. 
+h. Plot the residuals (y-axis) versus the predicted (x-axis) to evaluate 
+whether you have violated any assumptions and a plot of 
+`ldensity` versus the fitted values. 
+i. Create a dataset named `predicted_data` using the `expand.grid()` 
+function to predict values for the range of elevations in `ele_data` in 
+increments of 1 and each group. 
+k. Add columns to `predicted_data` for the predicted value, lower 95% 
+prediction interval and upper 95% prediction interval. 
+l. Make a plot of predicted values and 95% prediction intervals for 
+group 2 as lines. The line for the predicted value should be solid and 
+the lines for the prediction intervals should by dotted. (Recall that 
+`lty=1` is a solid line and `lty=2` is a dotted line) 
+
+

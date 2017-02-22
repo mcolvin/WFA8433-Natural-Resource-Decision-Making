@@ -287,7 +287,7 @@ $(document).ready(function () {
 
 <!--
 library(knitr)
-rmarkdown::render_site("Class-01.Rmd")# build website
+rmarkdown::render_site("hw-02.Rmd")# build website
 
 # rmarkdown::render_site()# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
@@ -297,29 +297,49 @@ system(paste("xcopy",
     "/E /C /H /R /K /O /Y")) 
   q(save="no") 
 -->
-<p><img src="media/banner-02.jpg" width="95%" /></p>
-<div id="class-1-introduction-to-decision-making" class="section level1">
-<h1>Class 1: Introduction to decision making</h1>
+<p><img src="media/banner-06.jpg" width="100%" /></p>
+<div id="homework-2-messing-with-r-and-predictions" class="section level1">
+<h1>Homework 2: Messing with R and predictions</h1>
 <ul>
-<li>Supplemental reading
-<ul>
-<li><a href="pdfs/chess-ai-npr.pdf">Humans still no match for computers on the chessboard</a></li>
-<li><a href="pdfs/Nichols-interview.pdf">An interview with Dr. Jim Nichols</a></li>
-</ul></li>
-<li>Assignment due: None</li>
-<li>Supplemental background reading for next class(es): Read Chapters 1-6 in Smart Decisions</li>
-<li>Group work: None</li>
-<li>Link to class deck <a href="pdfs/class-01.pdf">PDF</a></li>
+<li>Assignment due: Due by Wednesday by 5 pm (1 week)</li>
+<li>The dataset required for Exercise 3 is available <a href="elevation-density.csv">here</a></li>
+<li>Submit R script to: <a href="https://dropitto.me/WFA8433" class="uri">https://dropitto.me/WFA8433</a>. The upload password is ‘critter’ <u>Be sure to name the file as follows “lastname-firstIntial-homework-02.R”</u></li>
+<li>If you have any questions or issues about coding feel free to email me. Please attach your R script so I can diagnose any issues.</li>
 </ul>
-<!--
-
-hare Rmd fragments you should name them with a leading underscore (_) 
-then include them within their parent Rmd document using the child chunk option
-run as a child with a deck and narrative...
-## For next class
-get content from archive.
-using img source was messing shit up use knitr include 
--->
+<div id="exercise-1-working-with-stochastic-values-and-expectations" class="section level2">
+<h2>Exercise 1 Working with stochastic values and expectations</h2>
+<ol style="list-style-type: lower-alpha">
+<li>Generate a vector named <code>Y</code> with 1001 stochastic replicates for a normal distribution with mean 10 and standard deviation of 1.</li>
+<li>Calculate the mean and standard deviation of <code>Y</code> and assign them as <code>Y_mean</code> and <code>Y_sd</code> respectively.</li>
+<li>Make a histogram of <code>Y</code>, labeling the x-axis as <code>Y values</code> and the y-axis as <code>Frequency</code></li>
+<li>Calculate the probability that <code>Y</code> is less than 11. (HINT: you can use the <code>sort()</code> function to sort a vector in ascending order; <code>?sort</code>)</li>
+</ol>
+</div>
+<div id="exercise-2-making-a-function-to-do-useful-things" class="section level2">
+<h2>Exercise 2 Making a function to do useful things</h2>
+<ol style="list-style-type: lower-alpha">
+<li>Make a function that multiplies an input vector by 2, sums the vector and then returns that sum.</li>
+<li>Run the function created in 2a on the vector <code>Y</code> created in 1a.</li>
+<li>Create another function called <code>risk</code> that returns the probability of an achieving an expected outcome or less from a vector of stochastic replicates. (HINT: <code>subset()</code> and <code>length()</code> functions might be useful).</li>
+<li>Run the function created in 2d on the vector <code>Y</code> created in 1a for an outcome of 11. How does it compare to the value you calculated for 1d?</li>
+</ol>
+</div>
+<div id="exercise-3-linear-modeling-and-prediction" class="section level2">
+<h2>Exercise 3 Linear modeling and prediction</h2>
+<ol style="list-style-type: lower-alpha">
+<li>Read in the dataset <code>elevation-density.csv</code> and assign it<code>ele_data</code>.</li>
+<li>Plot density (y-axis) versus elevation (x-axis) and label each axis as you see fit.</li>
+<li>Create the same plot as above, but make group 1 red, group 2 blue, and group 3 green.</li>
+<li>Fit a linear model that predicts density from elevation, group, and an interaction of group and elevation.</li>
+<li>Plot the residuals (y-axis) versus the predicted to evaluate whether you have violated any assumptions and a plot of the observed <code>density</code> versus the fitted values. (HINT: recall <code>resid()</code> and <code>fitted()</code>)</li>
+<li>Now create another field in <code>ele_data</code> named <code>ldensity</code> that is the natural log of density.</li>
+<li>Refit the linear model from 3a using <code>ldensity</code>.</li>
+<li>Plot the residuals (y-axis) versus the predicted (x-axis) to evaluate whether you have violated any assumptions and a plot of <code>ldensity</code> versus the fitted values.</li>
+<li>Create a dataset named <code>predicted_data</code> using the <code>expand.grid()</code> function to predict values for the range of elevations in <code>ele_data</code> in increments of 1 and each group.</li>
+<li>Add columns to <code>predicted_data</code> for the predicted value, lower 95% prediction interval and upper 95% prediction interval.</li>
+<li>Make a plot of predicted values and 95% prediction intervals for group 2 as lines. The line for the predicted value should be solid and the lines for the prediction intervals should by dotted. (Recall that <code>lty=1</code> is a solid line and <code>lty=2</code> is a dotted line)</li>
+</ol>
+</div>
 </div>
 
 
