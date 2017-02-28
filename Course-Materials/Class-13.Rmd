@@ -98,7 +98,7 @@ where the population abundance is multiplied by the survival rate (i.e.,
 $\text{Survivors}~Poisson(\text{Abundance}\cdot Survival$). This could
 alternatively be done using a binomial as $\text{Survivors}~
 Binomial(\text{Abundance},Survival$. As long as $\text{Abundance}$ is 
-high the Poisson and Binomial give similar expectations. Let's explore this 
+high and $Survival$ is low the Poisson and Binomial give similar expectations. Let's explore this 
 and refine some of our `R` skills along the way.
 
 ## Poisson versus Binomial
@@ -107,13 +107,13 @@ We can compare the expected outcomes of the Poisson and the binomial
 using simulation from the `rpoisson()` and `rbinomial()` functions.
 
 Let's evaluate how the 2 distributions behave for a survival rate `S` 
-equal to 0.6. We will simulate the expected number of survivors for varying
+equal to 0.2. We will simulate the expected number of survivors for varying
 `N` values, specifically, 10, 50, 100, 1000, and 10000. First let's make 
 our objects `S` and `N`. 
 
 ```{r}
-S<-0.6 # SET SURVIVAL
-N<- c(10,50,100,1000,10000)
+S<-seq(from=0.1,to=1,by=0.05) # SET SURVIVAL
+N<- c(10,50,100,500,1000)
 ```
 Now let's look at what happens if we generate 50,000 stochastic replicates 
 from a Poisson and a binomial given our `S` and `N` equal to 10. Recall
@@ -148,51 +148,113 @@ hist(survivors_bin,
     xlim=c(0,10))
 ```
 
+Finer point of stochastic simulation
+
 ```{r}
-survivors_pois<- matrix(0,nrow=50000,ncol=length(N))
-survivors_bin<- matrix(0,nrow=50000,ncol=length(N))
+sims<- expand.grid(N=N,S=S,reps=c(1:500))
+sims$surv_pois<-rpois(n=nrow(sims),lambda=sims$S*sims$N)
+sims$surv_bin<- rbinom(n=nrow(sims),size=sims$N,prob=sims$S)
 ```
 
 ```{r}
-for(i in 1:length(N))
-    {
-    survivors_pois[,i]<-rpois(50000,S*N[i])
-    survivors_bin[,i]<-rbinom(50000,N[i],S)
-    
-    }
-vars_pois<- apply(survivors_pois,2,var)
-mean_pois<- apply(survivors_pois,2,mean)
-vars_bin<- apply(survivors_bin,2,var)
-mean_bin<- apply(survivors_bin,2,mean )
-plot(N,vars_pois)
-points(N,vars_bin,col='red')
+boxplot(surv_pois~N,data=sims)
+boxplot(surv_bin~N,data=sims,add=TRUE,col='grey')
 ```
 
-The mean and the variance are the same!
+Ok that is not very useful, the boxplots cover each other up. We need to 
+move them over a bit. The `at` argument allows us to shift the boxplots. 
+
+ 
+
 ```{r}
-plot(mean_pois,vars_pois)
+boxplot(surv_pois~S,data=sims,
+    at=1:length(S)-0.25)
+boxplot(surv_bin~S,data=sims,add=TRUE,col='grey',
+    at=1:length(S)+0.25)
+```
+Now we need to tackle a couple more issues, first we need to make the 
+boxplots narrower and then clean up the axes. The arguments `boxwex` and 
+`xaxt` will help. 
+
+
+
+```{r}
+boxplot(surv_pois~S,data=sims,
+    at=1:1:length(S)-0.25,
+    subset=N==10,
+    boxwex=0.25, # make boxplot narrower
+    xaxt='n') # suppress x-axis label plotting
+boxplot(surv_bin~S,data=sims,add=TRUE,col='grey',
+    at=1:1:length(S)+0.25,
+    subset=N==10,
+    boxwex=0.25,
+    xaxt='n')
+axis(side=1,at=1:length(S),labels=S)
+legend("topleft",legend=c("Poisson","Binomial"),
+    fill=c("white","grey"))
+```
+
+The plot of above shows that values are similar to at low `S` values, 
+but as it increases, survivors exceeds abundance. This is spontaneous 
+generation! 
+
+
+
+Lets look at the other extreme where abundance was 1000. The values at 
+lower `S` values are similar between the binomial and the Poisson and similarity
+decreases as `S` increases.
+
+```{r}
+boxplot(surv_pois~S,data=sims,
+    at=1:1:length(S)-0.25,
+    subset=N==1000,
+    boxwex=0.25, # make boxplot narrower
+    xaxt='n') # suppress x-axis label plotting
+boxplot(surv_bin~S,data=sims,add=TRUE,col='grey',
+    at=1:1:length(S)+0.25,
+    subset=N==1000,
+    boxwex=0.25,
+    xaxt='n')
+axis(side=1,at=1:length(S),labels=S)
+```
+
+One thing you will notice is that the range for the Poisson increases 
+with survival. Recall that `lambda` was `S*N` so as `S` increases so 
+does lambda. In this case `lambda` is the mean.
+
+One of the properties of the Poisson distributional is that the mean and 
+the variance are the same! Let's confirm. First we need to create lambda 
+as `N*S` 
+
+```{r}
+sims$lambda<- sims$N*sims$S
+vars<- aggregate(surv_pois~lambda,sims,var)
+plot(surv_pois~lambda,vars)
 abline(0,1)
 ```
 
-
+There is a bit of noise around the 1:1 line, but that is to be expected 
+because we only did 500 stochastic replicates. If many more were done 
+they would fall exactly on the 1:1 line. Don't believe me? Try it 
+yourself. Challenge accepted? 
 
 
 So one of the major differences between the binomial and the Poisson is 
-that the Poisson can exceed the population abundance if survival is high.
-This is because the Poisson calculates the number of outcomes without 
-constraining by the number of trials.
-The binomial constrains outcomes such that the successes cannot exceed
-the number of trials. 
-
+that the Poisson can exceed the population abundance if survival is 
+high. This is because the Poisson calculates the number of outcomes 
+without constraining by the number of trials. The binomial constrains 
+outcomes such that the successes cannot exceed the number of trials. 
+Regardless the Poisson is very useful.
 
 
 ## The models
 
-From a generalized linear model we can use the same linear model as 
+For a generalized linear model we can use the same linear model as 
 we have before but we use the log function to link predictions of the 
 linear model to the statistical model.
 
-$$\text{log}(\mu_{i}) = \beta_{0}+\beta_{j}\cdot X_{i,j}$$
+
+$$\log(\lambda_{i}) = \beta_{0}+\beta_{j}\cdot X_{i,j}$$
 
     
 where
@@ -207,7 +269,7 @@ And the statistical model linking the observed data to the linear model
 predictions is: 
 
 
-$$ Y_{i} \sim Poisson(\mu_{i})$$    
+$$ Y_{i} \sim Poisson(\lambda_{i})$$    
 
 
 where,
@@ -216,31 +278,278 @@ where,
 * $i$ indexes each observation, and
 * $\mu_{i}$ is the predicted count for the ith observation.
 
-Let's look at some common natural resource data where the expected outcomes
-are Poisson distributed, fit a model to the data, and generate expected outcomes.
+Let's look at some common natural resource data where the expected 
+outcomes are Poisson distributed, fit a model to the data, and generate 
+expected outcomes. 
 
 
-## The data
+## Example-Fish counts
 
-The number of critters counted at a site represents data that can be assumed
-to be Poisson distributed, assuming perfect detection. In this data the number
-of Red Cockeaed Woodpecker nests 
+### The data
 
+In fisheries and wildlife we commonly calculate catch per unit effort by dividing 
+counts by the effort. For example, in backpack electrofishing, the number
+of a fish species captured and the number of seconds of shocking is used to calculate
+catch per unit effort as $\frac{\text{Catch}}{\text{Effort}}$. This value
+can be related to covariates as 
 
-## Fitting the model to the data
-
-## Evaluating the model
-
-## Getting predictions from the model
-
-## Accounting for uncertainty
-
-## Calculating the probability of an outcome
-
-## Incorporation into a decision model
+$$\frac{\text{Catch}_i}{\text{Effort}_i} = beta_{0}+\beta_{j}\cdot X_{i,j}$$
 
 
+where the parameters are as defined above. With some fun with logarithms
+we can actually model counts using a Poisson distribution. 
+
+Why would we want to do this? Well, glad you asked, catch per unit 
+effort is not normally distributed, it is constrained to be greater than 
+or equal to 0. The other issue is that there are commonly catch per unit 
+efforts of 0 which can wreak havoc with log transformations commonly used
+to meet assumptions. But check this out, if we take the log of the left hand
+side we can do some nifty things. 
 
 
+$$log(\frac{\text{Catch}_i}{\text{Effort}_i})= beta_{0}+\beta_{j}\cdot X_{i,j}$$
+
+
+Which with some law of logarithms we get (i.e., $log\frac{a}{b} = 
+log(a)-log(b)$: 
+
+
+$$log(\text{Catch}_i) = beta_{0}+\beta_{j}\cdot X_{i,j}+log({\text{Effort}_i})$$
+
+
+and with converting this model to a linear predictor and linking 
+that prediction to a statistical model as:
+
+$$log(\lambda_i) = beta_{0}+\beta_{j}\cdot X_{i,j}+log({\text{Effort}_i})$$
+
+and 
+
+
+$$\text{Catch}_i \sim  Poisson(\lambda_i)$$.
+
+
+Now we are predicting the number of critters captured but accounting for
+the known effect of effort (i.e., more effort, more critters captured).
+Notice there is no $\beta$ associated with `Effort`, this is what 
+is known as an offset. An offset is when there is a known relation with 
+the response variable, effort in this case. Other examples might be area
+or some other measurement of size. Think about this aspect the next time
+you divide a count to normalize. Let's see how to use this in R.
+
+
+
+```{r,echo=FALSE}
+set.seed(8433)
+betas<- c(-4.5,2.3,2.6,1.75)
+n=87
+fishCounts<- data.frame(
+    width= round(runif(n,0.5,1.3),1),
+    habitat=sample(c("forest","urban","ag"),n,replace=TRUE))
+fishCounts$streamLength<- round(fishCounts$width*50,0)
+mm<- model.matrix(as.formula("~width+habitat"),fishCounts) 
+lambda<- exp(mm %*% betas+log(fishCounts$streamLength))
+fishCounts$counts<-  rpois(n,lambda) 
+write.csv(fishCounts,"fishCounts.csv",row.names=FALSE)
+
+## AN OVERDISPERSED POISSON
+betas<- c(4.5,-1,-0.5,
+    2,1,0.5)
+n=67
+dat_od<- data.frame(
+    plotArea= round(runif(n,3.5,10),1),
+    treatment=sample(c("no burn","partial burn","full burn"),n,replace=TRUE),
+    habitat=sample(c("field","riparian","mixed hardwood","pine"),n,replace=TRUE))
+mm<- model.matrix(as.formula("~treatment+habitat"),dat_od) 
+lambda<- exp(mm %*% betas+log(dat_od$plotArea))
+
+# http://stats.stackexchange.com/questions/35/modelling-a-poisson-distribution-with-overdispersion
+dispersion <- 2
+dat_od$counts<-  rnbinom(n, size=(lambda/(dispersion-1)), mu=lambda)#rpois(n,lambda) 
+stemCounts<- dat_od
+write.csv(stemCounts,"stemCounts.csv",row.names=FALSE)
+
+```
+
+Let's read in some data to get a better feel for what I am talking about.
+
+```{r}
+fishCounts<- read.csv("fishCounts.csv")
+fishCounts
+```
+The dataset has 4 columns and 87 observations. Typically in stream 
+surveys we allocate effort proportional to the width of the stream, in 
+this case the stream length surveyed was 50 times the stream width. Now 
+the stream lengths won't exactly be 50 times the width there is some 
+rounding involved so you don't stop in the middle of a habitat unit. The 
+expectation is that if you should get more fish if you sample 100 
+relative to 10 meters of stream. This is a known relationship, hence we 
+commonly convert counts to densities by dividing the count by the length 
+of stream sampled. We will fit a glm model to the data assuming the data
+are Poisson distributed and with an offset.
+
+As we should, we plot the data to get a feel for what is going on. 
+Recall we can think about `R` plots like a canvas where we can layer 
+information on top of the plot. We have seen this before but the code 
+below uses the tools we have learned to plot counts versus width by 
+habitat type. 
+
+
+```{r}
+plot(counts~width,
+    data=fishCounts,
+    xlab="Width (m)",
+    ylab="Catch",
+    type='n',
+    las=1)
+points(counts~width, data=fishCounts,
+    subset=habitat=="ag",col="red",pch=1)
+points(counts~width, data=fishCounts,
+    subset=habitat=="forest",col="blue",pch=2)
+points(counts~width, data=fishCounts,
+    subset=habitat=="urban",col="black",pch=3)
+legend("topleft",legend=c("Agriculture","Forested","Urban"),
+    col=c("red","blue","black"),pch=c(1,2,3))
+```   
+    
+Looks pretty clear that forested streams have higher fish counts.
+
+Now we can fit the the model using the `glm()` function using 
+a Poisson family and we are going to... wait for it... add an 
+offset.
+
+
+### Fitting the model to the data
+
+Now that we have looked over the data we can fit a model to the data.
+We will use the `glm()` function as we have before, but this time
+we will use the poisson family by including the argument `family="poisson"`.
+The model below predicts counts from steam width and depth and includes an 
+offset of stream length to account for more critters being captured because
+more stream was sampled. One thing to know is that including stream length 
+as an offset required a log transformation. Recall the law of logs demonstrated 
+above?
+
+```{r}
+fit<- glm(counts~width+habitat,
+    data=fishCounts,
+    offset=log(fishCounts$streamLength),# recall it is log 
+    family="poisson")
+```
+Now that the model is fit we can do all the goodies we usually do.
+First let's look at the summary of the model.
+
+```{r}
+summary(fit)
+```
+We can extract the model coefficients and profile the 95% confidence intervals.
+
+```{r}
+betas<- coef(fit)
+confint(fit)
+```
+
+
+
+### Evaluating the model
+
+Couple of things we will want to check out. 
+
+1. The model structure was correctly specified with a plot of observed versus predicted
+2. The variance is the same as the mean 
+
+
+```{r}
+fishCounts$pred<- fitted(fit) 
+fishCounts$res<- resid(fit) 
+plot(counts~pred,data=fishCounts)
+abline(0,1) 
+
+plot(res~pred,data=fishCounts)
+abline(h=0) 
+```
+
+
+### Getting predictions and outcomes from the model
+
+For management purposes we are most interested in getting predictions of the 
+expected outcomes.
+
+```{r}
+# do 4 streams with varying depths and land cover
+
+preddat<-data.frame(
+    width=c(1.3,1.05,0.65,0.7,0.65,0.95),
+    habitat=c("forest","forest","urban","urban","ag","ag"),
+    streamLength=c(123,324,75,84,68,98))
+
+preddat$lambda<- predict(fit,newdata=preddat,
+    type="response")   
+```
+Well that did not work. Unfortunately the `predict()` function does 
+not use the offset. Lemons to lemonade. We have all the skills to 
+make predictions on our own, all we need to do is extract the betas
+which we have already done and then multiply them and add them up.
+
+
+```{r}
+preddat$lambda<- NA # prep vector to fill
+
+preddat[preddat$habitat=="ag",]$lambda<- exp(betas[1]+
+    preddat[preddat$habitat=="ag",]$width*betas[2]+
+    log(preddat[preddat$habitat=="forest",]$streamLength))
+preddat[preddat$habitat=="forest",]$lambda<- exp(betas[1]+
+    preddat[preddat$habitat=="forest",]$width*betas[2]+
+    betas[3]+
+    log(preddat[preddat$habitat=="forest",]$streamLength))   
+preddat[preddat$habitat=="urban",]$lambda<- exp(betas[1]+
+    preddat[preddat$habitat=="urban",]$width*betas[2]+
+    betas[4]+
+    log(preddat[preddat$habitat=="urban",]$streamLength))   
+preddat   
+```
+### Accounting for uncertainty
+  xx<-rpois(10000,10)
+  quantile(xx,c(0.025,0.975))
+ yy<-c(qpois(0.975, 10),qpois(0.025, 10))
+
+
+
+```{r}
+rpois(3,preddat$lambda)
+```
+
+preddat$uci<-qpois(0.975, 10)
+preddat$lci<-qpois(0.025, 10)
+### Calculating the probability of an outcome
+
+### Incorporation into a decision model
+
+
+
+## Overdispersion
+
+
+
+
+```{r}
+stemCounts<- read.csv("stemCounts.csv")
+```
+
+```{r}
+plot(counts~plotArea,stemCounts)
+```
+
+
+
+
+
+
+```{r}
+fit_od<- glm(counts~treatment+habitat,
+    data=stemCounts,
+    offset=log(stemCounts$plotArea),# recall it is log 
+    family="quasipoisson")
+summary(fit_od)
+```
 
 
