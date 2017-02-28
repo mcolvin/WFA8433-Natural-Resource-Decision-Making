@@ -1,0 +1,246 @@
+---
+title: ""
+---
+
+ <!--
+
+library(knitr)
+rmarkdown::render_site("Class-13.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-05.jpg")
+rm(list=objects())
+```
+<!--
+Homework 1:  Introduction to basic computing- R
+List of preliminary problems to instructor for review
+-->
+
+# Class 12. GLMs in Decision Contexts Part III
+
+* Supplemental background reading for next class(es): 
+* Assignment due: None
+* Link to class recording  [YouTube]()
+* Today's R script [Class-13.R](scripts/Class-13.R)
+
+## Objectives 
+
+By the end of this tutorial you should be able to:
+
+1. Understand generalized linear models (GLMs)
+1. Understand log link function
+2. Predicting outcomes from a GLM assuming a Poisson distribution
+2. Understand offsets and overdispersion 
+1. Using analysis in decision contexts to predict counts
+
+
+## Preliminaries
+
+* If you want to play along in class download this zipfile 
+[*.zip](class-12.zip). 
+* Be sure to unzip it before trying to use files and such
+* The file contains the dataset used in class and an R script of all the 
+code. 
+* Once you have it where you want open the R script and be sure to check 
+the working directory `getwd()` and make sure it is where your folder 
+is. 
+* If your working directory is not correct, you can set it in Rstudio: 
+"Session --> Set Working Directory --> To source file location". Or you 
+can use the `setwd()` in the console. 
+
+
+## Where are we?
+
+By this point you should recognize that the science and subsequent 
+analyses we perform to support our claims of understanding can be used 
+to make support a formal decision making process. Contrast this with an 
+informal decision process where likely outcomes are confined in mental 
+models. Additionally, using models and associated uncertainty to predict 
+outcomes allows us to move beyond vague management recommendations to 
+providing a decision support tool. In the context of a decision model 
+like the Bayesian Decision Networks (BDN) we have been using these 
+predictions provide the means to link parent and child nodes, in other 
+words, our analyses provide the conditional probabilities of the 
+possible outcomes. This class will complete our tour of GLMs with a 
+common distribution for counts in natural resources, the Poisson. 
+
+
+## Background
+
+Count data is common in natural resources. Examples of counts include:
+
+* Fecundity-capacity to produce offspring 
+* Catch-the number of critters captured
+* Abundance-number of critters
+* Counts-Redds, nests, clutches, mortalities
+
+In general the Poisson distribution works well for counts because it predicts
+a discrete outcome, an integer, constrained to values of 0 or greater. This 
+property lends to its common use as a distribution in analysis of natural
+resource data. Maybe those cool kids from class 10 were cooler than
+we thought. Historically, the Poisson distribution was developed as
+a discrete frequency distribution that calculated the probability of a 
+number of independent events occurring in a fixed time. This sort of sounds
+like the binomial distribution we learned about before but there is no
+binomial coefficient (i.e., the number of trials). For example, it is common
+to use the Poisson to calculate the expected outcomes of a survival process 
+where the population abundance is multiplied by the survival rate (i.e.,
+$\text{Survivors}~Poisson(\text{Abundance}\cdot Survival$). This could
+alternatively be done using a binomial as $\text{Survivors}~
+Binomial(\text{Abundance},Survival$. As long as $\text{Abundance}$ is 
+high the Poisson and Binomial give similar expectations. Let's explore this 
+and refine some of our `R` skills along the way.
+
+## Poisson versus Binomial
+
+We can compare the expected outcomes of the Poisson and the binomial 
+using simulation from the `rpoisson()` and `rbinomial()` functions.
+
+Let's evaluate how the 2 distributions behave for a survival rate `S` 
+equal to 0.6. We will simulate the expected number of survivors for varying
+`N` values, specifically, 10, 50, 100, 1000, and 10000. First let's make 
+our objects `S` and `N`. 
+
+```{r}
+S<-0.6 # SET SURVIVAL
+N<- c(10,50,100,1000,10000)
+```
+Now let's look at what happens if we generate 50,000 stochastic replicates 
+from a Poisson and a binomial given our `S` and `N` equal to 10. Recall
+that 10 was the first element in our vector of `N` so we can use the 
+syntax `N[1]` to get the first value of our vector of abundances. You can
+allways use `?rpois` and `?rbinom` to find out about the functions.
+
+```{r}
+survivors_pois<-rpois(50000,S*N[1])
+survivors_bin<-rbinom(50000,N[1],S)
+```
+We can use the `hist()` function to visualize the expected outcomes.
+
+```{r}
+hist(survivors_pois)
+hist(survivors_bin)
+```
+
+Hmmm, not super convenient to compare, let's use the `par()` function
+to plot the histograms in a single plot so we can visualize them together.
+Recall the `mfrow` input allowed us to change how each plot is added to 
+the main plot area.  The default is `c(1,1)` which plots a single plot. 
+We can change this by `mfrow=c(2,1)` which plots a 2 rows by 1 column (i.e.,
+2 plots on top of each other). We will also want to make sure to set 
+the x-axes to the same values to facilitate comparison.
+
+```{r}
+par(mfrow=c(2,1))
+hist(survivors_pois,
+    xlim=c(0,10))
+hist(survivors_bin,
+    xlim=c(0,10))
+```
+
+```{r}
+survivors_pois<- matrix(0,nrow=50000,ncol=length(N))
+survivors_bin<- matrix(0,nrow=50000,ncol=length(N))
+```
+
+```{r}
+for(i in 1:length(N))
+    {
+    survivors_pois[,i]<-rpois(50000,S*N[i])
+    survivors_bin[,i]<-rbinom(50000,N[i],S)
+    
+    }
+vars_pois<- apply(survivors_pois,2,var)
+mean_pois<- apply(survivors_pois,2,mean)
+vars_bin<- apply(survivors_bin,2,var)
+mean_bin<- apply(survivors_bin,2,mean )
+plot(N,vars_pois)
+points(N,vars_bin,col='red')
+```
+
+The mean and the variance are the same!
+```{r}
+plot(mean_pois,vars_pois)
+abline(0,1)
+```
+
+
+
+
+So one of the major differences between the binomial and the Poisson is 
+that the Poisson can exceed the population abundance if survival is high.
+This is because the Poisson calculates the number of outcomes without 
+constraining by the number of trials.
+The binomial constrains outcomes such that the successes cannot exceed
+the number of trials. 
+
+
+
+## The models
+
+From a generalized linear model we can use the same linear model as 
+we have before but we use the log function to link predictions of the 
+linear model to the statistical model.
+
+$$\text{log}(\mu_{i}) = \beta_{0}+\beta_{j}\cdot X_{i,j}$$
+
+    
+where
+
+* $\beta_{0}$ is the intercept of the linear model,  
+* $\beta_{1}$ is the effect of covariate X,
+* $j$ indexes each covariate,
+* $i$ indexes each observation, and
+* $\mu_{i}$ is the predicted count for the ith observation.
+
+And the statistical model linking the observed data to the linear model 
+predictions is: 
+
+
+$$ Y_{i} \sim Poisson(\mu_{i})$$    
+
+
+where,
+
+* $Y_{i}$ is the ith observation,
+* $i$ indexes each observation, and
+* $\mu_{i}$ is the predicted count for the ith observation.
+
+Let's look at some common natural resource data where the expected outcomes
+are Poisson distributed, fit a model to the data, and generate expected outcomes.
+
+
+## The data
+
+The number of critters counted at a site represents data that can be assumed
+to be Poisson distributed, assuming perfect detection. In this data the number
+of Red Cockeaed Woodpecker nests 
+
+
+## Fitting the model to the data
+
+## Evaluating the model
+
+## Getting predictions from the model
+
+## Accounting for uncertainty
+
+## Calculating the probability of an outcome
+
+## Incorporation into a decision model
+
+
+
+
+
+
