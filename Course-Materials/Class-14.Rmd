@@ -1,0 +1,69 @@
+---
+title: ""
+---
+
+ <!--
+
+library(knitr)
+rmarkdown::render_site("Class-13.Rmd")# build website
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
+q(save="no") 
+
+rmarkdown::render_site()# build webpage
+## PURL R CODE FROM CLASS NOTES
+p<- knitr::purl("Class-14.Rmd")
+knitr::read_chunk(p)
+chunks <- knitr:::knit_code$get()
+chunkss<- lapply(1:length(chunks),function(x){if(!(names(chunks[x]) %in% c("echo=FALSE" ,"eval=FALSE"))){c(paste0("## ----", names(chunks)[x] ,"---- ##"),chunks[[x]]," "," "," ")}})
+xxx<- unlist(chunkss)
+writeLines(xxx,"./scripts/Class-13.R")
+system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
+
+-->
+
+
+```{r echo=FALSE, out.width="95%"}
+include_graphics("media/banner-04.jpg")
+rm(list=objects())
+```
+<!--
+Homework 1:  Introduction to basic computing- R
+List of preliminary problems to instructor for review
+-->
+
+# Class 15. GLMMs  and HLMs in Decision Contexts Part 
+
+* Supplemental background reading(s):
+    * ???
+* Assignment due: None
+* Link to class recording  [YouTube]()
+* Today's R script [Class-14.R](scripts/Class-14.R)
+
+## Objectives 
+
+By the end of this tutorial you should be able to:
+
+1. Understand generalized linear models (GLMs)
+1. Understand log link function
+1. Predicting outcomes from a GLM assuming a Poisson distribution
+1. Understand offsets and overdispersion 
+1. Using analysis in decision contexts to predict counts
+
+
+## Preliminaries
+
+* If you want to play along in class download th
+    * ????
+* Be sure to unzip it before trying to use files and such
+* The file contains the dataset used in class and an R script of all the 
+code. 
+* Once you have it where you want open the R script and be sure to check 
+the working directory `getwd()` and make sure it is where your folder 
+is. 
+* If your working directory is not correct, you can set it in Rstudio: 
+"Session --> Set Working Directory --> To source file location". Or you 
+can use the `setwd()` in the console. 
+
+

@@ -63,10 +63,7 @@ By the end of this tutorial you should be able to:
     * [fishCounts](fishCounts.csv)
     * [stemCounts](stemCounts.csv)
     * [R script](scripts/Class-12.R)
-* Be sure to unzip it before trying to use files and such
-* The file contains the dataset used in class and an R script of all the 
-code. 
-* Once you have it where you want open the R script and be sure to check 
+* Once you have the files where you want them, open the R script and be sure to check 
 the working directory `getwd()` and make sure it is where your folder 
 is. 
 * If your working directory is not correct, you can set it in Rstudio: 
