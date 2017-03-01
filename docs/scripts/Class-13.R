@@ -81,7 +81,9 @@ axis(side=1,at=1:length(S),labels=S)
 ## ----unnamed-chunk-10---- ##
 sims$lambda<- sims$N*sims$S
 vars<- aggregate(surv_pois~lambda,sims,var)
-plot(surv_pois~lambda,vars)
+plot(surv_pois~lambda,data=vars,   
+    xlab="Lambda",
+    ylab="Variance")
 abline(0,1)
  
  
@@ -134,13 +136,16 @@ fishCounts$pred<- fitted(fit)
 fishCounts$res<- resid(fit) 
 plot(counts~pred,data=fishCounts)
 abline(0,1) 
-
+ 
+ 
+ 
+## ----unnamed-chunk-17---- ##
 plot(res~pred,data=fishCounts)
 abline(h=0) 
  
  
  
-## ----unnamed-chunk-17---- ##
+## ----unnamed-chunk-18---- ##
 # do 4 streams with varying depths and land cover
 
 preddat<-data.frame(
@@ -153,7 +158,7 @@ preddat<-data.frame(
  
  
  
-## ----unnamed-chunk-18---- ##
+## ----unnamed-chunk-19---- ##
 preddat$lambda<- NA # prep vector to fill
 
 preddat[preddat$habitat=="ag",]$lambda<- exp(betas[1]+
@@ -171,7 +176,7 @@ preddat
  
  
  
-## ----unnamed-chunk-19---- ##
+## ----unnamed-chunk-20---- ##
 xx<-rpois(10000,10)
 xx<- sort(xx)
 xx[250]
@@ -179,38 +184,38 @@ xx[9750]
  
  
  
-## ----unnamed-chunk-20---- ##
+## ----unnamed-chunk-21---- ##
 vals<-quantile(x=xx,probs=c(0.025,0.975))
 vals
  
  
  
-## ----unnamed-chunk-21---- ##
+## ----unnamed-chunk-22---- ##
 vals2<- qpois(c(0.025,0.975),lambda=10)
 vals2
  
  
  
-## ----unnamed-chunk-22---- ##
+## ----unnamed-chunk-23---- ##
 preddat$uci<-qpois(0.975, preddat$lambda)
 preddat$lci<-qpois(0.025, preddat$lambda)
  
  
  
-## ----unnamed-chunk-23---- ##
+## ----unnamed-chunk-24---- ##
 # MAKE A MATRIX TO STORE OUR PRECIOUS PROBABILITIES
 outcomes<- matrix(0,nrow=1001,ncol=nrow(preddat))
  
  
  
-## ----unnamed-chunk-24---- ##
+## ----unnamed-chunk-25---- ##
 dpois(x=3,lambda=10) # should be pretty low
 dpois(x=10,lambda=10) # about mid of the road
 dpois(x=17,lambda=10) # close to 1
  
  
  
-## ----unnamed-chunk-25---- ##
+## ----unnamed-chunk-26---- ##
 for(i in 1:nrow(preddat))# loop over each row of predat
     {
     outcomes[,i]<-dpois(c(0:1000),lambda=preddat$lambda[i])
@@ -218,17 +223,17 @@ for(i in 1:nrow(preddat))# loop over each row of predat
  
  
  
-## ----unnamed-chunk-26---- ##
+## ----unnamed-chunk-27---- ##
 colSums(outcomes)
  
  
  
-## ----unnamed-chunk-27---- ##
+## ----unnamed-chunk-28---- ##
 matplot(y=outcomes,type='l',lwd=3)
  
  
  
-## ----unnamed-chunk-28---- ##
+## ----unnamed-chunk-29---- ##
 preddat<-expand.grid( # MAKE DATASET
     width=c(1.3,1.05,0.65,0.7,0.65,0.95),
     habitat=c("forest","urban","ag"),
@@ -251,13 +256,13 @@ preddat[preddat$habitat=="urban",]$lambda<- exp(betas[1]+
  
  
  
-## ----unnamed-chunk-29---- ##
+## ----unnamed-chunk-30---- ##
 preddat$uci<-qpois(0.975, preddat$lambda)
 preddat$lci<-qpois(0.025, preddat$lambda)
  
  
  
-## ----unnamed-chunk-30---- ##
+## ----unnamed-chunk-31---- ##
 plot(uci~width,data=preddat,
     xlab="Stream width",
     ylab="Fish count",
@@ -269,12 +274,12 @@ points(lambda~width,data=preddat,
  
  
  
-## ----unnamed-chunk-31---- ##
+## ----unnamed-chunk-32---- ##
 preddat<- preddat[order(preddat$streamLength,preddat$width),]
  
  
  
-## ----unnamed-chunk-32---- ##
+## ----unnamed-chunk-33---- ##
 plot(uci~width,data=preddat,
     xlab="Stream width",
     ylab="Fish count",
@@ -293,13 +298,13 @@ points(uci~width,data=preddat,
  
  
  
-## ----unnamed-chunk-33---- ##
+## ----unnamed-chunk-34---- ##
 stemCounts<- read.csv("stemCounts.csv")
 head(stemCounts)
  
  
  
-## ----unnamed-chunk-34---- ##
+## ----unnamed-chunk-35---- ##
 plot(counts~elevation,data=stemCounts,
     xlab="Elevation",
     ylab="Stem counts",
@@ -350,7 +355,7 @@ legend("topleft",legend=c("No burn", "Partial burn", "Full burn",
  
  
  
-## ----unnamed-chunk-35---- ##
+## ----unnamed-chunk-36---- ##
 fit<- glm(counts~treatment+habitat+elevation,
     data=stemCounts,
     family="poisson")
@@ -358,13 +363,13 @@ summary(fit)
  
  
  
-## ----unnamed-chunk-36---- ##
+## ----unnamed-chunk-37---- ##
 betas<- coef(fit)
 confint(fit)
  
  
  
-## ----unnamed-chunk-37---- ##
+## ----unnamed-chunk-38---- ##
 stemCounts$fitted<-fitted(fit)
 plot(counts~fitted, data= stemCounts,
     xlab="Predicted values",
@@ -374,7 +379,7 @@ abline(0,1)
  
  
  
-## ----unnamed-chunk-38---- ##
+## ----unnamed-chunk-39---- ##
 preddat<- expand.grid(
     treatment=levels(stemCounts$treatment),
     habitat=levels(stemCounts$habitat),
@@ -382,19 +387,19 @@ preddat<- expand.grid(
  
  
  
-## ----unnamed-chunk-39---- ##
+## ----unnamed-chunk-40---- ##
 preddat$lambda<- predict(fit, newdata=preddat,
     type='response')
  
  
  
-## ----unnamed-chunk-40---- ##
+## ----unnamed-chunk-41---- ##
 preddat$lci<-qpois(0.025,preddat$lambda)
 preddat$uci<-qpois(0.975,preddat$lambda)
  
  
  
-## ----unnamed-chunk-41---- ##
+## ----unnamed-chunk-42---- ##
 plot(counts~elevation,data=stemCounts,
     xlab="Elevation",
     ylab="Stem counts",
@@ -443,21 +448,25 @@ points(uci~elevation,data=preddat,
  
  
  
-## ----unnamed-chunk-42---- ##
-fit<- glm(counts~treatment+habitat,
+## ----unnamed-chunk-43---- ##
+fit<- glm(counts~treatment+habitat+elevation,
     data=stemCounts,
     family="quasipoisson")
 summary(fit)
  
  
  
-## ----unnamed-chunk-43---- ##
+## ----unnamed-chunk-44---- ##
+preddat<- expand.grid(
+    treatment=levels(stemCounts$treatment),
+    habitat=levels(stemCounts$habitat),
+    elevation=c(min(stemCounts$elevation):max(stemCounts$elevation)))
 preddat$lambda<- predict(fit, newdata=preddat,
     type='response')
  
  
  
-## ----unnamed-chunk-44---- ##
+## ----unnamed-chunk-45---- ##
 dispersion<- summary(fit)$dispersion # GET DISPERSION
 
 preddat$lci<-qnbinom(0.025, size=(preddat$lambda/(dispersion-1)),    
@@ -467,7 +476,7 @@ preddat$uci<-qnbinom(0.975, size=(preddat$lambda/(dispersion-1)),
  
  
  
-## ----unnamed-chunk-45---- ##
+## ----unnamed-chunk-46---- ##
 plot(counts~elevation,data=stemCounts,
     xlab="Elevation",
     ylab="Stem counts",
