@@ -345,7 +345,7 @@ List of preliminary problems to instructor for review
 <ul>
 <li><a href="fishCounts.csv">fishCounts</a></li>
 <li><a href="stemCounts.csv">stemCounts</a></li>
-<li><a href="scripts/Class-12.R">R script</a></li>
+<li><a href="scripts/Class-13.R">R script</a></li>
 </ul></li>
 <li>Once you have the files where you want them, open the R script and be sure to check the working directory <code>getwd()</code> and make sure it is where your folder is.</li>
 <li>If your working directory is not correct, you can set it in Rstudio: “Session –&gt; Set Working Directory –&gt; To source file location”. Or you can use the <code>setwd()</code> in the console.</li>
@@ -368,7 +368,7 @@ List of preliminary problems to instructor for review
 </div>
 <div id="poisson-versus-binomial" class="section level2">
 <h2>Poisson versus Binomial</h2>
-<p>We can compare the expected outcomes of the Poisson and the binomial using simulation from the <code>rpoisson()</code> and <code>rbinomial()</code> functions.</p>
+<p>We can compare the expected outcomes of the Poisson and the binomial using simulation from the <code>rpois()</code> and <code>rbinom()</code> functions.</p>
 <p>Let’s evaluate how the 2 distributions behave for a survival rate <code>S</code> equal to 0.2. We will simulate the expected number of survivors for varying <code>N</code> values, specifically, 10, 50, 100, 1000, and 10000. First let’s make our objects <code>S</code> and <code>N</code>.</p>
 <pre class="r"><code>S&lt;-seq(from=0.1,to=1,by=0.05) # SET SURVIVAL
 N&lt;- c(10,50,100,500,1000)</code></pre>
@@ -418,12 +418,12 @@ legend(&quot;topleft&quot;,legend=c(&quot;Poisson&quot;,&quot;Binomial&quot;),
 <p>The plot of above shows that values are similar to at low <code>S</code> values, but as it increases, survivors exceeds abundance. This is spontaneous generation!</p>
 <p>Lets look at the other extreme where abundance was 1000. The values at lower <code>S</code> values are similar between the binomial and the Poisson and similarity decreases as <code>S</code> increases.</p>
 <pre class="r"><code>boxplot(surv_pois~S,data=sims,
-    at=1:1:length(S)-0.25,
+    at=1:length(S)-0.25,
     subset=N==1000,
     boxwex=0.25, # make boxplot narrower
     xaxt=&#39;n&#39;) # suppress x-axis label plotting
 boxplot(surv_bin~S,data=sims,add=TRUE,col=&#39;grey&#39;,
-    at=1:1:length(S)+0.25,
+    at=1:length(S)+0.25,
     subset=N==1000,
     boxwex=0.25,
     xaxt=&#39;n&#39;)
@@ -668,7 +668,7 @@ preddat&lt;-data.frame(
 
 preddat[preddat$habitat==&quot;ag&quot;,]$lambda&lt;- exp(betas[1]+
     preddat[preddat$habitat==&quot;ag&quot;,]$width*betas[2]+
-    log(preddat[preddat$habitat==&quot;forest&quot;,]$streamLength))
+    log(preddat[preddat$habitat==&quot;ag&quot;,]$streamLength))
 preddat[preddat$habitat==&quot;forest&quot;,]$lambda&lt;- exp(betas[1]+
     preddat[preddat$habitat==&quot;forest&quot;,]$width*betas[2]+
     betas[3]+
@@ -678,13 +678,13 @@ preddat[preddat$habitat==&quot;urban&quot;,]$lambda&lt;- exp(betas[1]+
     betas[4]+
     log(preddat[preddat$habitat==&quot;urban&quot;,]$streamLength))   
 preddat   </code></pre>
-<pre><code>##   width habitat streamLength    lambda
-## 1  1.30  forest          123 371.16005
-## 2  1.05  forest          324 541.93976
-## 3  0.65   urban           75  20.47599
-## 4  0.70   urban           84  25.80554
-## 5  0.65      ag           68   5.58762
-## 6  0.95      ag           98  29.87906</code></pre>
+<pre><code>##   width habitat streamLength     lambda
+## 1  1.30  forest          123 371.160048
+## 2  1.05  forest          324 541.939756
+## 3  0.65   urban           75  20.475988
+## 4  0.70   urban           84  25.805538
+## 5  0.65      ag           68   3.089091
+## 6  0.95      ag           98   9.037493</code></pre>
 </div>
 <div id="accounting-for-uncertainty" class="section level3">
 <h3>Accounting for uncertainty</h3>
@@ -747,7 +747,7 @@ preddat$lambda&lt;- NA # prep vector to fill
 # PREDICT LAMBDA
 preddat[preddat$habitat==&quot;ag&quot;,]$lambda&lt;- exp(betas[1]+
     preddat[preddat$habitat==&quot;ag&quot;,]$width*betas[2]+
-    log(preddat[preddat$habitat==&quot;forest&quot;,]$streamLength))
+    log(preddat[preddat$habitat==&quot;ag&quot;,]$streamLength))
 preddat[preddat$habitat==&quot;forest&quot;,]$lambda&lt;- exp(betas[1]+
     preddat[preddat$habitat==&quot;forest&quot;,]$width*betas[2]+
     betas[3]+
