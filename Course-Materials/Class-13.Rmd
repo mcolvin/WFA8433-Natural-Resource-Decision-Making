@@ -6,14 +6,18 @@ title: ""
 
 library(knitr)
 rmarkdown::render_site("Class-13.Rmd")# build website
-
 # rmarkdown::render_site()# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
-system(paste("xcopy", 
-    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
-    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
-    "/E /C /H /R /K /O /Y")) 
-  q(save="no") 
+system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
+q(save="no") 
+
+## PURL R CODE FROM CLASS NOTES
+p<- knitr::purl("Class-13.Rmd")
+knitr::read_chunk(p)
+chunks <- knitr:::knit_code$get()
+chunkss<- lapply(1:length(chunks),function(x){if(!(names(chunks[x]) %in% c("echo=FALSE" ,"eval=FALSE"))){c(paste0("## ----", names(chunks)[x] ,"---- ##"),chunks[[x]]," "," "," ")}})
+xxx<- unlist(chunkss)
+writeLines(xxx,"./scripts/Class-13.R")
 -->
 
 
@@ -26,10 +30,16 @@ Homework 1:  Introduction to basic computing- R
 List of preliminary problems to instructor for review
 -->
 
-# Class 12. GLMs in Decision Contexts Part III
+# Class 13. GLMs in Decision Contexts Part IV
 
-* Supplemental background reading for next class(es): 
-* Assignment due: None
+* Supplemental background reading(s):
+    * Bolker, B. M., M. E. Brooks, C. J. Clark, S. W. Geange, J. R. 
+    Poulsen, M. H. H. Stevens, and J.-S. S. White. 2009. Generalized linear 
+    mixed models: a practical guide for ecology and evolution. Trends in 
+    Ecology & Evolution 24:127-135. [pdf](pdfs/B267.pdf) 
+    * O’Hara, R. B., and D. J. Kotze. 2010. Do not log-transform count 
+    data. Methods in Ecology and Evolution 1:118-122. [pdf](pdfs/O44.pdf) 
+* Assignment due: HW2 is due by 5pm!
 * Link to class recording  [YouTube]()
 * Today's R script [Class-13.R](scripts/Class-13.R)
 
@@ -39,15 +49,17 @@ By the end of this tutorial you should be able to:
 
 1. Understand generalized linear models (GLMs)
 1. Understand log link function
-2. Predicting outcomes from a GLM assuming a Poisson distribution
-2. Understand offsets and overdispersion 
+1. Predicting outcomes from a GLM assuming a Poisson distribution
+1. Understand offsets and overdispersion 
 1. Using analysis in decision contexts to predict counts
 
 
 ## Preliminaries
 
-* If you want to play along in class download this zipfile 
-[*.zip](class-12.zip). 
+* If you want to play along in class download th
+    * [fishCounts](fishCounts.csv)
+    * [stemCounts](stemCounts.csv)
+    * [R script](scripts/Class-12.R)
 * Be sure to unzip it before trying to use files and such
 * The file contains the dataset used in class and an R script of all the 
 code. 
@@ -95,11 +107,11 @@ like the binomial distribution we learned about before but there is no
 binomial coefficient (i.e., the number of trials). For example, it is common
 to use the Poisson to calculate the expected outcomes of a survival process 
 where the population abundance is multiplied by the survival rate (i.e.,
-$\text{Survivors}~Poisson(\text{Abundance}\cdot Survival$). This could
-alternatively be done using a binomial as $\text{Survivors}~
+$\text{Survivors}\sim Poisson(\text{Abundance}\cdot Survival$). This could
+alternatively be done using a binomial as $\text{Survivors}\sim
 Binomial(\text{Abundance},Survival$. As long as $\text{Abundance}$ is 
 high and $Survival$ is low the Poisson and Binomial give similar expectations. Let's explore this 
-and refine some of our `R` skills along the way.
+and learn some new and refine our `R` skills along the way.
 
 ## Poisson versus Binomial
 
@@ -172,6 +184,7 @@ boxplot(surv_pois~S,data=sims,
 boxplot(surv_bin~S,data=sims,add=TRUE,col='grey',
     at=1:length(S)+0.25)
 ```
+
 Now we need to tackle a couple more issues, first we need to make the 
 boxplots narrower and then clean up the axes. The arguments `boxwex` and 
 `xaxt` will help. 
@@ -229,7 +242,9 @@ as `N*S`
 ```{r}
 sims$lambda<- sims$N*sims$S
 vars<- aggregate(surv_pois~lambda,sims,var)
-plot(surv_pois~lambda,vars)
+plot(surv_pois~lambda,data=vars,   
+    xlab="Lambda",
+    ylab="Variance")
 abline(0,1)
 ```
 
@@ -293,6 +308,7 @@ of a fish species captured and the number of seconds of shocking is used to calc
 catch per unit effort as $\frac{\text{Catch}}{\text{Effort}}$. This value
 can be related to covariates as 
 
+
 $$\frac{\text{Catch}_i}{\text{Effort}_i} = beta_{0}+\beta_{j}\cdot X_{i,j}$$
 
 
@@ -353,18 +369,21 @@ write.csv(fishCounts,"fishCounts.csv",row.names=FALSE)
 
 ## AN OVERDISPERSED POISSON
 betas<- c(4.5,-1,-0.5,
-    2,1,0.5)
-n=67
+    2,1,0.5,0.0015)
+n=267
 dat_od<- data.frame(
-    plotArea= round(runif(n,3.5,10),1),
     treatment=sample(c("no burn","partial burn","full burn"),n,replace=TRUE),
-    habitat=sample(c("field","riparian","mixed hardwood","pine"),n,replace=TRUE))
-mm<- model.matrix(as.formula("~treatment+habitat"),dat_od) 
-lambda<- exp(mm %*% betas+log(dat_od$plotArea))
+    habitat=sample(c("field","riparian","mixed hardwood","pine"),
+        n,replace=TRUE),
+    elevation= round(runif(n,5,300),0))
+mm<- model.matrix(as.formula("~treatment+habitat+elevation"),dat_od) 
+lambda<- exp(mm %*% betas)
 
 # http://stats.stackexchange.com/questions/35/modelling-a-poisson-distribution-with-overdispersion
-dispersion <- 2
-dat_od$counts<-  rnbinom(n, size=(lambda/(dispersion-1)), mu=lambda)#rpois(n,lambda) 
+dispersion <- 4
+dat_od$counts<-  rnbinom(n, size=(lambda/(dispersion-1)), 
+    mu=lambda)#rpois(n,lambda) 
+#plot(counts~elevation,dat_od)
 stemCounts<- dat_od
 write.csv(stemCounts,"stemCounts.csv",row.names=FALSE)
 
@@ -463,11 +482,16 @@ fishCounts$pred<- fitted(fit)
 fishCounts$res<- resid(fit) 
 plot(counts~pred,data=fishCounts)
 abline(0,1) 
+```
+Now we can look at the residuals versus the fitted values.
 
+```{r}
 plot(res~pred,data=fishCounts)
 abline(h=0) 
 ```
-
+They look ok but since the variance increases with the mean we 
+would expect fanning, we just happen to have few values that exceed 100
+so it is difficult to diagnose.
 
 ### Getting predictions and outcomes from the model
 
@@ -482,8 +506,8 @@ preddat<-data.frame(
     habitat=c("forest","forest","urban","urban","ag","ag"),
     streamLength=c(123,324,75,84,68,98))
 
-preddat$lambda<- predict(fit,newdata=preddat,
-    type="response")   
+# preddat$lambda<- predict(fit,newdata=preddat,
+  #   type="response")  # does not work 
 ```
 Well that did not work. Unfortunately the `predict()` function does 
 not use the offset. Lemons to lemonade. We have all the skills to 
@@ -508,48 +532,453 @@ preddat[preddat$habitat=="urban",]$lambda<- exp(betas[1]+
 preddat   
 ```
 ### Accounting for uncertainty
-  xx<-rpois(10000,10)
-  quantile(xx,c(0.025,0.975))
- yy<-c(qpois(0.975, 10),qpois(0.025, 10))
 
+It is always good to account for uncertainty and generate expected outcomes.
+We have gone over simulation as a way to figure out those outcomes. 
+Suppose I want to get the 95% prediction interval for a `lamba` of 10.
+We can generation many stochastic replicates and either sort and figure 
+out the what values falls is the 250th and which one is 9750th if you simulated
+10,000 replicates.
+ 
+```{r}
+xx<-rpois(10000,10)
+xx<- sort(xx)
+xx[250]
+xx[9750]
+```
+Or we can use the `quantile()` function. This function returns user specifed values.
+ 
+```{r}
+vals<-quantile(x=xx,probs=c(0.025,0.975))
+vals
+```
+Neat they are the same as above.
+
+We can also ue some more flexibility and use the `qpois()` function.
+This function returns the value for quantile you specify given the 
+required distribuation inputs, `lamba` in the case of the Poisson.
+
+```{r}
+vals2<- qpois(c(0.025,0.975),lambda=10)
+vals2
+```
+Cool beans [1](https://youtu.be/vc7VBVpl1SY), same as the other 2 methods. Usind the `qpois()` we can
+generate the 95% prediction intervals pretty easily for our predicted values in 
+`preddat`.
+
+```{r}
+preddat$uci<-qpois(0.975, preddat$lambda)
+preddat$lci<-qpois(0.025, preddat$lambda)
+```
+Boomtown, now things are working.
+
+
+### Calculating the probability of an outcome
+
+In management decisions we need to calculate the probability of all the possible outcomes.
+We have found that this can be a real challenge to do when working with continuous outcomes 
+that require discretization. However for discrete outcomes like the poisson things get a bit 
+easier and we can predict the probability of a range of outcomes.
+
+Using `preddat` we can calculate the probability of 0 to 1000 fish. I chose those numbers to 
+sufficiently cover all possible outcomes.  The larges 95% prediction interval was 497, so 
+maxxing out at 1000 should cover it. 
+
+```{r}
+# MAKE A MATRIX TO STORE OUR PRECIOUS PROBABILITIES
+outcomes<- matrix(0,nrow=1001,ncol=nrow(preddat))
+```
+Now instead of using the `qpois()` function that returns a value, I am 
+going to use the `cpois()` function that returns the probability of an 
+outcome. For example the code belows returns the probability of a 3, 10 
+or 17 given a `lambda` equal to 10. 
+
+```{r}
+dpois(x=3,lambda=10) # should be pretty low
+dpois(x=10,lambda=10) # about mid of the road
+dpois(x=17,lambda=10) # close to 1
+```
+
+We can use a `for()` loop to get the cumlative probabilities
+for the predicted values.
+
+```{r}
+for(i in 1:nrow(preddat))# loop over each row of predat
+    {
+    outcomes[,i]<-dpois(c(0:1000),lambda=preddat$lambda[i])
+    }
+```
+Now if we did this right the columns should sum to 1. Let's check.
+
+```{r}
+colSums(outcomes)
+```
+Yep they do. That is a nice property of a discrete outcome that results 
+from a poisson. 
+
+We can take a look at the expected outcomes. We are more curious here
+so let's not get too fancy an simply use the `matlines()` function.
+
+```{r}
+matplot(y=outcomes,type='l',lwd=3)
+```
+
+Couple of things to notice, as `lamba` increases the spread of outcomes
+increases.  
+
+With our new found skills let's circle back and add prediction intervals to 
+our model of fish counts. First we need to make an other dataset to
+predict from.
+
+```{r}
+preddat<-expand.grid( # MAKE DATASET
+    width=c(1.3,1.05,0.65,0.7,0.65,0.95),
+    habitat=c("forest","urban","ag"),
+    streamLength=c(25:65))
+
+preddat$lambda<- NA # prep vector to fill
+
+# PREDICT LAMBDA
+preddat[preddat$habitat=="ag",]$lambda<- exp(betas[1]+
+    preddat[preddat$habitat=="ag",]$width*betas[2]+
+    log(preddat[preddat$habitat=="forest",]$streamLength))
+preddat[preddat$habitat=="forest",]$lambda<- exp(betas[1]+
+    preddat[preddat$habitat=="forest",]$width*betas[2]+
+    betas[3]+
+    log(preddat[preddat$habitat=="forest",]$streamLength))   
+preddat[preddat$habitat=="urban",]$lambda<- exp(betas[1]+
+    preddat[preddat$habitat=="urban",]$width*betas[2]+
+    betas[4]+
+    log(preddat[preddat$habitat=="urban",]$streamLength))   
+```
+
+Now we can use the `qpois()` function to get our 95% prediction 
+intervals. 
+  
+```{r}
+preddat$uci<-qpois(0.975, preddat$lambda)
+preddat$lci<-qpois(0.025, preddat$lambda)
+```
+
+And we can make a pretty plot to go with it.
+But recall we need to account for stream length.
 
 
 ```{r}
-rpois(3,preddat$lambda)
+plot(uci~width,data=preddat,
+    xlab="Stream width",
+    ylab="Fish count",
+    subset=streamLength==25,
+    type='n')
+points(lambda~width,data=preddat,
+    subset=streamLength==25 & habitat=="forest", 
+    lty=1,type='l')
+ 
+```
+Boo, that looks terrible. Ok what is going on here
+is that R plots things sequentially so when we subset 
+the order was not quite right. We can fix it by 
+sorting our dataset by multiple variables using the `order()`
+function.
+
+```{r}
+preddat<- preddat[order(preddat$streamLength,preddat$width),]
+```
+Now let's try that plot again.
+
+```{r}
+plot(uci~width,data=preddat,
+    xlab="Stream width",
+    ylab="Fish count",
+    subset=streamLength==25,
+    type='n',
+    las=1)
+points(lambda~width,data=preddat,
+    subset=streamLength==25 & habitat=="forest", 
+    lty=1,type='l')
+points(lci~width,data=preddat,
+    subset=streamLength==25 & habitat=="forest", 
+    lty=2,type='l')
+points(uci~width,data=preddat,
+    subset=streamLength==25 & habitat=="forest", 
+    lty=2,type='l')
 ```
 
-preddat$uci<-qpois(0.975, 10)
-preddat$lci<-qpois(0.025, 10)
-### Calculating the probability of an outcome
 
-### Incorporation into a decision model
+## Example-stem counts
 
+### The data
 
-
-## Overdispersion
-
-
+Here is an example of stem counts following a treatment of 
+no, partial, or full burns in varying habitats. Additionally, 
+there was an effect of elevation.
 
 
 ```{r}
 stemCounts<- read.csv("stemCounts.csv")
+head(stemCounts)
 ```
 
 ```{r}
-plot(counts~plotArea,stemCounts)
+plot(counts~elevation,data=stemCounts,
+    xlab="Elevation",
+    ylab="Stem counts",
+    las=1,
+    type='n')
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="field",
+    pch=1,col="red")
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="riparian",
+    pch=2,col="red")   
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="mixed hardwood",
+    pch=3,col="red")     
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="pine",
+    pch=4,col="red")   
+    
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="partial burn" & habitat=="field",
+    pch=1,col="blue")
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="partial burn" & habitat=="riparian",
+    pch=2,col="blue")   
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="partial burn" & habitat=="mixed hardwood",
+    pch=3,col="blue")     
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="partial burn" & habitat=="pine",
+    pch=4,col="blue") 
+
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="full burn" & habitat=="field",
+    pch=1,col="green")
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="full burn" & habitat=="riparian",
+    pch=2,col="green")   
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="full burn" & habitat=="mixed hardwood",
+    pch=3,col="green")     
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="full burn" & habitat=="pine",
+    pch=4,col="green")  
+legend("topleft",legend=c("No burn", "Partial burn", "Full burn",
+    "Field","Riparian","Mixed hardwood", "Pines"),
+    pch=c(1,1,1,1,1,2,3,4),col=c("red","blue","green","black","black",
+        "black","black"),ncol=2)
 ```
 
-
-
-
+Thinks look like fun. Let's fit our model!
 
 
 ```{r}
-fit_od<- glm(counts~treatment+habitat,
+fit<- glm(counts~treatment+habitat+elevation,
     data=stemCounts,
-    offset=log(stemCounts$plotArea),# recall it is log 
-    family="quasipoisson")
-summary(fit_od)
+    family="poisson")
+summary(fit)
+```
+We can do all the things we did before.
+
+```{r}
+betas<- coef(fit)
+confint(fit)
+```
+We can extract the fitted to look at model specification.
+
+```{r}
+stemCounts$fitted<-fitted(fit)
+plot(counts~fitted, data= stemCounts,
+    xlab="Predicted values",
+    ylab="Counts",
+    las=1)
+abline(0,1)
 ```
 
+That seems ok, although it looks a bit funny near 1000, it fans a bit, 
+which is something we have not seen. Lets carry on and get some predictions 
+out of this beasts. First we need to make a new `data.frame()` that
+contains the possible combinations of elevation, habitat, and treatment
+we want to evaluate.  
+
+```{r}
+preddat<- expand.grid(
+    treatment=levels(stemCounts$treatment),
+    habitat=levels(stemCounts$habitat),
+    elevation=c(min(stemCounts$elevation):max(stemCounts$elevation)))
+ 
+```
+
+Fortunately we do not have an offset so it is easy peasy to predict 
+the counts for our new `data.frame()`.
+
+```{r}
+preddat$lambda<- predict(fit, newdata=preddat,
+    type='response')
+```
+And we can get the 95% prediction interval.
+
+```{r}
+preddat$lci<-qpois(0.025,preddat$lambda)
+preddat$uci<-qpois(0.975,preddat$lambda)
+```
+And now the fun begins. Because we do not have an offset
+we can simply plot the data and the prediction intervals.
+Let's look at the no burn treatment.
+
+```{r}
+plot(counts~elevation,data=stemCounts,
+    xlab="Elevation",
+    ylab="Stem counts",
+    las=1,
+    type='n',subset=treatment=="no burn")
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="field",
+    pch=1,col="black")
+## PLOT 95% PREDICTION INTERVALS    
+points(lci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="field",
+    type='l',col="black",lty=2)
+points(uci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="field",
+    type='l',col="black",lty=2)     
+ 
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="riparian",
+    pch=2,col="green")  
+points(lci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="riparian",
+    type='l',col="green",lty=2)
+points(uci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="riparian",
+    type='l',col="green",lty=2) 
+    
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="mixed hardwood",
+    pch=3,col="red")    
+points(lci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="mixed hardwood",
+    type='l',col="red",lty=2)
+points(uci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="mixed hardwood",
+    type='l',col="red",lty=2) 
+   
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="pine",
+    pch=4,col="blue") 
+points(lci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="pine",
+    type='l',col="blue",lty=2)
+points(uci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="pine",
+    type='l',col="blue",lty=2) 
+    
+```
+
+Ok, it might just be me but I was not expecting there 
+to be a bunch of points outside of the the 95% prediction intervals.
+What is going on here, not that epic 90s song
+[2](https://youtu.be/6NXnxTNIWkc). 
+
+
+### Accounting for overdispersion
+
+What we have going on here is what is called over dispersion.
+Recall that for the Poisson the variance is equal to the mean?
+Well, if there is extra variation, as there must be in this case because
+the observed data exceeds the 95% prediction intervals, there is over
+dispersion. Fortunately it is easy to remedy. There is another family that
+can be used with `glm()` the `quasipoisson` family. The quasipoisson estimates
+a dispersion parameter, values greater than 1 indicate over dispersion and 
+values less than 1 indicate under dispersion. The `poisson` family used in
+`glm()` assumes the dispersion parameter is 1.
+
+Let's fit the same data but this time assuming a `quasipoisson` distribution.
+```{r}
+fit<- glm(counts~treatment+habitat+elevation,
+    data=stemCounts,
+    family="quasipoisson")
+summary(fit)
+```
+
+Ohh a dispersion parameter of 7.5 that is pretty high and supports 
+our inclination that there was some overdispersion. Now let's calculate
+the 95% prediction intervals. This is done using the negative binomial 
+distribution where the size is $\lambda/(dispersion-1) and $\mu = \lambda$.
+
+
+```{r}
+preddat<- expand.grid(
+    treatment=levels(stemCounts$treatment),
+    habitat=levels(stemCounts$habitat),
+    elevation=c(min(stemCounts$elevation):max(stemCounts$elevation)))
+preddat$lambda<- predict(fit, newdata=preddat,
+    type='response')
+```
+And we can get the 95% prediction interval.
+
+```{r}
+dispersion<- summary(fit)$dispersion # GET DISPERSION
+
+preddat$lci<-qnbinom(0.025, size=(preddat$lambda/(dispersion-1)),    
+    mu=preddat$lambda)
+preddat$uci<-qnbinom(0.975, size=(preddat$lambda/(dispersion-1)),    
+    mu=preddat$lambda)
+```
+Let's plot the prediction intervals again and see if they make
+more sense.
+
+```{r}
+plot(counts~elevation,data=stemCounts,
+    xlab="Elevation",
+    ylab="Stem counts",
+    las=1,
+    type='n',subset=treatment=="no burn")
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="field",
+    pch=1,col="black")
+## PLOT 95% PREDICTION INTERVALS    
+points(lci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="field",
+    type='l',col="black",lty=2)
+points(uci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="field",
+    type='l',col="black",lty=2)     
+ 
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="riparian",
+    pch=2,col="green")  
+points(lci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="riparian",
+    type='l',col="green",lty=2)
+points(uci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="riparian",
+    type='l',col="green",lty=2) 
+    
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="mixed hardwood",
+    pch=3,col="red")    
+points(lci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="mixed hardwood",
+    type='l',col="red",lty=2)
+points(uci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="mixed hardwood",
+    type='l',col="red",lty=2) 
+   
+points(counts~elevation,data=stemCounts,
+    subset=treatment=="no burn" & habitat=="pine",
+    pch=4,col="blue") 
+points(lci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="pine",
+    type='l',col="blue",lty=2)
+points(uci~elevation,data=preddat,
+    subset=treatment=="no burn" & habitat=="pine",
+    type='l',col="blue",lty=2) 
+    
+```
+
+Ok, those look a ton better!
+
+Now if you really wanted you could plot the rest of the prediction
+intervals for the remaining treatments. 
 

@@ -57,6 +57,41 @@ d. Calculate the probability that `Y` is less than 11. (HINT: you can
 use the `sort()` function to sort a vector in ascending order; `?sort`) 
 
 
+a.
+```{r}
+n<-1001 
+true_mn<-10
+true_sd<-1
+y<-rnorm(n,true_mn,true_sd)
+mean(y)
+sd(y)
+```
+
+b. 
+```{r}
+Y_mean<-mean(y)
+Y_mean
+
+Y_sd<-sd(y)
+Y_sd
+```
+
+c. 
+```{r}
+hist(y,xlab="Y values", ylab="Frequency")
+```
+
+d.
+```{r}
+sort(y) # I can find which value is less than 11 and divide
+
+# other clever people used the subset and length technique
+tmp<-subset(y,y<11.00)
+length(tmp)/length(y) 
+```
+
+
+
 ## Exercise 2 Making a function to do useful things
 a. Make a function that multiplies an input vector by 2, sums the vector 
 and then returns that sum. 
@@ -67,6 +102,46 @@ replicates. (HINT: `subset()` and `length()` functions might be useful).
 d. Run the function created in 2d on the vector `Y` created in 1a for an 
 outcome of 11. How does it compare to the value you calculated for 1d? 
 
+a.
+```{r}
+my_funky_function<- function(input)
+    {
+    sum(input*2)
+    }
+# OR
+my_funky_function<- function(input)
+    {
+    x<- input * 2
+    y<- sum(x)
+    return(y)
+    }   
+ 
+```
+
+b.
+```{r}
+out<- my_funky_function(input=y)
+```
+
+c.
+```{r}
+risk<-function(input,outcome){
+    tmp<-subset(input,input<=outcome)
+    prob<-length(tmp)/length(input)
+    return(prob)
+}
+# OR
+risk<-function(input,outcome){
+    tmp<-input[input<=outcome]
+    prob<-length(tmp)/length(input)
+    return(prob)
+}
+```
+
+d.
+```{r}
+risk(input=y,outcome=11) # should be the same
+```
 
 ## Exercise 3 Linear modeling and prediction
 a. Read in the dataset `elevation-density.csv` and assign it`ele_data`. 
@@ -95,4 +170,83 @@ group 2 as lines. The line for the predicted value should be solid and
 the lines for the prediction intervals should by dotted. (Recall that 
 `lty=1` is a solid line and `lty=2` is a dotted line) 
 
+a.
+```{r}
+ele_data<-read.csv("elevation-density.csv")
+head(ele_data)
+```
 
+b.
+```{r}
+plot(density~elevation, ele_data, xlab="Elevation",
+     ylab="Density",
+     las=1)
+```
+
+c.
+```{r}
+plot(density~elevation, ele_data, xlab="Elevation",
+     ylab="Density",
+     las=1, type="n")
+points(density~elevation, ele_data,
+       subset=group=="g1",
+       col="red")
+points(density~elevation, ele_data,
+       subset=group=="g2",
+       col="blue")
+points(density~elevation, ele_data,
+       subset=group=="g3",
+       col="green")
+
+```
+
+d.
+```{r}
+fit<- lm(density~elevation+group+elevation:group, data=ele_data)
+summary(fit)
+```
+
+e.
+```{r}
+ele_data$predicted <- fitted(fit)
+ele_data$resids <- resid(fit)
+plot(resids~predicted, data=ele_dat) # should see some fanning
+```
+
+f.
+```{r}
+ele_data$ldensity<-log(ele_data$density)
+```
+
+g.
+```{r}
+fit<- lm(ldensity~elevation+group+elevation:group, data=ele_data)
+```
+h.
+```{r}
+ele_data$predicted <- fitted(fit)
+ele_data$resids <- resid(fit)
+plot(resids~predicted, data=ele_dat) # no more fanning
+```
+
+i.
+```{r}
+
+predicted_data<-expand.grid(group=c("g1","g2","g3"),
+    elevation=c(min(round(ele_data$elevation, 0)):max(round(ele_data$elevation, 0))))
+```
+
+j.
+```{r}
+
+pred<-predict(fit,predicted_data,interval = "prediction",level=0.95)
+predicted_data=cbind(predicted_data, pred)
+```
+
+k.
+```{r}
+plot(fit~elevation, predicted_data,subset = group=="g2",
+     las=1, type="l")
+points(lwr~elevation, predicted_data, subset = group=="g2",type="l", lty=2)
+points(upr~elevation, predicted_data, subset = group=="g2",type="l", lty=2)
+```

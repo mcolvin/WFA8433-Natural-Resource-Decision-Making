@@ -38,6 +38,10 @@ navbar:
           href: "Class-11.html"         
         - text: "Class 12: GLMs continued"
           href: "Class-12.html"
+        - text: "Class 13: Poissons"
+          href: "Class-13.html"
+        - text: "Class 14: HLMs"
+          href: "Class-14.html"
     - text: "Assignments"
       menu: 
         - text: "Homework 1"
