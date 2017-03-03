@@ -1,11 +1,17 @@
 ---
 title: ""
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true   
+    collapsed: false
 ---
 
  <!--
 
 library(knitr)
-rmarkdown::render_site("Class-13.Rmd")# build website
+rmarkdown::render_site("Class-14.Rmd")# build website
 # rmarkdown::render_site()# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
 system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
@@ -17,8 +23,8 @@ p<- knitr::purl("Class-14.Rmd")
 knitr::read_chunk(p)
 chunks <- knitr:::knit_code$get()
 chunkss<- lapply(1:length(chunks),function(x){if(!(names(chunks[x]) %in% c("echo=FALSE" ,"eval=FALSE"))){c(paste0("## ----", names(chunks)[x] ,"---- ##"),chunks[[x]]," "," "," ")}})
-xxx<- unlist(chunkss)
-writeLines(xxx,"./scripts/Class-13.R")
+xxx<- unlist(chunkss);
+writeLines(xxx,"./scripts/Class-14.R")
 system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
 
 -->
@@ -27,210 +33,912 @@ system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resou
 ```{r echo=FALSE, out.width="95%"}
 include_graphics("media/banner-04.jpg")
 rm(list=objects())
+class<-"Class-14"
 ```
 <!--
 Homework 1:  Introduction to basic computing- R
 List of preliminary problems to instructor for review
 -->
 
-# Class 15. GLMMs  and HLMs in Decision Contexts Part 
+# GLMMs & HLMs in Decision Contexts {-}
+
+# Class 15 preliminaries
+
+## Housekeeping
 
 * Supplemental background reading(s):
-    * ???
+    * Conroy and Peterson 116-129
 * Assignment due: None
+* Class project: Thinkg about decision model (objectives, nodes, utilities)
 * Link to class recording  [YouTube]()
 * Today's R script [Class-14.R](scripts/Class-14.R)
 
-## Objectives 
+## Class overview & objectives 
+
+This will be the last class the deals with predicting an outcome
+as a result of some inputs using a general or generalized linear model.
 
 By the end of this tutorial you should be able to:
 
-1. ????
+1. Account for overdispersion using a Generalized Linear
+Mixed Model (GLMM)
+2. Account for hiearchical dependence in linear model
+3. Use upper level predictors in a hiearchical linear
+model.
 
 
 ## Preliminaries
 
-* If you want to play along in class download the files below
-    * ????
-
-* Once you have it where you want open the R script and be sure to check 
-the working directory `getwd()` and make sure it is where your folder 
-is. 
+* We will be using simulation to create our datasets today. I like this 
+approach because I believe it is easier for students to understand what 
+functions like `glm()`, `glmm()`, and `lmer()` because you have the 
+potential to understand how the date were generated and how the outputs 
+of the functions match your inputs. This is a powerful approach 
+especially as it relates to decision making because you can simulate 
+what potential data might look like and if the predictions from that 
+model can be use in a decision making context. 
+* The R scipt for class can be found [here](scripts/Class-14.R)
+* Once you have the script where you want it it where you want open the 
+R script and be sure to check the working directory `getwd()` and make 
+sure it is where your folder is. 
 * If your working directory is not correct, you can set it in Rstudio: 
 "Session --> Set Working Directory --> To source file location". Or you 
 can use the `setwd()` in the console. 
 
 
+# A quick primer of matrix multiplication
+
+Matrices are the backbone of most statistical analyses and are an 
+essential tool in the decision makers toolbox. Here we cover a 
+few neat tricks with matrices that will come in very handy later. 
+
+First we need to create a matrix using the `matrix()` function. We
+will make a 5 column matrix that is filled by row.
+```{r}
+# First create a 4 row by 5 column matrix
+MTX <- matrix(c(1,1,1,1,1,
+    2,2,2,2,2,
+    3,3,3,3,3,
+    4,4,4,4,4), 
+    ncol = 5, # 5 columns in matrix
+    byrow = T) # fill matrix by row
+
+# Print it out
+MTX 
+```
+We did not need to specify how many rows in the matrix because
+we filled by row so `R` is smart enough to allocate the matrix elements
+where they are supposed to go.
+
+Now that we have a matrix we can do useful things like tranposing it.
+By transposing the matrix the rows become columns and columns become the rows.
+
+```{r}
+t(MTX)
+```
+We can also multiply a matrix by a scalar. Let's 
+create a scalar and multiply the matrix by a scalar
+
+```{r}
+A <- 0.5
+
+# multiply the matrix by a scalar
+MTX*A
+```
+
+Multiply matrix by another scalar, 10. 
+
+```{r}
+MTX*10
+```
+
+We can multiply a matrix by a vector. 
+Create a vector and multiply the matrix by a vector 
+
+*WARNING THIS IS NOT MATRIX MULTIPLICATION*
+
+```{r}
+V = c(10,1,0.1,0.01)
+MTX*V
+```
+
+To illustrate matrix multiplication we first create an identity matrix. 
+This is a matrix with 1's along a diagonal from the top # left to bottom 
+right 
 
 
-require(lme4)
-require(nlme)
+```{r}
+IDENT = matrix(c(1,0,0,0,1,0,0,0,1), ncol= 3)
+IDENT
+```
 
-ngroups=50
-int<- rnorm(ngroups,0.5,2)
-b<- rnorm(ngroups,8,0.95)
-dat<- data.frame(int = rep(int,30), b= rep(b, 30), 
-	group=rep(c(1:ngroups),30))
-dat$group<- as.factor(dat$group)
-dat$x<- runif(ngroups*30,10,50)
-dat$obs<- dat$int+ dat$b*dat$x
-dat$obs<- rnorm(ngroups*30,dat$obs,1)
-
-function(p,dat)
-	{
-	y<- dat$obs
-	x<- dat$x
-	
-	xx<-model.matrix(~group, dat)
-	betas<- cbind(rep(p[1],50), rep(p[2],50))
-	xx %*% betas
-	
-	x
-	
-	bet<-c(p[1], p[2])
-	
-	group_eff<- p[1]+p[2]*x
-	sd1<-p[2]
-	sd2<-p[2]
-	
-	eff
-	
-	y_pred<-  
-	lik<- dnorm(dat$obs, y_pred,p[3])
-	
-	}
+Identity matrices are super useful in quantitative applications so 
+you've probably used them and didn't know. Usually when you 
+fit a linear model by ordinary least squares you use matrix multiplication.
+Let's create a vector 
+that has the number of elements equal to the number of columns in the 
+matrix matrix multiplication is specified using `%*% ` so we have 
 
 
+```{r}
+V_new = c(1,2,3)
+IDENT %*% V_new
+```
 
-xyplot(obs~x,dat,group=group)
-
-
-fit<- lmer(obs~x + (1|group), dat)
-fit<- lmer(obs~x + (x|group), dat)
-summary(fit)
-fit<- lme(obs~x, dat, random= ~ x|group, control=list(maxIter=100))
-summary(fit)
+What happens if we just use the regular multiplication operator, `*` 
 
 
-fit<- lme(obs~x, dat, random= ~ 1+x|group)
-summary(fit)
+```{r}
+IDENT * V_new
+```
+
+This is because matrix multiplication works this way
+
+$\begin{pmatrix}2 & 5  \\3 & 6  \\4 & 7  \end{pmatrix}\cdot 
+\begin{pmatrix}10 \\15\end{pmatrix}$
+
+Which is 
+
+$2\cdot 10+5\cdot 15 = 95$
+
+$3\cdot 10+6\cdot 15 = 120$
+
+$4\cdot 10 + 7\cdot 15 = 145$
+
+or the vector
+
+$\begin{pmatrix} 95\\120\\145\end{pmatrix}$
+
+Let's check this with a little R code
+```{r}
+c = matrix(c(2,3,4,5,6,7), ncol = 2)
+z = c(10,15)
+c %*% z
+```
+
+whereas regular multiplication with matrices in R works this way 
 
 
-sqrt(sum(mean(int)-int)^2)))
+$\begin{pmatrix}2 \cdot 10 & 5 \cdot 15\\3 \cdot 15 & 6\cdot10\\4 \cdot 10  & 7\cdot15\end{pmatrix}$
 
-res<- mean(int)-int
-sum(res^2)
-
-nclass = 20
-x<- rnorm(nclass)*2
-x<- rnorm(nclass)
-hist(x)
-hist(x*2)
+```{r}
+## check with a little R code
+c * z
+```
+Why do we care?  Matrices make it incredibly easy to make linear
+predictions from existing or new data.  
 
 
-?lmeControl
-nclass = 20
+# Poisson over dispersion
 
-# And thirty students per classroom
+Here we are going to look at over dispersion again in the 
+Poisson distributed outcome. We previously used the quasipoisson
+to deal with this extra variation. Below we will see another approach
+to deal with extra variation. We will start first by simulating a known
+dataset. Using a known dataset has several advantages:
 
-nstud = 30
+1. We know how functions like `glm()` estimate parameters
+2. If we can simulate a dataset we can understand it
+3. Simulation can help evaluate whether the analysis will provide
+the necessary predictions to inform decisions.
 
-# Let's imagine that we have a classroom effect that varies randomly and is uncorrelated with the student level effect.
+Ok, let's go and simulate a poisson distributed outcome without any
+extra variation.
 
-class.effect = rnorm(nclass)*2
+We will a simulate a dataset that has 220 observations where a 
+response is Poisson distributed and linearly related to 
+elevation, habitat, and a some interactions.
 
-# Imagine also we have a unique outcome per student.
+This model is formally described as:
 
-# We have nclass*nstud number of students in total.
+$$log(\lambda) = \beta_0 + \beta_1\cdot \text{elevation} +
+    \beta_3\cdot \text{habitat}+
+    \beta_4\text{elevation}\cdot\text{habitat}$$
 
-student.effect = rnorm(nstud*nclass)*3
+and 
 
-# Now we have all the data we need in order to generate our analysis.
-data.set = data.frame(class.id = rep(1:nclass, each=nstud),
-                  class.effect = rep(class.effect, each=nstud),
-                  student.id = 1:(nstud*nclass),
-                  student.effect = student.effect)
-
-data.set$outcomes = data.set$class.effect + data.set$student.effect
-
-head(data.set)
-# Looking good.  Now let's load our HLM package.
-
-require(nlme)
-
-# For quick reference I used:
-# https://txcdk.unt.edu/iralab/sites/default/files/HLM_R_Handout.pdf
-
-lme(outcomes ~ 1, random = ~ 1 | class.id, data=data.set)
-
-# We can see that lme is pretty good at estimating a standard deviation of the level 2 effect at around 2 and a level 3 effect around 3.
-
-int<-c()
-b<- c()
-require(lme4)
-for(i in 1:100)
-{
-# GLMER
-ngroups=50
-nobs=50
-int<- rnorm(ngroups,-0.8,1.5)
-x<- runif(ngroups*nobs,1,50)
-b<- 0.085
-dat<- data.frame(int=sort(rep(int,nobs)),id=sort(rep(c(1:ngroups),nobs)))
-dat$x<-x
-dat$b<- b
-dat$y<- dat$int+dat$x*dat$b
-dat$p<- exp(dat$y)/(1+exp(dat$y))
-
-dat$psm<- rbinom(nrow(dat),15,dat$p)
-dat$spn<- 15-dat$psm
-dat$psm_rate<- dat$psm/15
+$$ Y \sim Poisson(\lambda)$$.
 
 
-fit<- glmer(cbind(psm,spn)~ x + (1 | id),family = binomial(link = "logit"), data = dat) 
-int<-c(int,fixef(fit)[1])
-b<-c(b,fixef(fit)[2])
-}
+```{r}
+set.seed(8433)# for reproducibility
+n=220 
+my_data<- data.frame(
+    elevation=round(runif(n,20,600),0),
+    habitat=sample(x=c("hab1","hab2","hab3"),
+        size=n,
+        replace=TRUE))
+my_data$habitat<- as.factor(my_data$habitat)
+```
 
-hist(int,breaks=seq(-4,4,0.2))
-abline(v=-0.8)
-mean(int)
+Here is a list of betas we need to predict our poisson distributated
+outcomes.
 
-hist(b,breaks=seq(0,0.1,0.001))
-abline(v=0.085)
-mean(int)
+```{r}
+betas<- c(-1.51,# intercept
+    0.005, # effect of elevation
+    0.1,-0.1, # effect of habitat 2 and 3
+    0.002,0.004) # interaction of habitat with elevation
+```
+Boy,that is a lot of betas! It will be a huge pain in the butt to
+string them together to get a prediction. Three ways to make the
+prediction comes to mind:
 
-dat$pred<- fitted(fit)
-xyplot(p~x,dat,group=id)
-plot(p~pred,dat,ylim=c(0,1),xlim=c(0,1))
+1. The hard way (subsetting)
+2. Not as hard (transpose matrix & sum)
+3. Easy way (matrix)
+
+Let's see what I mean here.
+
+Here we will use subsetting to make predictions the hard way.
+
+```{r}
+# 1. THE HARD WAY
+my_data$Y1<-NA
+my_data[my_data$habitat=="hab1",]$Y1<- exp(betas[1]+
+    betas[2]*my_data[my_data$habitat=="hab1",]$elevation)
+my_data[my_data$habitat=="hab2",]$Y1<- exp(betas[1]+
+    betas[2]*my_data[my_data$habitat=="hab2",]$elevation +
+    betas[3] +
+    betas[5]*my_data[my_data$habitat=="hab2",]$elevation)
+my_data[my_data$habitat=="hab3",]$Y1<- exp(betas[1]+
+    betas[2]*my_data[my_data$habitat=="hab3",]$elevation +
+    betas[4] +
+    betas[6]*my_data[my_data$habitat=="hab3",]$elevation)  
+```
+
+Holy crap that was a big pain, especially if 
+there were more habitat types! Regardless, 
+let's see what the predictions look like.
+Note the use of the `exp()` function to create the log link.
+
+```{r}
+plot(Y1~elevation,
+    data=my_data,
+    ylab="Predictions",
+    xlab="Elevations")
+```
+
+Keep in mind we are working with the prediction model here and 
+we have not added any uncertainty yet.
+
+We can use a matrix to make things a bit easier. 
+The function `model.matrix()` provides what is called the
+design matrix for a linear model, commonly referred to as $X$ in 
+most statistical texts. All we need to do is provide a formula
+for the linear model and a `data.frame()` to create the design
+matrix. (NOTE: understanding these really facilitate understanding
+of capture recapture design matrices and PIMs).
+
+Ok, let's give it a shot and make the design matrix.
+
+```{r}
+# 2. THE EASIER WAY
+model_matrix<- model.matrix(
+    object=as.formula("~elevation+habitat+elevation:habitat"),
+    data=my_data)
+head(model_matrix) # THIS IS THE DESIGN MATRIX
+```
+
+Now is it as simple as multiplying the design matrix by our 
+vector of betas? 
+
+```{r}
+X<- model_matrix * betas
+head(X)
+```
+Recall, what matrix multiplication is from above and 
+you should think that is not right...
+
+If we transpose the matrix that might help out.
+
+```{r}
+X<- t(model_matrix) * betas # OK this sort of works
+head(X)
+```
+But now we have all the right multiplications but we need
+to sum by each observation. To do that it might make sense to
+transpose the matrix 
+```{r}
+X<-t(X)
+head(X)
+```
+Now all we need to do is sum each row and exponiate the values.
+
+```{r}
+my_data$Y2<- exp(rowSums(X)) # sum the linear predictors
+```
+Probably a good time to check to see if the hard way and 
+the easier way ar the amse.
+```{r}
+plot(Y2~elevation,
+    data=my_data,
+    ylab="Predictions",
+    xlab="Elevations")
+    
+ points(Y1~elevation,
+    data=my_data,col="red")
+```
+Yes! Things are looking good.
+Now we can do things the easy way using
+the design matrix and matrix multiplication.
+
+```{r}
+# 3. THE EASY WAY
+my_data$Y3<- exp(model_matrix %*% betas)
+```
+My ohhh my, that was easier than Ken Griffey stealing home in the 11th. 
+We should confirm what we did is the same as the hard
+way and the easier way.
+
+First let's compare the easier way.
+```{r}
+plot(Y2~elevation,
+    data=my_data,
+    ylab="Predictions",
+    xlab="Elevations")
+points(Y3~elevation,
+    data=my_data,col="red")
+```
+Big nice!
+
+Again we should confirm what we did is the same as the hard
+way and the easy way.
+
+Another way to confirm is to see if the predictions from the 3
+approaches fall on a 1:1 line.
+
+```{r}
+plot(Y1~Y2,
+    data=my_data,
+    xlab="Hard way",
+    ylab="Easier way")
 abline(0,1)
+```
+Good!
 
+```{r}
+plot(Y2~Y3,
+    data=my_data,
+    xlab="Easier way",
+    ylab="Easy way")
+abline(0,1)
+```
+Great!
+
+OK, now we can add uncertainty to our predictions, assuming
+outcomes are Poisson distributed.
+
+```{r}
+my_data$obs<- rpois(n=nrow(my_data),
+    lambda=my_data$Y3)
+```
+Easy Peasey, lemon squeezy.
+
+Let's take a look at them outcomes!
+
+```{r}
+plot(obs~elevation,
+    data=my_data)
+```
+
+Now we can the the model using the `glm()` function 
+assuming a Poisson distribution.
+
+```{r}
+fit<-glm(obs~elevation+habitat,
+    data=my_data)
 summary(fit)
+```
+Now if we did things right our estimated betas from
+the model fit and the betas we used to simulate the 
+data should be close to the same values.
+We can extract the coefficients.
+
+```{r}
+betas_est<- coef(fit)
+cbind(betas,betas_est)
+```
+
+
+## Simulating Poisson over dispersion
+
+### Adding the over dispersion
+
+Now we can use the same process to add over dispersion, which 
+is commonly encountered in ecological data. Formally, an additional
+error term is added to the prediction model that is normally distributed
+with mean 0 and standard deviation $\sigma$. Specifically
+
+$$log(\lambda) = \beta_0 + \beta_1\cdot \text{elevation} +
+    \beta_3\cdot \text{habitat}+
+    \beta_4\text{elevation}\cdot\text{habitat}
+    +\epsilon$$
+
+where 
+
+$$\epsilon \sim Normal(0,\sigma)$$
+
+and 
+
+$$ Y \sim Poisson(\lambda)$$.
+
+Using our previous dataset `my_data` we can use the easy way to
+calculate predicted values and add extra variation.
+
+```{r}
+my_data$Y<- exp(model_matrix %*% betas + 
+    rnorm(nrow(my_data),0,0.3))
+```
+I still can't get over that we can do all that heavy lifting in 
+a single line. The next step is to add the next layer of uncertainty
+the poisson distributed outcomes.
+
+```{r}
+my_data$obs<- rpois(n=nrow(my_data),
+    lambda=my_data$Y)
+```
+We can take a gander at this data using the crude plot below.
+
+```{r}
+plot(obs~elevation,
+    data=my_data)
+```
+### GLMM
+
+A generalized linear mixed model can be used to estimate
+the parameters for the model given the data above. We need to 
+use a package to use a function `glmer()`
+
+```{r}
+# install.packages("lme4") run this to install the package
+library(lme4)
+```
+Now we need a way to account for the extra variation. Recall we
+added to each observation, so it makes sense to allow for a random 
+effect of each observation. The additional variation is added 
+using the `+ (1 | id)` which tells `glm()` to fit a random effect of
+`id`.
+
+
+```{r}
+my_data$id<- c(1:nrow(my_data))
+head(my_data)
+fit<- glmer(obs~ elevation + habitat + elevation:habitat + (1 | id),
+    family = poisson(link = "log"), data = my_data) 
+```
+
+This is one of those times where you might want to throw your computer
+out the window. But let's diagnose what is going on here. Specifically the 
+error says something about rescaling the continuous variables. In general
+when we center variable and scale them such that the mean of the variable 
+is 0 and $\sigma =1$ to make optimization more efficient. We do this by
+subtracting the mean and dividing all centered values by $\sigma$.
+Here is how we do this in R.
+
+```{r}
+ele_mn<- mean(my_data$elevation)
+ele_sd<- sd(my_data$elevation)
+my_data$elesc<- scale(my_data$elevation,
+    center=ele_mn,
+    scale=ele_sd)
+```
+Now we can use our newly scaled variable to fit our model. 
+
+```{r}
+fit<- glmer(obs~ elesc + habitat + elesc:habitat + (1 | id),
+    family = poisson(link = "log"), 
+    data = my_data,
+    control=glmerControl(optimizer="bobyqa")) 
+```
+Let's see the summary.
+```{r}
+summary(fit)
+```
+OK we have alot going on here, the betas do 
+not exactly match up because we scaled our variables but 
+the direction works.
+
+Let's extract the betas using `coef()`
+
+```{r}
+betas_est<- coef(fit)
+betas_est
+```
+What was that? Well we have several things going on here. First we 
+are getting estimates of the fixed effects, the betas. Second we 
+are getting estimates of the random effects, remember $epsilon$ well
+the random effects are an estimate a of $\epsilon$.
+
+When using a `glmer()` or an `lmer()` we use the `fixef()` function
+to extract the fixed effects.
+
+```{r}
+betas_est<-fixef(fit) # betsas
+```
+We use the `ranef()` function to get the random effects.
+
+```{r}
+re<-ranef(fit) # pull the random effects
+```
+If we recall our predictive model there were a couple of assumptions, 
+one of which was the random effect $\epsilon$ was normally distributed 
+with mean 0 and some standard deviation $\sigma$. 
+
+Unfortunately `ranef()` returns a list so we have to unlist it to plot 
+a histogram that we can use to evaluate this assumption. The code below 
+plots a histogram of the random effects. 
+
+```{r}
+hist(unlist(re))
+```
+
+These models can be a real bear to deal with in terms of getting 
+predicted outcomes and typically require some sort of resampling 
+technique (e.g., bootstrap). We won't cover those here for the sake of 
+time, but it is something to keep in mind when the urge to add a random 
+effect comes up. Specifically, how do you incorporate the uncertainty in 
+a management decision? 
+
+
+
+
+
+# Linear mixed effects models
+
+Now we have an idea of a random effect in the context of a
+GLMM, let's move on to a more common case where random effects are
+used to account for some sort of hierarchical dependency. This too
+happens frequently in natural resource data. Ignoring hierarchical
+dependencies do not account for the extra bits of uncertainty and 
+therefore your predictions are likely to be more precise then they
+should.  Therefore you are likely underestimate the probability of
+some outcomes.
+
+
+## Random intercept 
+
+The first model we run into and use commonly is a model that 
+has heterogeneous intercepts. We could treat these as being 
+fixed effects, but in the case where you may be estimating 10s
+or 100s of intercepts you burn up alot of degrees of freedom.
+Alternative we can assume that the heterogeneity in intercepts
+randomly vary and that variation can be assumed to be normally
+distributed with mean 0 and standard deviation $\sigma$. These models
+can be fitted using the `lmer()` function which is part of the `lme4` 
+package.
+
+```{r}
+library(lme4)
+```
+Formally, the predictive model is 
+
+$$\mu_{i,j} = \beta_{0,j} + \beta_1 \cdot X $$
+
+and 
+
+$$\beta_{0,j} = \gamma + \epsilon$$ where
+
+$$ \epsilon \sim Normal (0, \sigma_{\beta{0}})$$
+
+and 
+
+$$Y_{i,j}\sim Normal(\mu_{i,j},\sigma)$$
+
+Looks nasty right? Remember that next time you want to 
+add a random effect...
+
+As before we are going to simulate some data as I believe this 
+really helps in figuring these analyses out and provides a way
+to check and see if your analysis can inform your decisions.
+
+In this example we have 50 groups and 30 observations within 
+each group.
+
+```{r}
+ngroups=50
+```
+
+The mean of our intercept is 10 and the uncertainty (i.e., 
+random effect) is normally distributed with mean 0 and
+the standard deviation is 2. Because we have 50 groups
+we have 50 random effects, represented as 50 unique intercepts.
+
+```{r}
+set.seed(5150)
+beta0<- 10
+beta0<- beta0+rnorm(ngroups,0,2) # random effect of group
+```
+
+This example will have a common slope for the x variable for 
+each group.
+
+```{r}
+beta1<- 0.95
+```
+
+With the $\beta_0$s and $\beta_1$ we can gin up a dataset
+and fit the model.
+
+Let's get that dataset ginned up.
+
+```{r}
+
+dat<- data.frame(beta0 = rep(beta0,30), beta1= rep(beta1, 30), 
+	group=rep(c(1:ngroups),30),
+    x=runif(ngroups*30,10,50))
+dat$group<- as.factor(dat$group)
+
+```
+
+Let's make our baseline predicted outcomes.
+
+```{r}
+dat$obs<- dat$beta0+ dat$beta1*dat$x
+```
+
+Ok now let's spin up some random effects, 50*30 to be exact, one
+for each observation and add them to our baseline predicted outcomes.
+The $\sigma$ for this random effect is equal to 1.
+
+```{r}
+dat$obs<- rnorm(ngroups*30,dat$obs,1)
+```
+
+We have used the `points()` function up to this point. Get it? This 
+point?... There is another plotting function that is very convenient 
+in the `lattice` package that can plot groups. The syntax is very
+similar to `plot()` but now we can add groups.
+
+```{r}
+# install.packages("lattice") # run if needed
+library(lattice)
+xyplot(obs~x,
+    data=dat,
+    group=group)
+```
+We can see all the data for each group.  
+
+Similar to the `lm()` function we used before the `lmer()` function
+uses the same syntax but you can add random effects to the formula.
+We will use the `(1|group)` that tells `lmer()` to fit heterogeneous
+intercepts for each group and those values should be normally distributed.
+
+```{r}
+fit<- lmer(obs~x + (1|group), dat)
+summary(fit)
+```
+There is alot going on in the summary. 
+One reassuring thing is that the standard deviation of 
+the random effects are 2 and 1 which is what we used to simulate
+our data. The intercept is estimated to be close to 10 and 
+$\beta_1$ is close to 0.95. We were able to estimate the values
+we used to simulate the data. I don't know about you but that 
+makes me feel all warm and fuzzy. 
+
+## Random intercept and slopes
+
+Another instance we run into is where we have random intercepts and
+slopes. Basically we have heterogeneous intercepts and slopes. What 
+does that remind you of? Well if you were thinking an about an 
+interaction then, winner winner chicken dinner. However when we have
+many groups the number of parameters we estimate can quickly 
+become numerous if we treat them as fixed effects. Additionally, it 
+precludes us from making predictions beyond the groups in the model.
+However, random effects clears that up.
+  
+Let's get some data rolling for a model that formally looks like this:
+
+
+$$\mu_{i,j} = \beta_{0,j} + \beta_{1,j} \cdot X $$
+
+and 
+
+$$\beta_{0,j} = \gamma + \epsilon$$ where
+
+$$ \epsilon \sim Normal (0, \sigma_{\beta{0}})$$
+
+and 
+
+$$\beta_{1,j} = \delta + \tau$$ where
+
+$$ \tau \sim Normal (0, \sigma_{\beta{1}})$$
+
+and 
+
+$$Y_{i,j}\sim Normal(\mu_{i,j},\sigma)$$
+
+Whoziers, 3 random effects, pulling a hat trick. 
+
+Let's get this party started and build on our last dataset to
+get this beast rolling.  
+
+The code is the same as the heterogeneous intercept model.
+
+Step 1 generate $\beta_0$ and $\beta_1$ and random effects.
+```{r}
+set.seed(8675309)
+beta0<- 10
+beta0<- beta0+rnorm(ngroups,0,20) # random effect of group
+
+beta1<- 0.95
+beta1<- beta1+rnorm(ngroups,0,1.3) # random effect of group
+```
+Now we can put them in a dataset to calculate predictions.
+
+```{r}
+dat<- data.frame(
+    beta0 = rep(beta0,30), 
+    beta1= rep(beta1, 30), 
+	group=rep(c(1:ngroups),30),
+    x=runif(ngroups*30,10,50))
+dat$group<- as.factor(dat$group)
+```
+
+And make our baseline predicted outcomes.
+
+```{r}
+dat$obs<- dat$beta0+ dat$beta1*dat$x
+```
+Ok now let's spin up some random effects, 50*30 to be exact, one
+for each observation and add them to our baseline predicted outcomes.
+The $\sigma$ for this random effect is equal to 1.
+
+```{r}
+dat$obs<- rnorm(ngroups*30,dat$obs,50)
+```  
+Just like the intercepts only but now we have a random effect 
+around $\beta_1$.
+
+```{r}
+xyplot(obs~x,
+    data=dat,
+    group=group)
+```
+
+That data looks good but messy! But thats where this gets fun.
+Uncertainty galore, uncertainty outcomes, what is a decision 
+maker to do but be in for a world of hurt?
+
+Well let's fit this model.
+
+```{r}
+fit<- lmer(obs~x + (1+x|group), dat)
+summary(fit)
+```
+
+Our estimates of the random effects are legit close to the values
+we fed the simulated data. And the fixed effects are close!
+
+But what does it all mean? Well there is lots of 
+uncertainty as we saw in the plot some groups go 
+up some go down which makes for a difficult time of 
+predicting outcomes with any certainty. 
+
+What if we could predict the random effects using 
+a group level variable? Yes, Yes you can...
+
+
+
+
+## Predicting random effects
+
+Here we have a dataset with heterogeneous intercepts but for
+simplicity the the slopes will be homogeneous. This type of 
+data might arise with hierarchically structured data, which I 
+commonly encounter in streams.  Specifically streams are nested 
+within watershed.  Suppose in this case we have a response variable
+where we have multiple observations within a watershed and there are
+35 watersheds with data. The catchment size of the watershed vary
+and can be used to predict the intercept of watershed specific 
+intercepts. Formally we are looking at a model defined as:
+
+
+$$\mu_{i,j} = \beta_{0,j} + \beta_{1} \cdot X $$
+
+and 
+
+$$\beta_{0,j} = \gamma + 
+    \nu\cdot \text(Catchment Size} 
+    + \epsilon$$ where
+
+$$ \epsilon \sim Normal (0, \sigma_{\beta{0}})$$
+
+and 
+
+$$Y_{i,j}\sim Normal(\mu_{i,j},\sigma)$$
+
+The key is in the middle where we are now predicting $\beta_{0,j}$ 
+using a linear model!  
+
+Ok let's simulate a dataset to verify our understanding.
+
+```{r}
+nwatersheds<- 35
+
+# A WATERSHED LEVEL COVARIATE
+catchmentSize<- c(213,91,326,30,267,
+    216,178,167,251,261,139,400,399,  
+    56,261,34,90,108,224,312,85,64,
+    254,188,266,95,391,327,351,314,
+    211,305,170,273,253)
+```
+
+Now lets specify $\gamma$ and $\nu$ for the wateshed level equation.
+
+```{r}
+beta0_ws<- 5
+beta1_ws<- 0.8
+```
+Now we can add the random effect ($\epsilon$ to the intercept
+where the random effect is normally distributed with mean 0 and
+a standard deviation of 55.
+
+
+```{r}
+beta0<- beta0_ws +beta1_ws*catchmentSize + rnorm(nwatersheds,0,55)
+```
+Let's see what the intercepts look like.
+
+```{r}
+plot(catchmentSize,beta0,
+    xlab="Catchment size",
+    ylab="Intercept value")
+```
+
+Suppose there are 80 sites within each watershed.
+We can cobble together the predictors now.
+
+```{r}
+withinsites<- 80
+dat<- data.frame(
+    beta0 = rep(beta0,withinsites), 
+    beta1= -3.6, 
+	group=rep(c(1:nwatersheds),withinsites),
+	catchmentSize=rep(catchmentSize,withinsites),
+    x=runif(nwatersheds*withinsites,10,50))
+dat$group<- as.factor(dat$group)
+```
+And generate the predictions
+```{r}
+dat$y<- dat$beta0 + dat$beta1*dat$x
+```
+and layer on the last bit of uncertainty
+
+```{r}
+dat$obs<- rnorm(nrow(dat),dat$y,15)
+```
+Let's look at the mess we created. 
+
+
+```{r}
+xyplot(obs~x,
+    data=dat,
+    xlab="Catchment size",
+    ylab="Intercept value",
+    group=group)
+```
+Now we can use the `lmer()` to fit the model. The 
+key here is that we include `catchmentSize` as a predictor
+in the model and because we specified heterogeneous intercepts 
+and the catchment values are structured by group it ends up 
+predicting $\nu$.
+
+```{r}
+fit<- lmer(obs~x+ catchmentSize + (1|group) , dat)
+summary(fit)
+```
+Oh boy, it worked.
+
+```{r}
 fixef(fit)
+```
+Those are pretty close to the values we used!
+
+The intercept is a bit off, but what do you expect we put a big
+chunk of uncertainty around it, $\sigma$=55 as I recall.
 
 
 
 
 
-set.seed(12345) # updated to T=20 and L=40 for comparative purposes.
-
-T = 20 # number of years
-L = 40  # number of sites
-N0 = 100 # average initial pop (to simulate data)
-sd_env = 0.8 # to simulate the env (assumed mean 0)
-env  = matrix(rnorm(T*L, mean=0, sd=sd_env), nrow=T, ncol=L)
-
-# 'real' parameters
-alpha  = 0.1
-beta   = 0.05
-sd     = 0.4
-gamma  = rnorm(T-1, mean=0, sd=sd)
-mu_ini = log(rpois(n=L, lambda=N0)) #initial means
-
-par_real = list(alpha=alpha, beta=beta, gamma=gamma, 
-               sd=sd, mu_ini=mu_ini)
-
-mu = dynamics(par=par_real, x=env, T=T, L=L)
-
-# observed abundances
-n = matrix(rpois(length(mu), lambda=mu), nrow=T, ncol=L)

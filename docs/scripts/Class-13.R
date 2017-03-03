@@ -65,12 +65,12 @@ legend("topleft",legend=c("Poisson","Binomial"),
  
 ## ----unnamed-chunk-9---- ##
 boxplot(surv_pois~S,data=sims,
-    at=1:1:length(S)-0.25,
+    at=1:length(S)-0.25,
     subset=N==1000,
     boxwex=0.25, # make boxplot narrower
     xaxt='n') # suppress x-axis label plotting
 boxplot(surv_bin~S,data=sims,add=TRUE,col='grey',
-    at=1:1:length(S)+0.25,
+    at=1:length(S)+0.25,
     subset=N==1000,
     boxwex=0.25,
     xaxt='n')
@@ -163,7 +163,7 @@ preddat$lambda<- NA # prep vector to fill
 
 preddat[preddat$habitat=="ag",]$lambda<- exp(betas[1]+
     preddat[preddat$habitat=="ag",]$width*betas[2]+
-    log(preddat[preddat$habitat=="forest",]$streamLength))
+    log(preddat[preddat$habitat=="ag",]$streamLength))
 preddat[preddat$habitat=="forest",]$lambda<- exp(betas[1]+
     preddat[preddat$habitat=="forest",]$width*betas[2]+
     betas[3]+
@@ -244,7 +244,7 @@ preddat$lambda<- NA # prep vector to fill
 # PREDICT LAMBDA
 preddat[preddat$habitat=="ag",]$lambda<- exp(betas[1]+
     preddat[preddat$habitat=="ag",]$width*betas[2]+
-    log(preddat[preddat$habitat=="forest",]$streamLength))
+    log(preddat[preddat$habitat=="ag",]$streamLength))
 preddat[preddat$habitat=="forest",]$lambda<- exp(betas[1]+
     preddat[preddat$habitat=="forest",]$width*betas[2]+
     betas[3]+
