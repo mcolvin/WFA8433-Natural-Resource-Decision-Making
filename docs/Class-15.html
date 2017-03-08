@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/textmate.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.0/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Course home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Course information
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Course home</a>
+    </li>
+    <li>
+      <a href="syllabus.html">Course Syllabus</a>
+    </li>
+    <li>
+      <a href="course-overview.html">Course Overview</a>
+    </li>
+    <li>
+      <a href="final-project.html">About final project</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Classes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Class-01.html">Class 1: Introduction to decision making</a>
+    </li>
+    <li>
+      <a href="Class-02.html">Class 2: The PrOACT Process</a>
+    </li>
+    <li>
+      <a href="Class-03.html">Class 3: Uncertainty and decision making</a>
+    </li>
+    <li>
+      <a href="Class-04.html">Class 4: Decision trees and nets</a>
+    </li>
+    <li>
+      <a href="Class-05.html">Class 5: Intro to SDM and ARM</a>
+    </li>
+    <li>
+      <a href="Class-06.html">Class 6: Structuring and quantifying objectives</a>
+    </li>
+    <li>
+      <a href="Class-07.html">Class 7: Structuring objectives</a>
+    </li>
+    <li>
+      <a href="Class-08.html">Class 8: Intro to R</a>
+    </li>
+    <li>
+      <a href="Class-09.html">Class 9: Linear Models</a>
+    </li>
+    <li>
+      <a href="Class-10.html">Class 10: LMs and GLMs</a>
+    </li>
+    <li>
+      <a href="Class-11.html">Class 11: Prediction and GLMs</a>
+    </li>
+    <li>
+      <a href="Class-12.html">Class 12: GLMs continued</a>
+    </li>
+    <li>
+      <a href="Class-13.html">Class 13: Poissons</a>
+    </li>
+    <li>
+      <a href="Class-14.html">Class 14: HLMs</a>
+    </li>
+    <li>
+      <a href="Class-15.html">Class 15: HLMs and occupancy</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="hw-01.html">Homework 1</a>
+    </li>
+    <li>
+      <a href="hw-02.html">Homework 2</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Additional Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="R-tutorials.html">R tutorials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><!--
+
+library(knitr)
+rmarkdown::render_site("Class-15.Rmd")# build website
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
+q(save="no") 
+
+rmarkdown::render_site()# build webpage
+## PURL R CODE FROM CLASS NOTES
+p<- knitr::purl("Class-15.Rmd")
+knitr::read_chunk(p)
+chunks <- knitr:::knit_code$get()
+chunkss<- lapply(1:length(chunks),function(x){if(!(names(chunks[x]) %in% c("echo=FALSE" ,"eval=FALSE"))){c(paste0("## ----", names(chunks)[x] ,"---- ##"),chunks[[x]]," "," "," ")}})
+xxx<- unlist(chunkss);
+writeLines(xxx,"./scripts/Class-15.R")
+system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
+
+--></p>
+<p><img src="media/banner-04.jpg" width="100%" /> <!--
+Homework 1:  Introduction to basic computing- R
+List of preliminary problems to instructor for review
+--></p>
+<div id="finishing-hlms-estimating-occupancy" class="section level1 unnumbered">
+<h1>Finishing HLMs &amp; estimating occupancy</h1>
+</div>
+<div id="class-15-preliminaries" class="section level1">
+<h1><span class="header-section-number">1</span> Class 15 preliminaries</h1>
+<div id="housekeeping" class="section level2">
+<h2><span class="header-section-number">1.1</span> Housekeeping</h2>
+<ul>
+<li>Supplemental background reading(s):
+<ul>
+<li>Powell and Gale. Chapter 15: Occupancy Modeling <a href="http://media.wix.com/ugd/95e73b_431c4d6ee6c6475d909dc90a766ae185.pdf">here</a></li>
+<li>Welsh, A. H., D. B. Lindenmayer, and C. F. Donnelly. 2013. Fitting and Interpreting Occupancy Models. Plos One 8:e52015.[pdfs/W202.pdf]</li>
+<li>Guillera-Arroita, G., J. J. Lahoz-Monfort, D. I. MacKenzie, B. A. Wintle, and M. A. McCarthy. 2014. Ignoring Imperfect Detection in Biological Surveys Is Dangerous: A Response to â€˜Fitting and Interpreting Occupancy Models’. Plos One 9:e99571.[pdfs/G140.pdf]</li>
+<li>Welsh, A. H., D. B. Lindenmayer, and C. F. Donnelly. 2015. Adjusting for One Issue while Ignoring Others Can Make Things Worse. Plos One 10:e0120817. [pdfs/W203.pdf]</li>
+</ul></li>
+<li>Assignment due: None</li>
+<li>Class project: Think about decision model (objectives, nodes, utilities)</li>
+<li>Link to class recording <a href="">YouTube</a></li>
+<li>Today’s R script <a href="scripts/Class-15.R">Class-15.R</a></li>
+</ul>
+</div>
+<div id="class-overview-objectives" class="section level2">
+<h2><span class="header-section-number">1.2</span> Class overview &amp; objectives</h2>
+<p>This will be the last class the deals with predicting an outcome as a result of some inputs using a general or generalized linear model.</p>
+<p>By the end of this class you should be able to:</p>
+<ol style="list-style-type: decimal">
+<li>Account for hierarchical dependence in linear model 31 Use upper level predictors in a hierarchical linear model.</li>
+</ol>
+</div>
+<div id="preliminaries" class="section level2">
+<h2><span class="header-section-number">1.3</span> Preliminaries</h2>
+<ul>
+<li>The R scipt for class can be found <a href="scripts/Class-15.R">here</a></li>
+<li>Once you have the script where you want it it where you want open the R script and be sure to check the working directory <code>getwd()</code> and make sure it is where your folder is.</li>
+<li>If your working directory is not correct, you can set it in Rstudio: “Session –&gt; Set Working Directory –&gt; To source file location”. Or you can use the <code>setwd()</code> in the console.</li>
+</ul>
+</div>
+<div id="random-intercept-and-slopes" class="section level2">
+<h2><span class="header-section-number">1.4</span> Random intercept and slopes</h2>
+<p>Another instance we run into is where we have random intercepts and slopes. Basically we have heterogeneous intercepts and slopes. What does that remind you of? Well if you were thinking an about an interaction then, winner winner chicken dinner. However when we have many groups the number of parameters we estimate can quickly become numerous if we treat them as fixed effects. Additionally, it precludes us from making predictions beyond the groups in the model. However, random effects clears that up.</p>
+<p>Let’s get some data rolling for a model that formally looks like this:</p>
+<p><span class="math display">\[\mu_{i,j} = \beta_{0,j} + \beta_{1,j} \cdot X \]</span></p>
+<p>and</p>
+<p><span class="math display">\[\beta_{0,j} = \gamma + \epsilon\]</span> where</p>
+<p><span class="math display">\[ \epsilon \sim Normal (0, \sigma_{\beta{0}})\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\beta_{1,j} = \delta + \tau\]</span> where</p>
+<p><span class="math display">\[ \tau \sim Normal (0, \sigma_{\beta{1}})\]</span></p>
+<p>and</p>
+<p><span class="math display">\[Y_{i,j}\sim Normal(\mu_{i,j},\sigma)\]</span></p>
+<p>Whoziers, 3 random effects, pulling a hat trick.</p>
+<p>Let’s get this party started and build on our last dataset to get this beast rolling.</p>
+<p>The code is the same as the heterogeneous intercept model.</p>
+<p>Step 1 generate <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> and random effects.</p>
+<pre class="r"><code>set.seed(8675309)
+
+ngroups=50
+beta0&lt;- 10
+beta0&lt;- beta0+rnorm(ngroups,0,20) # random effect of group
+
+beta1&lt;- 0.95
+beta1&lt;- beta1+rnorm(ngroups,0,1.3) # random effect of group</code></pre>
+<p>Now we can put them in a dataset to calculate predictions.</p>
+<pre class="r"><code>dat&lt;- data.frame(
+    beta0 = rep(beta0,30), 
+    beta1= rep(beta1, 30), 
+    group=rep(c(1:ngroups),30),
+    x=runif(ngroups*30,10,50))
+dat$group&lt;- as.factor(dat$group)</code></pre>
+<p>And make our baseline predicted outcomes.</p>
+<pre class="r"><code>dat$obs&lt;- dat$beta0+ dat$beta1*dat$x</code></pre>
+<p>Ok now let’s spin up some random effects, 50*30 to be exact, one for each observation and add them to our baseline predicted outcomes. The <span class="math inline">\(\sigma\)</span> for this random effect is equal to 1.</p>
+<pre class="r"><code>dat$obs&lt;- rnorm(ngroups*30,dat$obs,50)</code></pre>
+<p>Just like the intercepts only but now we have a random effect around <span class="math inline">\(\beta_1\)</span>.</p>
+<pre class="r"><code>library(lattice) # need for xypot
+xyplot(obs~x,
+    data=dat,
+    group=group)</code></pre>
+<p><img src="Class-15_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>That data looks good but messy! But thats where this gets fun. Uncertainty galore, uncertainty outcomes, what is a decision maker to do but be in for a world of hurt?</p>
+<p>Well let’s fit this model.</p>
+<pre class="r"><code>library(lme4)
+fit&lt;- lmer(obs~x + (1+x|group), dat)
+summary(fit)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: obs ~ x + (1 + x | group)
+##    Data: dat
+## 
+## REML criterion at convergence: 16235.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.8152 -0.7037  0.0058  0.6877  3.4316 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev. Corr
+##  group    (Intercept)  192.87  13.888       
+##           x              1.47   1.212   0.22
+##  Residual             2642.56  51.406       
+## Number of obs: 1500, groups:  group, 50
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)  12.3809     4.1719   2.968
+## x             0.9595     0.2071   4.633
+## 
+## Correlation of Fixed Effects:
+##   (Intr)
+## x -0.376</code></pre>
+<p>Our estimates of the random effects are legit close to the values we fed the simulated data. And the fixed effects are close!</p>
+<p>But what does it all mean? Well there is lots of uncertainty as we saw in the plot some groups go up some go down which makes for a difficult time of predicting outcomes with any certainty.</p>
+<p>What if we could predict the random effects using a group level variable? Yes, Yes you can…</p>
+</div>
+<div id="predicting-random-effects" class="section level2">
+<h2><span class="header-section-number">1.5</span> Predicting random effects</h2>
+<p>Here we have a dataset with heterogeneous intercepts but for simplicity the the slopes will be homogeneous. This type of data might arise with hierarchically structured data, which I commonly encounter in streams. Specifically streams are nested within watershed. Suppose in this case we have a response variable where we have multiple observations within a watershed and there are 35 watersheds with data. The catchment size of the watershed vary and can be used to predict the intercept of watershed specific intercepts. Formally we are looking at a model defined as:</p>
+<p><span class="math display">\[\mu_{i,j} = \beta_{0,j} + \beta_{1} \cdot X \]</span></p>
+<p>and</p>
+<p><span class="math display">\[\beta_{0,j} = \gamma + \nu \cdot \text{Catchment Size} + \epsilon\]</span></p>
+<p>where</p>
+<p><span class="math display">\[ \epsilon \sim Normal (0, \sigma_{\beta{0}})\]</span></p>
+<p>and</p>
+<p><span class="math display">\[Y_{i,j}\sim Normal(\mu_{i,j},\sigma)\]</span></p>
+<p>The key is in the middle where we are now predicting <span class="math inline">\(\beta_{0,j}\)</span> using a linear model!</p>
+<p>Ok let’s simulate a dataset to verify our understanding.</p>
+<pre class="r"><code>nwatersheds&lt;- 35
+
+# A WATERSHED LEVEL COVARIATE
+catchmentSize&lt;- c(213,91,326,30,267,
+    216,178,167,251,261,139,400,399,  
+    56,261,34,90,108,224,312,85,64,
+    254,188,266,95,391,327,351,314,
+    211,305,170,273,253)</code></pre>
+<p>Now lets specify <span class="math inline">\(\gamma\)</span> and <span class="math inline">\(\nu\)</span> for the wateshed level equation.</p>
+<pre class="r"><code>beta0_ws&lt;- 5
+beta1_ws&lt;- 0.8</code></pre>
+<p>Now we can add the random effect (<span class="math inline">\(\epsilon\)</span> to the intercept where the random effect is normally distributed with mean 0 and a standard deviation of 55.</p>
+<pre class="r"><code>beta0&lt;- beta0_ws +beta1_ws*catchmentSize + rnorm(nwatersheds,0,55)</code></pre>
+<p>Let’s see what the intercepts look like.</p>
+<pre class="r"><code>plot(catchmentSize,beta0,
+    xlab=&quot;Catchment size&quot;,
+    ylab=&quot;Intercept value&quot;)</code></pre>
+<p><img src="Class-15_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Suppose there are 80 sites within each watershed. We can cobble together the predictors now.</p>
+<pre class="r"><code>withinsites&lt;- 80
+dat&lt;- data.frame(
+    beta0 = rep(beta0,withinsites), 
+    beta1= -3.6, 
+    group=rep(c(1:nwatersheds),withinsites),
+    catchmentSize=rep(catchmentSize,withinsites),
+    x=runif(nwatersheds*withinsites,10,50))
+dat$group&lt;- as.factor(dat$group)</code></pre>
+<p>And generate the predictions</p>
+<pre class="r"><code>dat$y&lt;- dat$beta0 + dat$beta1*dat$x</code></pre>
+<p>and layer on the last bit of uncertainty</p>
+<pre class="r"><code>dat$obs&lt;- rnorm(nrow(dat),dat$y,15)</code></pre>
+<p>Let’s look at the mess we created.</p>
+<pre class="r"><code>xyplot(obs~x,
+    data=dat,
+    xlab=&quot;Catchment size&quot;,
+    ylab=&quot;Intercept value&quot;,
+    group=group)</code></pre>
+<p><img src="Class-15_files/figure-html/unnamed-chunk-15-1.png" width="672" /> Now we can use the <code>lmer()</code> to fit the model. The key here is that we include <code>catchmentSize</code> as a predictor in the model and because we specified heterogeneous intercepts and the catchment values are structured by group it ends up predicting <span class="math inline">\(\nu\)</span>.</p>
+<pre class="r"><code>fit&lt;- lmer(obs~x+ catchmentSize + (1|group) , dat)
+summary(fit)</code></pre>
+<pre><code>## Linear mixed model fit by REML [&#39;lmerMod&#39;]
+## Formula: obs ~ x + catchmentSize + (1 | group)
+##    Data: dat
+## 
+## REML criterion at convergence: 23337.2
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.5497 -0.6585 -0.0082  0.6656  2.9729 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  group    (Intercept) 3308.5   57.52   
+##  Residual              223.3   14.94   
+## Number of obs: 2800, groups:  group, 35
+## 
+## Fixed effects:
+##               Estimate Std. Error t value
+## (Intercept)   24.13267   22.23554    1.09
+## x             -3.60441    0.02484 -145.08
+## catchmentSize  0.80106    0.09239    8.67
+## 
+## Correlation of Fixed Effects:
+##             (Intr) x     
+## x           -0.033       
+## catchmentSz -0.899  0.000</code></pre>
+<p>Oh boy, it worked.</p>
+<pre class="r"><code>fixef(fit)</code></pre>
+<pre><code>##   (Intercept)             x catchmentSize 
+##    24.1326734    -3.6044067     0.8010562</code></pre>
+<p>Those are pretty close to the values we used!</p>
+<p>The intercept is a bit off, but what do you expect we put a big chunk of uncertainty around it, <span class="math inline">\(\sigma\)</span>=55 as I recall.</p>
+</div>
+</div>
+<div id="the-process" class="section level1">
+<h1><span class="header-section-number">2</span> The process</h1>
+<p>Suppose you are out in the field at a specific location (note-occupancy makes inference about the site being occupied or not) and you repeated sample that site for a critter. It is likely you do not perfectly detect that critter if it is there, but you can detect it with some probability. Lets assume you can perfectly detect the critter then the detection history would be 1111 if you went out on 4 occasions. If you have imperfect detection, let’s define detection probability as <span class="math inline">\(p\)</span>, then there is some probability you might miss detecting the critter even if it is there. Now that brings up a the foundation of occupancy analysis, you can miss a critter for 2 reasons: 1) that critter was not there to begin with (i.e., was not occupying the site) or 2) the critter was there (i.e., was occupying the site) but you did not detect it. These 2 sources of 0s in a detection history can either be a true negative (reason 1 above) or a false negative (reason 2 above).</p>
+</div>
+<div id="probability-of-a-site-being-occupied" class="section level1">
+<h1><span class="header-section-number">3</span> Probability of a site being occupied</h1>
+<p>In this context, occupancy as we observe it, is a 0 or 1. However as we think about occupancy or try to model occupancy it is done as a probability. Lets define the probability of a site being occupied as <span class="math inline">\(\psi\)</span>. Let’s assume that we can detect our critter perfectly and <span class="math inline">\(p = 1\)</span>. Now, if we have a <span class="math inline">\(\psi = 0.35\)</span>, the probability of site not being occupied is <span class="math inline">\(1=\psi\)</span> or 1-0.35 = 0.65. Recall that occupancy is site or habitat specific and therefore the true site occupancy status (0 or 1) and therefore occupancy for 10 sites might be 111000000 for 10 sites given a <span class="math inline">\(\psi = 0.35\)</span>. We can actually simulate this easily in r. Suppose there are potential 3000 sites to sample in a large tract of land (i.e., the sampling domain). But we can only sample 35 of those sites due to budget limitations. Lets simulate this to see how things play out</p>
+<pre class="r"><code>psi&lt;- 0.35 # set occupancy probability to 0.35
+samp_domain&lt;- 3000
+site_status&lt;- rbinom(samp_domain,1,psi)
+table(site_status) # should be close to psi*3000 and (1-psi)*3000</code></pre>
+<pre><code>## site_status
+##    0    1 
+## 1912 1088</code></pre>
+<pre class="r"><code>mean(site_status)# should be close to psi</code></pre>
+<pre><code>## [1] 0.3626667</code></pre>
+<p>For clarity lets make the status into a data.frame and number each site.</p>
+<pre class="r"><code>sites&lt;- data.frame(id=c(1:samp_domain), occupied=site_status)
+# lets look at the first 10 rows of the data.frame
+head(sites,10)</code></pre>
+<pre><code>##    id occupied
+## 1   1        0
+## 2   2        1
+## 3   3        1
+## 4   4        0
+## 5   5        0
+## 6   6        0
+## 7   7        0
+## 8   8        0
+## 9   9        1
+## 10 10        0</code></pre>
+<p>Now that we know what our sites are for occupancy status we can sample 35 of them to estimate occupancy! Remember we are assuming that <span class="math inline">\(p=1\)</span> for now! The column “occupied” is the true occupancy status.</p>
+<pre class="r"><code># the sample function takes a random sample 
+# of 35 sites without replacement
+my_sample&lt;- sample(sites$id, 35,replace=FALSE)
+my_srs&lt;- sites[which(sites$id %in% my_sample),]# get the samples 
+# look at our sites
+my_srs</code></pre>
+<pre><code>##        id occupied
+## 39     39        0
+## 78     78        0
+## 193   193        0
+## 294   294        0
+## 359   359        0
+## 488   488        1
+## 674   674        1
+## 760   760        0
+## 899   899        0
+## 971   971        0
+## 988   988        0
+## 1053 1053        0
+## 1098 1098        0
+## 1216 1216        0
+## 1223 1223        0
+## 1496 1496        0
+## 1521 1521        0
+## 1567 1567        1
+## 1602 1602        0
+## 1922 1922        1
+## 2099 2099        0
+## 2182 2182        0
+## 2328 2328        0
+## 2332 2332        0
+## 2346 2346        1
+## 2361 2361        0
+## 2404 2404        1
+## 2406 2406        0
+## 2497 2497        0
+## 2523 2523        0
+## 2588 2588        0
+## 2624 2624        0
+## 2864 2864        0
+## 2968 2968        1
+## 2989 2989        0</code></pre>
+<p>Now we can do just as we did before, but now we are estimating occupancy.</p>
+<pre class="r"><code>table(my_srs$occupied) # should be close to psi*35 and (1-psi)*35</code></pre>
+<pre><code>## 
+##  0  1 
+## 28  7</code></pre>
+<pre class="r"><code>mean(my_srs$occupied)# should be close to psi</code></pre>
+<pre><code>## [1] 0.2</code></pre>
+<p>Recall that <span class="math inline">\(p = 1\)</span>. So if we went out 4 times to the 35 sites we randomly selected the detection history would be 1111 because there is no chance we might miss detecting the critter. But lets prove this using simulation. Keep in mind that it is the site that is occupied so detection is conditional on whether or not a site is occupied. In other words you cannot detect a critter that is not there. This can be confusing… conditional? Hopefully some simulation will clarify this. To simulate this we use the <code>rbinom()</code> function again to simulate 0 and 1 where the 0s and 1s correspond detecting the critter. For this example we will go out on 4 occasions.</p>
+<pre class="r"><code>p&lt;-1
+occasion1&lt;- rbinom(35,1,my_srs$occupied*p) # occasion 1
+occasion2&lt;- rbinom(35,1,my_srs$occupied*p) # occasion 2
+occasion3&lt;- rbinom(35,1,my_srs$occupied*p) # occasion 3
+occasion4&lt;- rbinom(35,1,my_srs$occupied*p) # occasion 4</code></pre>
+<p>Now we can put those together as a matrix of capture histories with each row representing sites and each column representing occasion.</p>
+<pre class="r"><code>detections&lt;- cbind(occasion1,occasion2,occasion3,occasion4)
+# lets look at the detections
+detections</code></pre>
+<pre><code>##       occasion1 occasion2 occasion3 occasion4
+##  [1,]         0         0         0         0
+##  [2,]         0         0         0         0
+##  [3,]         0         0         0         0
+##  [4,]         0         0         0         0
+##  [5,]         0         0         0         0
+##  [6,]         1         1         1         1
+##  [7,]         1         1         1         1
+##  [8,]         0         0         0         0
+##  [9,]         0         0         0         0
+## [10,]         0         0         0         0
+## [11,]         0         0         0         0
+## [12,]         0         0         0         0
+## [13,]         0         0         0         0
+## [14,]         0         0         0         0
+## [15,]         0         0         0         0
+## [16,]         0         0         0         0
+## [17,]         0         0         0         0
+## [18,]         1         1         1         1
+## [19,]         0         0         0         0
+## [20,]         1         1         1         1
+## [21,]         0         0         0         0
+## [22,]         0         0         0         0
+## [23,]         0         0         0         0
+## [24,]         0         0         0         0
+## [25,]         1         1         1         1
+## [26,]         0         0         0         0
+## [27,]         1         1         1         1
+## [28,]         0         0         0         0
+## [29,]         0         0         0         0
+## [30,]         0         0         0         0
+## [31,]         0         0         0         0
+## [32,]         0         0         0         0
+## [33,]         0         0         0         0
+## [34,]         1         1         1         1
+## [35,]         0         0         0         0</code></pre>
+<p>The big thing that you will notice above is that there are sites that are all 0s! This is where the conditional detection probability comes in, you cannot detect something that is not there, at least that is what we are assuming!</p>
+<p>What happens when <span class="math inline">\(p &lt; 1\)</span>? Well we can simulat that too by simply changing <span class="math inline">\(p\)</span> in the r code. Now lets do something extreme and pretend we can only detect the critter if it is there with a probability of 0.20.</p>
+<pre class="r"><code>p&lt;-0.2
+occasion1&lt;- rbinom(35,1,my_srs$occupied*p) 
+occasion2&lt;- rbinom(35,1, my_srs$occupied*p) 
+occasion3&lt;- rbinom(35,1, my_srs$occupied*p) 
+occasion4&lt;- rbinom(35,1, my_srs$occupied*p) 
+detections&lt;- cbind(occasion1,occasion2,occasion3,occasion4)
+detections # lets look at the detections</code></pre>
+<pre><code>##       occasion1 occasion2 occasion3 occasion4
+##  [1,]         0         0         0         0
+##  [2,]         0         0         0         0
+##  [3,]         0         0         0         0
+##  [4,]         0         0         0         0
+##  [5,]         0         0         0         0
+##  [6,]         0         0         0         0
+##  [7,]         0         0         0         0
+##  [8,]         0         0         0         0
+##  [9,]         0         0         0         0
+## [10,]         0         0         0         0
+## [11,]         0         0         0         0
+## [12,]         0         0         0         0
+## [13,]         0         0         0         0
+## [14,]         0         0         0         0
+## [15,]         0         0         0         0
+## [16,]         0         0         0         0
+## [17,]         0         0         0         0
+## [18,]         0         0         0         0
+## [19,]         0         0         0         0
+## [20,]         0         0         0         0
+## [21,]         0         0         0         0
+## [22,]         0         0         0         0
+## [23,]         0         0         0         0
+## [24,]         0         0         0         0
+## [25,]         0         1         1         0
+## [26,]         0         0         0         0
+## [27,]         0         1         0         0
+## [28,]         0         0         0         0
+## [29,]         0         0         0         0
+## [30,]         0         0         0         0
+## [31,]         0         0         0         0
+## [32,]         0         0         0         0
+## [33,]         0         0         0         0
+## [34,]         0         0         0         0
+## [35,]         0         0         0         0</code></pre>
+<p>You will see now that there are alot more 0s in the mix compared to when <span class="math inline">\(p = 1\)</span>! But the one thing that remains that same is that sites where the ‘true’ occupancy status is 0 remain as ‘0000’ but now we may have a few instance where site occupancy = 1 but the detection history is ‘0000’ as well.</p>
+<p>We can look at those instances by figuring out by binding the column of occupancy status for each site to the detection history.</p>
+<pre class="r"><code>cbind(detections, my_srs$occupied)</code></pre>
+<pre><code>##       occasion1 occasion2 occasion3 occasion4  
+##  [1,]         0         0         0         0 0
+##  [2,]         0         0         0         0 0
+##  [3,]         0         0         0         0 0
+##  [4,]         0         0         0         0 0
+##  [5,]         0         0         0         0 0
+##  [6,]         0         0         0         0 1
+##  [7,]         0         0         0         0 1
+##  [8,]         0         0         0         0 0
+##  [9,]         0         0         0         0 0
+## [10,]         0         0         0         0 0
+## [11,]         0         0         0         0 0
+## [12,]         0         0         0         0 0
+## [13,]         0         0         0         0 0
+## [14,]         0         0         0         0 0
+## [15,]         0         0         0         0 0
+## [16,]         0         0         0         0 0
+## [17,]         0         0         0         0 0
+## [18,]         0         0         0         0 1
+## [19,]         0         0         0         0 0
+## [20,]         0         0         0         0 1
+## [21,]         0         0         0         0 0
+## [22,]         0         0         0         0 0
+## [23,]         0         0         0         0 0
+## [24,]         0         0         0         0 0
+## [25,]         0         1         1         0 1
+## [26,]         0         0         0         0 0
+## [27,]         0         1         0         0 1
+## [28,]         0         0         0         0 0
+## [29,]         0         0         0         0 0
+## [30,]         0         0         0         0 0
+## [31,]         0         0         0         0 0
+## [32,]         0         0         0         0 0
+## [33,]         0         0         0         0 0
+## [34,]         0         0         0         0 1
+## [35,]         0         0         0         0 0</code></pre>
+<p>Now you can look at what sites are occupied but the critter was not detected!</p>
+<div id="naive-occupancy-estimates" class="section level2">
+<h2><span class="header-section-number">3.1</span> Naive occupancy estimates</h2>
+<p>A naive way to estimate occupancy is to determine sites where the critte was detected in 1 or more occasions and use that as an occupancy estimate. Let’s see how that goes here, recall that <span class="math inline">\(\psi = 0.35\)</span> and therefore this naive estimate should be close or else the estimate is biased.</p>
+<pre class="r"><code>no_detections&lt;- rowSums(detections)# how many detections
+occupied&lt;- ifelse(no_detections&gt;0,1,0) # assign sites as occupied or not
+mean(occupied)</code></pre>
+<pre><code>## [1] 0.05714286</code></pre>
+<p>Well that 0.0571429 is not equal to 0.35! Infact that is the whole reason for occupancy models, occupancy estimates are <em>underestimated</em> if <span class="math inline">\(p&lt; 1\)</span>!</p>
+<p>Imagine if you had only done 1 occasion, the estimated occupancy would have been 0 which is even worse! This is what happens most of the time, single occasions, so lets explore the consequences of this on estimated occupancy.</p>
+<p>Lets explore this for a range of <span class="math inline">\(p\)</span> from 0.1 to 1 to examine that effect, recall that <span class="math inline">\(\psi= 0.35\)</span>.</p>
+<pre class="r"><code>psi&lt;-0.35
+p&lt;- seq(0.1,1,0.1)
+p</code></pre>
+<pre><code>##  [1] 0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9 1.0</code></pre>
+<p>Now we can loop over <span class="math inline">\(p\)</span> to get an estimate of occupancy and the consequences of assuming perfect detection using our 35 sites.</p>
+<pre class="r"><code>occupancy_est&lt;- c() # define object to save outputs to
+for(i in 1:length(p))
+    {
+    occasion1&lt;- rbinom(35,1,psi*p[i])
+    occupancy_est&lt;- c(occupancy_est,mean(occasion1))
+    }
+plot(p,occupancy_est,xlab=&quot;Detection proability&quot;,ylab=&quot;Estimated occupancy&quot;)</code></pre>
+<p><img src="Class-15_files/figure-html/unnamed-chunk-28-1.png" width="672" /></p>
+<p>Well that plot is sort of clean. This is a stochastic process so we should do many simulations for each value of <span class="math inline">\(p\)</span> we evaluate. Lets do that.</p>
+<pre class="r"><code>occupancy_est&lt;- matrix(NA,nrow=length(p),ncol=1000) # define matrix to save outputs to for 1000 replictes
+for(i in 1:length(p))
+    {
+    for(rep in 1:1000)
+        {
+        occasion1&lt;- rbinom(35,1,psi*p[i])
+        occupancy_est[i,rep]&lt;-mean(occasion1)
+        }
+    }
+boxplot(t(occupancy_est),xlab=&quot;Detection proability&quot;,ylab=&quot;Estimated occupancy&quot;,names=p)
+abline(h=psi,lty=2)</code></pre>
+<p><img src="Class-15_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p><strong>So, as you can see from the boxplots occupancy estimates are negatively biased when <span class="math inline">\(p &lt; 1\)</span>!</strong></p>
+</div>
+<div id="accounting-for-imperfect-detection" class="section level2">
+<h2><span class="header-section-number">3.2</span> Accounting for imperfect detection</h2>
+<p>Occupancy models estimate both <span class="math inline">\(\psi\)</span> and <span class="math inline">\(p\)</span> from detection histories assuming that p is the conditional capture probability. Let’s see how an occupancy model for <span class="math inline">\(p = 0.3\)</span> works!</p>
+<p>Lets simulate our detection histories.</p>
+<pre class="r"><code>p&lt;-0.2
+occasion1&lt;- rbinom(35,1,my_srs$occupied*p) 
+occasion2&lt;- rbinom(35,1, my_srs$occupied*p) 
+occasion3&lt;- rbinom(35,1, my_srs$occupied*p) 
+occasion4&lt;- rbinom(35,1, my_srs$occupied*p) 
+detections&lt;- cbind(occasion1,occasion2,occasion3,occasion4)
+detections # lets look at the detections</code></pre>
+<pre><code>##       occasion1 occasion2 occasion3 occasion4
+##  [1,]         0         0         0         0
+##  [2,]         0         0         0         0
+##  [3,]         0         0         0         0
+##  [4,]         0         0         0         0
+##  [5,]         0         0         0         0
+##  [6,]         1         0         0         0
+##  [7,]         0         0         0         0
+##  [8,]         0         0         0         0
+##  [9,]         0         0         0         0
+## [10,]         0         0         0         0
+## [11,]         0         0         0         0
+## [12,]         0         0         0         0
+## [13,]         0         0         0         0
+## [14,]         0         0         0         0
+## [15,]         0         0         0         0
+## [16,]         0         0         0         0
+## [17,]         0         0         0         0
+## [18,]         0         0         1         0
+## [19,]         0         0         0         0
+## [20,]         1         1         0         0
+## [21,]         0         0         0         0
+## [22,]         0         0         0         0
+## [23,]         0         0         0         0
+## [24,]         0         0         0         0
+## [25,]         0         0         0         0
+## [26,]         0         0         0         0
+## [27,]         1         0         0         0
+## [28,]         0         0         0         0
+## [29,]         0         0         0         0
+## [30,]         0         0         0         0
+## [31,]         0         0         0         0
+## [32,]         0         0         0         0
+## [33,]         0         0         0         0
+## [34,]         0         0         0         0
+## [35,]         0         0         0         0</code></pre>
+<p>Ok, looks great, some 1s but mostly 0s.</p>
+<p>Now lets fit an occupancy model to the data. First we need the unmarked package to do so.</p>
+<pre class="r"><code>library(unmarked)</code></pre>
+<pre><code>## Warning: package &#39;unmarked&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## Loading required package: reshape</code></pre>
+<pre><code>## 
+## Attaching package: &#39;reshape&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:Matrix&#39;:
+## 
+##     expand</code></pre>
+<pre><code>## Loading required package: Rcpp</code></pre>
+<pre><code>## Warning: package &#39;Rcpp&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;unmarked&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:lme4&#39;:
+## 
+##     ranef</code></pre>
+<p>Now we need to get our detections into a matrix for unmarked.</p>
+<pre class="r"><code>detections&lt;-  unmarkedFrameOccu(detections, siteCovs=NULL, obsCovs=NULL)
+detections</code></pre>
+<pre><code>## Data frame representation of unmarkedFrame object.
+##    y.1 y.2 y.3 y.4
+## 1    0   0   0   0
+## 2    0   0   0   0
+## 3    0   0   0   0
+## 4    0   0   0   0
+## 5    0   0   0   0
+## 6    1   0   0   0
+## 7    0   0   0   0
+## 8    0   0   0   0
+## 9    0   0   0   0
+## 10   0   0   0   0
+## 11   0   0   0   0
+## 12   0   0   0   0
+## 13   0   0   0   0
+## 14   0   0   0   0
+## 15   0   0   0   0
+## 16   0   0   0   0
+## 17   0   0   0   0
+## 18   0   0   1   0
+## 19   0   0   0   0
+## 20   1   1   0   0
+## 21   0   0   0   0
+## 22   0   0   0   0
+## 23   0   0   0   0
+## 24   0   0   0   0
+## 25   0   0   0   0
+## 26   0   0   0   0
+## 27   1   0   0   0
+## 28   0   0   0   0
+## 29   0   0   0   0
+## 30   0   0   0   0
+## 31   0   0   0   0
+## 32   0   0   0   0
+## 33   0   0   0   0
+## 34   0   0   0   0
+## 35   0   0   0   0</code></pre>
+<p>Note we do not have any site or observation covariates at this point and therefore they are NULL.</p>
+<p>Now we can fit an occupancy model. Note that in the model equation the first tilda is for occupancy and the second is for detection. This becomes important once you are using covariates.</p>
+<pre class="r"><code>fit &lt;- occu(~ 1 ~ 1, detections)
+fit</code></pre>
+<pre><code>## 
+## Call:
+## occu(formula = ~1 ~ 1, data = detections)
+## 
+## Occupancy:
+##  Estimate   SE     z P(&gt;|z|)
+##     -1.14 1.09 -1.05   0.294
+## 
+## Detection:
+##  Estimate   SE     z P(&gt;|z|)
+##     -1.76 1.02 -1.72  0.0855
+## 
+## AIC: 45.5177</code></pre>
+<p>Well crappola that does not make much sense, <span class="math inline">\(p\)</span> was 0.2 and <span class="math inline">\(\psi\)</span> was 0.35 but the estimates are -1.138863 for occupancy and -1.7562734 for detection proability.</p>
+<p>We can extract the estimates from the fitted model as:</p>
+<pre class="r"><code>coef(fit)[1]# occupancy</code></pre>
+<pre><code>##  psi(Int) 
+## -1.138863</code></pre>
+<pre class="r"><code>coef(fit)[2]# detection</code></pre>
+<pre><code>##    p(Int) 
+## -1.756273</code></pre>
+<p>As is the case with most binary (0,1) data the linear models use a logit transformation and this estimates are on logit scale. If we want the actual values we need to simple take the estimate and run in through the equation <span class="math inline">\(exp(est)/(1+exp(est))\)</span></p>
+<pre class="r"><code>occ_est_lo&lt;- coef(fit)[1]# occupancy logit
+exp(occ_est_lo)/(1+exp(occ_est_lo)) # it is close to 0.35!</code></pre>
+<pre><code>##  psi(Int) 
+## 0.2425292</code></pre>
+<pre class="r"><code>det_est_lo&lt;- coef(fit)[2]# detection logit
+exp(det_est_lo)/(1+exp(det_est_lo)) # it is close to 0.2!</code></pre>
+<pre><code>##    p(Int) 
+## 0.1472577</code></pre>
+<p>Fortunately unmarked can do that for you as well.</p>
+<pre class="r"><code>backTransform(fit, type=&quot;state&quot;)</code></pre>
+<pre><code>## Backtransformed linear combination(s) of Occupancy estimate(s)
+## 
+##  Estimate  SE LinComb (Intercept)
+##     0.243 0.2   -1.14           1
+## 
+## Transformation: logistic</code></pre>
+<pre class="r"><code>backTransform(fit, type=&quot;det&quot;)</code></pre>
+<pre><code>## Backtransformed linear combination(s) of Detection estimate(s)
+## 
+##  Estimate    SE LinComb (Intercept)
+##     0.147 0.128   -1.76           1
+## 
+## Transformation: logistic</code></pre>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

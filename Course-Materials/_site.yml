@@ -42,6 +42,8 @@ navbar:
           href: "Class-13.html"
         - text: "Class 14: HLMs"
           href: "Class-14.html"
+        - text: "Class 15: HLMs and occupancy"
+          href: "Class-15.html"
     - text: "Assignments"
       menu: 
         - text: "Homework 1"

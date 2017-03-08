@@ -42,14 +42,14 @@ List of preliminary problems to instructor for review
 
 # GLMMs & HLMs in Decision Contexts {-}
 
-# Class 15 preliminaries
+# Class 14 preliminaries
 
 ## Housekeeping
 
 * Supplemental background reading(s):
     * Conroy and Peterson 116-129
 * Assignment due: None
-* Class project: Thinkg about decision model (objectives, nodes, utilities)
+* Class project: Think about decision model (objectives, nodes, utilities)
 * Link to class recording  [YouTube]()
 * Today's R script [Class-14.R](scripts/Class-14.R)
 
@@ -62,8 +62,8 @@ By the end of this tutorial you should be able to:
 
 1. Account for overdispersion using a Generalized Linear
 Mixed Model (GLMM)
-2. Account for hiearchical dependence in linear model
-3. Use upper level predictors in a hiearchical linear
+2. Account for hierarchical dependence in linear model
+3. Use upper level predictors in a hierarchical linear
 model.
 
 
@@ -222,7 +222,7 @@ dataset. Using a known dataset has several advantages:
 3. Simulation can help evaluate whether the analysis will provide
 the necessary predictions to inform decisions.
 
-Ok, let's go and simulate a poisson distributed outcome without any
+Ok, let's go and simulate a Poisson distributed outcome without any
 extra variation.
 
 We will a simulate a dataset that has 220 observations where a 
@@ -251,7 +251,7 @@ my_data<- data.frame(
 my_data$habitat<- as.factor(my_data$habitat)
 ```
 
-Here is a list of betas we need to predict our poisson distributated
+Here is a list of betas we need to predict our Poisson distributed
 outcomes.
 
 ```{r}
@@ -349,7 +349,7 @@ Now all we need to do is sum each row and exponiate the values.
 my_data$Y2<- exp(rowSums(X)) # sum the linear predictors
 ```
 Probably a good time to check to see if the hard way and 
-the easier way ar the amse.
+the easier way ar ethe same.
 ```{r}
 plot(Y2~elevation,
     data=my_data,
@@ -472,7 +472,7 @@ my_data$Y<- exp(model_matrix %*% betas +
 ```
 I still can't get over that we can do all that heavy lifting in 
 a single line. The next step is to add the next layer of uncertainty
-the poisson distributed outcomes.
+the Poisson distributed outcomes.
 
 ```{r}
 my_data$obs<- rpois(n=nrow(my_data),

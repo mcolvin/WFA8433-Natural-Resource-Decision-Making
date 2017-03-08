@@ -342,6 +342,9 @@ div.tocify {
     <li>
       <a href="Class-14.html">Class 14: HLMs</a>
     </li>
+    <li>
+      <a href="Class-15.html">Class 15: HLMs and occupancy</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -414,8 +417,8 @@ List of preliminary problems to instructor for review
 <div id="glmms-hlms-in-decision-contexts" class="section level1 unnumbered">
 <h1>GLMMs &amp; HLMs in Decision Contexts</h1>
 </div>
-<div id="class-15-preliminaries" class="section level1">
-<h1><span class="header-section-number">1</span> Class 15 preliminaries</h1>
+<div id="class-14-preliminaries" class="section level1">
+<h1><span class="header-section-number">1</span> Class 14 preliminaries</h1>
 <div id="housekeeping" class="section level2">
 <h2><span class="header-section-number">1.1</span> Housekeeping</h2>
 <ul>
@@ -424,7 +427,7 @@ List of preliminary problems to instructor for review
 <li>Conroy and Peterson 116-129</li>
 </ul></li>
 <li>Assignment due: None</li>
-<li>Class project: Thinkg about decision model (objectives, nodes, utilities)</li>
+<li>Class project: Think about decision model (objectives, nodes, utilities)</li>
 <li>Link to class recording <a href="">YouTube</a></li>
 <li>Today’s R script <a href="scripts/Class-14.R">Class-14.R</a></li>
 </ul>
@@ -435,8 +438,8 @@ List of preliminary problems to instructor for review
 <p>By the end of this tutorial you should be able to:</p>
 <ol style="list-style-type: decimal">
 <li>Account for overdispersion using a Generalized Linear Mixed Model (GLMM)</li>
-<li>Account for hiearchical dependence in linear model</li>
-<li>Use upper level predictors in a hiearchical linear model.</li>
+<li>Account for hierarchical dependence in linear model</li>
+<li>Use upper level predictors in a hierarchical linear model.</li>
 </ol>
 </div>
 <div id="preliminaries" class="section level2">
@@ -557,7 +560,7 @@ c * z</code></pre>
 <li>If we can simulate a dataset we can understand it</li>
 <li>Simulation can help evaluate whether the analysis will provide the necessary predictions to inform decisions.</li>
 </ol>
-<p>Ok, let’s go and simulate a poisson distributed outcome without any extra variation.</p>
+<p>Ok, let’s go and simulate a Poisson distributed outcome without any extra variation.</p>
 <p>We will a simulate a dataset that has 220 observations where a response is Poisson distributed and linearly related to elevation, habitat, and a some interactions.</p>
 <p>This model is formally described as:</p>
 <p><span class="math display">\[log(\lambda) = \beta_0 + \beta_1\cdot \text{elevation} +
@@ -573,7 +576,7 @@ my_data&lt;- data.frame(
         size=n,
         replace=TRUE))
 my_data$habitat&lt;- as.factor(my_data$habitat)</code></pre>
-<p>Here is a list of betas we need to predict our poisson distributated outcomes.</p>
+<p>Here is a list of betas we need to predict our Poisson distributed outcomes.</p>
 <pre class="r"><code>betas&lt;- c(-1.51,# intercept
     0.005, # effect of elevation
     0.1,-0.1, # effect of habitat 2 and 3
@@ -883,7 +886,7 @@ head(X)</code></pre>
 ## 6                 0.000</code></pre>
 <p>Now all we need to do is sum each row and exponiate the values.</p>
 <pre class="r"><code>my_data$Y2&lt;- exp(rowSums(X)) # sum the linear predictors</code></pre>
-<p>Probably a good time to check to see if the hard way and the easier way ar the amse.</p>
+<p>Probably a good time to check to see if the hard way and the easier way ar ethe same.</p>
 <pre class="r"><code>plot(Y2~elevation,
     data=my_data,
     ylab=&quot;Predictions&quot;,
@@ -981,7 +984,7 @@ cbind(betas,betas_est)</code></pre>
 <p>Using our previous dataset <code>my_data</code> we can use the easy way to calculate predicted values and add extra variation.</p>
 <pre class="r"><code>my_data$Y&lt;- exp(model_matrix %*% betas + 
     rnorm(nrow(my_data),0,0.3))</code></pre>
-<p>I still can’t get over that we can do all that heavy lifting in a single line. The next step is to add the next layer of uncertainty the poisson distributed outcomes.</p>
+<p>I still can’t get over that we can do all that heavy lifting in a single line. The next step is to add the next layer of uncertainty the Poisson distributed outcomes.</p>
 <pre class="r"><code>my_data$obs&lt;- rpois(n=nrow(my_data),
     lambda=my_data$Y)</code></pre>
 <p>We can take a gander at this data using the crude plot below.</p>
