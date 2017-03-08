@@ -82,6 +82,7 @@ sure it is where your folder is.
 "Session --> Set Working Directory --> To source file location". Or you 
 can use the `setwd()` in the console. 
 
+# HLMs continued
 
 ## Random intercept and slopes
 
@@ -270,7 +271,6 @@ beta1_ws<- 0.8
 Now we can add the random effect ($\epsilon$ to the intercept
 where the random effect is normally distributed with mean 0 and
 a standard deviation of 55.
-
 
 ```{r}
 beta0<- beta0_ws +beta1_ws*catchmentSize + rnorm(nwatersheds,0,55)

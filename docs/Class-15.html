@@ -456,8 +456,11 @@ List of preliminary problems to instructor for review
 <li>If your working directory is not correct, you can set it in Rstudio: “Session –&gt; Set Working Directory –&gt; To source file location”. Or you can use the <code>setwd()</code> in the console.</li>
 </ul>
 </div>
+</div>
+<div id="hlms-continued" class="section level1">
+<h1><span class="header-section-number">2</span> HLMs continued</h1>
 <div id="random-intercept-and-slopes" class="section level2">
-<h2><span class="header-section-number">1.4</span> Random intercept and slopes</h2>
+<h2><span class="header-section-number">2.1</span> Random intercept and slopes</h2>
 <p>Another instance we commonly run into is where we may have random intercepts and slopes. In other words we have heterogeneous intercepts and slopes. What does that remind you of? Well if you were thinking an about an interaction then, winner winner chicken dinner. However when we have many groups the number of parameters we estimate can quickly become numerous if we treat them as fixed effects. Additionally, it precludes us from making predictions beyond the groups in the model. However, random effects clears that up.</p>
 <p>Let’s get some data rolling for a model that formally looks like this:</p>
 <p><span class="math display">\[\mu_{i,j} = \beta_{0,j} + \beta_{1,j} \cdot X \]</span></p>
@@ -565,7 +568,7 @@ summary(fit)</code></pre>
 <p>What if we could predict the random effects using a group level variable? Yes, Yes you can…</p>
 </div>
 <div id="predicting-random-effects" class="section level2">
-<h2><span class="header-section-number">1.5</span> Predicting random effects</h2>
+<h2><span class="header-section-number">2.2</span> Predicting random effects</h2>
 <p>Here we have a dataset with heterogeneous intercepts but for simplicity the the slopes will be homogeneous. This type of data might arise with hierarchically structured data, which I commonly encounter in streams. Specifically streams are nested within watershed. Suppose in this case we have a response variable where we have multiple observations within a watershed and there are 35 watersheds with data. The catchment size of the watershed vary and can be used to predict the intercept of watershed specific intercepts. Formally we are looking at a model defined as:</p>
 <p><span class="math display">\[\mu_{i,j} = \beta_{0,j} + \beta_{1} \cdot X \]</span></p>
 <p>and</p>
@@ -651,17 +654,17 @@ summary(fit)</code></pre>
 </div>
 </div>
 <div id="estimating-current-states-occupancy" class="section level1">
-<h1><span class="header-section-number">2</span> Estimating Current States-Occupancy</h1>
+<h1><span class="header-section-number">3</span> Estimating Current States-Occupancy</h1>
 <div id="background" class="section level2">
-<h2><span class="header-section-number">2.1</span> Background</h2>
+<h2><span class="header-section-number">3.1</span> Background</h2>
 <p>Suppose you are out in the field at a specific location (note-occupancy makes inference about the site being occupied or not) and you repeated sample that site for a critter. It is likely you do not perfectly detect that critter if it is there, but you can detect it with some probability. Lets assume you can perfectly detect the critter then the detection history would be 1111 if you went out on 4 occasions. If you have imperfect detection, let’s define detection probability as <span class="math inline">\(p\)</span>, then there is some probability you might miss detecting the critter even if it is there. Now that brings up a the foundation of occupancy analysis, you can miss a critter for 2 reasons: 1) that critter was not there to begin with (i.e., was not occupying the site) or 2) the critter was there (i.e., was occupying the site) but you did not detect it. These 2 sources of 0s in a detection history can either be a true negative (reason 1 above) or a false negative (reason 2 above).</p>
 </div>
 <div id="probability-of-a-site-being-occupied" class="section level2">
-<h2><span class="header-section-number">2.2</span> Probability of a site being occupied</h2>
+<h2><span class="header-section-number">3.2</span> Probability of a site being occupied</h2>
 <p>In this context, occupancy as we observe it, is a 0 or 1. However as we think about occupancy or try to model occupancy it is done as a probability. Lets define the probability of a site being occupied as <span class="math inline">\(\psi\)</span>. Let’s assume that we can detect our critter perfectly and <span class="math inline">\(p = 1\)</span>. Now, if we have a <span class="math inline">\(\psi = 0.35\)</span>, the probability of site not being occupied is <span class="math inline">\(1=\psi\)</span> or 1-0.35 = 0.65. Recall that occupancy is site or habitat specific and therefore the true site occupancy status (0 or 1) and therefore occupancy for 10 sites might be 111000000 for 10 sites given a <span class="math inline">\(\psi = 0.35\)</span>. We can actually simulate this easily in r. Suppose there are potential 3000 sites to sample in a large tract of land (i.e., the sampling domain). But we can only sample 35 of those sites due to budget limitations. Lets simulate this to see how things play out</p>
 </div>
 <div id="corn-in-a-rice-field" class="section level2">
-<h2><span class="header-section-number">2.3</span> Corn in a rice field</h2>
+<h2><span class="header-section-number">3.3</span> Corn in a rice field</h2>
 <p>The graphic below illustrates a situation where it may be hard to detect an occurrence. Specifically there is a popcorn kernel in the bag of rice. We will work through an exercise to generate some data and estimate occupancy.</p>
 <p><img src="media/20170308_110321.jpg" width="50%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#install.packages(&quot;unmarked&quot;)
@@ -691,9 +694,9 @@ library(unmarked)</code></pre>
 #backTransform(fit, type=&quot;det&quot;)</code></pre>
 </div>
 <div id="simulating-the-process" class="section level2">
-<h2><span class="header-section-number">2.4</span> Simulating the process</h2>
+<h2><span class="header-section-number">3.4</span> Simulating the process</h2>
 <div id="occupancy" class="section level3">
-<h3><span class="header-section-number">2.4.1</span> Occupancy</h3>
+<h3><span class="header-section-number">3.4.1</span> Occupancy</h3>
 <p>Having the skills to simulate the process and sampling model will pay big returns, hopefully, as you can further your understanding of how these models work and also how the estimates will predict outcomes. We will simulate some data to further our understanding of occupancy., The code below simulates a dataset with</p>
 <ul>
 <li><span class="math inline">\(\psi = 0.35\)</span></li>
@@ -789,7 +792,7 @@ my_srs</code></pre>
 <pre><code>## [1] 0.2</code></pre>
 </div>
 <div id="perfect-detection" class="section level3">
-<h3><span class="header-section-number">2.4.2</span> Perfect detection</h3>
+<h3><span class="header-section-number">3.4.2</span> Perfect detection</h3>
 <p>Recall that <span class="math inline">\(p = 1\)</span>. So if we went out 4 times to the 35 sites we randomly selected the detection history would be 1111 because there is no chance we might miss detecting the critter. But lets prove this using simulation. Keep in mind that it is the site that is occupied so detection is conditional on whether or not a site is occupied. In other words you cannot detect a critter that is not there. This can be confusing… conditional? Hopefully some simulation will clarify this. To simulate this we use the <code>rbinom()</code> function again to simulate 0 and 1 where the 0s and 1s correspond detecting the critter. For this example we will go out on 4 occasions.</p>
 <pre class="r"><code>p&lt;-1
 occasion1&lt;- rbinom(35,1,my_srs$occupied*p) # occasion 1
@@ -839,7 +842,7 @@ detections</code></pre>
 <p>The big thing that you will notice above is that there are sites that are all 0s! This is where the conditional detection probability comes in, you cannot detect something that is not there, at least that is what we are assuming!</p>
 </div>
 <div id="imperfect-detection" class="section level3">
-<h3><span class="header-section-number">2.4.3</span> Imperfect detection</h3>
+<h3><span class="header-section-number">3.4.3</span> Imperfect detection</h3>
 <p>What happens when <span class="math inline">\(p &lt; 1\)</span>? Well we can simulate that too by simply changing <span class="math inline">\(p\)</span> in the r code. Now lets do something extreme and pretend we can only detect the critter if it is there with a probability of 0.20.</p>
 <p>Because <span class="math inline">\(p\)</span> is less than 1 we can formally express <span class="math inline">\(p\)</span> as</p>
 <p><span class="math display">\[logit(p) = \beta_{p,0}\]</span></p>
@@ -932,7 +935,7 @@ detections # lets look at the detections</code></pre>
 </div>
 </div>
 <div id="naive-occupancy-estimates" class="section level2">
-<h2><span class="header-section-number">2.5</span> Naive occupancy estimates</h2>
+<h2><span class="header-section-number">3.5</span> Naive occupancy estimates</h2>
 <p>A naive way to estimate occupancy is to determine sites where the critte was detected in 1 or more occasions and use that as an occupancy estimate. Let’s see how that goes here, recall that <span class="math inline">\(\psi = 0.35\)</span> and therefore this naive estimate should be close or else the estimate is biased.</p>
 <pre class="r"><code>no_detections&lt;- rowSums(detections)# how many detections
 occupied&lt;- ifelse(no_detections&gt;0,1,0) # assign sites as occupied or not
@@ -942,7 +945,7 @@ mean(occupied)</code></pre>
 <p>Imagine if you had only done 1 occasion, the estimated occupancy would have been 0 which is even worse! This is what happens most of the time, single occasions, so lets explore the consequences of this on estimated occupancy.</p>
 </div>
 <div id="effects-of-imperfect-detection" class="section level2">
-<h2><span class="header-section-number">2.6</span> Effects of imperfect detection</h2>
+<h2><span class="header-section-number">3.6</span> Effects of imperfect detection</h2>
 <p>Let’s explore this for a range of <span class="math inline">\(p\)</span> from 0.1 to 1 to examine that effect, recall that <span class="math inline">\(\psi= 0.35\)</span>.</p>
 <pre class="r"><code>psi&lt;-0.35
 p&lt;- seq(0.1,1,0.1)
@@ -979,7 +982,7 @@ abline(h=psi,lty=2)</code></pre>
 <p><em>So, as you can see from the boxplots occupancy estimates are negatively biased when <span class="math inline">\(p &lt; 1\)</span>!</em></p>
 </div>
 <div id="accounting-for-imperfect-detection" class="section level2">
-<h2><span class="header-section-number">2.7</span> Accounting for imperfect detection</h2>
+<h2><span class="header-section-number">3.7</span> Accounting for imperfect detection</h2>
 <p>Occupancy models estimate both <span class="math inline">\(\psi\)</span> and <span class="math inline">\(p\)</span> from detection histories assuming that p is the conditional capture probability. Let’s see how an occupancy model for <span class="math inline">\(p = 0.3\)</span> works!</p>
 <p>Let’s simulate our detection histories.</p>
 <pre class="r"><code>p&lt;-0.2
