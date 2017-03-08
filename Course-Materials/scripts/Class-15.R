@@ -118,22 +118,45 @@ fixef(fit)
  
  
 ## ----unnamed-chunk-17---- ##
-psi<- 0.35 # set occupancy probability to 0.35
-samp_domain<- 3000
-site_status<- rbinom(samp_domain,1,psi)
+#install.packages("unmarked")
+library(unmarked)
+ 
+ 
+ 
+## ----unnamed-chunk-18---- ##
+#detections<- matrix(c(),nrow=6, ncol=???)
+#detections<-  unmarkedFrameOccu(detections, siteCovs=NULL, obsCovs=NULL)
+#detections
+ 
+ 
+ 
+## ----unnamed-chunk-19---- ##
+#fit <- occu(~ 1 ~ 1, detections)
+#fit
+#backTransform(fit, type="state")
+#backTransform(fit, type="det")
+ 
+ 
+ 
+## ----unnamed-chunk-20---- ##
+beta0<- -0.6190392 # set occupancy probability to 0.35
+psi<- exp(beta0)/(1+exp(beta0)) 
+psi
+samp_frame<- 3000
+site_status<- rbinom(samp_frame,1,psi)
 table(site_status) # should be close to psi*3000 and (1-psi)*3000
 mean(site_status)# should be close to psi
  
  
  
-## ----unnamed-chunk-18---- ##
-sites<- data.frame(id=c(1:samp_domain), occupied=site_status)
+## ----unnamed-chunk-21---- ##
+sites<- data.frame(id=c(1:samp_frame), occupied=site_status)
 # lets look at the first 10 rows of the data.frame
 head(sites,10)
  
  
  
-## ----unnamed-chunk-19---- ##
+## ----unnamed-chunk-22---- ##
 # the sample function takes a random sample 
 # of 35 sites without replacement
 my_sample<- sample(sites$id, 35,replace=FALSE)
@@ -143,13 +166,13 @@ my_srs
  
  
  
-## ----unnamed-chunk-20---- ##
+## ----unnamed-chunk-23---- ##
 table(my_srs$occupied) # should be close to psi*35 and (1-psi)*35
 mean(my_srs$occupied)# should be close to psi
  
  
  
-## ----unnamed-chunk-21---- ##
+## ----unnamed-chunk-24---- ##
 p<-1
 occasion1<- rbinom(35,1,my_srs$occupied*p) # occasion 1
 occasion2<- rbinom(35,1,my_srs$occupied*p) # occasion 2
@@ -158,15 +181,17 @@ occasion4<- rbinom(35,1,my_srs$occupied*p) # occasion 4
  
  
  
-## ----unnamed-chunk-22---- ##
+## ----unnamed-chunk-25---- ##
 detections<- cbind(occasion1,occasion2,occasion3,occasion4)
 # lets look at the detections
 detections
  
  
  
-## ----unnamed-chunk-23---- ##
-p<-0.2
+## ----unnamed-chunk-26---- ##
+beta_p_0<- -1.386294
+p<-exp(beta_p_0)/(1+exp(beta_p_0))
+p
 occasion1<- rbinom(35,1,my_srs$occupied*p) 
 occasion2<- rbinom(35,1, my_srs$occupied*p) 
 occasion3<- rbinom(35,1, my_srs$occupied*p) 
@@ -176,38 +201,41 @@ detections # lets look at the detections
  
  
  
-## ----unnamed-chunk-24---- ##
+## ----unnamed-chunk-27---- ##
 cbind(detections, my_srs$occupied)
  
  
  
-## ----unnamed-chunk-25---- ##
+## ----unnamed-chunk-28---- ##
 no_detections<- rowSums(detections)# how many detections
 occupied<- ifelse(no_detections>0,1,0) # assign sites as occupied or not
 mean(occupied)
  
  
  
-## ----unnamed-chunk-26---- ##
+## ----unnamed-chunk-29---- ##
 psi<-0.35
 p<- seq(0.1,1,0.1)
 p
  
  
  
-## ----unnamed-chunk-27---- ##
+## ----unnamed-chunk-30---- ##
 occupancy_est<- c() # define object to save outputs to
 for(i in 1:length(p))
 	{
 	occasion1<- rbinom(35,1,psi*p[i])
 	occupancy_est<- c(occupancy_est,mean(occasion1))
 	}
-plot(p,occupancy_est,xlab="Detection proability",ylab="Estimated occupancy")
+plot(p,occupancy_est, # we are plotting 2 vectors so no data argument
+    xlab="Detection probability",
+    ylab="Estimated occupancy")
  
  
  
-## ----unnamed-chunk-28---- ##
-occupancy_est<- matrix(NA,nrow=length(p),ncol=1000) # define matrix to save outputs to for 1000 replictes
+## ----unnamed-chunk-31---- ##
+# define matrix to save outputs to for 1000 replictes
+occupancy_est<- matrix(NA,nrow=length(p),ncol=1000) 
 for(i in 1:length(p))
 	{
 	for(rep in 1:1000)
@@ -216,12 +244,15 @@ for(i in 1:length(p))
 		occupancy_est[i,rep]<-mean(occasion1)
 		}
 	}
-boxplot(t(occupancy_est),xlab="Detection proability",ylab="Estimated occupancy",names=p)
+boxplot(t(occupancy_est),
+    xlab="Detection probability",
+    ylab="Estimated occupancy",
+    names=p) # name the x axis as the values of p
 abline(h=psi,lty=2)
  
  
  
-## ----unnamed-chunk-29---- ##
+## ----unnamed-chunk-32---- ##
 p<-0.2
 occasion1<- rbinom(35,1,my_srs$occupied*p) 
 occasion2<- rbinom(35,1, my_srs$occupied*p) 
@@ -232,30 +263,30 @@ detections # lets look at the detections
  
  
  
-## ----unnamed-chunk-30---- ##
+## ----unnamed-chunk-33---- ##
 library(unmarked)
  
  
  
-## ----unnamed-chunk-31---- ##
+## ----unnamed-chunk-34---- ##
 detections<-  unmarkedFrameOccu(detections, siteCovs=NULL, obsCovs=NULL)
 detections
  
  
  
-## ----unnamed-chunk-32---- ##
+## ----unnamed-chunk-35---- ##
 fit <- occu(~ 1 ~ 1, detections)
 fit
  
  
  
-## ----unnamed-chunk-33---- ##
+## ----unnamed-chunk-36---- ##
 coef(fit)[1]# occupancy
 coef(fit)[2]# detection
  
  
  
-## ----unnamed-chunk-34---- ##
+## ----unnamed-chunk-37---- ##
 occ_est_lo<- coef(fit)[1]# occupancy logit
 exp(occ_est_lo)/(1+exp(occ_est_lo)) # it is close to 0.35!
 det_est_lo<- coef(fit)[2]# detection logit
@@ -263,7 +294,7 @@ exp(det_est_lo)/(1+exp(det_est_lo)) # it is close to 0.2!
  
  
  
-## ----unnamed-chunk-35---- ##
+## ----unnamed-chunk-38---- ##
 backTransform(fit, type="state")
 backTransform(fit, type="det")
  

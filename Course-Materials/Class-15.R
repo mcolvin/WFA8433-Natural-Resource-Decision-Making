@@ -77,7 +77,6 @@ dat$y<- dat$beta0 + dat$beta1*dat$x
 dat$obs<- rnorm(nrow(dat),dat$y,15)
 
 ## ------------------------------------------------------------------------
-
 xyplot(obs~x,
     data=dat,
     xlab="Catchment size",
@@ -91,15 +90,35 @@ summary(fit)
 ## ------------------------------------------------------------------------
 fixef(fit)
 
+## ----echo=FALSE, out.width="50%", fig.align="center"---------------------
+include_graphics("media/20170308_110321.jpg")
+
 ## ------------------------------------------------------------------------
-psi<- 0.35 # set occupancy probability to 0.35
-samp_domain<- 3000
-site_status<- rbinom(samp_domain,1,psi)
+#install.packages("unmarked")
+library(unmarked)
+
+## ------------------------------------------------------------------------
+#detections<- matrix(c(),nrow=6, ncol=???)
+#detections<-  unmarkedFrameOccu(detections, siteCovs=NULL, obsCovs=NULL)
+#detections
+
+## ------------------------------------------------------------------------
+#fit <- occu(~ 1 ~ 1, detections)
+#fit
+#backTransform(fit, type="state")
+#backTransform(fit, type="det")
+
+## ------------------------------------------------------------------------
+beta0<- -0.6190392 # set occupancy probability to 0.35
+psi<- exp(beta0)/(1+exp(beta0)) 
+psi
+samp_frame<- 3000
+site_status<- rbinom(samp_frame,1,psi)
 table(site_status) # should be close to psi*3000 and (1-psi)*3000
 mean(site_status)# should be close to psi
 
 ## ------------------------------------------------------------------------
-sites<- data.frame(id=c(1:samp_domain), occupied=site_status)
+sites<- data.frame(id=c(1:samp_frame), occupied=site_status)
 # lets look at the first 10 rows of the data.frame
 head(sites,10)
 
@@ -129,7 +148,9 @@ detections<- cbind(occasion1,occasion2,occasion3,occasion4)
 detections
 
 ## ------------------------------------------------------------------------
-p<-0.2
+beta_p_0<- -1.386294
+p<-exp(beta_p_0)/(1+exp(beta_p_0))
+p
 occasion1<- rbinom(35,1,my_srs$occupied*p) 
 occasion2<- rbinom(35,1, my_srs$occupied*p) 
 occasion3<- rbinom(35,1, my_srs$occupied*p) 
@@ -158,11 +179,13 @@ for(i in 1:length(p))
 	occasion1<- rbinom(35,1,psi*p[i])
 	occupancy_est<- c(occupancy_est,mean(occasion1))
 	}
-plot(p,occupancy_est,xlab="Detection proability",ylab="Estimated occupancy")
+plot(p,occupancy_est, # we are plotting 2 vectors so no data argument
+    xlab="Detection probability",
+    ylab="Estimated occupancy")
 
 ## ------------------------------------------------------------------------
-
-occupancy_est<- matrix(NA,nrow=length(p),ncol=1000) # define matrix to save outputs to for 1000 replictes
+# define matrix to save outputs to for 1000 replictes
+occupancy_est<- matrix(NA,nrow=length(p),ncol=1000) 
 for(i in 1:length(p))
 	{
 	for(rep in 1:1000)
@@ -171,7 +194,10 @@ for(i in 1:length(p))
 		occupancy_est[i,rep]<-mean(occasion1)
 		}
 	}
-boxplot(t(occupancy_est),xlab="Detection proability",ylab="Estimated occupancy",names=p)
+boxplot(t(occupancy_est),
+    xlab="Detection probability",
+    ylab="Estimated occupancy",
+    names=p) # name the x axis as the values of p
 abline(h=psi,lty=2)
 
 ## ------------------------------------------------------------------------

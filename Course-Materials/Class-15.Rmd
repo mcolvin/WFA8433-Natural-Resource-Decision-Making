@@ -45,7 +45,11 @@ List of preliminary problems to instructor for review
 # Class 15 preliminaries
 
 ## Housekeeping
-
+* Dr. Mark Woodrey
+    * Guest speaker-last 10 minutes of class
+    * Application of Structured Decision Making to the 
+    Development of a Gulf of Mexico-wide Bird Monitoring Program  March
+    10th at 11 am. Tully Auditorium.
 * Supplemental background reading(s):
     * Powell and Gale. Chapter 15: Occupancy Modeling [here](http://media.wix.com/ugd/95e73b_431c4d6ee6c6475d909dc90a766ae185.pdf)
     * Welsh, A. H., D. B. Lindenmayer, and C. F. Donnelly. 2013. Fitting and Interpreting Occupancy Models. Plos One 8:e52015.[pdfs/W202.pdf]
@@ -81,15 +85,15 @@ can use the `setwd()` in the console.
 
 ## Random intercept and slopes
 
-Another instance we run into is where we have random intercepts and
-slopes. Basically we have heterogeneous intercepts and slopes. What 
-does that remind you of? Well if you were thinking an about an 
-interaction then, winner winner chicken dinner. However when we have
-many groups the number of parameters we estimate can quickly 
-become numerous if we treat them as fixed effects. Additionally, it 
-precludes us from making predictions beyond the groups in the model.
-However, random effects clears that up.
-  
+Another instance we commonly run into is where we may have random 
+intercepts and slopes. In other words we have heterogeneous intercepts 
+and slopes. What does that remind you of? Well if you were thinking an 
+about an interaction then, winner winner chicken dinner. However when we 
+have many groups the number of parameters we estimate can quickly become 
+numerous if we treat them as fixed effects. Additionally, it precludes 
+us from making predictions beyond the groups in the model. However, 
+random effects clears that up. 
+
 Let's get some data rolling for a model that formally looks like this:
 
 
@@ -99,19 +103,47 @@ and
 
 $$\beta_{0,j} = \gamma + \epsilon$$ where
 
-$$ \epsilon \sim Normal (0, \sigma_{\beta{0}})$$
+
 
 and 
 
-$$\beta_{1,j} = \delta + \tau$$ where
+$$\beta_{1,j} = \delta + \tau$$ 
 
-$$ \tau \sim Normal (0, \sigma_{\beta{1}})$$
+where
 
-and 
+$$ \epsilon \sim Normal (0, \sigma_{\beta{0}})$$,  
 
-$$Y_{i,j}\sim Normal(\mu_{i,j},\sigma)$$
+$$ \tau \sim Normal (0, \sigma_{\beta{1}})$$, and 
+
+$$Y_{i,j}\sim Normal(\mu_{i,j},\sigma)$$.
+
+The parameters in the equations above are: 
+
+Fixed effects:
+
+* $\beta_{0,j}$ is the group specific intercept
+* $\beta_{1,j}$ is the group specific effect of $X$ 
+* $\gamma$ is population mean intercept
+* $\delta$ is the population mean slope
+
+Random effects:
+
+* $\sigma_{\beta{0}}$ is the standard deviation of group specific intercepts
+* $\sigma_{\beta{1}}$ is the standard deviation of group specific slopes
+* $\sigma$ is the standard deviation of the residuals
 
 Whoziers, 3 random effects, pulling a hat trick. 
+
+Data and predictions:
+
+* $\mu_{i,j}$$ the expected outcome
+* $Y_{i,j}$ is the observed data
+
+Indexes:
+
+* $i$ indexes observations
+* $j$ indexes groups
+
 
 Let's get this party started and build on our last dataset to
 get this beast rolling.  
@@ -145,13 +177,14 @@ And make our baseline predicted outcomes.
 ```{r}
 dat$obs<- dat$beta0+ dat$beta1*dat$x
 ```
-Ok now let's spin up some random effects, 50*30 to be exact, one
+Ok now let's gin up some random effects, 50*30 to be exact, one
 for each observation and add them to our baseline predicted outcomes.
 The $\sigma$ for this random effect is equal to 1.
 
 ```{r}
 dat$obs<- rnorm(ngroups*30,dat$obs,50)
 ```  
+
 Just like the intercepts only but now we have a random effect 
 around $\beta_1$.
 
@@ -163,10 +196,9 @@ xyplot(obs~x,
 ```
 
 That data looks good but messy! But thats where this gets fun.
-Uncertainty galore, uncertainty outcomes, what is a decision 
-maker to do but be in for a world of hurt?
-
-Well let's fit this model.
+Uncertainty galore, uncertain outcomes, what is a decision 
+maker to do but be in for a world of hurt? Nah, we can fit the 
+model we described above.
 
 ```{r}
 library(lme4)
@@ -184,8 +216,6 @@ predicting outcomes with any certainty.
 
 What if we could predict the random effects using 
 a group level variable? Yes, Yes you can...
-
-
 
 
 ## Predicting random effects
@@ -266,6 +296,7 @@ dat<- data.frame(
     x=runif(nwatersheds*withinsites,10,50))
 dat$group<- as.factor(dat$group)
 ```
+
 And generate the predictions
 ```{r}
 dat$y<- dat$beta0 + dat$beta1*dat$x
@@ -277,9 +308,7 @@ dat$obs<- rnorm(nrow(dat),dat$y,15)
 ```
 Let's look at the mess we created. 
 
-
 ```{r}
-
 xyplot(obs~x,
     data=dat,
     xlab="Catchment size",
@@ -309,7 +338,9 @@ chunk of uncertainty around it, $\sigma$=55 as I recall.
 
 
 
-# The process
+# Estimating Current States-Occupancy
+
+## Background
 
 Suppose you are out in the field at a specific location (note-occupancy 
 makes inference about the site being occupied or not) and you repeated 
@@ -326,8 +357,7 @@ was there (i.e., was occupying the site) but you did not detect it.
 These 2 sources of 0s in a detection history can either be a true 
 negative (reason 1 above) or a false negative (reason 2 above). 
 
-
-# Probability of a site being occupied
+## Probability of a site being occupied
 
 In this context, occupancy as we observe it, is a 0 or 1. However as we 
 think about occupancy or try to model occupancy it is done as a 
@@ -344,27 +374,88 @@ sites due to budget limitations. Lets simulate this to see how things
 play out 
 
 
+## Corn in a rice field
+
+The graphic below illustrates a situation where it may be hard
+to detect an occurrence. Specifically there is a popcorn kernel
+in the bag of rice. We will work through an exercise to generate some data
+and estimate occupancy.
+
+```{r echo=FALSE, out.width="50%", fig.align="center"}
+include_graphics("media/20170308_110321.jpg")
+```
+ 
+```{r}
+#install.packages("unmarked")
+library(unmarked)
+```
+Now we need to get our detections into a matrix for unmarked.
+In this example we don't have any covariates so the 
+`siteCovs` and the `obsCovs` are set to `NULL`.
+ 
+```{r}
+#detections<- matrix(c(),nrow=6, ncol=???)
+#detections<-  unmarkedFrameOccu(detections, siteCovs=NULL, obsCovs=NULL)
+#detections
+```
+Now we can use the `occu()` function to estimate occupancy
 
 ```{r}
-psi<- 0.35 # set occupancy probability to 0.35
-samp_domain<- 3000
-site_status<- rbinom(samp_domain,1,psi)
+#fit <- occu(~ 1 ~ 1, detections)
+#fit
+#backTransform(fit, type="state")
+#backTransform(fit, type="det")
+```
+
+## Simulating the process
+
+### Occupancy
+
+Having the skills to simulate the process and sampling model will
+pay big returns, hopefully, as you can further your understanding of
+how these models work and also how the estimates will predict outcomes.
+We will simulate some data to further our understanding of occupancy.,
+The code below simulates a dataset with
+
+* $\psi = 0.35$
+* A sampling frame of 3000 points
+* A sample of 
+
+Formally, the occupancy part of the equation is
+
+$$logit(\psi) = \beta_0$$
+
+and 
+
+$$Z_i \sim Bernoulli(\psi)$$
+
+where 
+
+* $Z$ is the site occupancy status
+* $i$ indexes each site sampled
+
+Hopefully that looks familiar from working with GLMs...
+
+```{r}
+beta0<- -0.6190392 # set occupancy probability to 0.35
+psi<- exp(beta0)/(1+exp(beta0)) 
+psi
+samp_frame<- 3000
+site_status<- rbinom(samp_frame,1,psi)
 table(site_status) # should be close to psi*3000 and (1-psi)*3000
 mean(site_status)# should be close to psi
 ```
 For clarity lets make the status into a data.frame and number each site.
 
 ```{r}
-sites<- data.frame(id=c(1:samp_domain), occupied=site_status)
+sites<- data.frame(id=c(1:samp_frame), occupied=site_status)
 # lets look at the first 10 rows of the data.frame
 head(sites,10)
 
 ```
-
 Now that we know what our sites are for occupancy status we can sample 
 35 of them to estimate occupancy! Remember we are assuming that $p=1$ 
 for now! The column "occupied" is the true occupancy status. 
-
 
 ```{r}
 # the sample function takes a random sample 
@@ -380,6 +471,8 @@ Now we can do just as we did before, but now we are estimating occupancy.
 table(my_srs$occupied) # should be close to psi*35 and (1-psi)*35
 mean(my_srs$occupied)# should be close to psi
 ```
+
+### Perfect detection
 
 Recall that $p = 1$. So if we went out 4 times to the 35 sites we 
 randomly selected the detection history would be 1111 because there is 
@@ -400,8 +493,6 @@ occasion3<- rbinom(35,1,my_srs$occupied*p) # occasion 3
 occasion4<- rbinom(35,1,my_srs$occupied*p) # occasion 4
 ```
 
-
-
 Now we can put those together as a matrix of capture histories with each 
 row representing sites and each column representing occasion. 
 
@@ -416,12 +507,20 @@ are all 0s! This is where the conditional detection probability comes
 in, you cannot detect something that is not there, at least that is what 
 we are assuming! 
 
-What happens when $p < 1$? Well we can simulat that too by simply 
+### Imperfect detection
+
+What happens when $p < 1$? Well we can simulate that too by simply 
 changing $p$ in the r code. Now lets do something extreme and pretend we 
 can only detect the critter if it is there with a probability of 0.20. 
 
+Because $p$ is less than 1 we can formally express $p$ as
+
+$$logit(p) = \beta_{p,0}$$
+
 ```{r}
-p<-0.2
+beta_p_0<- -1.386294
+p<-exp(beta_p_0)/(1+exp(beta_p_0))
+p
 occasion1<- rbinom(35,1,my_srs$occupied*p) 
 occasion2<- rbinom(35,1, my_srs$occupied*p) 
 occasion3<- rbinom(35,1, my_srs$occupied*p) 
@@ -430,7 +529,7 @@ detections<- cbind(occasion1,occasion2,occasion3,occasion4)
 detections # lets look at the detections
 ```
 
-You will see now that there are alot more 0s in the mix compared to when 
+You will see now that there are a lot more 0s in the mix compared to when 
 $p = 1$! But the one thing that remains that same is that sites where 
 the 'true' occupancy status is 0 remain as '0000' but now we may have a 
 few instance where site occupancy = 1 but the detection history is 
@@ -461,24 +560,27 @@ no_detections<- rowSums(detections)# how many detections
 occupied<- ifelse(no_detections>0,1,0) # assign sites as occupied or not
 mean(occupied)
 ```
-Well that `r mean(occupied)` is not equal to 0.35! Infact that is the 
+
+Well that `r mean(occupied)` is not equal to 0.35! In fact that is the 
 whole reason for occupancy models, occupancy estimates are 
-*underestimated* if $p< 1$! 
+*underestimated* if $p < 1$! 
 
 Imagine if you had only done 1 occasion, the estimated occupancy would 
 have been `r mean(occasion1)` which is even worse! This is what happens 
 most of the time, single occasions, so lets explore the consequences of 
 this on estimated occupancy. 
 
-Lets explore this for a range of $p$ from 0.1 to 1 to examine that 
-effect, recall that $\psi= 0.35$. 
+## Effects of imperfect detection
 
+Let's explore this for a range of $p$ from 0.1 to 1 to examine that 
+effect, recall that $\psi= 0.35$. 
 
 ```{r}
 psi<-0.35
 p<- seq(0.1,1,0.1)
 p
 ```
+
 Now we can loop over $p$ to get an estimate of occupancy and the 
 consequences of assuming perfect detection using our 35 sites. 
 
@@ -490,15 +592,17 @@ for(i in 1:length(p))
 	occasion1<- rbinom(35,1,psi*p[i])
 	occupancy_est<- c(occupancy_est,mean(occasion1))
 	}
-plot(p,occupancy_est,xlab="Detection proability",ylab="Estimated occupancy")
+plot(p,occupancy_est, # we are plotting 2 vectors so no data argument
+    xlab="Detection probability",
+    ylab="Estimated occupancy")
 ```
 
 Well that plot is sort of clean. This is a stochastic process so we should 
 do many simulations for each value of $p$ we evaluate.  Lets do that.
 
 ```{r}
-
-occupancy_est<- matrix(NA,nrow=length(p),ncol=1000) # define matrix to save outputs to for 1000 replictes
+# define matrix to save outputs to for 1000 replictes
+occupancy_est<- matrix(NA,nrow=length(p),ncol=1000) 
 for(i in 1:length(p))
 	{
 	for(rep in 1:1000)
@@ -507,19 +611,24 @@ for(i in 1:length(p))
 		occupancy_est[i,rep]<-mean(occasion1)
 		}
 	}
-boxplot(t(occupancy_est),xlab="Detection proability",ylab="Estimated occupancy",names=p)
+boxplot(t(occupancy_est),
+    xlab="Detection probability",
+    ylab="Estimated occupancy",
+    names=p) # name the x axis as the values of p
 abline(h=psi,lty=2)
 ```
 
-**So, as you can see from the boxplots occupancy estimates are negatively biased when $p < 1$!**
+*So, as you can see from the boxplots occupancy estimates are 
+negatively biased when $p < 1$!* 
+
 
 ## Accounting for imperfect detection
- Occupancy models estimate both $\psi$ and $p$ from detection histories 
+
+Occupancy models estimate both $\psi$ and $p$ from detection histories 
 assuming that p is the conditional capture probability. Let's see how an 
 occupancy model for $p = 0.3$ works! 
 
-
-Lets simulate our detection histories.  
+Let's simulate our detection histories.  
 
 
 ```{r}
@@ -531,6 +640,7 @@ occasion4<- rbinom(35,1, my_srs$occupied*p)
 detections<- cbind(occasion1,occasion2,occasion3,occasion4)
 detections # lets look at the detections
 ```
+
 Ok, looks great, some 1s but mostly 0s.
 
 Now lets fit an occupancy model to the data. First we need the unmarked package to do so.
@@ -544,25 +654,22 @@ Now we need to get our detections into a matrix for unmarked.
 detections<-  unmarkedFrameOccu(detections, siteCovs=NULL, obsCovs=NULL)
 detections
 ```
+
 Note we do not have any site or observation covariates at this point and 
 therefore they are NULL. 
-
 
 Now we can fit an occupancy model. Note that in the model equation the 
 first tilda is for occupancy and the second is for detection. This 
 becomes important once you are using covariates. 
-
-
-
 
 ```{r}
 fit <- occu(~ 1 ~ 1, detections)
 fit
 ```
 
-Well crappola that does not make much sense, $p$ was 0.2 and $\psi$ was 
+Well crappola, that does not make much sense, $p$ was 0.2 and $\psi$ was 
 0.35 but the estimates are `r coef(fit)[1]` for occupancy and `r 
-coef(fit)[2]` for detection proability. 
+coef(fit)[2]` for detection probability. 
 
 
 We can extract the estimates from the fitted model as:
@@ -593,8 +700,5 @@ Fortunately unmarked can do that for you as well.
 backTransform(fit, type="state")
 backTransform(fit, type="det")
 ```
-
-
-
 
 
