@@ -53,11 +53,11 @@ List of preliminary problems to instructor for review
 * Supplemental background reading(s):
     * Powell and Gale. Chapter 15: Occupancy Modeling [here](http://media.wix.com/ugd/95e73b_431c4d6ee6c6475d909dc90a766ae185.pdf)
     * Welsh, A. H., D. B. Lindenmayer, and C. F. Donnelly. 2013. Fitting and Interpreting Occupancy Models. Plos One 8:e52015.[pdfs/W202.pdf]
-    * Guillera-Arroita, G., J. J. Lahoz-Monfort, D. I. MacKenzie, B. A. Wintle, and M. A. McCarthy. 2014. Ignoring Imperfect Detection in Biological Surveys Is Dangerous: A Response to ‘Fitting and Interpreting Occupancy Models'. Plos One 9:e99571.[pdfs/G140.pdf]
+    * Guillera-Arroita, G., J. J. Lahoz-Monfort, D. I. MacKenzie, B. A. Wintle, and M. A. McCarthy. 2014. Ignoring Imperfect Detection in Biological Surveys Is Dangerous: A Response to 'Fitting and Interpreting Occupancy Models'. Plos One 9:e99571.[pdfs/G140.pdf]
     * Welsh, A. H., D. B. Lindenmayer, and C. F. Donnelly. 2015. Adjusting for One Issue while Ignoring Others Can Make Things Worse. Plos One 10:e0120817. [pdfs/W203.pdf]
 * Assignment due: None
 * Class project: Think about decision model (objectives, nodes, utilities)
-* Link to class recording  [YouTube]()
+* Link to class recording  [YouTube](https://youtu.be/dQcjHnEuNKY)
 * Today's R script [Class-15.R](scripts/Class-15.R)
 
 ## Class overview & objectives 
@@ -68,7 +68,7 @@ as a result of some inputs using a general or generalized linear model.
 By the end of this class you should be able to:
 
 1. Account for hierarchical dependence in linear model
-31 Use upper level predictors in a hierarchical linear
+1. Use upper level predictors in a hierarchical linear
 model.
 
 
@@ -97,14 +97,11 @@ random effects clears that up.
 
 Let's get some data rolling for a model that formally looks like this:
 
-
 $$\mu_{i,j} = \beta_{0,j} + \beta_{1,j} \cdot X $$
 
 and 
 
 $$\beta_{0,j} = \gamma + \epsilon$$ where
-
-
 
 and 
 
@@ -406,299 +403,3 @@ Now we can use the `occu()` function to estimate occupancy
 #backTransform(fit, type="state")
 #backTransform(fit, type="det")
 ```
-
-## Simulating the process
-
-### Occupancy
-
-Having the skills to simulate the process and sampling model will
-pay big returns, hopefully, as you can further your understanding of
-how these models work and also how the estimates will predict outcomes.
-We will simulate some data to further our understanding of occupancy.,
-The code below simulates a dataset with
-
-* $\psi = 0.35$
-* A sampling frame of 3000 points
-* A sample of 
-
-Formally, the occupancy part of the equation is
-
-$$logit(\psi) = \beta_0$$
-
-and 
-
-$$Z_i \sim Bernoulli(\psi)$$
-
-where 
-
-* $Z$ is the site occupancy status
-* $i$ indexes each site sampled
-
-Hopefully that looks familiar from working with GLMs...
-
-```{r}
-beta0<- -0.6190392 # set occupancy probability to 0.35
-psi<- exp(beta0)/(1+exp(beta0)) 
-psi
-samp_frame<- 3000
-site_status<- rbinom(samp_frame,1,psi)
-table(site_status) # should be close to psi*3000 and (1-psi)*3000
-mean(site_status)# should be close to psi
-```
-For clarity lets make the status into a data.frame and number each site.
-
-```{r}
-sites<- data.frame(id=c(1:samp_frame), occupied=site_status)
-# lets look at the first 10 rows of the data.frame
-head(sites,10)
-
-```
-Now that we know what our sites are for occupancy status we can sample 
-35 of them to estimate occupancy! Remember we are assuming that $p=1$ 
-for now! The column "occupied" is the true occupancy status. 
-
-```{r}
-# the sample function takes a random sample 
-# of 35 sites without replacement
-my_sample<- sample(sites$id, 35,replace=FALSE)
-my_srs<- sites[which(sites$id %in% my_sample),]# get the samples 
-# look at our sites
-my_srs
-```
-Now we can do just as we did before, but now we are estimating occupancy.
-
-```{r}
-table(my_srs$occupied) # should be close to psi*35 and (1-psi)*35
-mean(my_srs$occupied)# should be close to psi
-```
-
-### Perfect detection
-
-Recall that $p = 1$. So if we went out 4 times to the 35 sites we 
-randomly selected the detection history would be 1111 because there is 
-no chance we might miss detecting the critter. But lets prove this using 
-simulation. Keep in mind that it is the site that is occupied so 
-detection is conditional on whether or not a site is occupied. In other 
-words you cannot detect a critter that is not there. This can be 
-confusing... conditional? Hopefully some simulation will clarify this. 
-To simulate this we use the `rbinom()` function again to simulate 0 and 1 
-where the 0s and 1s correspond detecting the critter. For this example 
-we will go out on 4 occasions. 
-
-```{r}
-p<-1
-occasion1<- rbinom(35,1,my_srs$occupied*p) # occasion 1
-occasion2<- rbinom(35,1,my_srs$occupied*p) # occasion 2
-occasion3<- rbinom(35,1,my_srs$occupied*p) # occasion 3
-occasion4<- rbinom(35,1,my_srs$occupied*p) # occasion 4
-```
-
-Now we can put those together as a matrix of capture histories with each 
-row representing sites and each column representing occasion. 
-
-```{r}
-detections<- cbind(occasion1,occasion2,occasion3,occasion4)
-# lets look at the detections
-detections
-```
-
-The big thing that you will notice above is that there are sites that 
-are all 0s! This is where the conditional detection probability comes 
-in, you cannot detect something that is not there, at least that is what 
-we are assuming! 
-
-### Imperfect detection
-
-What happens when $p < 1$? Well we can simulate that too by simply 
-changing $p$ in the r code. Now lets do something extreme and pretend we 
-can only detect the critter if it is there with a probability of 0.20. 
-
-Because $p$ is less than 1 we can formally express $p$ as
-
-$$logit(p) = \beta_{p,0}$$
-
-```{r}
-beta_p_0<- -1.386294
-p<-exp(beta_p_0)/(1+exp(beta_p_0))
-p
-occasion1<- rbinom(35,1,my_srs$occupied*p) 
-occasion2<- rbinom(35,1, my_srs$occupied*p) 
-occasion3<- rbinom(35,1, my_srs$occupied*p) 
-occasion4<- rbinom(35,1, my_srs$occupied*p) 
-detections<- cbind(occasion1,occasion2,occasion3,occasion4)
-detections # lets look at the detections
-```
-
-You will see now that there are a lot more 0s in the mix compared to when 
-$p = 1$! But the one thing that remains that same is that sites where 
-the 'true' occupancy status is 0 remain as '0000' but now we may have a 
-few instance where site occupancy = 1 but the detection history is 
-'0000' as well. 
-
-
-We can look at those instances by figuring out by binding the column of 
-occupancy status for each site to the detection history. 
-
-
-```{r}
-cbind(detections, my_srs$occupied)
-```
-Now you can look at what sites are occupied but the critter was not 
-detected! 
-
-
-## Naive occupancy estimates
-
-A naive way to estimate occupancy is to determine sites where the critte 
-was detected in 1 or more occasions and use that as an occupancy 
-estimate. Let's see how that goes here, recall that $\psi = 0.35$ and 
-therefore this naive estimate should be close or else the estimate is 
-biased. 
-
-```{r}
-no_detections<- rowSums(detections)# how many detections
-occupied<- ifelse(no_detections>0,1,0) # assign sites as occupied or not
-mean(occupied)
-```
-
-Well that `r mean(occupied)` is not equal to 0.35! In fact that is the 
-whole reason for occupancy models, occupancy estimates are 
-*underestimated* if $p < 1$! 
-
-Imagine if you had only done 1 occasion, the estimated occupancy would 
-have been `r mean(occasion1)` which is even worse! This is what happens 
-most of the time, single occasions, so lets explore the consequences of 
-this on estimated occupancy. 
-
-## Effects of imperfect detection
-
-Let's explore this for a range of $p$ from 0.1 to 1 to examine that 
-effect, recall that $\psi= 0.35$. 
-
-```{r}
-psi<-0.35
-p<- seq(0.1,1,0.1)
-p
-```
-
-Now we can loop over $p$ to get an estimate of occupancy and the 
-consequences of assuming perfect detection using our 35 sites. 
-
-```{r}
-
-occupancy_est<- c() # define object to save outputs to
-for(i in 1:length(p))
-	{
-	occasion1<- rbinom(35,1,psi*p[i])
-	occupancy_est<- c(occupancy_est,mean(occasion1))
-	}
-plot(p,occupancy_est, # we are plotting 2 vectors so no data argument
-    xlab="Detection probability",
-    ylab="Estimated occupancy")
-```
-
-Well that plot is sort of clean. This is a stochastic process so we should 
-do many simulations for each value of $p$ we evaluate.  Lets do that.
-
-```{r}
-# define matrix to save outputs to for 1000 replictes
-occupancy_est<- matrix(NA,nrow=length(p),ncol=1000) 
-for(i in 1:length(p))
-	{
-	for(rep in 1:1000)
-		{
-		occasion1<- rbinom(35,1,psi*p[i])
-		occupancy_est[i,rep]<-mean(occasion1)
-		}
-	}
-boxplot(t(occupancy_est),
-    xlab="Detection probability",
-    ylab="Estimated occupancy",
-    names=p) # name the x axis as the values of p
-abline(h=psi,lty=2)
-```
-
-*So, as you can see from the boxplots occupancy estimates are 
-negatively biased when $p < 1$!* 
-
-
-## Accounting for imperfect detection
-
-Occupancy models estimate both $\psi$ and $p$ from detection histories 
-assuming that p is the conditional capture probability. Let's see how an 
-occupancy model for $p = 0.3$ works! 
-
-Let's simulate our detection histories.  
-
-
-```{r}
-p<-0.2
-occasion1<- rbinom(35,1,my_srs$occupied*p) 
-occasion2<- rbinom(35,1, my_srs$occupied*p) 
-occasion3<- rbinom(35,1, my_srs$occupied*p) 
-occasion4<- rbinom(35,1, my_srs$occupied*p) 
-detections<- cbind(occasion1,occasion2,occasion3,occasion4)
-detections # lets look at the detections
-```
-
-Ok, looks great, some 1s but mostly 0s.
-
-Now lets fit an occupancy model to the data. First we need the unmarked package to do so.
-
-```{r}
-library(unmarked)
-```
-
-Now we need to get our detections into a matrix for unmarked.
-```{r}
-detections<-  unmarkedFrameOccu(detections, siteCovs=NULL, obsCovs=NULL)
-detections
-```
-
-Note we do not have any site or observation covariates at this point and 
-therefore they are NULL. 
-
-Now we can fit an occupancy model. Note that in the model equation the 
-first tilda is for occupancy and the second is for detection. This 
-becomes important once you are using covariates. 
-
-```{r}
-fit <- occu(~ 1 ~ 1, detections)
-fit
-```
-
-Well crappola, that does not make much sense, $p$ was 0.2 and $\psi$ was 
-0.35 but the estimates are `r coef(fit)[1]` for occupancy and `r 
-coef(fit)[2]` for detection probability. 
-
-
-We can extract the estimates from the fitted model as:
-
-```{r}
-coef(fit)[1]# occupancy
-coef(fit)[2]# detection
-
-```
-
-As is the case with most binary (0,1) data the linear models use a logit 
-transformation and this estimates are on logit scale. If we want the 
-actual values we need to simple take the estimate and run in through the 
-equation $exp(est)/(1+exp(est))$ 
-
-
-
-```{r}
-occ_est_lo<- coef(fit)[1]# occupancy logit
-exp(occ_est_lo)/(1+exp(occ_est_lo)) # it is close to 0.35!
-det_est_lo<- coef(fit)[2]# detection logit
-exp(det_est_lo)/(1+exp(det_est_lo)) # it is close to 0.2!
-```
-
-Fortunately unmarked can do that for you as well.
-
-```{r}
-backTransform(fit, type="state")
-backTransform(fit, type="det")
-```
-
-

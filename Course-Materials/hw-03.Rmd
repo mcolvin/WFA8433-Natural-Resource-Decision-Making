@@ -1,0 +1,79 @@
+---
+title: ""
+---
+
+<!--
+library(knitr)
+rmarkdown::render_site("hw-02.Rmd")# build website
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no") 
+-->
+
+```{r,echo=FALSE}
+## create data for analysis
+set.seed(8433)
+tmp<-data.frame(elevation=runif(167,10,300),
+    group=sample(c("g1","g2","g3"),167,replace=TRUE))
+betas<- c(1,0.002,1,-0.5,0.0003,0.0006)
+mm<- model.matrix(as.formula("~elevation+group+elevation:group"),
+    tmp)
+tmp$density<- exp(rnorm(167,mm %*% betas,0.2))
+fit<- lm(density~elevation+group+elevation:group,tmp)
+write.csv(tmp,"elevation-density.csv") 
+```
+
+
+
+```{r echo=FALSE, out.width="100%"}
+include_graphics("media/banner-09.jpg")
+```
+
+# Homework 3: Predicting outcomes
+
+
+## Preliminaries
+
+* Assignment due: Due by March 24th by 5 pm 
+* The dataset required for Exercise 3 is available [here](elevation-density.csv)
+* Submit R script to: https://dropitto.me/WFA8433.
+The upload password is 'critter' <u>Be sure to name the file as
+follows "lastname-firstIntial-homework-03.R"</u>
+* For help and assistance.
+    * If you have problem with the questions you can work with classmates.
+    * If you have any questions or issues about coding feel free to email me.  Please attach your R script so I can diagnose any issues.
+    * If you have a medical problem, dial 911. 
+    * If you have a problem and no one else can help, and if you can find them, maybe you can hire...the A-Team.
+
+    
+## Exercise 1 
+
+## Exercise 2 
+
+## Exercise 3 
+
+1. Read in the dataset `elevation-density.csv` and assign it`ele_data`. 
+ 
+
+## Exercise 4 Predicting outcomes 
+
+1. Predict the probability of being 0-0.25, 0.25-0.5, ...
+
+## Exercise 5 
+
+
+
+## Exercise 6 
+
+## Exercise 7
+
+
+
+
+
+ 
