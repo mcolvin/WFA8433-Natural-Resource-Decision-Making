@@ -4,7 +4,7 @@ title: ""
 
 <!--
 library(knitr)
-rmarkdown::render_site("hw-02.Rmd")# build website
+rmarkdown::render_site("hw-03.Rmd")# build website
 
 # rmarkdown::render_site()# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
@@ -36,30 +36,137 @@ include_graphics("media/banner-09.jpg")
 
 # Homework 3: Predicting outcomes
 
+The objectives of this homework assignment are to 
+1. increase your skills in making predictions from analysis, 
+2. incorporating uncertainty in predictions, 
+3. using discretization, and
+3. programming in R
+
 
 ## Preliminaries
 
-* Assignment due: Due by March 24th by 5 pm 
-* The dataset required for Exercise 3 is available [here](elevation-density.csv)
+* Assignment due: Due by March 23rd by 5 pm 
 * Submit R script to: https://dropitto.me/WFA8433.
 The upload password is 'critter' <u>Be sure to name the file as
 follows "lastname-firstIntial-homework-03.R"</u>
 * For help and assistance.
     * If you have problem with the questions you can work with classmates.
     * If you have any questions or issues about coding feel free to email me.  Please attach your R script so I can diagnose any issues.
-    * If you have a medical problem, dial 911. 
     * If you have a problem and no one else can help, and if you can find them, maybe you can hire...the A-Team.
 
+# Part I
+
+```{r,echo=FALSE}
+betas<- c(90,
+    0.3,
+    -2.3,
+    1.3,
+    0.4)
+
+basal<- data.frame(
+    temperature=round(runif(400, 60,90),0),
+    habitat= sample(c("h1","h2","h3"),400,replace=TRUE),
+    elevation=round(runif(400,0,200)),0)
+dm<- model.matrix(as.formula("~temperature+habitat+elevation"),basal)
+basal$basal<- round(dm %*% betas + rnorm(400,0,30),1)
+write.csv(basal, "basal.csv",row.names = FALSE)
+```
+
+## Exercise 1 Predicting normal outcomes
+
+1. Download the dataset for this exercise [here](basal.csv)
+2. Read in the data and assign it to an object `basal`
+3. Plot the relationship between the 3 covariates and the response variable
+4. Fit a linear model relating `temperature`, `habitat`, and `elevation` to
+`basal area` and name the resulting object `fit`
+5. Use the expand.grid function to make a prediction dataset named `pred` for range of 
+`temperature`, `habitat`, and `elevation` in the dataset.
+6. Use the predict function to predict basal area for the new data `pred` and
+add those predictions as a field in to `pred`
+7. Add 95% prediction intervals and add them as a fields named `lci` and
+`uci` for the lower and upper 95% prediction interval and add them to `pred`
+8. Make 3 plots oriented as a single figure with 3 stacked plots (i.e., 3 rows, 1 column)
+for the following:
+    1. the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
+    `temperature` for a single value of `habitat` and `elevation`. The values are your choice.
+    2.the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
+    `habitat` for a single value of `temperature` and `elevation`. The values are your choice. 
+    3. the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
+    `elevation` for a single value of `habitat` and `temperature`. The values are your choice.
+9. Make a new prediction dataset named `randdata` where `temperature`, `habitat`, and `elevation` are
+1000,000 values randomly drawn from a uniform distribution (`runif()`) for each input. 
+Random values should be constrained to be between the minimim and 
+maximum values for `temperature`, `habitat`, and `elevation` in the dataset. 
+10. Use the `model.matrix()` function to create the design matrix named `dm` for the model fit
+in step 4. 
+11. Predict the basal area using `dm` and the $\beta$s extracted from `fit` and add
+the predictions to `randdata` as a field named `dm`. 
+12. Use to `predict()` function to predict basal area and add
+the predictions to `randdata` as a field named `pred`.
+13. Construct a scatter plot of `dm` and `pred` from the `randdata` dataset and 
+add a 1:1 line. 
+
+
+## Exercise 2 Discretizing outcomes
+
+
+```{r,echo=FALSE}
+betas<- c(90,
+    0.3,
+    -2.3,
+    1.3)
+
+insects<- data.frame(
+    elevation=round(runif(36, 60,90),0),
+    habitat= sample(c("h1","h2","h3"),36,replace=TRUE))
+dm<- model.matrix(as.formula("~elevation+habitat"),insects)
+set.seed(565)
+insects$count<- rpois(36,dm %*% betas)
+write.csv(insects, "insects.csv",row.names = FALSE)
+```
+1. Download the dataset for this exercise [here](insects.csv)
+2. Read in the data and assign it to an object `insects`
+3. Plot the relationship between the 2 covariates and the response variable
+4. Fit a generalized linear model relating `habitat`, and `elevation` to
+`count` and name the resulting object `fit`. Count is Poisson distributed.
+5. Estimate the expected insect count for an elevation of 100 in habitat 2.
+6. Generate 100 random outcomes for an elevation of 100 in habitat 2 given 
+the $\beta$s estimated in `fit`. 
+7. Discretize the 100 random outcomes into bins starting at 0 and ending at 
+200 by increments of 25.  (See supplemental information below)
+8. Calculate the probability for each bin in step 7.
+What are the probabilities for the outcomes 0-25, 100-125, and 125-150. 
+(See supplemental information below)
+9. Repeat steps 6 to 8 for values 250, 500, 750, 1000, 1500, 2000, 3000, 5000,
+10000, and 100000. (HINT a `for()` loop will help)
+10. Make a plot with the number of stochastic replicates on the x-axis
+and probability of the outcome 0-25 on the y-axis.
+11. Repeat step 10 for the remaining outcomes 100-125, and 125-150.
+12. How many stochastic replicates do you think you need to accurately quanity
+they uncertainty in your discretized outcomes?
+
+
+# Part II
+
+Will be posted 3.15.17
+<!--
+
+2. Fit a glm Poisson, bootstrap uncertainty
+3.  Simulate a glm and fit, plot
+4. Outcome for hlm
+5. Simulate occupancy with heterogeneous capture probability
+    *  Fit model
+    * Extract betas for psi and p
+    * Predict psifor x 
+    * Predict p and add 95% pi
+6. Cut I gausian
+    * bin preds
+    * Count them up
+7.  Cut II binomial
+    * Bin x1 
+    * bin preds
+    * Count them up
     
-## Exercise 1 
-
-## Exercise 2 
-
-## Exercise 3 
-
-1. Read in the dataset `elevation-density.csv` and assign it`ele_data`. 
- 
-
 ## Exercise 4 Predicting outcomes 
 
 1. Predict the probability of being 0-0.25, 0.25-0.5, ...
@@ -71,8 +178,58 @@ follows "lastname-firstIntial-homework-03.R"</u>
 ## Exercise 6 
 
 ## Exercise 7
+-->
 
+# Supplemental functions and use
 
+You may find the `cut()` function useful for this homework.
+The cut function cuts up data into bins. The usage is
+
+`cut(x=valuesToCut, 
+    breaks=valuesToCutBy,
+    labels=labelsForBins)`
+    
+One trick to using cut is to make sure the number of breaks is 1 more than
+the number of labels. Ok, here is an example. We will use the `runif()` function
+to generate 1000 values between 0.2 and 1. We want to bin those values into 
+bins of 0-0.1, 0.1-0.2, ... 0.9-1. And then we want to tally up the frequency of 
+each outcome. I can tell you that the frequency of outcomes falling in the 
+0-0.1 and 0.1-0.2 bins should be 0!
+
+```{r}
+x<- runif(1000,0.2,1)
+brks<- seq(from=0,to=1,by=0.1)
+myLabels<-c("0-0.1","0.1-0.2",
+    "0.2-0.3","0.3-0.4",
+    "0.4-0.5","0.5-0.6",
+    "0.6-0.7","0.7-0.8",
+    "0.8-0.9","0.9-1")
+
+binnedValues<- cut(x=x,
+    breaks=brks,
+    labels=myLabels)
+table(binnedValues)# get the frequency
+```
+Another way to do the above using `paste()` function.
+
+```{r}
+x<- runif(1000,0.2,1)
+brks<- seq(from=0,to=1,by=0.1)
+myLabels<-paste(brks[-length(brks)],brks[-1],sep="-")
+binnedValues<- cut(x=x,
+    breaks=brks,
+    labels=myLabels)
+table(binnedValues)# get the frequency
+```
+
+The table function is nice too because it fills in 0s for 
+values that are not present but the label is.
+We can calculate the probability of each outcome as
+
+```{r}
+myFreqs<-table(binnedValues)
+prop.table(myFreqs)# get probability
+```
 
 
 

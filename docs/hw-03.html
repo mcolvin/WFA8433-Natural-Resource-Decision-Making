@@ -267,6 +267,15 @@ $(document).ready(function () {
     <li>
       <a href="hw-02.html">Homework 2</a>
     </li>
+    <li>
+      <a href="hw-03.html">Homework 3</a>
+    </li>
+    <li>
+      <a href="hw-04.html">Homework 4</a>
+    </li>
+    <li>
+      <a href="hw-05.html">Homework 5</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -299,7 +308,7 @@ $(document).ready(function () {
 
 <!--
 library(knitr)
-rmarkdown::render_site("hw-02.Rmd")# build website
+rmarkdown::render_site("hw-03.Rmd")# build website
 
 # rmarkdown::render_site()# build webpage
 # COPY FILES TO DOCS FOR GITHUB.IO
@@ -312,48 +321,139 @@ system(paste("xcopy",
 <p><img src="media/banner-09.jpg" width="100%" /></p>
 <div id="homework-3-predicting-outcomes" class="section level1">
 <h1>Homework 3: Predicting outcomes</h1>
+<p>The objectives of this homework assignment are to 1. increase your skills in making predictions from analysis, 2. incorporating uncertainty in predictions, 3. using discretization, and 3. programming in R</p>
 <div id="preliminaries" class="section level2">
 <h2>Preliminaries</h2>
 <ul>
-<li>Assignment due: Due by March 24th by 5 pm</li>
-<li>The dataset required for Exercise 3 is available <a href="elevation-density.csv">here</a></li>
+<li>Assignment due: Due by March 23rd by 5 pm</li>
 <li>Submit R script to: <a href="https://dropitto.me/WFA8433" class="uri">https://dropitto.me/WFA8433</a>. The upload password is ‘critter’ <u>Be sure to name the file as follows “lastname-firstIntial-homework-03.R”</u></li>
 <li>For help and assistance.
 <ul>
 <li>If you have problem with the questions you can work with classmates.</li>
 <li>If you have any questions or issues about coding feel free to email me. Please attach your R script so I can diagnose any issues.</li>
-<li>If you have a medical problem, dial 911.</li>
 <li>If you have a problem and no one else can help, and if you can find them, maybe you can hire…the A-Team.</li>
 </ul></li>
 </ul>
 </div>
-<div id="exercise-1" class="section level2">
-<h2>Exercise 1</h2>
 </div>
-<div id="exercise-2" class="section level2">
-<h2>Exercise 2</h2>
-</div>
-<div id="exercise-3" class="section level2">
-<h2>Exercise 3</h2>
+<div id="part-i" class="section level1">
+<h1>Part I</h1>
+<div id="exercise-1-predicting-normal-outcomes" class="section level2">
+<h2>Exercise 1 Predicting normal outcomes</h2>
 <ol style="list-style-type: decimal">
-<li>Read in the dataset <code>elevation-density.csv</code> and assign it<code>ele_data</code>.</li>
+<li>Download the dataset for this exercise <a href="basal.csv">here</a></li>
+<li>Read in the data and assign it to an object <code>basal</code></li>
+<li>Plot the relationship between the 3 covariates and the response variable</li>
+<li>Fit a linear model relating <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> to <code>basal area</code> and name the resulting object <code>fit</code></li>
+<li>Use the expand.grid function to make a prediction dataset named <code>pred</code> for range of <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> in the dataset.</li>
+<li>Use the predict function to predict basal area for the new data <code>pred</code> and add those predictions as a field in to <code>pred</code></li>
+<li>Add 95% prediction intervals and add them as a fields named <code>lci</code> and <code>uci</code> for the lower and upper 95% prediction interval and add them to <code>pred</code></li>
+<li>Make 3 plots oriented as a single figure with 3 stacked plots (i.e., 3 rows, 1 column) for the following:
+<ol style="list-style-type: decimal">
+<li>the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>temperature</code> for a single value of <code>habitat</code> and <code>elevation</code>. The values are your choice. 2.the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>habitat</code> for a single value of <code>temperature</code> and <code>elevation</code>. The values are your choice.</li>
+<li>the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>elevation</code> for a single value of <code>habitat</code> and <code>temperature</code>. The values are your choice.</li>
+</ol></li>
+<li>Make a new prediction dataset named <code>randdata</code> where <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> are 1000,000 values randomly drawn from a uniform distribution (<code>runif()</code>) for each input. Random values should be constrained to be between the minimim and maximum values for <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> in the dataset.</li>
+<li>Use the <code>model.matrix()</code> function to create the design matrix named <code>dm</code> for the model fit in step 4.</li>
+<li>Predict the basal area using <code>dm</code> and the <span class="math inline">\(\beta\)</span>s extracted from <code>fit</code> and add the predictions to <code>randdata</code> as a field named <code>dm</code>.</li>
+<li>Use to <code>predict()</code> function to predict basal area and add the predictions to <code>randdata</code> as a field named <code>pred</code>.</li>
+<li>Construct a scatter plot of <code>dm</code> and <code>pred</code> from the <code>randdata</code> dataset and add a 1:1 line.</li>
 </ol>
 </div>
-<div id="exercise-4-predicting-outcomes" class="section level2">
-<h2>Exercise 4 Predicting outcomes</h2>
+<div id="exercise-2-discretizing-outcomes" class="section level2">
+<h2>Exercise 2 Discretizing outcomes</h2>
 <ol style="list-style-type: decimal">
-<li>Predict the probability of being 0-0.25, 0.25-0.5, …</li>
+<li>Download the dataset for this exercise <a href="insects.csv">here</a></li>
+<li>Read in the data and assign it to an object <code>insects</code></li>
+<li>Plot the relationship between the 2 covariates and the response variable</li>
+<li>Fit a generalized linear model relating <code>habitat</code>, and <code>elevation</code> to <code>count</code> and name the resulting object <code>fit</code>. Count is Poisson distributed.</li>
+<li>Estimate the expected insect count for an elevation of 100 in habitat 2.</li>
+<li>Generate 100 random outcomes for an elevation of 100 in habitat 2 given the <span class="math inline">\(\beta\)</span>s estimated in <code>fit</code>.</li>
+<li>Discretize the 100 random outcomes into bins starting at 0 and ending at 200 by increments of 25. (See supplemental information below)</li>
+<li>Calculate the probability for each bin in step 7. What are the probabilities for the outcomes 0-25, 100-125, and 125-150. (See supplemental information below)</li>
+<li>Repeat steps 6 to 8 for values 250, 500, 750, 1000, 1500, 2000, 3000, 5000, 10000, and 100000. (HINT a <code>for()</code> loop will help)</li>
+<li>Make a plot with the number of stochastic replicates on the x-axis and probability of the outcome 0-25 on the y-axis.</li>
+<li>Repeat step 10 for the remaining outcomes 100-125, and 125-150.</li>
+<li>How many stochastic replicates do you think you need to accurately quanity they uncertainty in your discretized outcomes?</li>
 </ol>
 </div>
-<div id="exercise-5" class="section level2">
-<h2>Exercise 5</h2>
 </div>
-<div id="exercise-6" class="section level2">
-<h2>Exercise 6</h2>
+<div id="part-ii" class="section level1">
+<h1>Part II</h1>
+<p>Will be posted 3.15.17 <!--
+
+2. Fit a glm Poisson, bootstrap uncertainty
+3.  Simulate a glm and fit, plot
+4. Outcome for hlm
+5. Simulate occupancy with heterogeneous capture probability
+    *  Fit model
+    * Extract betas for psi and p
+    * Predict psifor x 
+    * Predict p and add 95% pi
+6. Cut I gausian
+    * bin preds
+    * Count them up
+7.  Cut II binomial
+    * Bin x1 
+    * bin preds
+    * Count them up
+    
+## Exercise 4 Predicting outcomes 
+
+1. Predict the probability of being 0-0.25, 0.25-0.5, ...
+
+## Exercise 5 
+
+
+
+## Exercise 6 
+
+## Exercise 7
+--></p>
 </div>
-<div id="exercise-7" class="section level2">
-<h2>Exercise 7</h2>
-</div>
+<div id="supplemental-functions-and-use" class="section level1">
+<h1>Supplemental functions and use</h1>
+<p>You may find the <code>cut()</code> function useful for this homework. The cut function cuts up data into bins. The usage is</p>
+<p><code>cut(x=valuesToCut,      breaks=valuesToCutBy,     labels=labelsForBins)</code></p>
+<p>One trick to using cut is to make sure the number of breaks is 1 more than the number of labels. Ok, here is an example. We will use the <code>runif()</code> function to generate 1000 values between 0.2 and 1. We want to bin those values into bins of 0-0.1, 0.1-0.2, … 0.9-1. And then we want to tally up the frequency of each outcome. I can tell you that the frequency of outcomes falling in the 0-0.1 and 0.1-0.2 bins should be 0!</p>
+<pre class="r"><code>x&lt;- runif(1000,0.2,1)
+brks&lt;- seq(from=0,to=1,by=0.1)
+myLabels&lt;-c(&quot;0-0.1&quot;,&quot;0.1-0.2&quot;,
+    &quot;0.2-0.3&quot;,&quot;0.3-0.4&quot;,
+    &quot;0.4-0.5&quot;,&quot;0.5-0.6&quot;,
+    &quot;0.6-0.7&quot;,&quot;0.7-0.8&quot;,
+    &quot;0.8-0.9&quot;,&quot;0.9-1&quot;)
+
+binnedValues&lt;- cut(x=x,
+    breaks=brks,
+    labels=myLabels)
+table(binnedValues)# get the frequency</code></pre>
+<pre><code>## binnedValues
+##   0-0.1 0.1-0.2 0.2-0.3 0.3-0.4 0.4-0.5 0.5-0.6 0.6-0.7 0.7-0.8 0.8-0.9 
+##       0       0     122     129     128     107     115     145     127 
+##   0.9-1 
+##     127</code></pre>
+<p>Another way to do the above using <code>paste()</code> function.</p>
+<pre class="r"><code>x&lt;- runif(1000,0.2,1)
+brks&lt;- seq(from=0,to=1,by=0.1)
+myLabels&lt;-paste(brks[-length(brks)],brks[-1],sep=&quot;-&quot;)
+binnedValues&lt;- cut(x=x,
+    breaks=brks,
+    labels=myLabels)
+table(binnedValues)# get the frequency</code></pre>
+<pre><code>## binnedValues
+##   0-0.1 0.1-0.2 0.2-0.3 0.3-0.4 0.4-0.5 0.5-0.6 0.6-0.7 0.7-0.8 0.8-0.9 
+##       0       0     121     128     116     125     110     143     127 
+##   0.9-1 
+##     130</code></pre>
+<p>The table function is nice too because it fills in 0s for values that are not present but the label is. We can calculate the probability of each outcome as</p>
+<pre class="r"><code>myFreqs&lt;-table(binnedValues)
+prop.table(myFreqs)# get probability</code></pre>
+<pre><code>## binnedValues
+##   0-0.1 0.1-0.2 0.2-0.3 0.3-0.4 0.4-0.5 0.5-0.6 0.6-0.7 0.7-0.8 0.8-0.9 
+##   0.000   0.000   0.121   0.128   0.116   0.125   0.110   0.143   0.127 
+##   0.9-1 
+##   0.130</code></pre>
 </div>
 
 

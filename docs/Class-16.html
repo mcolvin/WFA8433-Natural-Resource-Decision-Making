@@ -363,6 +363,15 @@ div.tocify {
     <li>
       <a href="hw-02.html">Homework 2</a>
     </li>
+    <li>
+      <a href="hw-03.html">Homework 3</a>
+    </li>
+    <li>
+      <a href="hw-04.html">Homework 4</a>
+    </li>
+    <li>
+      <a href="hw-05.html">Homework 5</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -891,6 +900,12 @@ exp(det_est_lo)/(1+exp(det_est_lo)) </code></pre>
 <div id="covariates-and-occupancy" class="section level1">
 <h1><span class="header-section-number">4</span> Covariates and occupancy</h1>
 <p>Now we can add a covariate to occupancy and detection. Suppose we have a sampling domain that looks like the figure below.</p>
+<pre><code>## Warning: package &#39;reshape2&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## 
+## Attaching package: &#39;reshape2&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:reshape&#39;:
+## 
+##     colsplit, melt, recast</code></pre>
 <p><img src="Class-16_files/figure-html/unnamed-chunk-36-1.png" width="672" /> The data for the domain above can be read in as below.</p>
 <pre class="r"><code>dat&lt;- read.csv(&quot;occ-01.csv&quot;)</code></pre>
 <p>The increasing blue intensity represents increasing depth. Within the polygon above the true occupancy of a critter is related to depth. Specifically, the occupancy decreases with depth.</p>
@@ -913,8 +928,30 @@ dat$occupancy&lt;- rbinom(N,1,dat$psi_i)</code></pre>
 <p>Suppose can sample 40 sites (<code>n</code>) out of the 524 possible sites (<code>N</code>). That would look like the image below.</p>
 <p>Note that this approach was a bit different then the approach above that we used the <code>which()</code> statement. If we wanted to plot the data above we can plot x,y, data with z data, depth in this case using the <code>image.plot()</code> function within the fields package.</p>
 <pre class="r"><code>#install.packages(&quot;fields&quot;)
-library(fields)
-library(reshape2)
+library(fields)</code></pre>
+<pre><code>## Warning: package &#39;fields&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## Loading required package: spam</code></pre>
+<pre><code>## Warning: package &#39;spam&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## Loading required package: grid</code></pre>
+<pre><code>## Spam version 1.3-0 (2015-10-24) is loaded.
+## Type &#39;help( Spam)&#39; or &#39;demo( spam)&#39; for a short introduction 
+## and overview of this package.
+## Help for individual functions is also obtained by adding the
+## suffix &#39;.spam&#39; to the function name, e.g. &#39;help( chol.spam)&#39;.</code></pre>
+<pre><code>## 
+## Attaching package: &#39;spam&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:unmarked&#39;:
+## 
+##     mle</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     backsolve, forwardsolve</code></pre>
+<pre><code>## Loading required package: maps</code></pre>
+<pre><code>## Warning: package &#39;maps&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## 
+##  # maps v3.1: updated &#39;world&#39;: all lakes moved to separate new #
+##  # &#39;lakes&#39; database. Type &#39;?world&#39; or &#39;news(package=&quot;maps&quot;)&#39;.  #</code></pre>
+<pre class="r"><code>library(reshape2)
 depths&lt;- dcast(dat,x~y,value.var=&quot;depth&quot;)
 x&lt;-depths[,1]
 y&lt;-as.numeric(names(depths[-1]))
