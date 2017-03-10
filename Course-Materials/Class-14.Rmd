@@ -50,7 +50,7 @@ List of preliminary problems to instructor for review
     * Conroy and Peterson 116-129
 * Assignment due: None
 * Class project: Think about decision model (objectives, nodes, utilities)
-* Link to class recording  [YouTube]()
+* Link to class recording  [YouTube](https://youtu.be/v1J-8-qFc5A)
 * Today's R script [Class-14.R](scripts/Class-14.R)
 
 ## Class overview & objectives 

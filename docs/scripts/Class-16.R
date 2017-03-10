@@ -11,7 +11,8 @@ mean(Z_i)# should be close to 0.35
  
  
 ## ----unnamed-chunk-2---- ##
-sites<- data.frame(id=c(1:N), occupied=Z_i)
+sites<- data.frame(id=c(1:N), 
+    occupied=Z_i)
 # lets look at the first 10 rows of the data.frame
 head(sites,10)
  
@@ -23,10 +24,13 @@ head(sites,10)
 n<-35
 # does a simple random sample
 # by sampling a row number between 1 to N
-my_sample<- sample(sites$id, n,replace=FALSE)
+my_sample<- sample(sites$id, 
+    size=n,
+    replace=FALSE)
 # The which() function returns the rows where 
 # the condition is true.
-my_srs<- sites[which(sites$id %in% my_sample),]# get the samples 
+my_srs<- sites[
+    which(sites$id %in% my_sample),]# get the samples 
 # look at our sites
 head(my_srs)
  
@@ -52,7 +56,8 @@ occasion4<- rbinom(35,1,my_srs$occupied*p_i)
  
  
 ## ----unnamed-chunk-6---- ##
-detections<- cbind(occasion1,occasion2,occasion3,occasion4)
+detections<- cbind(occasion1,occasion2,
+    occasion3,occasion4)
 # lets look at the detections
 head(detections)
  
@@ -67,14 +72,19 @@ p_i
  
 ## ----unnamed-chunk-8---- ##
 # occasion 1
-occasion1<- rbinom(35,1,my_srs$occupied*p_i) 
+occasion1<- rbinom(35,1,
+    my_srs$occupied*p_i) 
 # occasion 2
-occasion2<- rbinom(35,1, my_srs$occupied*p_i) 
+occasion2<- rbinom(35,1, 
+    my_srs$occupied*p_i) 
 # occasion 3
-occasion3<- rbinom(35,1, my_srs$occupied*p_i) 
+occasion3<- rbinom(35,1, 
+  my_srs$occupied*p_i) 
 # occasion 4
-occasion4<- rbinom(35,1, my_srs$occupied*p_i) 
-detections<- cbind(occasion1,occasion2,occasion3,occasion4)
+occasion4<- rbinom(35,1, 
+  my_srs$occupied*p_i) 
+detections<- cbind(occasion1,occasion2,
+  occasion3,occasion4)
 head(detections) # lets look at the detections
  
  
@@ -111,7 +121,7 @@ output<- data.frame(p_i=p_i,
     occupancy_est=NA)
 for(i in 1:length(p_i))
 	{
-    # OBSERVATION 1 OF ALL 35 SITES
+  # OBSERVATION 1 OF ALL 35 SITES
 	occasion1<- rbinom(n,1,psi_i*p_i[i])
 	output$occupancy_est[i]<- mean(occasion1)
 	}    
@@ -128,7 +138,8 @@ plot(occupancy_est~p_i,
  
 ## ----unnamed-chunk-15---- ##
 # define matrix to save outputs to for 1000 replicates
-occupancy_est<- matrix(NA,nrow=1000,ncol=length(p_i)) 
+occupancy_est<- matrix(NA,nrow=1000,
+    ncol=length(p_i)) 
  
  
  
@@ -157,7 +168,7 @@ abline(h=psi_i,lty=2)
  
  
 ## ----unnamed-chunk-18---- ##
-beta_p_0<- -0.8472979 # set occupancy p to 0.3
+beta_p_0<- -0.8472979 # set  p to 0.3
 p_i<- exp(beta_p_0)/(1+exp(beta_p_0)) 
 p_i # 
 occasion1<- rbinom(35,1,my_srs$occupied*p_i) 
@@ -217,7 +228,7 @@ head(my_srs)# the true occupancy
  
  
 ## ----unnamed-chunk-26---- ##
-beta_p_0<- -0.8472979 # set occupancy p to 0.3
+beta_p_0<- -0.8472979 # set  p to 0.3
 beta_p_1<- -0.02 #
 my_srs$X<- runif(n,0,100)
 # log odds detection probability
@@ -250,15 +261,16 @@ site_covs<- my_srs
  
  
 ## ----unnamed-chunk-30---- ##
-detections<-  unmarkedFrameOccu(y=detections, 
-    siteCovs=site_covs, 
-    obsCovs=NULL)
+detections<-  unmarkedFrameOccu(
+    y=detections, 
+    siteCovs=NULL, 
+    obsCovs=site_covs)
 head(detections)
  
  
  
 ## ----unnamed-chunk-31---- ##
-fit <- occu(~ 1 ~ X, detections)
+fit <- occu(~ X ~ 1, detections)
 fit
  
  
@@ -266,7 +278,7 @@ fit
 ## ----unnamed-chunk-32---- ##
 coef(fit)[1]# occupancy
 coef(fit)[2]# detection
- 
+coef(fit)
  
  
 ## ----unnamed-chunk-33---- ##
@@ -280,14 +292,15 @@ exp(det_est_lo)/(1+exp(det_est_lo))
 ## ----unnamed-chunk-34---- ##
 dat<- read.csv("occ-01.csv")
  
- 
+ head(dat)
  
 ## ----unnamed-chunk-35---- ##
 beta_psi_0<- 1.1 
 beta_psi_1<- -0.35 #
 
 # log odds occupancy
-dat$lo_psi_i<- beta_psi_0+beta_psi_1*dat$depth
+dat$lo_psi_i<- beta_psi_0+
+    beta_psi_1*dat$depth
 # detection probability
 dat$psi_i<-exp(dat$lo_psi_i)/(1+exp(dat$lo_psi_i))
  
@@ -303,14 +316,17 @@ plot(psi_i~depth,
  
 ## ----unnamed-chunk-37---- ##
 N<- nrow(dat)
-dat$occupancy<- rbinom(N,1,dat$psi_i)
+dat$occupancy<- rbinom(N,1,
+    dat$psi_i)
  
  
  
 ## ----unnamed-chunk-38---- ##
-#install.packages("fields")
+install.packages("fields")
 library(fields)
-depths<- dcast(dat,x~y,value.var="depth")
+library(reshape2)
+depths<- dcast(dat,x~y,
+    value.var="depth")
 x<-depths[,1]
 y<-as.numeric(names(depths[-1]))
 depths<- as.matrix(depths[,-1])
@@ -356,10 +372,11 @@ legend("topleft",
 true_occ<- mean(dat$occupancy)
 true_occ
  
- 
+ sampleSites<- dat[sample(1:nrow(dat),
+    35,replace=FALSE),]
  
 ## ----unnamed-chunk-41---- ##
-beta_p_0<- -0.8472979 # set occupancy p to 0.3
+beta_p_0<- -0.8472979 # set  p to 0.3
 beta_p_1<- 8.8 #
 # log odds detection probability
 sampleSites$lo_p_i<- beta_p_0+beta_p_1*sampleSites$velocity
@@ -409,7 +426,8 @@ fit
  
 ## ----unnamed-chunk-47---- ##
 betas<- coef(fit)
-dat$pred_lo_psi<- betas[1] + betas[2]*dat$depth
+dat$pred_lo_psi<- betas[1] + 
+    betas[2]*dat$depth
 dat$psi_hat_i<- exp(dat$pred_lo_psi)/(1+exp(dat$pred_lo_psi))
  
  

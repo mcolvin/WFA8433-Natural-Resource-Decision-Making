@@ -80,7 +80,7 @@ head(detections) # lets look at the detections
  
  
 ## ----unnamed-chunk-9---- ##
-cbind(detections, my_srs$occupied)
+head(cbind(detections, my_srs$occupied))
  
  
  
@@ -157,7 +157,7 @@ abline(h=psi_i,lty=2)
  
  
 ## ----unnamed-chunk-18---- ##
-beta_p_0<- -0.8472979 # set occupancy p to 0.3
+beta_p_0<- -0.8472979 # set p to 0.3
 p_i<- exp(beta_p_0)/(1+exp(beta_p_0)) 
 p_i # 
 occasion1<- rbinom(35,1,my_srs$occupied*p_i) 
@@ -217,7 +217,7 @@ head(my_srs)# the true occupancy
  
  
 ## ----unnamed-chunk-26---- ##
-beta_p_0<- -0.8472979 # set occupancy p to 0.3
+beta_p_0<- -0.8472979 # set p to 0.3
 beta_p_1<- -0.02 #
 my_srs$X<- runif(n,0,100)
 # log odds detection probability
@@ -258,7 +258,7 @@ head(detections)
  
  
 ## ----unnamed-chunk-31---- ##
-fit <- occu(~ 1 ~ X, detections)
+fit <- occu(~ X ~ 1, detections)
 fit
  
  
@@ -310,6 +310,7 @@ dat$occupancy<- rbinom(N,1,dat$psi_i)
 ## ----unnamed-chunk-38---- ##
 #install.packages("fields")
 library(fields)
+library(reshape2)
 depths<- dcast(dat,x~y,value.var="depth")
 x<-depths[,1]
 y<-as.numeric(names(depths[-1]))
@@ -359,7 +360,7 @@ true_occ
  
  
 ## ----unnamed-chunk-41---- ##
-beta_p_0<- -0.8472979 # set occupancy p to 0.3
+beta_p_0<- -0.8472979 # set p to 0.3
 beta_p_1<- 8.8 #
 # log odds detection probability
 sampleSites$lo_p_i<- beta_p_0+beta_p_1*sampleSites$velocity
@@ -415,7 +416,7 @@ dat$psi_hat_i<- exp(dat$pred_lo_psi)/(1+exp(dat$pred_lo_psi))
  
  
 ## ----unnamed-chunk-48---- ##
-par(mfrow=c(1,2))
+par(mfrow=c(1,2),oma=c(1,2,1,2))
 
 # TRUE PSI
 psi_true<- dcast(dat,x~y,value.var="psi_i")
@@ -426,10 +427,11 @@ image.plot(x=x,
     y=y,
     z=psi_true,
     xlim=c(0,7),
+    breaks=seq(0,1,0.1),
     xlab="X",
     ylab="Y",
     ylim=c(0,9), 
-    col=rainbow(n=20,start=3/6,end=4/6),
+    col=rainbow(n=10,start=3/6,end=4/6),
     asp=1)	
 # ESTIMATED PSI
 psi_est<- dcast(dat,x~y,value.var="psi_hat_i")
@@ -440,10 +442,11 @@ image.plot(x=x,
     y=y,
     z=psi_est,
     xlim=c(0,7),
+    breaks=seq(0,1,0.1),
     xlab="X",
     ylab="Y",
     ylim=c(0,9), 
-    col=rainbow(n=20,start=3/6,end=4/6),
+    col=rainbow(n=10,start=3/6,end=4/6),
     asp=1)
  
  

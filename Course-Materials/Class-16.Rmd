@@ -310,7 +310,7 @@ occupancy status for each site to the detection history.
 
 
 ```{r}
-cbind(detections, my_srs$occupied)
+head(cbind(detections, my_srs$occupied))
 ```
 Now you can look at what sites are occupied but the critter was not 
 detected! 
@@ -346,7 +346,7 @@ this on estimated occupancy.
 ## Effects of imperfect detection
 
 Let's explore this for a range of $p_i$ from 0.1 to 1 to examine that 
-effect, assuming detection probabitiy is homogenous among sites.
+effect, assuming detection probability is homogenous among sites.
 Recall that $\psi= 0.35$. 
 
 ```{r}
@@ -441,7 +441,7 @@ Remember the data we simulated in `my_srs`?
 
 ```{r}
 
-beta_p_0<- -0.8472979 # set occupancy p to 0.3
+beta_p_0<- -0.8472979 # set p to 0.3
 p_i<- exp(beta_p_0)/(1+exp(beta_p_0)) 
 p_i # 
 occasion1<- rbinom(35,1,my_srs$occupied*p_i) 
@@ -558,7 +558,7 @@ Now let's specify a relationship between a detection probability
 and a covariate $X$.
 
 ```{r}
-beta_p_0<- -0.8472979 # set occupancy p to 0.3
+beta_p_0<- -0.8472979 # set p to 0.3
 beta_p_1<- -0.02 #
 my_srs$X<- runif(n,0,100)
 # log odds detection probability
@@ -606,11 +606,11 @@ Note we do not have any site or observation covariates at this point and
 therefore they are NULL. 
 
 Now we can fit an occupancy model. Note that in the model equation the 
-first tilda is for occupancy and the second is for detection. We can
+first tilda is for detection and the second is for occupancy. We can
 specify the covariate for detection probability. 
 
 ```{r}
-fit <- occu(~ 1 ~ X, detections)
+fit <- occu(~ X ~ 1, detections)
 fit
 ```
 
@@ -708,6 +708,7 @@ plot(psi_i~depth,
     xlab="Depth",
     ylab="Occupancy")
 ```
+
 And we can simulate whether a site is occupied or not.
 
 ```{r}
@@ -735,6 +736,7 @@ case using the `image.plot()` function within the fields package.
 ```{r}
 #install.packages("fields")
 library(fields)
+library(reshape2)
 depths<- dcast(dat,x~y,value.var="depth")
 x<-depths[,1]
 y<-as.numeric(names(depths[-1]))
@@ -799,7 +801,7 @@ to depth.
 
 
 ```{r}
-beta_p_0<- -0.8472979 # set occupancy p to 0.3
+beta_p_0<- -0.8472979 # set p to 0.3
 beta_p_1<- 8.8 #
 # log odds detection probability
 sampleSites$lo_p_i<- beta_p_0+beta_p_1*sampleSites$velocity
@@ -869,7 +871,7 @@ dat$psi_hat_i<- exp(dat$pred_lo_psi)/(1+exp(dat$pred_lo_psi))
 And we can plot and compare.
 
 ```{r}
-par(mfrow=c(1,2))
+par(mfrow=c(1,2),oma=c(1,2,1,2))
 
 # TRUE PSI
 psi_true<- dcast(dat,x~y,value.var="psi_i")
@@ -880,10 +882,11 @@ image.plot(x=x,
     y=y,
     z=psi_true,
     xlim=c(0,7),
+    breaks=seq(0,1,0.1),
     xlab="X",
     ylab="Y",
     ylim=c(0,9), 
-    col=rainbow(n=20,start=3/6,end=4/6),
+    col=rainbow(n=10,start=3/6,end=4/6),
     asp=1)	
 # ESTIMATED PSI
 psi_est<- dcast(dat,x~y,value.var="psi_hat_i")
@@ -894,10 +897,11 @@ image.plot(x=x,
     y=y,
     z=psi_est,
     xlim=c(0,7),
+    breaks=seq(0,1,0.1),
     xlab="X",
     ylab="Y",
     ylim=c(0,9), 
-    col=rainbow(n=20,start=3/6,end=4/6),
+    col=rainbow(n=10,start=3/6,end=4/6),
     asp=1)
 ```
 

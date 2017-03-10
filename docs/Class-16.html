@@ -622,43 +622,14 @@ head(detections) # lets look at the detections</code></pre>
 ## [6,]         0         0         0         0</code></pre>
 <p>You will see now that there are a lot more 0s in the mix compared to when <span class="math inline">\(p = 1\)</span>! But the one thing that remains that same is that sites where the ‘true’ occupancy status is 0 remain as ‘0000’ but now we may have a few instance where site occupancy = 1 but the detection history is ‘0000’ as well.</p>
 <p>We can look at those instances by figuring out by binding the column of occupancy status for each site to the detection history.</p>
-<pre class="r"><code>cbind(detections, my_srs$occupied)</code></pre>
-<pre><code>##       occasion1 occasion2 occasion3 occasion4  
-##  [1,]         0         0         0         0 0
-##  [2,]         0         0         0         0 0
-##  [3,]         0         0         0         0 0
-##  [4,]         0         0         0         0 0
-##  [5,]         0         0         0         0 0
-##  [6,]         0         0         0         0 0
-##  [7,]         0         0         0         0 0
-##  [8,]         0         0         0         0 1
-##  [9,]         0         0         0         0 1
-## [10,]         0         0         0         0 0
-## [11,]         0         0         0         0 0
-## [12,]         0         0         0         0 0
-## [13,]         0         0         0         0 0
-## [14,]         0         0         0         1 1
-## [15,]         0         0         0         0 0
-## [16,]         0         0         0         0 0
-## [17,]         1         0         0         0 1
-## [18,]         0         0         0         1 1
-## [19,]         0         0         0         0 0
-## [20,]         0         0         0         0 1
-## [21,]         0         0         0         0 0
-## [22,]         0         0         0         0 0
-## [23,]         0         0         0         0 0
-## [24,]         0         0         0         0 0
-## [25,]         0         0         0         0 0
-## [26,]         0         0         0         0 1
-## [27,]         0         0         0         0 1
-## [28,]         0         0         0         0 1
-## [29,]         0         0         0         0 0
-## [30,]         0         0         0         0 1
-## [31,]         0         0         0         0 0
-## [32,]         0         0         0         0 0
-## [33,]         0         0         0         0 0
-## [34,]         0         0         0         0 0
-## [35,]         0         0         0         0 0</code></pre>
+<pre class="r"><code>head(cbind(detections, my_srs$occupied))</code></pre>
+<pre><code>##      occasion1 occasion2 occasion3 occasion4  
+## [1,]         0         0         0         0 0
+## [2,]         0         0         0         0 0
+## [3,]         0         0         0         0 0
+## [4,]         0         0         0         0 0
+## [5,]         0         0         0         0 0
+## [6,]         0         0         0         0 0</code></pre>
 <p>Now you can look at what sites are occupied but the critter was not detected!</p>
 </div>
 <div id="naive-occupancy-estimates" class="section level2">
@@ -673,7 +644,7 @@ mean(occupied) # close to 0.35?</code></pre>
 </div>
 <div id="effects-of-imperfect-detection" class="section level2">
 <h2><span class="header-section-number">2.7</span> Effects of imperfect detection</h2>
-<p>Let’s explore this for a range of <span class="math inline">\(p_i\)</span> from 0.1 to 1 to examine that effect, assuming detection probabitiy is homogenous among sites. Recall that <span class="math inline">\(\psi= 0.35\)</span>.</p>
+<p>Let’s explore this for a range of <span class="math inline">\(p_i\)</span> from 0.1 to 1 to examine that effect, assuming detection probability is homogenous among sites. Recall that <span class="math inline">\(\psi= 0.35\)</span>.</p>
 <pre class="r"><code>beta_psi_0&lt;- -0.6190392 # set occupancy probability to 0.35
 psi_i&lt;- exp(beta_psi_0)/(1+exp(beta_psi_0)) 
 psi_i # </code></pre>
@@ -727,7 +698,7 @@ abline(h=psi_i,lty=2) </code></pre>
 <h2><span class="header-section-number">2.8</span> Accounting for imperfect detection</h2>
 <p>Occupancy models estimate both <span class="math inline">\(\psi_i\)</span> and <span class="math inline">\(p_i\)</span> from detection histories assuming that <span class="math inline">\(p_i\)</span> is the conditional capture probability. Let’s see how an occupancy model for <span class="math inline">\(p_i = 0.3\)</span> works!</p>
 <p>Let’s simulate our detection histories from our original random sample. Remember the data we simulated in <code>my_srs</code>?</p>
-<pre class="r"><code>beta_p_0&lt;- -0.8472979 # set occupancy p to 0.3
+<pre class="r"><code>beta_p_0&lt;- -0.8472979 # set p to 0.3
 p_i&lt;- exp(beta_p_0)/(1+exp(beta_p_0)) 
 p_i # </code></pre>
 <pre><code>## [1] 0.3</code></pre>
@@ -748,12 +719,6 @@ head(detections) # lets look at the detections</code></pre>
 <p>Now lets fit an occupancy model to the data. First we need the unmarked package to do so.</p>
 <pre class="r"><code>#install.packages(&quot;unmarked&quot;)
 library(unmarked)</code></pre>
-<pre><code>## Warning: package &#39;unmarked&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: reshape</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## Warning: package &#39;lattice&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: Rcpp</code></pre>
-<pre><code>## Warning: package &#39;Rcpp&#39; was built under R version 3.1.3</code></pre>
 <p>Now we need to get our detections into a matrix for unmarked.</p>
 <pre class="r"><code>detections&lt;-  unmarkedFrameOccu(detections, 
     siteCovs=NULL, 
@@ -844,7 +809,7 @@ backTransform(fit, type=&quot;det&quot;)</code></pre>
 ## 64 64        0
 ## 85 85        0</code></pre>
 <p>Now let’s specify a relationship between a detection probability and a covariate <span class="math inline">\(X\)</span>.</p>
-<pre class="r"><code>beta_p_0&lt;- -0.8472979 # set occupancy p to 0.3
+<pre class="r"><code>beta_p_0&lt;- -0.8472979 # set p to 0.3
 beta_p_1&lt;- -0.02 #
 my_srs$X&lt;- runif(n,0,100)
 # log odds detection probability
@@ -889,49 +854,43 @@ head(detections)</code></pre>
 ## 101   0   1   0   0 101        1 26.31078 -1.373513 0.20205279
 ## 105   0   0   0   0 105        0 36.71124 -1.581523 0.17057993</code></pre>
 <p>Note we do not have any site or observation covariates at this point and therefore they are NULL.</p>
-<p>Now we can fit an occupancy model. Note that in the model equation the first tilda is for occupancy and the second is for detection. We can specify the covariate for detection probability.</p>
-<pre class="r"><code>fit &lt;- occu(~ 1 ~ X, detections)
+<p>Now we can fit an occupancy model. Note that in the model equation the first tilda is for detection and the second is for occupancy. We can specify the covariate for detection probability.</p>
+<pre class="r"><code>fit &lt;- occu(~ X ~ 1, detections)
 fit</code></pre>
 <pre><code>## 
 ## Call:
-## occu(formula = ~1 ~ X, data = detections)
+## occu(formula = ~X ~ 1, data = detections)
 ## 
 ## Occupancy:
-##             Estimate     SE      z P(&gt;|z|)
-## (Intercept)  -1.2426 1.1010 -1.129   0.259
-## X             0.0144 0.0182  0.791   0.429
+##  Estimate   SE      z P(&gt;|z|)
+##    -0.469 0.65 -0.721   0.471
 ## 
 ## Detection:
-##  Estimate    SE     z P(&gt;|z|)
-##     -1.15 0.527 -2.18  0.0294
+##              Estimate     SE       z P(&gt;|z|)
+## (Intercept) -1.161188 1.2011 -0.9668   0.334
+## X            0.000273 0.0164  0.0166   0.987
 ## 
-## AIC: 87.65522</code></pre>
+## AIC: 88.32565</code></pre>
 <p>We can extract the estimates from the fitted model as:</p>
 <pre class="r"><code>coef(fit)[1]# occupancy</code></pre>
-<pre><code>##  psi(Int) 
-## -1.242564</code></pre>
+<pre><code>##   psi(Int) 
+## -0.4687775</code></pre>
 <pre class="r"><code>coef(fit)[2]# detection</code></pre>
-<pre><code>##     psi(X) 
-## 0.01439208</code></pre>
+<pre><code>##    p(Int) 
+## -1.161188</code></pre>
 <p>As is the case with most binary (0,1) data the linear models use a logit transformation and this estimates are on logit scale. If we want the actual values we need to simple take the estimate and run in through the equation <span class="math inline">\(exp(est)/(1+exp(est))\)</span></p>
 <pre class="r"><code>occ_est_lo&lt;- coef(fit)[1]# occupancy logit
 exp(occ_est_lo)/(1+exp(occ_est_lo)) </code></pre>
-<pre><code>## psi(Int) 
-##  0.22399</code></pre>
+<pre><code>##  psi(Int) 
+## 0.3849056</code></pre>
 <pre class="r"><code>det_est_lo&lt;- coef(fit)[2]# detection logit
 exp(det_est_lo)/(1+exp(det_est_lo)) </code></pre>
-<pre><code>##   psi(X) 
-## 0.503598</code></pre>
+<pre><code>##    p(Int) 
+## 0.2384515</code></pre>
 </div>
 <div id="covariates-and-occupancy" class="section level1">
 <h1><span class="header-section-number">4</span> Covariates and occupancy</h1>
 <p>Now we can add a covariate to occupancy and detection. Suppose we have a sampling domain that looks like the figure below.</p>
-<pre><code>## Warning: package &#39;reshape2&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;reshape2&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:reshape&#39;:
-## 
-##     colsplit, melt, recast</code></pre>
 <p><img src="Class-16_files/figure-html/unnamed-chunk-36-1.png" width="672" /> The data for the domain above can be read in as below.</p>
 <pre class="r"><code>dat&lt;- read.csv(&quot;occ-01.csv&quot;)</code></pre>
 <p>The increasing blue intensity represents increasing depth. Within the polygon above the true occupancy of a critter is related to depth. Specifically, the occupancy decreases with depth.</p>
@@ -947,36 +906,16 @@ dat$psi_i&lt;-exp(dat$lo_psi_i)/(1+exp(dat$lo_psi_i))</code></pre>
     data=dat,
     xlab=&quot;Depth&quot;,
     ylab=&quot;Occupancy&quot;)</code></pre>
-<p><img src="Class-16_files/figure-html/unnamed-chunk-39-1.png" width="672" /> And we can simulate whether a site is occupied or not.</p>
+<p><img src="Class-16_files/figure-html/unnamed-chunk-39-1.png" width="672" /></p>
+<p>And we can simulate whether a site is occupied or not.</p>
 <pre class="r"><code>N&lt;- nrow(dat)
 dat$occupancy&lt;- rbinom(N,1,dat$psi_i)</code></pre>
 <p>Suppose can sample 40 sites (<code>n</code>) out of the 524 possible sites (<code>N</code>). That would look like the image below.</p>
 <p>Note that this approach was a bit different then the approach above that we used the <code>which()</code> statement. If we wanted to plot the data above we can plot x,y, data with z data, depth in this case using the <code>image.plot()</code> function within the fields package.</p>
 <pre class="r"><code>#install.packages(&quot;fields&quot;)
-library(fields)</code></pre>
-<pre><code>## Warning: package &#39;fields&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: spam</code></pre>
-<pre><code>## Warning: package &#39;spam&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: grid</code></pre>
-<pre><code>## Spam version 1.3-0 (2015-10-24) is loaded.
-## Type &#39;help( Spam)&#39; or &#39;demo( spam)&#39; for a short introduction 
-## and overview of this package.
-## Help for individual functions is also obtained by adding the
-## suffix &#39;.spam&#39; to the function name, e.g. &#39;help( chol.spam)&#39;.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;spam&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:unmarked&#39;:
-## 
-##     mle</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     backsolve, forwardsolve</code></pre>
-<pre><code>## Loading required package: maps</code></pre>
-<pre><code>## Warning: package &#39;maps&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## 
-##  # maps v3.1: updated &#39;world&#39;: all lakes moved to separate new #
-##  # &#39;lakes&#39; database. Type &#39;?world&#39; or &#39;news(package=&quot;maps&quot;)&#39;.  #</code></pre>
-<pre class="r"><code>depths&lt;- dcast(dat,x~y,value.var=&quot;depth&quot;)
+library(fields)
+library(reshape2)
+depths&lt;- dcast(dat,x~y,value.var=&quot;depth&quot;)
 x&lt;-depths[,1]
 y&lt;-as.numeric(names(depths[-1]))
 depths&lt;- as.matrix(depths[,-1])
@@ -1025,7 +964,7 @@ true_occ</code></pre>
 <div id="generate-capture-histories" class="section level2">
 <h2><span class="header-section-number">4.2</span> Generate capture histories</h2>
 <p>The code below generates detections at 20 sites over 5 occasions given the abundance at the site and a capture probability that is also related to depth.</p>
-<pre class="r"><code>beta_p_0&lt;- -0.8472979 # set occupancy p to 0.3
+<pre class="r"><code>beta_p_0&lt;- -0.8472979 # set p to 0.3
 beta_p_1&lt;- 8.8 #
 # log odds detection probability
 sampleSites$lo_p_i&lt;- beta_p_0+beta_p_1*sampleSites$velocity
@@ -1107,7 +1046,7 @@ fit</code></pre>
 dat$pred_lo_psi&lt;- betas[1] + betas[2]*dat$depth
 dat$psi_hat_i&lt;- exp(dat$pred_lo_psi)/(1+exp(dat$pred_lo_psi))</code></pre>
 <p>And we can plot and compare.</p>
-<pre class="r"><code>par(mfrow=c(1,2))
+<pre class="r"><code>par(mfrow=c(1,2),oma=c(1,2,1,2))
 
 # TRUE PSI
 psi_true&lt;- dcast(dat,x~y,value.var=&quot;psi_i&quot;)
@@ -1118,10 +1057,11 @@ image.plot(x=x,
     y=y,
     z=psi_true,
     xlim=c(0,7),
+    breaks=seq(0,1,0.1),
     xlab=&quot;X&quot;,
     ylab=&quot;Y&quot;,
     ylim=c(0,9), 
-    col=rainbow(n=20,start=3/6,end=4/6),
+    col=rainbow(n=10,start=3/6,end=4/6),
     asp=1)  
 # ESTIMATED PSI
 psi_est&lt;- dcast(dat,x~y,value.var=&quot;psi_hat_i&quot;)
@@ -1132,10 +1072,11 @@ image.plot(x=x,
     y=y,
     z=psi_est,
     xlim=c(0,7),
+    breaks=seq(0,1,0.1),
     xlab=&quot;X&quot;,
     ylab=&quot;Y&quot;,
     ylim=c(0,9), 
-    col=rainbow(n=20,start=3/6,end=4/6),
+    col=rainbow(n=10,start=3/6,end=4/6),
     asp=1)</code></pre>
 <p><img src="Class-16_files/figure-html/unnamed-chunk-53-1.png" width="672" /></p>
 </div>
