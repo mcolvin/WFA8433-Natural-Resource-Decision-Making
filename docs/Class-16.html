@@ -470,10 +470,10 @@ List of preliminary problems to instructor for review
 <div id="model-and-assumptions" class="section level2">
 <h2><span class="header-section-number">2.1</span> Model and assumptions</h2>
 <p>Formally, occupancy models have 2 parts a process model (i.e., the model that predicts occupancy) and an observation model (i.e., the model that predicts whether a detection occurs given a critter is there). Formally, the process model (i.e., occupancy) is</p>
-<p><span class="math display">\[logit(\psi_i) = \beta_0_{\psi,0}\]</span></p>
+<p><span class="math display">\[logit(\psi_i) = \beta_{\psi,0}\]</span></p>
 <p>and</p>
 <p><span class="math display">\[Z_i \sim Bernoulli(\psi_i)\]</span></p>
-<p>where * <span class="math inline">\(\beta_0_{\psi,0}\)</span> is the intercept (<code>beta_psi_0</code>), * <span class="math inline">\(\psi_i\)</span> is site specific occupancy rate (<code>psi_i</code>), * <span class="math inline">\(Z_i\)</span> is the latent site occupancy status (<code>Z+i</code>), and * <span class="math inline">\(i\)</span> indexes each site sampled (<code>i</code>).</p>
+<p>where * <span class="math inline">\(\beta_{\psi,0}\)</span> is the intercept (<code>beta_psi_0</code>), * <span class="math inline">\(\psi_i\)</span> is site specific occupancy rate (<code>psi_i</code>), * <span class="math inline">\(Z_i\)</span> is the latent site occupancy status (<code>Z+i</code>), and * <span class="math inline">\(i\)</span> indexes each site sampled (<code>i</code>).</p>
 <p>The observation model is</p>
 <p><span class="math display">\[logit(p_i) = \beta_{p,0}\]</span></p>
 <p>and</p>
@@ -748,6 +748,12 @@ head(detections) # lets look at the detections</code></pre>
 <p>Now lets fit an occupancy model to the data. First we need the unmarked package to do so.</p>
 <pre class="r"><code>#install.packages(&quot;unmarked&quot;)
 library(unmarked)</code></pre>
+<pre><code>## Warning: package &#39;unmarked&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## Loading required package: reshape</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Warning: package &#39;lattice&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## Loading required package: Rcpp</code></pre>
+<pre><code>## Warning: package &#39;Rcpp&#39; was built under R version 3.1.3</code></pre>
 <p>Now we need to get our detections into a matrix for unmarked.</p>
 <pre class="r"><code>detections&lt;-  unmarkedFrameOccu(detections, 
     siteCovs=NULL, 
@@ -821,7 +827,7 @@ backTransform(fit, type=&quot;det&quot;)</code></pre>
 <div id="covariates-and-detection-probability" class="section level1">
 <h1><span class="header-section-number">3</span> Covariates and detection probability</h1>
 <p>Now we can relax the assumption that detection probability is heterogeneous. Heterogeneity might arise because of weather variation among occasions, variation among observers, habitat variability and so on. In this section we will assuming heterogeneous capture probabilities that are related a covariate <span class="math inline">\(X_i\)</span> that varies among site <span class="math inline">\(i\)</span>. Formally, the process model (i.e., occupancy) remains the same as above and is</p>
-<p><span class="math display">\[logit(\psi_i) = \beta_0_{\psi,0}\]</span></p>
+<p><span class="math display">\[logit(\psi_i) = \beta_{\psi,0}\]</span></p>
 <p>and</p>
 <p><span class="math display">\[Z_i \sim Bernoulli(\psi_i)\]</span></p>
 <p>where the parameters are as defined above. The observation model is modified so that there is now an effect of a covariate on detection probility.</p>

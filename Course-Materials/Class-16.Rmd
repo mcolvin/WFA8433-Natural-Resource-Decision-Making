@@ -93,14 +93,14 @@ model that predicts occupancy) and an observation model (i.e., the
 model that predicts whether a detection occurs given a critter is
 there). Formally, the process model (i.e., occupancy) is
 
-$$logit(\psi_i) = \beta_0_{\psi,0}$$
+$$logit(\psi_i) = \beta_{\psi,0}$$
 
 and 
 
 $$Z_i \sim Bernoulli(\psi_i)$$
 
 where 
-* $\beta_0_{\psi,0}$ is the intercept (`beta_psi_0`),
+* $\beta_{\psi,0}$ is the intercept (`beta_psi_0`),
 * $\psi_i$ is site specific occupancy rate (`psi_i`),
 * $Z_i$ is the latent site occupancy status (`Z+i`), and
 * $i$ indexes each site sampled (`i`).
@@ -527,7 +527,7 @@ are related a covariate $X_i$ that varies among site $i$.
 Formally, the process model (i.e., occupancy) remains the same as 
 above and is
 
-$$logit(\psi_i) = \beta_0_{\psi,0}$$
+$$logit(\psi_i) = \beta_{\psi,0}$$
 
 and 
 
