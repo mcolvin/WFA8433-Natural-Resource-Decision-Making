@@ -99,7 +99,7 @@ for the following:
     `elevation` for a single value of `habitat` and `temperature`. 
     The values are your choice.
 9. Make a new prediction dataset named `randdata` where `temperature`, `habitat`, and `elevation` are
-1000,000 values randomly drawn from a uniform distribution (`runif()`) for each input. 
+100,000 values randomly drawn from a uniform distribution (`runif()`) for each input. 
 Random values should be constrained to be between the minimim and 
 maximum values for `temperature`, `habitat`, and `elevation` in the dataset. 
 10. Use the `model.matrix()` function to create the design matrix named `dm` for the model fit
