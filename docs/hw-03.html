@@ -314,7 +314,7 @@ rmarkdown::render_site("hw-03.Rmd")# build website
 # COPY FILES TO DOCS FOR GITHUB.IO
 system(paste("xcopy", 
     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
-    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
     "/E /C /H /R /K /O /Y")) 
   q(save="no") 
 -->
@@ -348,9 +348,14 @@ system(paste("xcopy",
 <li>Use the expand.grid function to make a prediction dataset named <code>pred</code> for range of <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> in the dataset.</li>
 <li>Use the predict function to predict basal area for the new data <code>pred</code> and add those predictions as a field in to <code>pred</code></li>
 <li>Add 95% prediction intervals and add them as a fields named <code>lci</code> and <code>uci</code> for the lower and upper 95% prediction interval and add them to <code>pred</code></li>
-<li>Make 3 plots oriented as a single figure with 3 stacked plots (i.e., 3 rows, 1 column) for the following:
+<li>Make 2 plots oriented as a single figure with 2 stacked plots (i.e., 2 rows, 1 column) for the following:
 <ol style="list-style-type: decimal">
-<li>the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>temperature</code> for a single value of <code>habitat</code> and <code>elevation</code>. The values are your choice. 2.the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>habitat</code> for a single value of <code>temperature</code> and <code>elevation</code>. The values are your choice.</li>
+<li>the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>temperature</code> for a single value of <code>habitat</code> and <code>elevation</code>. The values are your choice.<br />
+<!-- this one is terrible, need to revise
+2.the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
+`habitat` values for a single value of `temperature` and `elevation`. 
+The values are your choice.
+--></li>
 <li>the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>elevation</code> for a single value of <code>habitat</code> and <code>temperature</code>. The values are your choice.</li>
 </ol></li>
 <li>Make a new prediction dataset named <code>randdata</code> where <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> are 1000,000 values randomly drawn from a uniform distribution (<code>runif()</code>) for each input. Random values should be constrained to be between the minimim and maximum values for <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> in the dataset.</li>

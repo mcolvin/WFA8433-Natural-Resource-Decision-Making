@@ -10,7 +10,7 @@ rmarkdown::render_site("hw-03.Rmd")# build website
 # COPY FILES TO DOCS FOR GITHUB.IO
 system(paste("xcopy", 
     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
-    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making//Docs"',
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
     "/E /C /H /R /K /O /Y")) 
   q(save="no") 
 -->
@@ -85,14 +85,19 @@ write.csv(basal, "basal.csv",row.names = FALSE)
 add those predictions as a field in to `pred`
 7. Add 95% prediction intervals and add them as a fields named `lci` and
 `uci` for the lower and upper 95% prediction interval and add them to `pred`
-8. Make 3 plots oriented as a single figure with 3 stacked plots (i.e., 3 rows, 1 column)
+8. Make 2 plots oriented as a single figure with 2 stacked plots (i.e., 2 rows, 1 column)
 for the following:
     1. the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
-    `temperature` for a single value of `habitat` and `elevation`. The values are your choice.
+    `temperature` for a single value of `habitat` and `elevation`. 
+    The values are your choice.  
+    <!-- this one is terrible, need to revise
     2.the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
-    `habitat` for a single value of `temperature` and `elevation`. The values are your choice. 
+    `habitat` values for a single value of `temperature` and `elevation`. 
+    The values are your choice.
+    --> 
     3. the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
-    `elevation` for a single value of `habitat` and `temperature`. The values are your choice.
+    `elevation` for a single value of `habitat` and `temperature`. 
+    The values are your choice.
 9. Make a new prediction dataset named `randdata` where `temperature`, `habitat`, and `elevation` are
 1000,000 values randomly drawn from a uniform distribution (`runif()`) for each input. 
 Random values should be constrained to be between the minimim and 
