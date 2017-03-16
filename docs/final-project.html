@@ -19,6 +19,11 @@
 <script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
 <script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/htmlwidgets-0.6/htmlwidgets.js"></script>
+<link href="site_libs/vis-4.16.1/vis.min.css" rel="stylesheet" />
+<script src="site_libs/vis-4.16.1/vis.min.js"></script>
+<link href="site_libs/timeline-0.4/timevis.css" rel="stylesheet" />
+<script src="site_libs/timevis-binding-0.4.0.9000/timevis.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <link rel="stylesheet"
@@ -307,19 +312,58 @@ $(document).ready(function () {
 
 
 <p><img src="media/banner-07.jpg" ALIGN="center" width=99%/></p>
-<div id="final-project" class="section level1">
-<h1>Final project</h1>
-<!--source progress code-->
-<p>Content in progress and will be uploaded prior to class period</p>
-<div id="for-next-class" class="section level2">
-<h2>For next class</h2>
-<p>TBD</p>
+<!--
+
+library(knitr)
+rmarkdown::render_site("final-project.Rmd")# build webpage
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no")  
+
+-->
+<div id="final-project-information" class="section level1">
+<h1>Final project information</h1>
+<div id="timeline" class="section level2">
+<h2>Timeline</h2>
+<div id="htmlwidget-1417" class="timevis html-widget" style="width:95%;height:480px;">
+<div class="btn-group zoom-menu">
+<button type="button" class="btn btn-default btn-lg zoom-in" title="Zoom in">+</button>
+<button type="button" class="btn btn-default btn-lg zoom-out" title="Zoom out">-</button>
 </div>
-<div id="learning-objectives" class="section level2">
-<h2>Learning objectives</h2>
+</div>
+<script type="application/json" data-for="htmlwidget-1417">{"x":{"items":[{"id":"1","content":"Problem & statement","start":"1/11/2017","end":"2/17/2017","type":"range"},{"id":"2","content":"Objectives networks","start":"2/2/2017","end":"3/28/2017","type":"range"},{"id":"3","content":"Parameterizing decision model","start":"3/17/2017","end":"4/14/2017","type":"range"},{"id":"4","content":"Refining decision model","start":"4/7/2017","end":"4/21/2017","type":"range"},{"id":"5","content":"Documenting decision model","start":"4/19/2017","end":"5/4/2017","type":"range"},{"id":"6","content":"Documenting results","start":"4/19/2017","end":"5/4/2017","type":"range"},{"id":"7","content":"Final report documentation","start":"4/1/2017","end":"5/4/2017","type":"range"},{"id":"8","content":"Final report due","start":"5/4/2017","type":"point"},{"id":"9","content":"Project presentations","start":"5/4/2017","type":"point"}],"groups":null,"showZoom":true,"zoomFactor":1,"fit":true,"options":{"editable":true,"align":"center","orientation":"top","width":"100%","snap":null,"margin":{"item":30,"axis":50}},"height":null,"api":[]},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="final-report-sections" class="section level2">
+<h2>Final report sections</h2>
 <ol style="list-style-type: decimal">
-<li>TBD</li>
-<li>TBD</li>
+<li>Abstract</li>
+<li>Introduction</li>
+<li>Problem statement</li>
+<li>Geographic extent and grain</li>
+<li>Objectives</li>
+<li>Decision model
+<ol style="list-style-type: decimal">
+<li>Overview</li>
+<li>Descriptions of nodes and states</li>
+<li>Descriptions and methods used to calculate conditional probability tables (CPTs)</li>
+<li>Utilities-be sure to describe how utilities were elicited?</li>
+</ol></li>
+<li>Results
+<ol style="list-style-type: decimal">
+<li>Optimal decision</li>
+<li>Sensitivity analysis
+<ol style="list-style-type: decimal">
+<li>Tornado plot</li>
+<li>Indifference curves</li>
+</ol></li>
+</ol></li>
+<li>Discussion</li>
+<li>Appendices-did you fit models to generate predictions? Those go here.</li>
 </ol>
 </div>
 </div>

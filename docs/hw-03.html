@@ -321,12 +321,12 @@ system(paste("xcopy",
 <p><img src="media/banner-09.jpg" width="100%" /></p>
 <div id="homework-3-predicting-outcomes" class="section level1">
 <h1>Homework 3: Predicting outcomes</h1>
-<p>The objectives of this homework assignment are to 1. increase your skills in making predictions from analysis, 2. incorporating uncertainty in predictions, 3. using discretization, and 3. programming in R</p>
+<p>The objectives of this homework assignment are to 1. increase your skills in making predictions from analysis, 2. incorporating uncertainty in predictions, 3. using discretization, and 3. programming in R 3. parameterizing decision models</p>
 <div id="preliminaries" class="section level2">
 <h2>Preliminaries</h2>
 <ul>
 <li>Assignment due: Due by March 23rd by 5 pm</li>
-<li>Submit R script to: <a href="https://dropitto.me/WFA8433" class="uri">https://dropitto.me/WFA8433</a>. The upload password is ‘critter’ <u>Be sure to name the file as follows “lastname-firstIntial-homework-03.R”</u></li>
+<li>Submit R script and your netica file to: <a href="https://dropitto.me/WFA8433" class="uri">https://dropitto.me/WFA8433</a>. The upload password is ‘critter’ <u>Be sure to name the file as follows “lastname-firstIntial-homework-03.R”</u> and “lastname-firstIntial-homework-03.neta”</u></li>
 <li>For help and assistance.
 <ul>
 <li>If you have problem with the questions you can work with classmates.</li>
@@ -385,36 +385,70 @@ The values are your choice.
 </div>
 <div id="part-ii" class="section level1">
 <h1>Part II</h1>
-<p>Will be posted 3.15.17 <!--
-
-2. Fit a glm Poisson, bootstrap uncertainty
-3.  Simulate a glm and fit, plot
-4. Outcome for hlm
-5. Simulate occupancy with heterogeneous capture probability
-    *  Fit model
-    * Extract betas for psi and p
-    * Predict psifor x 
-    * Predict p and add 95% pi
-6. Cut I gausian
-    * bin preds
-    * Count them up
-7.  Cut II binomial
-    * Bin x1 
-    * bin preds
-    * Count them up
-    
-## Exercise 4 Predicting outcomes 
-
-1. Predict the probability of being 0-0.25, 0.25-0.5, ...
-
-## Exercise 5 
-
-
-
-## Exercise 6 
-
-## Exercise 7
---></p>
+<pre><code>## Warning: package &#39;reshape2&#39; was built under R version 3.1.3</code></pre>
+<p>The part will work you through the skills you need to take analyses and use them in decision models. Below is a simple decision model that evaluates where to outplant spring Chinook Salmon in the Middle Fork Willamette River. Specifically we will be completing the inputs for nodes A, B, and C below. The rest of the nodes are already completed. So once Nodes A, B, and C are parameterized all that is left is to compile the model and you can evaluate outplant locations objectively accounting for uncertainty! Pretty awesome right?</p>
+<p><img src="media/hw-03-bdn.png" width="80%" style="display: block; margin: auto;" /> The decision model illustrated above is <a href="HW-03-Part-II.neta">here</a> as a <code>\*.neta</code> file.</p>
+<p>The model evaluates 3 outplant locations given cost and juvenile production. Cost and juvenile production are scaled range from 0 to 1 and weights of 0.5 given cost and juvenile production. On this scale high production approaches 1 and high cost approaches 0. Managers are trying to maximize bang for the buck, so a marginal gain is calculated as the utility as <span class="math inline">\(U = \frac{Juvenile Production}{Cost}\)</span>. Aspects of the translocation program influence production, in particular there is mortality associated with moving fish and production varies among outplant locations. The exercises below step through how we use data to parameterize these models, building on the skills you used in Part I.</p>
+<p>Files needed for this exercise</p>
+<ul>
+<li><a href="HW-03-Part-II.neta">Decision network</a><br />
+</li>
+<li><a href="juvenile-production.csv">Juvenile production</a><br />
+</li>
+<li><a href="transport-survivals.csv">Translocation survival</a></li>
+</ul>
+<p>These exercises might seem a bit arduous but they will push you to put the elements together to go from predicting outcomes while accounting uncertainty and incorporating those outcomes in a decision model. The 4 main exercises work through generating outcomes, discretizing outcomes, summarizing outcomes, and parameterizing a decision model.</p>
+<ol style="list-style-type: decimal">
+<li>Predicting and discretizing Pr(Survival) and translocation survivors (Nodes B and C in the figure above). Data for this exercise is <a href="transport-survivals.csv">here</a>. We need to start here because the other nodes depend on this one.
+<ol style="list-style-type: decimal">
+<li>Read in the <code>\*.csv</code> for this exercise and assign it as an object <code>tran_surv</code></li>
+<li>Fit a GLM assuming the data is binomially distributed and an additive function of <code>handle_time</code> and <code>transport_time</code>. HINT recall the use of <code>cbind()</code> to put successes and failures together for a binomial in the <code>glm()</code> function.</li>
+<li>Create a new data.frame called <code>outcomes</code> with 500,000 stochastic realizations using the <code>runif()</code> function for values of <code>handle_time</code>, <code>transport_time</code>, and <code>n_fish</code> that vary from 1 to 10, 10 to 100, and 0 to 300 respectively, fractional values are fine the time components of this simulation, fish should be whole numbers. (HINT for <code>n_fish</code> field using the <code>runif()</code> function and then round to the nearest whole number works very efficiently for this purpose <code>round(4.56,digits=0)</code>).</li>
+<li>Using the model fitted in 1.2 create a field in <code>outcomes</code> named <code>survival</code> and predict the survival for each combination of <code>handle_time</code> and <code>transport_time</code> in <code>outcomes</code>.</li>
+<li>Discretize the values of <code>handle_time</code> <code>transport_time</code>, and <code>survival</code> in <code>outcomes</code>,</li>
+<li>Using the predicted survivals stochastically generate number of survivors given <code>survival</code> and <code>n_fish</code> and name the field <code>survivors</code> using the <code>rbinom()</code> function.</li>
+</ol></li>
+<li>Juvenile production (Node A in the figure above). Data for this exercise is <a href="juvenile-production.csv">here</a>.
+<ol style="list-style-type: decimal">
+<li>Read in the <code>\*.csv</code> for this exercise and assign it as an object <code>juv_prod</code></li>
+<li>Fit a GLM assuming that <code>prod</code> is Poisson distributed and an additive function of <code>out_loc</code> and <code>survivors</code>.<br />
+</li>
+<li>Add a field named <code>out_loc</code> to <code>outcomes</code> that is 500,000 stochastic realizations from the levels of outplant locations (HINT: <code>sample()</code>)</li>
+<li>Using the model fitted in 2.2 create a field in <code>outcomes</code> named <code>juv_prod</code> and generate 500,000 stochastic replicates from a Poisson distribution given the values of <code>out_loc</code> and <code>survivors</code> (recall survivors was created in 1.6 above) in <code>outcomes</code>. Note there is 1 stochastic realization per combination of <code>out_loc</code> and <code>n_fish</code> in <code>outcomes</code>.</li>
+</ol></li>
+<li>Discretizing values for use in decision models
+<ol style="list-style-type: decimal">
+<li>Discretize the values of <code>out_loc</code>, <code>handle_time</code>, <code>transport_tim</code>,<code>n_fish</code> <code>survival</code>,<code>survivors</code>, and <code>juv_prod</code> in <code>outcomes</code>, and name and bin as follows (*NOTE: Netica bins continuous values as 0 to 50 and 50 to 100, which means values including 0 and less than 50 and values greater than or equal to 50 and less than</li>
+<li>To deal with this we need to add an argument to the <code>cut()</code> function, specifically <code>include.lowest=TRUE</code>. Be sure to add that argument to discretize the values by the bins below*):
+<ol style="list-style-type: decimal">
+<li><code>out_loc</code>: these values are already discrete, nothing to do with this one.</li>
+<li><code>handle_time_b</code>: 0 to 2, 2 to 4, 4 to 6, 6 to 8, and 8 to 10.</li>
+<li><code>transport_time_b</code>: 10 to 20, 20 to 30, 30 to 40, 40 to 50, 50 to 60, 60 to 70, 80 to 90, 90 to 100.</li>
+<li><code>n_fish_b</code>: 0 to 50, 50 to 100, 100 to 150, 150 to 200, 200 to 250, and 250 to 300.</li>
+<li><code>survival_b</code>: 0.2 to 0.3,0.3 to 0.4, 0.4 to 0.5, 0.5 to 0.6, and 0.6 to 0.7.</li>
+<li><code>survivors_b</code>: 0 to 50, 50 to 100, 100 to 150, 150 to 200, and 200 to 250.<br />
+</li>
+<li><code>juv_prod_b</code>: 0 to 25, 25 to 50, 50 to 75, 75 to 100, 100 to 125, 125 to 150, 150 to 175.</li>
+</ol></li>
+<li>Using the discretized values, calculate the frequency of each outcome. (i.e., <code>cut()</code>), use the discretized values to calculate the frequency of each discrete outcome using the steps below
+<ol style="list-style-type: decimal">
+<li>If you don’t already have it make sure that the <code>reshape2</code> library is loaded. Use <code>install.packages(&quot;reshape2&quot;)</code> if you do not have it already and <code>load(reshape2)</code> to load the library. This will load the function <code>dcast()</code> which is useful for making contingency tables.</li>
+<li>Now you can run this bit of code to calculate the frequencies for more complex data. Specifically we need to develop a contingency table for the combinations of <code>n_fish_b</code>, <code>out_loc</code> and the discretized vector of outcomes <code>juv_prd_b</code> to make a table of frequencies of each outcome. <code>cpt_c&lt;-  dcast(outcomes, transport_time_b + handling_time_b ~ survival_b,  value.var=&quot;survival&quot;, fun.aggregate=length, drop=FALSE)</code>. We need to include the <code>drop=FALSE</code> argument make sure we do not drop any of the bin levels. The code summarizes values using the <code>length</code> function to tally up how many values were in that combination.</li>
+<li>Save <code>cpt_c</code> as a <code>cpt_c.csv</code> so you can get access to the counts so we can add them to the CPT for node C in the decision model.</li>
+<li>Now we can do the same thing for nodes B and C, specifically: 1.<code>cpt_b&lt;- dcast(outcomes,survival_b+n_fish_b ~ survivors_b, value.var=&quot;survivors&quot;, fun.aggregate=length, drop=FALSE)</code> 2.<code>cpt_a&lt;- dcast(outcomes,out_loc+survivors_b ~ juv_prod_b, value.var=&quot;juv_prod&quot;, fun.aggregate=length, drop=FALSE)</code></li>
+<li>The code above should get you 90% there to get the frequencies for each outcome.</li>
+<li>Now we could convert those frequencies to relative frequencies, but we do not need to do so, because Netica can use counts and calculate the probabilities for us. All we need to do is copy the matrix of counts in the <code>cpt_a.csv</code>, <code>cpt_b.csv</code>, and <code>cpt_c.csv</code>,then highlight the entire table for the corresponding node (CTL + A or highlight with your mouse) in the decision model. See a quick YouTube video illustrating this <a href="https://youtu.be/c7OldCwM440">here</a>.</li>
+<li>Now we paste the frequencies into the tables for nodes A, B, and C. <em>Be sure the order of your node rows match your <code>\*.csv</code> order.</em></li>
+</ol></li>
+</ol></li>
+<li>Compiling the decision model
+<ol style="list-style-type: decimal">
+<li>Once the remaining nodes of the decision network have been filled in for you and all you need to do is compile the network. Go to Network -&gt; Compile.<br />
+<img src="media/netica-compile.png" width="80%" style="display: block; margin: auto;" /></li>
+<li>Once the network is compiled, values in the decision node will become visible in the blue box.</li>
+<li>In your R script report the locations, values, and the optimal decision (i.e., location with the highest value).</li>
+</ol></li>
+</ol>
 </div>
 <div id="supplemental-functions-and-use" class="section level1">
 <h1>Supplemental functions and use</h1>
@@ -435,9 +469,9 @@ binnedValues&lt;- cut(x=x,
 table(binnedValues)# get the frequency</code></pre>
 <pre><code>## binnedValues
 ##   0-0.1 0.1-0.2 0.2-0.3 0.3-0.4 0.4-0.5 0.5-0.6 0.6-0.7 0.7-0.8 0.8-0.9 
-##       0       0     122     129     128     107     115     145     127 
+##       0       0     118     131     135     122     123     124     121 
 ##   0.9-1 
-##     127</code></pre>
+##     126</code></pre>
 <p>Another way to do the above using <code>paste()</code> function.</p>
 <pre class="r"><code>x&lt;- runif(1000,0.2,1)
 brks&lt;- seq(from=0,to=1,by=0.1)
@@ -448,17 +482,17 @@ binnedValues&lt;- cut(x=x,
 table(binnedValues)# get the frequency</code></pre>
 <pre><code>## binnedValues
 ##   0-0.1 0.1-0.2 0.2-0.3 0.3-0.4 0.4-0.5 0.5-0.6 0.6-0.7 0.7-0.8 0.8-0.9 
-##       0       0     121     128     116     125     110     143     127 
+##       0       0     129     106     144     145     123     117     127 
 ##   0.9-1 
-##     130</code></pre>
+##     109</code></pre>
 <p>The table function is nice too because it fills in 0s for values that are not present but the label is. We can calculate the probability of each outcome as</p>
 <pre class="r"><code>myFreqs&lt;-table(binnedValues)
 prop.table(myFreqs)# get probability</code></pre>
 <pre><code>## binnedValues
 ##   0-0.1 0.1-0.2 0.2-0.3 0.3-0.4 0.4-0.5 0.5-0.6 0.6-0.7 0.7-0.8 0.8-0.9 
-##   0.000   0.000   0.121   0.128   0.116   0.125   0.110   0.143   0.127 
+##   0.000   0.000   0.129   0.106   0.144   0.145   0.123   0.117   0.127 
 ##   0.9-1 
-##   0.130</code></pre>
+##   0.109</code></pre>
 </div>
 
 

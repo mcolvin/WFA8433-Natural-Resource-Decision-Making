@@ -4,9 +4,57 @@ title: ""
 
 <img src="media/banner-07.jpg" ALIGN="center" width=99%/>
 
-# Final project
+<!--
+
+library(knitr)
+rmarkdown::render_site("final-project.Rmd")# build webpage
+
+# rmarkdown::render_site()# build webpage
+# COPY FILES TO DOCS FOR GITHUB.IO
+system(paste("xcopy", 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"', 
+    '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',
+    "/E /C /H /R /K /O /Y")) 
+  q(save="no")  
+
+-->
+
+# Final project information
+
+## Timeline
 
 
-<!--source progress code-->
-```{r child='in-progress.Rmd', eval=TRUE}
-``` 
+```{r,echo=FALSE, out.align="center",out.width="100%"}
+library(timevis)
+dat<- read.csv("./Course-Information/final-project-timeline.csv")
+
+
+    config <- list(
+      editable = TRUE,
+      margin = list(item = 30, axis = 50)
+    )
+    timevis(dat, zoomFactor = 1, options = config)
+```
+
+
+## Final report sections
+
+1. Abstract
+2. Introduction
+3. Problem statement
+4. Geographic extent and grain
+5. Objectives 
+6. Decision model
+    1. Overview
+    2. Descriptions of nodes and states
+    3. Descriptions and methods used to calculate 
+    conditional probability tables (CPTs)
+    4. Utilities-be sure to describe how utilities were elicited?
+8. Results
+    1. Optimal decision
+    2. Sensitivity analysis 
+        1. Tornado plot
+        2. Indifference curves
+9. Discussion
+10. Appendices-did you fit models to generate predictions? Those 
+go here. 

@@ -21,6 +21,7 @@ system(paste("xcopy",
 -->
 
 ## Announcements
+* Added Part II to HW3 as promised [here](hw-03.html)
 * Clarified the plotting in Part 1 question 8 of HW 3. I dropped 8.2. See [here](hw-03.html)
 * Homework 2, due March 1st.  See [here](hw-02.html)
 * Deck and recording from Class 10 is posted. Email (1 per group) group problems to me by Friday COB.
