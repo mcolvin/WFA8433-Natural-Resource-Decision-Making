@@ -36,7 +36,7 @@ _class-recordings/
 *.xlsx
 
 *.Rdata
-*.neta
+
 
 # Windows shortcuts
 *.lnk
