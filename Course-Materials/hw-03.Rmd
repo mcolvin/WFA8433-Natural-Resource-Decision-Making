@@ -154,7 +154,7 @@ they uncertainty in your discretized outcomes?
 
 
 # Part II
-```{r,echo=FALSE}
+```{r,echo=FALSE,message=FALSE}
 # Juvenile production
 set.seed(23532)
 juv_prod<- data.frame(
@@ -181,7 +181,7 @@ write.csv(tran_surv,"transport-survivals.csv",row.names=FALSE)
 
 ```
 
-```{r,echo=FALSE}
+```{r,echo=FALSE,message=FALSE}
 juv_prod<- read.csv("juvenile-production.csv")
 tran_surv<- read.csv("transport-survivals.csv")
 
