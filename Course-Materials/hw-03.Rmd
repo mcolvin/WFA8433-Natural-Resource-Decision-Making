@@ -286,9 +286,7 @@ nodes depend on this one.
     4. Using the model fitted in 1.2 create a field in `outcomes` named 
     `survival` and predict the survival for each combination of 
     `handle_time` and `transport_time` in `outcomes`. 
-    5. Discretize the values of `handle_time` `transport_time`, and 
-    `survival` in `outcomes`, 
-    6. Using the predicted survivals stochastically generate number of 
+    5. Using the predicted survivals stochastically generate number of 
     survivors given `survival` and `n_fish` and name the field `survivors`
     using the `rbinom()` function. 
 2. Juvenile production (Node A in the figure above). Data for this 
