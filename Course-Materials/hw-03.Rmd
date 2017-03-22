@@ -282,7 +282,7 @@ nodes depend on this one.
     this simulation, fish should be whole numbers. (HINT for `n_fish` 
     field using the `runif()` 
     function and then round to the nearest whole number works very 
-    efficiently for this purpose `round(4.56,digits=0)`). 
+    efficiently for this purpose `round(4.56,digits=0)`). DO NOT USE `expand.grid()` HERE! 
     4. Using the model fitted in 1.2 create a field in `outcomes` named 
     `survival` and predict the survival for each combination of 
     `handle_time` and `transport_time` in `outcomes`. 
