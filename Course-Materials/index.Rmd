@@ -21,6 +21,13 @@ system(paste("xcopy",
 -->
 
 ## Announcements
+
+
+* In part II of homework 3 do not use `expand.grid()`
+be sure to use `data.frame` instead to make `outcomes`
+as `expand.grid()` will try to make all possible combinations
+of the values you feed it.  If you give it 50k values that 
+ends up being gigabytes of combinations! [here](hw-03.html)
 * Added Part II to HW3 as promised [here](hw-03.html)
 * Clarified the plotting in Part 1 question 8 of HW 3. I dropped 8.2. See [here](hw-03.html)
 * Homework 2, due March 1st.  See [here](hw-02.html)
