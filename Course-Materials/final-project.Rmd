@@ -2,8 +2,9 @@
 title: ""
 ---
 
-<img src="media/banner-07.jpg" ALIGN="center" width=99%/>
-
+```{r echo=FALSE, out.width="100%"}
+knitr::include_graphics("media/banner-07.jpg")
+```
 <!--
 
 library(knitr)
@@ -21,40 +22,50 @@ system(paste("xcopy",
 
 # Final project information
 
+*Recall that the final report and presentation
+will be due during the final exam period*
+
+
+```{r,echo=FALSE, out.align="center",out.width="100%",eval=FALSE}
 ## Timeline
-
-
-```{r,echo=FALSE, out.align="center",out.width="100%"}
 library(timevis)
 dat<- read.csv("./Course-Information/final-project-timeline.csv")
-
-
-    config <- list(
-      editable = TRUE,
-      margin = list(item = 30, axis = 50)
+config <- list(
+    editable = TRUE,
+    margin = list(item = 30, axis = 50)
     )
-    timevis(dat, zoomFactor = 1, options = config)
+timevis(dat, zoomFactor = 1, options = config)
 ```
 
 
 ## Final report sections
 
-1. Abstract
-2. Introduction
-3. Problem statement
-4. Geographic extent and grain
-5. Objectives 
-6. Decision model
-    1. Overview
-    2. Descriptions of nodes and states
-    3. Descriptions and methods used to calculate 
-    conditional probability tables (CPTs)
-    4. Utilities-be sure to describe how utilities were elicited?
-8. Results
-    1. Optimal decision
-    2. Sensitivity analysis 
-        1. Tornado plot
-        2. Indifference curves
-9. Discussion
-10. Appendices-did you fit models to generate predictions? Those 
-go here. 
+The bullets below represent
+the major and minor elements
+expected in the final report.
+
+* MANAGEMENT PROBLEM
+    * Spatial and temporal dimensions
+    * Legal, regulatory, and institutional constraints
+* STAKEHOLDERS
+* OBJECTIVES
+* DECISION ALTERNATIVES
+* VALUATION OF OUTCOMES
+* DECISION MODEL OVERVIEW
+    * Nodes-Description of decision model nodes and states
+    * Sensitivity analysis
+    * Ecological context
+* DISCUSSION
+    * Value of the process
+    * Future steps and lessons learned
+
+    
+## Examples
+
+The pdfs below provide an example of the 
+final report and presentation.
+
+* [Example final presentation](pdfs/mussel-example-presentation.pdf)
+* [Example final report](pdfs/mussel-example-report.pdf)
+    
+    
