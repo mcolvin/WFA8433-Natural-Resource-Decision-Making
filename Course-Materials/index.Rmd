@@ -22,7 +22,7 @@ system(paste("xcopy",
 
 ## Announcements
 
-
+* Guidance about the final project is posted here [here](final-project.html)
 * In part II of homework 3 do not use `expand.grid()`
 be sure to use `data.frame` instead to make `outcomes`
 as `expand.grid()` will try to make all possible combinations
