@@ -1,0 +1,7 @@
+
+For next time
+
+1. Do an initial R set up and make sure
+everybody has the packages needed for the 
+entire class (i.e., reshape2, plyr, unmarked,
+marked). Do before class 1...

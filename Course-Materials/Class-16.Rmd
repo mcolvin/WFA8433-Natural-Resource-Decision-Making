@@ -54,7 +54,7 @@ List of preliminary problems to instructor for review
     * Powell and Gale. Chapter 15: Occupancy Modeling [here](http://media.wix.com/ugd/95e73b_431c4d6ee6c6475d909dc90a766ae185.pdf)
 * Assignment due: None
 * Class project: 
-* Link to class recording  [YouTube]()
+* Link to class recording  [YouTube](https://youtu.be/3WHdeFJyJkI)
 * Today's R script [Class-16.R](scripts/Class-16.R)
 
 ## Class overview & objectives 
