@@ -44,6 +44,7 @@ The bullets below represent
 the major and minor elements
 expected in the final report.
 
+
 * MANAGEMENT PROBLEM
     * Spatial and temporal dimensions
     * Legal, regulatory, and institutional constraints
