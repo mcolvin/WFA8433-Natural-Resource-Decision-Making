@@ -25,7 +25,9 @@ build<- function(fileName,bld="PAGE",docs=FALSE)
         fp<- paste("./scripts/", fileName,".R",
             sep="")
         writeLines(xxx,fp)
-        system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
+        system(paste("xcopy",
+            '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     
+            '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
         } else
     if(docs==TRUE)
         {

@@ -46,9 +46,9 @@ navbar:
           href: "Class-15.html"
         - text: "Class 16: Occupancy continued"
           href: "Class-16.html"  
-        - text: "Class 17: Influence diagrams & N-Mixtures"
+        - text: "Class 17: Influence diagrams, Sensitivity analyses & N-Mixtures"
           href: "Class-17.html"
-        - text: "Class 18: Sensitivity analyses & Estimating abundance"
+        - text: "Class 18: N-Mixtures & Estimating abundance"
           href: "Class-18.html" 
     - text: "Assignments"
       menu: 

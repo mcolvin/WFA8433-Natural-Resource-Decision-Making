@@ -734,12 +734,6 @@ head(detections) # lets look at the detections</code></pre>
 <p>Now lets fit an occupancy model to the data. First we need the unmarked package to do so.</p>
 <pre class="r"><code>#install.packages(&quot;unmarked&quot;)
 library(unmarked)</code></pre>
-<pre><code>## Warning: package &#39;unmarked&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: reshape</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## Warning: package &#39;lattice&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: Rcpp</code></pre>
-<pre><code>## Warning: package &#39;Rcpp&#39; was built under R version 3.1.3</code></pre>
 <p>Now we need to get our detections into a matrix for unmarked.</p>
 <pre class="r"><code>detections&lt;-  unmarkedFrameOccu(detections, 
     siteCovs=NULL, 
