@@ -253,10 +253,10 @@ $(document).ready(function () {
       <a href="Class-16.html">Class 16: Occupancy continued</a>
     </li>
     <li>
-      <a href="Class-17.html">Class 17: Influence diagrams &amp; N-Mixtures</a>
+      <a href="Class-17.html">Class 17: Influence diagrams, Sensitivity analyses &amp; N-Mixtures</a>
     </li>
     <li>
-      <a href="Class-18.html">Class 18: Sensitivity analyses &amp; Estimating abundance</a>
+      <a href="Class-18.html">Class 18: N-Mixtures &amp; Estimating abundance</a>
     </li>
   </ul>
 </li>
@@ -354,46 +354,215 @@ system(paste("xcopy",
 <div id="exercise-1-predicting-normal-outcomes" class="section level2">
 <h2>Exercise 1 Predicting normal outcomes</h2>
 <ol style="list-style-type: decimal">
-<li>Download the dataset for this exercise <a href="basal.csv">here</a></li>
-<li>Read in the data and assign it to an object <code>basal</code></li>
-<li>Plot the relationship between the 3 covariates and the response variable</li>
-<li>Fit a linear model relating <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> to <code>basal area</code> and name the resulting object <code>fit</code></li>
+<li><p>Download the dataset for this exercise <a href="basal.csv">here</a></p></li>
+<li><p>Read in the data and assign it to an object <code>basal</code>.</p></li>
+</ol>
+<pre class="r"><code>basal&lt;-read.csv(&quot;basal.csv&quot;)</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Plot the relationship between the 3 covariates and the response variable. Use the appropriate plot type for each covariate. Continuous variables are scatterplots and discrete variables are boxplots.</li>
+</ol>
+<pre class="r"><code>plot(basal~temperature,basal)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>boxplot(basal~habitat,basal)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<pre class="r"><code>plot(basal~elevation,basal)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-4-3.png" width="672" /></p>
+<ol start="4" style="list-style-type: decimal">
+<li>Fit a linear model relating <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> to <code>basal</code> and name the resulting object <code>fit</code>.</li>
+</ol>
+<pre class="r"><code>fit&lt;-lm(basal~temperature+habitat+elevation,basal)</code></pre>
+<ol start="5" style="list-style-type: decimal">
 <li>Use the expand.grid function to make a prediction dataset named <code>pred</code> for range of <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> in the dataset.</li>
+</ol>
+<pre class="r"><code>pred&lt;-expand.grid(temperature=c(min(basal$temperature):max(basal$temperature)),
+    habitat=levels(basal$habitat),
+    elevation=c(min(basal$elevation):max(basal$elevation)))</code></pre>
+<ol start="6" style="list-style-type: decimal">
 <li>Use the predict function to predict basal area for the new data <code>pred</code> and add those predictions as a field in to <code>pred</code></li>
-<li>Add 95% prediction intervals and add them as a fields named <code>lci</code> and <code>uci</code> for the lower and upper 95% prediction interval and add them to <code>pred</code></li>
+</ol>
+<pre class="r"><code>pred$pred&lt;- predict(fit, newdata=pred)</code></pre>
+<ol start="7" style="list-style-type: decimal">
+<li>Add 95% prediction intervals and add them as a fields named <code>lci</code> and <code>uci</code> for the lower and upper 95% prediction interval and add them to <code>pred</code>.</li>
+</ol>
+<pre class="r"><code>pred$upi&lt;- predict(fit, newdata=pred,interval=&quot;predict&quot;)[,&quot;upr&quot;]
+pred$lpi&lt;- predict(fit, newdata=pred,interval=&quot;predict&quot;)[,&quot;lwr&quot;]</code></pre>
+<ol start="8" style="list-style-type: decimal">
 <li>Make 2 plots oriented as a single figure with 2 stacked plots (i.e., 2 rows, 1 column) for the following:
 <ol style="list-style-type: decimal">
-<li>the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>temperature</code> for a single value of <code>habitat</code> and <code>elevation</code>. The values are your choice.<br />
-<!-- this one is terrible, need to revise
-2.the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
-`habitat` values for a single value of `temperature` and `elevation`. 
-The values are your choice.
---></li>
-<li>the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>elevation</code> for a single value of <code>habitat</code> and <code>temperature</code>. The values are your choice.</li>
-</ol></li>
-<li>Make a new prediction dataset named <code>randdata</code> where <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> are 100,000 values randomly drawn from a uniform distribution (<code>runif()</code>) for each input. Random values should be constrained to be between the minimim and maximum values for <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> in the dataset.</li>
-<li>Use the <code>model.matrix()</code> function to create the design matrix named <code>dm</code> for the model fit in step 4.</li>
+<li>the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>temperature</code> for a single value of <code>habitat</code> and <code>elevation</code>. The values of <code>habitat</code> and <code>elevation</code> are your choice.</li>
+</ol>
+<pre class="r"><code>plot(pred~temperature, data=pred,
+    xlab=&quot;Temperature&quot;,
+    ylab=&quot;Predicted value&quot;,subset=habitat ==&quot;h1&quot; 
+    &amp; elevation==50,type=&#39;l&#39;,
+    ylim=c(0,250))
+points(upi~temperature,data=pred,lty=2,
+    subset=habitat ==&quot;h1&quot; &amp; elevation==50,type=&#39;l&#39;)
+points(lpi~temperature,data=pred,lty=2,
+    subset=habitat ==&quot;h1&quot; &amp; elevation==50,type=&#39;l&#39;)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<ol start="2" style="list-style-type: decimal">
+<li>the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for <code>elevation</code> for a single value of <code>habitat</code> and <code>temperature</code>. The values of <code>habitat</code> and <code>temperature</code> are your choice.</li>
+</ol>
+<pre class="r"><code>plot(pred~elevation, data=pred,type=&#39;l&#39;,
+    xlab=&quot;Elevation&quot;,
+    ylab=&quot;Predicted value&quot;,subset=habitat ==&quot;h1&quot; 
+    &amp; temperature==75,ylim=c(0,300))
+points(upi~elevation,data=pred,lty=2,type=&#39;l&#39;,
+    subset=habitat ==&quot;h1&quot; &amp; temperature==75)
+points(lpi~elevation,data=pred,lty=2,type=&#39;l&#39;,
+    subset=habitat ==&quot;h1&quot; &amp; temperature==75)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p></li>
+<li><p>Make a new prediction dataset named <code>randdata</code> where <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> are 100,000 values randomly drawn from a uniform distribution (<code>runif()</code>) for each input. Random values should be constrained to be between the minimum and maximum values for <code>temperature</code>, <code>habitat</code>, and <code>elevation</code> in the dataset.</p></li>
+</ol>
+<pre class="r"><code>n&lt;-100000
+randdata&lt;-data.frame(
+    temperature=runif(n, min(basal$temperature),max(basal$temperature)),
+    habitat=sample(levels(basal$habitat),size=n,replace=TRUE),
+    elevation=runif(n,min(basal$elevation),max(basal$elevation)))</code></pre>
+<ol start="10" style="list-style-type: decimal">
+<li>Use the <code>model.matrix()</code> function to create the design matrix named <code>dm</code> for the model fit in step 4. Be sure to use the <code>randdata</code> dataset in the <code>model.matrix()</code> function.</li>
+</ol>
+<pre class="r"><code>dm&lt;- model.matrix(as.formula(&quot;~temperature+habitat+elevation&quot;),
+    data=randdata)</code></pre>
+<ol start="11" style="list-style-type: decimal">
 <li>Predict the basal area using <code>dm</code> and the <span class="math inline">\(\beta\)</span>s extracted from <code>fit</code> and add the predictions to <code>randdata</code> as a field named <code>dm</code>.</li>
+</ol>
+<pre class="r"><code>betas&lt;-coef(fit)
+randdata$dm&lt;- dm %*% betas</code></pre>
+<ol start="12" style="list-style-type: decimal">
 <li>Use to <code>predict()</code> function to predict basal area and add the predictions to <code>randdata</code> as a field named <code>pred</code>.</li>
+</ol>
+<pre class="r"><code>randdata$pred&lt;- predict(fit,newdata=randdata)</code></pre>
+<ol start="13" style="list-style-type: decimal">
 <li>Construct a scatter plot of <code>dm</code> and <code>pred</code> from the <code>randdata</code> dataset and add a 1:1 line.</li>
 </ol>
+<pre class="r"><code>plot(dm~pred, data=randdata,xlab=&quot;Used predict function&quot;,
+    ylab=&quot;Used design matrix&quot;)
+abline(a=0,b=1)# a 1:1 line</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 </div>
 <div id="exercise-2-discretizing-outcomes" class="section level2">
 <h2>Exercise 2 Discretizing outcomes</h2>
 <ol style="list-style-type: decimal">
 <li>Download the dataset for this exercise <a href="insects.csv">here</a></li>
 <li>Read in the data and assign it to an object <code>insects</code></li>
+</ol>
+<pre class="r"><code>insects&lt;- read.csv(&quot;insects.csv&quot;)</code></pre>
+<ol start="3" style="list-style-type: decimal">
 <li>Plot the relationship between the 2 covariates and the response variable</li>
+</ol>
+<pre class="r"><code>plot(count~elevation,data=insects,
+    xlab=&quot;Elevation&quot;,
+    ylab=&quot;Count&quot;)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<pre class="r"><code>boxplot(count~habitat,data=insects,
+    xlab=&quot;Habitat type&quot;,
+    ylab=&quot;Count&quot;)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-18-2.png" width="672" /></p>
+<ol start="4" style="list-style-type: decimal">
 <li>Fit a generalized linear model relating <code>habitat</code>, and <code>elevation</code> to <code>count</code> and name the resulting object <code>fit</code>. Count is Poisson distributed.</li>
+</ol>
+<pre class="r"><code>fit&lt;-glm(count~habitat+elevation,data=insects,family=&quot;poisson&quot;)</code></pre>
+<ol start="5" style="list-style-type: decimal">
 <li>Estimate the expected insect count for an elevation of 100 in habitat 2.</li>
+</ol>
+<pre class="r"><code>vals&lt;- data.frame(habitat=&quot;h2&quot;,elevation=100)
+pred&lt;- predict(fit, newdata=vals,type=&quot;response&quot;)
+pred</code></pre>
+<pre><code>##        1 
+## 125.5339</code></pre>
+<ol start="6" style="list-style-type: decimal">
 <li>Generate 100 random outcomes for an elevation of 100 in habitat 2 given the <span class="math inline">\(\beta\)</span>s estimated in <code>fit</code>.</li>
+</ol>
+<pre class="r"><code>vals&lt;- data.frame(habitat=&quot;h2&quot;,elevation=100)
+pred&lt;- predict(fit, newdata=vals,type=&quot;response&quot;)
+outcomes&lt;- rpois(100,pred)</code></pre>
+<ol start="7" style="list-style-type: decimal">
 <li>Discretize the 100 random outcomes into bins starting at 0 and ending at 200 by increments of 25. (See supplemental information below)</li>
+</ol>
+<pre class="r"><code>bins&lt;- seq(0,200,by=25)
+labs&lt;- paste(bins[-length(bins)],bins[-1],sep = &quot;-&quot;)
+newvalues&lt;- cut(outcomes, bins, labels=labs)
+newvalues</code></pre>
+<pre><code>##   [1] 125-150 125-150 100-125 125-150 125-150 100-125 100-125 125-150
+##   [9] 125-150 125-150 125-150 100-125 125-150 100-125 100-125 100-125
+##  [17] 125-150 100-125 100-125 100-125 100-125 125-150 100-125 100-125
+##  [25] 125-150 100-125 100-125 150-175 125-150 125-150 125-150 100-125
+##  [33] 100-125 100-125 125-150 125-150 125-150 125-150 125-150 125-150
+##  [41] 125-150 125-150 125-150 125-150 100-125 125-150 125-150 125-150
+##  [49] 125-150 125-150 125-150 125-150 100-125 100-125 100-125 125-150
+##  [57] 100-125 125-150 100-125 100-125 100-125 100-125 125-150 100-125
+##  [65] 100-125 100-125 100-125 100-125 125-150 125-150 125-150 100-125
+##  [73] 100-125 75-100  100-125 100-125 125-150 100-125 125-150 125-150
+##  [81] 100-125 100-125 100-125 100-125 125-150 100-125 150-175 125-150
+##  [89] 100-125 125-150 100-125 125-150 100-125 100-125 125-150 125-150
+##  [97] 125-150 100-125 125-150 100-125
+## Levels: 0-25 25-50 50-75 75-100 100-125 125-150 150-175 175-200</code></pre>
+<ol start="8" style="list-style-type: decimal">
 <li>Calculate the probability for each bin in step 7. What are the probabilities for the outcomes 0-25, 100-125, and 125-150. (See supplemental information below)</li>
+</ol>
+<pre class="r"><code>probs&lt;- table(newvalues)/100
+probs[1]# 0-2</code></pre>
+<pre><code>## 0-25 
+##    0</code></pre>
+<pre class="r"><code>probs[5]# 100-125</code></pre>
+<pre><code>## 100-125 
+##    0.48</code></pre>
+<pre class="r"><code>probs[6]# 125-150</code></pre>
+<pre><code>## 125-150 
+##    0.49</code></pre>
+<ol start="9" style="list-style-type: decimal">
 <li>Repeat steps 6 to 8 for values 250, 500, 750, 1000, 1500, 2000, 3000, 5000, 10000, and 100000. (HINT a <code>for()</code> loop will help)</li>
+</ol>
+<pre class="r"><code>n&lt;- c(100, 250, 500, 750, 1000, 1500, 2000, 3000, 5000,
+10000, 100000)
+    vals&lt;- data.frame(habitat=&quot;h2&quot;,elevation=100)
+    pred&lt;- predict(fit, newdata=vals,type=&quot;response&quot;)
+output&lt;- data.frame()
+for(i in 1:length(n))
+    {
+    outcomes&lt;- rpois(100,pred)
+    bins&lt;- seq(0,200,by=25)
+    labs&lt;- paste(bins[-length(bins)],bins[-1],sep = &quot;-&quot;)
+    newvalues&lt;- cut(outcomes, bins, labels=labs)
+    probs&lt;- table(newvalues)/100
+    out&lt;- data.frame(
+        n=n[i],
+        p025=probs[1],# 0-2
+        p100125=probs[5],# 100-125
+        p125150=probs[6])# 125-150
+        output&lt;-rbind(output,out)
+    }
+output</code></pre>
+<pre><code>##             n p025 p100125 p125150
+## 0-25      100    0    0.52    0.45
+## 0-251     250    0    0.39    0.60
+## 0-252     500    0    0.47    0.48
+## 0-253     750    0    0.53    0.44
+## 0-254    1000    0    0.42    0.54
+## 0-255    1500    0    0.49    0.49
+## 0-256    2000    0    0.43    0.56
+## 0-257    3000    0    0.49    0.45
+## 0-258    5000    0    0.50    0.49
+## 0-259   10000    0    0.42    0.56
+## 0-2510 100000    0    0.51    0.48</code></pre>
+<ol start="10" style="list-style-type: decimal">
 <li>Make a plot with the number of stochastic replicates on the x-axis and probability of the outcome 0-25 on the y-axis.</li>
+</ol>
+<pre class="r"><code>plot(p025~n,data=output)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<ol start="11" style="list-style-type: decimal">
 <li>Repeat step 10 for the remaining outcomes 100-125, and 125-150.</li>
+</ol>
+<pre class="r"><code>plot(p100125~n,data=output)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-26-1.png" width="672" /></p>
+<pre class="r"><code>plot(p125150~n,data=output)</code></pre>
+<p><img src="hw-03_files/figure-html/unnamed-chunk-26-2.png" width="672" /></p>
+<ol start="12" style="list-style-type: decimal">
 <li>How many stochastic replicates do you think you need to accurately quanity they uncertainty in your discretized outcomes?</li>
 </ol>
+<pre class="r"><code># AS MANY AS POSSIBLE! WITHIN COMPUTATIONAL CONTRAINTS</code></pre>
 </div>
 </div>
 <div id="part-ii" class="section level1">
@@ -414,49 +583,170 @@ The values are your choice.
 <li>Predicting and discretizing Pr(Survival) and translocation survivors (Nodes B and C in the figure above). Data for this exercise is <a href="transport-survivals.csv">here</a>. We need to start here because the other nodes depend on this one.
 <ol style="list-style-type: decimal">
 <li>Read in the <code>\*.csv</code> for this exercise and assign it as an object <code>tran_surv</code></li>
+</ol>
+<pre class="r"><code>tran_surv&lt;-read.csv(&quot;transport-survivals.csv&quot;)</code></pre>
+<ol start="2" style="list-style-type: decimal">
 <li>Fit a GLM assuming the data is binomially distributed and an additive function of <code>handle_time</code> and <code>transport_time</code>. HINT recall the use of <code>cbind()</code> to put successes and failures together for a binomial in the <code>glm()</code> function.</li>
+</ol>
+<pre class="r"><code>tran_surv$death&lt;-tran_surv$n_fish-tran_surv$survivors
+fit&lt;-glm(cbind(tran_surv$survivors,tran_surv$death)~handle_time+transport_time,
+tran_surv,family=&#39;binomial&#39;)   </code></pre>
+<ol start="3" style="list-style-type: decimal">
 <li>Create a new data.frame called <code>outcomes</code> with 500,000 stochastic realizations using the <code>runif()</code> function for values of <code>handle_time</code>, <code>transport_time</code>, and <code>n_fish</code> that vary from 1 to 10, 10 to 100, and 0 to 300 respectively, fractional values are fine the time components of this simulation, fish should be whole numbers. (HINT for <code>n_fish</code> field using the <code>runif()</code> function and then round to the nearest whole number works very efficiently for this purpose <code>round(4.56,digits=0)</code>). DO NOT USE <code>expand.grid()</code> HERE!</li>
+</ol>
+<pre class="r"><code>nreps&lt;-500000
+outcomes&lt;-data.frame(&quot;handle_time&quot;=round(runif(nreps,1,10),3),
+&quot;transport_time&quot;=round(runif(nreps,10,100),3),
+&quot;n_fish&quot;=round(runif(nreps,0,300),0))</code></pre>
+<ol start="4" style="list-style-type: decimal">
 <li>Using the model fitted in 1.2 create a field in <code>outcomes</code> named <code>survival</code> and predict the survival for each combination of <code>handle_time</code> and <code>transport_time</code> in <code>outcomes</code>.</li>
+</ol>
+<pre class="r"><code>outcomes$survival&lt;-predict(fit,outcomes,type=&quot;response&quot;)</code></pre>
+<ol start="5" style="list-style-type: decimal">
 <li>Using the predicted survivals stochastically generate number of survivors given <code>survival</code> and <code>n_fish</code> and name the field <code>survivors</code> using the <code>rbinom()</code> function.</li>
-</ol></li>
+</ol>
+<pre class="r"><code> outcomes$survivors&lt;-rbinom(n=nreps,
+    size=outcomes$n_fish, 
+    prob=outcomes$survival)  </code></pre></li>
 <li>Juvenile production (Node A in the figure above). Data for this exercise is <a href="juvenile-production.csv">here</a>.
 <ol style="list-style-type: decimal">
 <li>Read in the <code>\*.csv</code> for this exercise and assign it as an object <code>juv_prod</code></li>
-<li>Fit a GLM assuming that <code>prod</code> is Poisson distributed and an additive function of <code>out_loc</code> and <code>survivors</code>.<br />
-</li>
+</ol>
+<pre class="r"><code>juv_prod&lt;-read.csv(&quot;juvenile-production.csv&quot;)</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Fit a GLM assuming that <code>prod</code> is Poisson distributed and an additive function of <code>out_loc</code> and <code>survivors</code>.</li>
+</ol>
+<pre class="r"><code>fit&lt;-glm(prod~out_loc+survivors,juv_prod,family=&#39;poisson&#39;)</code></pre>
+<ol start="3" style="list-style-type: decimal">
 <li>Add a field named <code>out_loc</code> to <code>outcomes</code> that is 500,000 stochastic realizations from the levels of outplant locations (HINT: <code>sample()</code>)</li>
+</ol>
+<pre class="r"><code>outcomes$out_loc&lt;-sample(c(&quot;MF Paddy&#39;s&quot;,&quot;Crabtree Creek&quot;,&quot;Thomas Creek&quot;),
+    size=nreps,
+    replace = TRUE)</code></pre>
+<ol start="4" style="list-style-type: decimal">
 <li>Using the model fitted in 2.2 create a field in <code>outcomes</code> named <code>juv_prod</code> and generate 500,000 stochastic replicates from a Poisson distribution given the values of <code>out_loc</code> and <code>survivors</code> (recall survivors was created in 1.6 above) in <code>outcomes</code>. Note there is 1 stochastic realization per combination of <code>out_loc</code> and <code>n_fish</code> in <code>outcomes</code>.</li>
 </ol></li>
+</ol>
+<pre class="r"><code>outcomes$juv_prod&lt;-  rpois(n=nreps, predict(fit,outcomes,type=&quot;response&quot;))</code></pre>
+<ol start="3" style="list-style-type: decimal">
 <li>Discretizing values for use in decision models
 <ol style="list-style-type: decimal">
 <li>Discretize the values of <code>out_loc</code>, <code>handle_time</code>, <code>transport_tim</code>,<code>n_fish</code> <code>survival</code>,<code>survivors</code>, and <code>juv_prod</code> in <code>outcomes</code>, and name and bin as follows (*NOTE: Netica bins continuous values as 0 to 50 and 50 to 100, which means values including 0 and less than 50 and values greater than or equal to 50 and less than</li>
 <li>To deal with this we need to add an argument to the <code>cut()</code> function, specifically <code>include.lowest=TRUE</code>. Be sure to add that argument to discretize the values by the bins below*):
 <ol style="list-style-type: decimal">
 <li><code>out_loc</code>: these values are already discrete, nothing to do with this one.</li>
+</ol>
+<pre class="r"><code>head(outcomes$out_loc)</code></pre>
+<pre><code>## [1] &quot;Crabtree Creek&quot; &quot;Crabtree Creek&quot; &quot;MF Paddy&#39;s&quot;     &quot;MF Paddy&#39;s&quot;    
+## [5] &quot;Thomas Creek&quot;   &quot;MF Paddy&#39;s&quot;</code></pre>
+<ol start="2" style="list-style-type: decimal">
 <li><code>handle_time_b</code>: 0 to 2, 2 to 4, 4 to 6, 6 to 8, and 8 to 10.</li>
+</ol>
+<pre class="r"><code>brks&lt;-seq(0,10,2)
+myLabels&lt;-c(&quot;0-2&quot;,&quot;2-4&quot;,
+    &quot;4-6&quot;,&quot;6-8&quot;,
+    &quot;8-10&quot;)
+outcomes$handle_time_b&lt;-cut(x=outcomes$handle_time,
+    breaks=brks,
+    labels=myLabels,
+    include.lowest = TRUE)</code></pre>
+<ol start="3" style="list-style-type: decimal">
 <li><code>transport_time_b</code>: 10 to 20, 20 to 30, 30 to 40, 40 to 50, 50 to 60, 60 to 70, 80 to 90, 90 to 100.</li>
+</ol>
+<pre class="r"><code>brks&lt;-seq(10,100,10)
+myLabels&lt;-c(&quot;10-20&quot;,&quot;20-30&quot;,
+    &quot;30-40&quot;,&quot;40-50&quot;,
+    &quot;50-60&quot;,&quot;60-70&quot;,
+    &quot;70-80&quot;,&quot;80-90&quot;,
+    &quot;90-100&quot;)
+outcomes$transport_time_b&lt;-cut(x=outcomes$transport_time,
+    breaks=brks,
+    labels=myLabels,
+    include.lowest = TRUE)</code></pre>
+<ol start="4" style="list-style-type: decimal">
 <li><code>n_fish_b</code>: 0 to 50, 50 to 100, 100 to 150, 150 to 200, 200 to 250, and 250 to 300.</li>
+</ol>
+<pre class="r"><code>brks&lt;-seq(0,300,50)
+myLabels&lt;-c(&quot;0-50&quot;,&quot;50-100&quot;,
+    &quot;100-150&quot;,&quot;150-200&quot;,
+    &quot;200-250&quot;,&quot;250-300&quot;)
+outcomes$n_fish_b&lt;-cut(x=outcomes$n_fish,
+    breaks=brks,
+    labels=myLabels,
+    include.lowest = TRUE)</code></pre>
+<ol start="5" style="list-style-type: decimal">
 <li><code>survival_b</code>: 0.2 to 0.3,0.3 to 0.4, 0.4 to 0.5, 0.5 to 0.6, and 0.6 to 0.7.</li>
-<li><code>survivors_b</code>: 0 to 50, 50 to 100, 100 to 150, 150 to 200, and 200 to 250.<br />
-</li>
+</ol>
+<pre class="r"><code>brks&lt;-seq(0.2,0.7,0.1)
+myLabels&lt;-c(&quot;0.2-0.3&quot;,&quot;0.3-0.4&quot;,
+    &quot;0.4-0.5&quot;,&quot;0.5-0.6&quot;,
+    &quot;0.6-0.7&quot;)
+outcomes$survival_b&lt;-cut(x=outcomes$survival,
+    breaks=brks,
+    labels=myLabels,
+include.lowest = TRUE)</code></pre>
+<ol start="6" style="list-style-type: decimal">
+<li><code>survivors_b</code>: 0 to 50, 50 to 100, 100 to 150, 150 to 200, and 200 to 250.</li>
+</ol>
+<pre class="r"><code>brks&lt;-seq(0,250,50)
+myLabels&lt;-c(&quot;0-50&quot;,&quot;50-100&quot;,
+    &quot;100-150&quot;,&quot;150-200&quot;,
+    &quot;200-250&quot;)
+outcomes$survivors_b&lt;-cut(x=outcomes$survivors,
+    breaks=brks,
+    labels=myLabels,
+    include.lowest = TRUE)</code></pre>
+<ol start="7" style="list-style-type: decimal">
 <li><code>juv_prod_b</code>: 0 to 25, 25 to 50, 50 to 75, 75 to 100, 100 to 125, 125 to 150, 150 to 175.</li>
-</ol></li>
+</ol>
+<pre class="r"><code>brks&lt;-seq(0,175,25)
+myLabels&lt;-c(&quot;0-25&quot;,&quot;25-50&quot;,
+    &quot;50-75&quot;,&quot;75-100&quot;,
+    &quot;100-125&quot;,&quot;125-150&quot;,
+    &quot;150-175&quot;)
+outcomes$juv_prod_b&lt;-cut(x=outcomes$juv_prod,
+    breaks=brks,
+    labels=myLabels,
+    include.lowest = TRUE)</code></pre></li>
 <li>Using the discretized values, calculate the frequency of each outcome. (i.e., <code>cut()</code>), use the discretized values to calculate the frequency of each discrete outcome using the steps below
 <ol style="list-style-type: decimal">
 <li>If you don’t already have it make sure that the <code>reshape2</code> library is loaded. Use <code>install.packages(&quot;reshape2&quot;)</code> if you do not have it already and <code>load(reshape2)</code> to load the library. This will load the function <code>dcast()</code> which is useful for making contingency tables.</li>
+</ol>
+<pre class="r"><code># install.packages(&quot;reshape2&quot;)</code></pre>
+<ol start="2" style="list-style-type: decimal">
 <li>Now you can run this bit of code to calculate the frequencies for more complex data. Specifically we need to develop a contingency table for the combinations of <code>n_fish_b</code>, <code>out_loc</code> and the discretized vector of outcomes <code>juv_prd_b</code> to make a table of frequencies of each outcome. <code>cpt_c&lt;-  dcast(outcomes, transport_time_b + handling_time_b ~ survival_b,  value.var=&quot;survival&quot;, fun.aggregate=length, drop=FALSE)</code>. We need to include the <code>drop=FALSE</code> argument make sure we do not drop any of the bin levels. The code summarizes values using the <code>length</code> function to tally up how many values were in that combination.</li>
+</ol>
+<pre class="r"><code>cpt_a&lt;-  dcast(outcomes, transport_time_b + handle_time_b ~ survival_b,
+       value.var=&quot;survival&quot;, fun.aggregate=length, drop=FALSE)</code></pre>
+<ol start="3" style="list-style-type: decimal">
 <li>Save <code>cpt_c</code> as a <code>cpt_c.csv</code> so you can get access to the counts so we can add them to the CPT for node C in the decision model.</li>
+</ol>
+<pre class="r"><code>write.csv(cpt_a,&quot;cpt_a.csv&quot;)</code></pre>
+<ol start="4" style="list-style-type: decimal">
 <li>Now we can do the same thing for nodes B and C, specifically: 1.<code>cpt_b&lt;- dcast(outcomes,survival_b+n_fish_b ~ survivors_b, value.var=&quot;survivors&quot;, fun.aggregate=length, drop=FALSE)</code> 2.<code>cpt_a&lt;- dcast(outcomes,out_loc+survivors_b ~ juv_prod_b, value.var=&quot;juv_prod&quot;, fun.aggregate=length, drop=FALSE)</code></li>
-<li>The code above should get you 90% there to get the frequencies for each outcome.</li>
-<li>Now we could convert those frequencies to relative frequencies, but we do not need to do so, because Netica can use counts and calculate the probabilities for us. All we need to do is copy the matrix of counts in the <code>cpt_a.csv</code>, <code>cpt_b.csv</code>, and <code>cpt_c.csv</code>,then highlight the entire table for the corresponding node (CTL + A or highlight with your mouse) in the decision model. See a quick YouTube video illustrating this <a href="https://youtu.be/c7OldCwM440">here</a>.</li>
-<li>Now we paste the frequencies into the tables for nodes A, B, and C. <em>Be sure the order of your node rows match your <code>\*.csv</code> order.</em></li>
+</ol>
+<pre class="r"><code>cpt_b&lt;-  dcast(outcomes, out_loc + survivors_b ~ juv_prod_b,
+               value.var=&quot;juv_prod&quot;, fun.aggregate=length, drop=FALSE)
+cpt_c&lt;-  dcast(outcomes, n_fish_b +survival_b ~ survivors_b,
+               value.var=&quot;survivors&quot;, fun.aggregate=length, drop=FALSE)
+write.csv(cpt_b,&quot;cpt_b.csv&quot;)
+write.csv(cpt_c,&quot;cpt_c.csv&quot;)</code></pre>
+<ol start="5" style="list-style-type: decimal">
+<li><p>The code above should get you 90% there to get the frequencies for each outcome.</p></li>
+<li><p>Now we could convert those frequencies to relative frequencies, but we do not need to do so, because Netica can use counts and calculate the probabilities for us. All we need to do is copy the matrix of counts in the <code>cpt_a.csv</code>, <code>cpt_b.csv</code>, and <code>cpt_c.csv</code>,then highlight the entire table for the corresponding node (CTL + A or highlight with your mouse) in the decision model. See a quick YouTube video illustrating this <a href="https://youtu.be/c7OldCwM440">here</a>.</p></li>
+<li><p>Now we paste the frequencies into the tables for nodes A, B, and C. <em>Be sure the order of your node rows match your <code>\*.csv</code> order.</em></p></li>
 </ol></li>
 </ol></li>
 <li>Compiling the decision model
 <ol style="list-style-type: decimal">
-<li>Once the remaining nodes of the decision network have been filled in for you and all you need to do is compile the network. Go to Network -&gt; Compile.<br />
-<img src="media/netica-compile.png" width="80%" style="display: block; margin: auto;" /></li>
+<li>Once the remaining nodes of the decision network have been filled in for you and all you need to do is compile the network. Go to Network -&gt; Compile.</li>
+</ol>
+<img src="media/netica-compile.png" width="80%" style="display: block; margin: auto;" />
+<ol start="2" style="list-style-type: decimal">
 <li>Once the network is compiled, values in the decision node will become visible in the blue box.</li>
+</ol>
+<img src="media/hw3-answer.png" width="306" />
+<ol start="3" style="list-style-type: decimal">
 <li>In your R script report the locations, values, and the optimal decision (i.e., location with the highest value).</li>
 </ol></li>
 </ol>
@@ -480,9 +770,9 @@ binnedValues&lt;- cut(x=x,
 table(binnedValues)# get the frequency</code></pre>
 <pre><code>## binnedValues
 ##   0-0.1 0.1-0.2 0.2-0.3 0.3-0.4 0.4-0.5 0.5-0.6 0.6-0.7 0.7-0.8 0.8-0.9 
-##       0       0     118     131     135     122     123     124     121 
+##       0       0     132     133     104     136     139     126     122 
 ##   0.9-1 
-##     126</code></pre>
+##     108</code></pre>
 <p>Another way to do the above using <code>paste()</code> function.</p>
 <pre class="r"><code>x&lt;- runif(1000,0.2,1)
 brks&lt;- seq(from=0,to=1,by=0.1)
@@ -493,17 +783,17 @@ binnedValues&lt;- cut(x=x,
 table(binnedValues)# get the frequency</code></pre>
 <pre><code>## binnedValues
 ##   0-0.1 0.1-0.2 0.2-0.3 0.3-0.4 0.4-0.5 0.5-0.6 0.6-0.7 0.7-0.8 0.8-0.9 
-##       0       0     129     106     144     145     123     117     127 
+##       0       0     117     133     117     138     114     124     114 
 ##   0.9-1 
-##     109</code></pre>
+##     143</code></pre>
 <p>The table function is nice too because it fills in 0s for values that are not present but the label is. We can calculate the probability of each outcome as</p>
 <pre class="r"><code>myFreqs&lt;-table(binnedValues)
 prop.table(myFreqs)# get probability</code></pre>
 <pre><code>## binnedValues
 ##   0-0.1 0.1-0.2 0.2-0.3 0.3-0.4 0.4-0.5 0.5-0.6 0.6-0.7 0.7-0.8 0.8-0.9 
-##   0.000   0.000   0.129   0.106   0.144   0.145   0.123   0.117   0.127 
+##   0.000   0.000   0.117   0.133   0.117   0.138   0.114   0.124   0.114 
 ##   0.9-1 
-##   0.109</code></pre>
+##   0.143</code></pre>
 </div>
 
 
