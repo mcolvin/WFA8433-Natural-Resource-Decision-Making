@@ -1,5 +1,11 @@
-
 ## ----unnamed-chunk-1---- ##
+#install.packages("reshape2")
+#install.packages("unmarked")
+#install.packages("fields")
+ 
+ 
+ 
+## ----unnamed-chunk-2---- ##
 load("study-area.Rdata")
 library(fields)
 library(reshape2)
@@ -11,7 +17,7 @@ image.plot(x,y,z,xlim=c(0,7),
  
  
  
-## ----unnamed-chunk-2---- ##
+## ----unnamed-chunk-3---- ##
 nsamples<- 50 # i = 1,2,3,...20
 beta_0<- 1.386 # UNDERLYING DENSITY
 gamma_0<- -0.405 # LOG ODDS CAPTURE PROBABILITY
@@ -40,14 +46,14 @@ for(i in 1:nrow(sa))
  
  
  
-## ----unnamed-chunk-3---- ##
+## ----unnamed-chunk-4---- ##
 sample_indx<- sample(1:nrow(sa),nsamples,replace=FALSE)
 obs<- y[sample_indx,]
 obs
  
  
  
-## ----unnamed-chunk-4---- ##
+## ----unnamed-chunk-5---- ##
 # Prepare data
 library(unmarked)
 data <- unmarkedFramePCount(y = y)
@@ -60,7 +66,7 @@ summary(fit)
  
  
  
-## ----unnamed-chunk-5---- ##
+## ----unnamed-chunk-6---- ##
 # Density
 lambda
 exp(coef(fit)[1]) # should be close to lambda
@@ -71,7 +77,7 @@ exp(coef(fit)[2])/(1+exp(coef(fit)[2])) # should be close p
  
  
  
-## ----unnamed-chunk-6---- ##
+## ----unnamed-chunk-7---- ##
 # GENERATE CAPTURE HISTORIES
 visits<-5
 p<- exp(gamma_0+gamma_1*sampleSites$depth)/
@@ -84,7 +90,7 @@ for(i in 1:nsamples)
  
  
  
-## ----unnamed-chunk-7---- ##
+## ----unnamed-chunk-8---- ##
 # PREPARE DATA
 data <- unmarkedFramePCount(y = y,
     siteCovs=data.frame(depth=sampleSites$depth))
