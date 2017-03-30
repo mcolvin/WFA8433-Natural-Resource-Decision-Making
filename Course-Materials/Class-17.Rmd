@@ -17,8 +17,8 @@ build("Class-17",bld="PAGE",docs=FALSE) # bld = PAGE,ENTIRE,SCRIPT
 # PURL THIS SHIT & MOVE FILES TO DOCS
 build("Class-17",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
 
-source("_build.R");build("Class-17",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
-
+system(paste("xcopy",'"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Course-Materials/_site"',     '"C:/Users/mcolvin/Documents/Teaching/WFA8433-Natural-Resource-Decision-Making/Docs"',     "/E /C /H /R /K /O /Y")) 
+      
 -->
 
 
@@ -51,3 +51,6 @@ rm(list=objects())
     3. Response profiles
 1. Introduction to estimating abundance: _N_-Mixture models
 
+# Obejectives, Decision networks, & sensitivity, oh my
+
+The class deck covering this content is [here](pdfs/class-17.pdf).
