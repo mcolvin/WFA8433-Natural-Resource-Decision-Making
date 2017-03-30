@@ -87,9 +87,6 @@ legend("topleft", c("Crabtree Creek","MF Paddy's","Thomas Creek"),
     lty=c(1,2,3),bty='n')
 axis(side=1, at=c(1:6),labels=dat[,1])
 ```
-# Obejectives, Decision networks, & sensitivity, oh my
-
-The class deck covering this content is [here](pdfs/class-17.pdf).
 
 
 # N-Mixture models

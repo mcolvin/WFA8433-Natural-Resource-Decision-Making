@@ -134,39 +134,34 @@ for the following:
     `temperature` for a single value of `habitat` and `elevation`. 
     The values of `habitat` and `elevation` are your choice.
     
-```{r, echo=show_answers,eval=eval_answers}
-plot(pred~temperature, data=pred,
-    xlab="Temperature",
-    ylab="Predicted value",subset=habitat =="h1" 
-    & elevation==50,type='l',
-    ylim=c(0,250))
-points(upi~temperature,data=pred,lty=2,
-    subset=habitat =="h1" & elevation==50,type='l')
-points(lpi~temperature,data=pred,lty=2,
-    subset=habitat =="h1" & elevation==50,type='l')
-```    
+    ```{r, echo=show_answers,eval=eval_answers}
+    plot(pred~temperature, data=pred,
+        xlab="Temperature",
+        ylab="Predicted value",subset=habitat =="h1" 
+        & elevation==50,type='l',
+        ylim=c(0,250))
+    points(upi~temperature,data=pred,lty=2,
+        subset=habitat =="h1" & elevation==50,type='l')
+    points(lpi~temperature,data=pred,lty=2,
+        subset=habitat =="h1" & elevation==50,type='l')
+    ```
 
 
     
-<!-- this one is terrible, need to revise
-2.the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
-`habitat` values for a single value of `temperature` and `elevation`. 
-The values are your choice.
---> 
     2. the predicted outcome (solid line) and 95% prediction intervals (dotted lines) for 
     `elevation` for a single value of `habitat` and `temperature`. 
     The values of `habitat` and `temperature` are your choice.
     
-```{r, echo=show_answers,eval=eval_answers}
-plot(pred~elevation, data=pred,type='l',
-    xlab="Elevation",
-    ylab="Predicted value",subset=habitat =="h1" 
-    & temperature==75,ylim=c(0,300))
-points(upi~elevation,data=pred,lty=2,type='l',
-    subset=habitat =="h1" & temperature==75)
-points(lpi~elevation,data=pred,lty=2,type='l',
-    subset=habitat =="h1" & temperature==75)
-```        
+    ```{r, echo=show_answers,eval=eval_answers}
+    plot(pred~elevation, data=pred,type='l',
+        xlab="Elevation",
+        ylab="Predicted value",subset=habitat =="h1" 
+        & temperature==75,ylim=c(0,300))
+    points(upi~elevation,data=pred,lty=2,type='l',
+        subset=habitat =="h1" & temperature==75)
+    points(lpi~elevation,data=pred,lty=2,type='l',
+        subset=habitat =="h1" & temperature==75)
+    ```        
     
 9. Make a new prediction dataset named `randdata` where `temperature`, 
 `habitat`, and `elevation` are 100,000 values randomly drawn from a 
@@ -190,6 +185,7 @@ in the `model.matrix()` function.
 dm<- model.matrix(as.formula("~temperature+habitat+elevation"),
     data=randdata)
 ```
+
 11. Predict the basal area using `dm` and the $\beta$s extracted from `fit` and add
 the predictions to `randdata` as a field named `dm`. 
 
@@ -197,6 +193,7 @@ the predictions to `randdata` as a field named `dm`.
 betas<-coef(fit)
 randdata$dm<- dm %*% betas
 ```
+
 12. Use to `predict()` function to predict basal area and add
 the predictions to `randdata` as a field named `pred`.
 
@@ -212,6 +209,7 @@ plot(dm~pred, data=randdata,xlab="Used predict function",
     ylab="Used design matrix")
 abline(a=0,b=1)# a 1:1 line
 ```
+
 
 ## Exercise 2 Discretizing outcomes
 
@@ -231,14 +229,13 @@ insects$count<- rpois(36,dm %*% betas)
 1. Download the dataset for this exercise [here](insects.csv)
 2. Read in the data and assign it to an object `insects`
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 insects<- read.csv("insects.csv")
 ```
 
-
 3. Plot the relationship between the 2 covariates and the response variable
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 plot(count~elevation,data=insects,
     xlab="Elevation",
     ylab="Count")
@@ -250,23 +247,22 @@ boxplot(count~habitat,data=insects,
 4. Fit a generalized linear model relating `habitat`, and `elevation` to
 `count` and name the resulting object `fit`. Count is Poisson distributed.
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 fit<-glm(count~habitat+elevation,data=insects,family="poisson")
 ```
 
 5. Estimate the expected insect count for an elevation of 100 in habitat 2.
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 vals<- data.frame(habitat="h2",elevation=100)
 pred<- predict(fit, newdata=vals,type="response")
 pred
 ```
 
-
 6. Generate 100 random outcomes for an elevation of 100 in habitat 2 given 
 the $\beta$s estimated in `fit`. 
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 vals<- data.frame(habitat="h2",elevation=100)
 pred<- predict(fit, newdata=vals,type="response")
 outcomes<- rpois(100,pred)
@@ -275,30 +271,28 @@ outcomes<- rpois(100,pred)
 7. Discretize the 100 random outcomes into bins starting at 0 and ending at 
 200 by increments of 25.  (See supplemental information below)
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 bins<- seq(0,200,by=25)
 labs<- paste(bins[-length(bins)],bins[-1],sep = "-")
 newvalues<- cut(outcomes, bins, labels=labs)
 newvalues
 ```
+
 8. Calculate the probability for each bin in step 7.
 What are the probabilities for the outcomes 0-25, 100-125, and 125-150. 
 (See supplemental information below)
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 probs<- table(newvalues)/100
 probs[1]# 0-2
 probs[5]# 100-125
 probs[6]# 125-150
-
 ```
-
 
 9. Repeat steps 6 to 8 for values 250, 500, 750, 1000, 1500, 2000, 3000, 5000,
 10000, and 100000. (HINT a `for()` loop will help)
 
-
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 n<- c(100, 250, 500, 750, 1000, 1500, 2000, 3000, 5000,
 10000, 100000)
     vals<- data.frame(habitat="h2",elevation=100)
@@ -323,21 +317,21 @@ output
 10. Make a plot with the number of stochastic replicates on the x-axis
 and probability of the outcome 0-25 on the y-axis.
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 plot(p025~n,data=output)
 ```
 
-
 11. Repeat step 10 for the remaining outcomes 100-125, and 125-150.
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 plot(p100125~n,data=output)
 plot(p125150~n,data=output)
 ```
+
 12. How many stochastic replicates do you think you need to accurately quanity
 they uncertainty in your discretized outcomes?
 
-```{r}
+```{r, echo=show_answers,eval=eval_answers}
 # AS MANY AS POSSIBLE! WITHIN COMPUTATIONAL CONTRAINTS
 ```
 
@@ -459,10 +453,24 @@ Data for this exercise is
 nodes depend on this one. 
     1. Read in the `\*.csv` for this exercise and assign it as an object 
     `tran_surv` 
+
+    ```{r, echo=show_answers,eval=eval_answers}
+    tran_surv<-read.csv("transport-survivals.csv")
+    ```
+    
+
     2. Fit a GLM assuming the data is binomially distributed and an 
     additive function of `handle_time` and `transport_time`. HINT recall the 
     use of `cbind()` to put successes and failures together for a binomial 
     in the `glm()` function. 
+    
+    
+    ```{r, echo=show_answers,eval=eval_answers}
+    tran_surv$death<-tran_surv$n_fish-tran_surv$survivors
+    fit<-glm(cbind(tran_surv$survivors,tran_surv$death)~handle_time+transport_time,
+    tran_surv,family='binomial')   
+    ```
+    
     3. Create a new data.frame called `outcomes` with 500,000 stochastic 
     realizations using the `runif()` function for values of `handle_time`, 
     `transport_time`, and `n_fish` that vary from 1 to 10, 10 to 100, and 0 
@@ -471,25 +479,71 @@ nodes depend on this one.
     field using the `runif()` 
     function and then round to the nearest whole number works very 
     efficiently for this purpose `round(4.56,digits=0)`). DO NOT USE `expand.grid()` HERE! 
+    
+        
+    ```{r, echo=show_answers,eval=eval_answers}
+    nreps<-500000
+    outcomes<-data.frame("handle_time"=round(runif(nreps,1,10),3),
+    "transport_time"=round(runif(nreps,10,100),3),
+    "n_fish"=round(runif(nreps,0,300),0))
+    ```  
+   
     4. Using the model fitted in 1.2 create a field in `outcomes` named 
     `survival` and predict the survival for each combination of 
     `handle_time` and `transport_time` in `outcomes`. 
+    
+    ```{r, echo=show_answers,eval=eval_answers}
+    outcomes$survival<-predict(fit,outcomes,type="response")
+    ```
+    
+    
     5. Using the predicted survivals stochastically generate number of 
     survivors given `survival` and `n_fish` and name the field `survivors`
     using the `rbinom()` function. 
+    
+    ```{r, echo=show_answers,eval=eval_answers}
+     outcomes$survivors<-rbinom(n=nreps,
+        size=outcomes$n_fish, 
+        prob=outcomes$survival)  
+    ```
+    
 2. Juvenile production (Node A in the figure above). Data for this 
 exercise is [here](juvenile-production.csv). 
     1. Read in the `\*.csv` for this exercise and assign 
     it as an object `juv_prod`
+    
+    ```{r, echo=show_answers,eval=eval_answers}
+    juv_prod<-read.csv("juvenile-production.csv")
+    ```  
+
     2. Fit a GLM assuming that `prod` is Poisson distributed and 
-    an additive function of `out_loc` and `survivors`.  
-    4. Add a field named `out_loc` to `outcomes` that is 500,000 stochastic realizations 
+    an additive function of `out_loc` and `survivors`. 
+    
+    ```{r, echo=show_answers,eval=eval_answers}
+    fit<-glm(prod~out_loc+survivors,juv_prod,family='poisson')
+    ```  
+ 
+    3. Add a field named `out_loc` to `outcomes` that is 500,000 stochastic realizations 
     from the levels of outplant locations (HINT: `sample()`) 
-    5. Using the model fitted in 2.2 create a field in `outcomes` named 
+
+    ```{r, echo=show_answers,eval=eval_answers}
+    outcomes$out_loc<-sample(c("MF Paddy's","Crabtree Creek","Thomas Creek"),
+        size=nreps,
+        replace = TRUE)
+    ```
+    
+    
+    4. Using the model fitted in 2.2 create a field in `outcomes` named 
     `juv_prod` and generate 500,000 stochastic replicates from a Poisson 
     distribution given the values of `out_loc` and `survivors` (recall survivors 
     was created in 1.6 above) in `outcomes`. Note there is 1 stochastic 
     realization per combination of `out_loc` and `n_fish` in `outcomes`. 
+
+```{r, echo=show_answers,eval=eval_answers}
+outcomes$juv_prod<-  rpois(n=nreps, predict(fit,outcomes,type="response"))
+```
+ 
+    
 3. Discretizing values for use in decision models
     1. Discretize the values of `out_loc`, `handle_time`,
     `transport_tim`,`n_fish` `survival`,`survivors`, and `juv_prod` in 
@@ -500,18 +554,100 @@ exercise is [here](juvenile-production.csv).
     function, specifically `include.lowest=TRUE`. Be sure to add that 
     argument to discretize the values by the bins below*):
         1. `out_loc`: these values are already discrete, nothing to do with this one. 
+        
+        ```{r, echo=show_answers,eval=eval_answers}
+        head(outcomes$out_loc)
+        ```
+        
+        
         2. `handle_time_b`: 0 to 2, 2 to 4, 4 to 6, 
         6 to 8, and 8 to 10.
+
+        ```{r, echo=show_answers,eval=eval_answers}
+        brks<-seq(0,10,2)
+        myLabels<-c("0-2","2-4",
+            "4-6","6-8",
+            "8-10")
+        outcomes$handle_time_b<-cut(x=outcomes$handle_time,
+            breaks=brks,
+            labels=myLabels,
+            include.lowest = TRUE)
+        ```
+        
         3. `transport_time_b`: 10 to 20, 20 to 30, 30 to 40, 
         40 to 50, 50 to 60, 60 to 70, 80 to 90, 90 to 100.
+        
+        ```{r, echo=show_answers,eval=eval_answers}
+        brks<-seq(10,100,10)
+        myLabels<-c("10-20","20-30",
+            "30-40","40-50",
+            "50-60","60-70",
+            "70-80","80-90",
+            "90-100")
+        outcomes$transport_time_b<-cut(x=outcomes$transport_time,
+            breaks=brks,
+            labels=myLabels,
+            include.lowest = TRUE)
+        ```
+        
         4. `n_fish_b`: 0 to 50, 50 to 100, 100 to 150, 150 to 200, 
         200 to 250, and 250 to 300. 
+        
+        ```{r, echo=show_answers,eval=eval_answers}
+        brks<-seq(0,300,50)
+        myLabels<-c("0-50","50-100",
+            "100-150","150-200",
+            "200-250","250-300")
+        outcomes$n_fish_b<-cut(x=outcomes$n_fish,
+            breaks=brks,
+            labels=myLabels,
+            include.lowest = TRUE)
+        ```
         5. `survival_b`: 0.2 to 0.3,0.3 to 0.4, 0.4 to 0.5, 
         0.5 to 0.6, and 0.6 to 0.7.
+
+        ```{r, echo=show_answers,eval=eval_answers}
+        brks<-seq(0.2,0.7,0.1)
+        myLabels<-c("0.2-0.3","0.3-0.4",
+            "0.4-0.5","0.5-0.6",
+            "0.6-0.7")
+        outcomes$survival_b<-cut(x=outcomes$survival,
+            breaks=brks,
+            labels=myLabels,
+        include.lowest = TRUE)
+        ```
+        
+        
         6. `survivors_b`: 0 to 50, 50 to 100, 100 to 150, 150 to 200, 
         and 200 to 250.   
+
+        ```{r, echo=show_answers,eval=eval_answers}
+        brks<-seq(0,250,50)
+        myLabels<-c("0-50","50-100",
+            "100-150","150-200",
+            "200-250")
+        outcomes$survivors_b<-cut(x=outcomes$survivors,
+            breaks=brks,
+            labels=myLabels,
+            include.lowest = TRUE)
+        ```
+        
+
+        
         7. `juv_prod_b`: 0 to 25, 25 to 50, 50 to 75, 75 to 100, 100 to 125,
         125 to 150, 150 to 175.
+    
+        ```{r, echo=show_answers,eval=eval_answers}
+        brks<-seq(0,175,25)
+        myLabels<-c("0-25","25-50",
+            "50-75","75-100",
+            "100-125","125-150",
+            "150-175")
+        outcomes$juv_prod_b<-cut(x=outcomes$juv_prod,
+            breaks=brks,
+            labels=myLabels,
+            include.lowest = TRUE)
+        ```
     2. Using the discretized values, calculate the frequency of each outcome.
     (i.e., `cut()`), use the discretized 
     values to calculate the frequency of each discrete outcome using the 
@@ -520,6 +656,11 @@ exercise is [here](juvenile-production.csv).
         is loaded. Use `install.packages("reshape2")` if you do not have it 
         already and `load(reshape2)` to load the library. This will load the
         function `dcast()` which is useful for making contingency tables.
+        
+        ```{r, echo=show_answers,eval=eval_answers}
+        # install.packages("reshape2")
+        ```
+        
         2. Now you can run this bit of code to calculate the frequencies for 
         more complex data. Specifically we need to develop a contingency table 
         for the combinations of `n_fish_b`, `out_loc` and
@@ -532,15 +673,37 @@ exercise is [here](juvenile-production.csv).
         make sure we do not drop any of the bin levels. The code summarizes 
         values using the `length` function to tally up how many values were in 
         that combination. 
+        
+        ```{r, echo=show_answers,eval=eval_answers}
+        cpt_a<-  dcast(outcomes, transport_time_b + handle_time_b ~ survival_b,
+               value.var="survival", fun.aggregate=length, drop=FALSE)
+        ```  
+        
         3. Save `cpt_c` as a `cpt_c.csv` so you can get access to the counts so we 
         can add them to the CPT for node C in the decision model.
+        
+        ```{r, echo=show_answers,eval=eval_answers}
+        write.csv(cpt_a,"cpt_a.csv")
+        ```
+        
         4. Now we can do the same thing for nodes B and C, specifically:
             1.`cpt_b<- dcast(outcomes,survival_b+n_fish_b ~ survivors_b,
             value.var="survivors", fun.aggregate=length, drop=FALSE)` 
             2.`cpt_a<- dcast(outcomes,out_loc+survivors_b ~ juv_prod_b,
             value.var="juv_prod", fun.aggregate=length, drop=FALSE)` 
-        3. The code above should get you 90% there to get the frequencies for each outcome. 
-        5. Now we could convert those frequencies to relative frequencies, but 
+ 
+        ```{r, echo=show_answers,eval=eval_answers}
+        cpt_b<-  dcast(outcomes, out_loc + survivors_b ~ juv_prod_b,
+                       value.var="juv_prod", fun.aggregate=length, drop=FALSE)
+        cpt_c<-  dcast(outcomes, n_fish_b +survival_b ~ survivors_b,
+                       value.var="survivors", fun.aggregate=length, drop=FALSE)
+        write.csv(cpt_b,"cpt_b.csv")
+        write.csv(cpt_c,"cpt_c.csv")
+        ```
+ 
+        5. The code above should get you 90% there to get the frequencies for each outcome. 
+        
+        6. Now we could convert those frequencies to relative frequencies, but 
         we do not need to do so, because Netica can use counts and calculate the
         probabilities for us. All we need to do is 
         copy the matrix of counts in the `cpt_a.csv`, `cpt_b.csv`, and 
@@ -548,17 +711,24 @@ exercise is [here](juvenile-production.csv).
         entire table for the corresponding node (CTL + A or highlight with 
         your mouse) in the decision model. See a quick YouTube video illustrating
         this [here](https://youtu.be/c7OldCwM440).
-        5. Now we paste the frequencies into the tables for nodes A, B, and C.
+        
+        7. Now we paste the frequencies into the tables for nodes A, B, and C.
         *Be sure the order of your node rows match your `\*.csv` order.* 
+
 4. Compiling the decision model
     1. Once the remaining nodes of the decision network have been filled
     in for you and all you need to do is compile the network.
-    Go to Network ->  Compile.    
-```{r echo=FALSE, out.width="80%",fig.align="center"}
-include_graphics("media/netica-compile.png")
-```
+    Go to Network ->  Compile.  
+    
+    ```{r echo=FALSE, out.width="80%",fig.align="center"}
+    include_graphics("media/netica-compile.png")
+    ```
     2. Once the network is compiled, values in the decision node will 
     become visible in the blue box.
+    
+    ```{r, echo=FALSE,eval=eval_answers}
+    knitr::include_graphics("media/hw3-answer.png")
+    ```
     3. In your R script report the locations, values, and the optimal 
     decision (i.e., location with the highest value).
     
