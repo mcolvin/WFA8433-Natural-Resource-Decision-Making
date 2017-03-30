@@ -12,12 +12,12 @@ output:
 
 
 source("_build.R")
-build("Class-17",bld="PAGE",docs=FALSE) # bld = PAGE,ENTIRE,SCRIPT
+build("Class-18",bld="PAGE",docs=FALSE) # bld = PAGE,ENTIRE,SCRIPT
 
 # PURL THIS SHIT & MOVE FILES TO DOCS
-build("Class-17",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
+build("Class-18",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
 
-source("_build.R");build("Class-17",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
+source("_build.R");build("Class-18",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
 
 -->
 
@@ -28,7 +28,7 @@ rm(list=objects())
 ```
 
 
-# Class 17: Influence diagrams & N-Mixture models {-}
+# Class 18: Estimating abundance using N-Mixture models {-}
 
 # Class preliminaries
 
@@ -162,7 +162,7 @@ sa<-irc
 save(sa,x,y,z, file="study-area.Rdata")
 ```
 
-```{r}
+```{r,message=FALSE,warning=FALSE}
 load("study-area.Rdata")
 library(fields)
 library(reshape2)
@@ -239,7 +239,7 @@ $$log(\lambda) = \beta_0$$
 
 and 
 
-$$logit(\p) = \gamma_0$$
+$$logit(p) = \gamma_0$$
 
 where
 
@@ -324,7 +324,7 @@ from the `unmarked` library. Note there was some manipulation of the
 data using the `unmarkedFramePCount()` function to process the input 
 data prior to fitting the model. 
 
-```{r}
+```{r,message=FALSE, warning=FALSE}
 # Prepare data
 library(unmarked)
 data <- unmarkedFramePCount(y = y)
@@ -407,7 +407,7 @@ $$N \sim Poisson(exp(\beta_{0} + \beta_{1} \cdot depth))$$,
 
 where 
 * $\beta_{0} =$ `r beta_0`, and 
-$\beta_{1} =$ `r beta_1`. 
+* $\beta_{1} =$ `r beta_1`. 
 
 
 The actual abundance for each site given the depth is simulated and illustrated 
@@ -439,7 +439,7 @@ difficult to fish the deep areas, just a hypothetical example here. This
 relationship might look like the figure below where the capture 
 probability is 
 
-$$logit(p) = \gamma_{0} + \gamma_{1} \cdot depth$$, 
+$$logit(p) = \gamma_{0} + \gamma_{1} \cdot depth$$ 
 
 where 
 
@@ -449,7 +449,10 @@ where
 
 
 ```{r,echo=FALSE}
-plot(depth,p,xlab="Depth",ylab="Capture probability",las=1,type='l')
+plot(depth,p,xlab="Depth",
+    ylab="Capture probability",
+    las=1,
+    type='l')
 ```
 
 
@@ -566,59 +569,3 @@ round(sum(sa$pred),0)` and the true abundance was `r
 sum(sa$abundance)`. There are design aspects where fine tuning can 
 occur, such as modifying the number of replicates to take or how many 
 sites to sample and where to put them. 
-
----
-title: ""
-output:
-  html_document:
-    toc: true
-    toc_float: true
-    number_sections: true   
-    collapsed: false
----
-
- <!--
-source("_build.R")
-build("Class-18",bld="PAGE",docs=FALSE)
--->
-
-
-```{r echo=FALSE, out.width="100%"}
-include_graphics("media/banner-09.jpg")
-rm(list=objects())
-```
-<!--
-To do
-1. update reading, Conroy and Powell
-2. 
-3. way to update links below dynamically for class #?
-
--->
-
-# Class 18: Influence diagrams & N-Mixture models {-}
-
-# Class preliminaries
-
-* Supplemental background reading for next class(es):
-Conroy and Peterson Chapter 5.
-* Assignment due: None
-* 
-
-## Housekeeping
-
-* Class project: 
-* Link to class recording  [YouTube]()
-* Today's R script [Class-18.R](scripts/Class-18.R)
-
-## Class overview & objectives 
-
-
-## Getting ready to go
-
-* The R scipt for class can be found [here](scripts/Class-18.R)
-* Once you have the script where you want it it where you want open the 
-R script and be sure to check the working directory `getwd()` and make 
-sure it is where your folder is. 
-* If your working directory is not correct, you can set it in Rstudio: 
-"Session --> Set Working Directory --> To source file location". Or you 
-can use the `setwd()` in the console 
