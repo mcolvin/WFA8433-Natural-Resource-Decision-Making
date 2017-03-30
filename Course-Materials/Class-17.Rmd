@@ -12,7 +12,7 @@ output:
 
 
 source("_build.R")
-build("Class-17",bld="PAGE",docs=FALSE) # bld = PAGE,ENTIRE,SCRIPT
+build("Class-17",bld="PAGE",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
 
 # PURL THIS SHIT & MOVE FILES TO DOCS
 build("Class-17",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
@@ -39,7 +39,7 @@ rm(list=objects())
 * Class project: 
     * Be developing your decision model
     * Final exam period-April 28th at 3pm.
-* Link to class recording  [YouTube]()
+* Link to class recording  [YouTube](https://youtu.be/njsA9XIRr90)
 * Today's R script: None
 
 ## Class overview & objectives 
