@@ -7,24 +7,6 @@ rm(list=objects())
 #install.packages("unmarked")
 #install.packages("fields")
 
-## ----echo=FALSE, eval=FALSE----------------------------------------------
-## dat<-read.csv("tornado.csv")
-## par(mar=c(3,10,1,1))
-## plot(0,0,type='n',
-##     xlim=range(unlist(dat[,c(2,3)])),
-##     ylim=c(1,7),yaxt='n',xlab="",ylab="")
-## segments( dat$Minimum,dat$id,  dat$Maximum,dat$id,lwd=4)
-## axis(side=2, at=c(1:7), labels=dat$Node,las=1)
-## 
-## dat<- read.csv("response-profile.csv")
-## plot(dat$Crabtree.Creek,xaxt='n',xlab="Number to outplant",
-##     ylab="Marginal gain", las=1,type='l',ylim=c(78.5,79),lwd=2)
-## points(dat$MF.Paddy.s,lty=2, type='l',lwd=2)
-## points(dat$Thomas.Creek,lty=3, type='l',lwd=2)
-## legend("topleft", c("Crabtree Creek","MF Paddy's","Thomas Creek"),
-##     lty=c(1,2,3),bty='n')
-## axis(side=1, at=c(1:6),labels=dat[,1])
-
 ## ------------------------------------------------------------------------
 lambda<- 5
 
@@ -63,6 +45,22 @@ maxCounts
 trueValues<- c(4, 5, 6, 4, 11, 1)
 plot(x=trueValues,y=maxCounts)
 abline(0,1) # add a 1:1 line
+
+## ------------------------------------------------------------------------
+library(unmarked)
+data <- unmarkedFramePCount(y = ourData)
+
+# ~DETECTION ~ ABUNDANCE
+fit <- pcount(~1 ~ 1, # P THEN LAMBDA
+    data=data, 
+    K=50) # SET THIS HIGHER THAN YOUR EXPECTED ABUNDANCE
+summary(fit)
+plogis(coef(fit)[2])
+
+# estimates of N
+N_hat<- bup(ranef(fit)) # s4 class
+plot(trueValues,N_hat, xlab="True density", ylab="Predicted density")
+abline(0,1)# a 1:1 line
 
 ## ----echo=FALSE----------------------------------------------------------
 ## make a dataset

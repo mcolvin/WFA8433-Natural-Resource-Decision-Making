@@ -67,25 +67,6 @@ can use the `setwd()` in the console
 #install.packages("fields")
 ```
 
-```{r,echo=FALSE, eval=FALSE}
-dat<-read.csv("tornado.csv")
-par(mar=c(3,10,1,1))
-plot(0,0,type='n',
-    xlim=range(unlist(dat[,c(2,3)])),
-    ylim=c(1,7),yaxt='n',xlab="",ylab="")
-segments( dat$Minimum,dat$id,  dat$Maximum,dat$id,lwd=4)
-axis(side=2, at=c(1:7), labels=dat$Node,las=1)
-
-dat<- read.csv("response-profile.csv")
-plot(dat$Crabtree.Creek,xaxt='n',xlab="Number to outplant",
-    ylab="Marginal gain", las=1,type='l',ylim=c(78.5,79),lwd=2)
-points(dat$MF.Paddy.s,lty=2, type='l',lwd=2)
-points(dat$Thomas.Creek,lty=3, type='l',lwd=2)
-legend("topleft", c("Crabtree Creek","MF Paddy's","Thomas Creek"),
-    lty=c(1,2,3),bty='n')
-axis(side=1, at=c(1:6),labels=dat[,1])
-```
-
 
 # N-Mixture models
 
@@ -176,6 +157,7 @@ trueValues<- c(4, 5, 6, 4, 11, 1)
 plot(x=trueValues,y=maxCounts)
 abline(0,1) # add a 1:1 line
 ```
+
 Well that is no good! We definitely underestimated the true density, 
 which if you can think about it in terms of making a decision where the 
 best decision depends on the number of critters out there, 
@@ -196,6 +178,30 @@ compare among habitats. The design is not that different from what would
 occur for typical fishery or wildlife surveys, sample sites are randomly 
 selected within an habitat and then repeated sampling is conducted to 
 get the count history. 
+
+
+### Detection probability of popcorn kernels
+
+Now what you have all been waiting for... how bad or good did we do?
+Below is code to fit an _N_-mixture model to our data.
+```{r}
+library(unmarked)
+data <- unmarkedFramePCount(y = ourData)
+
+# ~DETECTION ~ ABUNDANCE
+fit <- pcount(~1 ~ 1, # P THEN LAMBDA
+    data=data, 
+    K=50) # SET THIS HIGHER THAN YOUR EXPECTED ABUNDANCE
+summary(fit)
+plogis(coef(fit)[2])
+
+# estimates of N
+N_hat<- bup(ranef(fit)) # s4 class
+plot(trueValues,N_hat, xlab="True density", ylab="Predicted density")
+abline(0,1)# a 1:1 line
+```
+
+Well I'll be, that looks much better than before!
 
 
 ## Application to estimating abundance
@@ -736,4 +742,3 @@ table(totalN_b)/n_reps
 ```
 That probabilities of the 3 states can be directly incorporated in a
 decision model.
-

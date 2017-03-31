@@ -533,8 +533,53 @@ maxCounts</code></pre>
 <pre class="r"><code>trueValues&lt;- c(4, 5, 6, 4, 11, 1)
 plot(x=trueValues,y=maxCounts)
 abline(0,1) # add a 1:1 line</code></pre>
-<p><img src="Class-18_files/figure-html/unnamed-chunk-9-1.png" width="672" /> Well that is no good! We definitely underestimated the true density, which if you can think about it in terms of making a decision where the best decision depends on the number of critters out there, underestimating abundance or density can result in mismanagement and potentially wasting resources. Recall the state dependent decision we talked about in class 17? If you read the the literature a various blog posts about the concept of “statistical machismo” (see <a href="https://dynamicecology.wordpress.com/2012/09/11/statistical-machi%20smo/">here</a> arguing that detection probability is unimportant if you carefully control sampling to minimize bias. Well one unstated component to the debate is how we used estimates to make decisions and having unbiased estimates is important when you have state dependent decisions to make! This is the difference between estimating states and estimating effects.</p>
+<p><img src="Class-18_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>Well that is no good! We definitely underestimated the true density, which if you can think about it in terms of making a decision where the best decision depends on the number of critters out there, underestimating abundance or density can result in mismanagement and potentially wasting resources. Recall the state dependent decision we talked about in class 17? If you read the the literature a various blog posts about the concept of “statistical machismo” (see <a href="https://dynamicecology.wordpress.com/2012/09/11/statistical-machi%20smo/">here</a> arguing that detection probability is unimportant if you carefully control sampling to minimize bias. Well one unstated component to the debate is how we used estimates to make decisions and having unbiased estimates is important when you have state dependent decisions to make! This is the difference between estimating states and estimating effects.</p>
 <p>As it relates to a study area, the <em>N</em>-mixture model may give the ability to estimate the density of hard to capture critters and the ability to compare among habitats. The design is not that different from what would occur for typical fishery or wildlife surveys, sample sites are randomly selected within an habitat and then repeated sampling is conducted to get the count history.</p>
+<div id="detection-probability-of-popcorn-kernels" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Detection probability of popcorn kernels</h3>
+<p>Now what you have all been waiting for… how bad or good did we do? Below is code to fit an <em>N</em>-mixture model to our data.</p>
+<pre class="r"><code>library(unmarked)</code></pre>
+<pre><code>## Warning: package &#39;unmarked&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## Loading required package: reshape</code></pre>
+<pre><code>## Loading required package: lattice</code></pre>
+<pre><code>## Warning: package &#39;lattice&#39; was built under R version 3.1.3</code></pre>
+<pre><code>## Loading required package: Rcpp</code></pre>
+<pre><code>## Warning: package &#39;Rcpp&#39; was built under R version 3.1.3</code></pre>
+<pre class="r"><code>data &lt;- unmarkedFramePCount(y = ourData)
+
+# ~DETECTION ~ ABUNDANCE
+fit &lt;- pcount(~1 ~ 1, # P THEN LAMBDA
+    data=data, 
+    K=50) # SET THIS HIGHER THAN YOUR EXPECTED ABUNDANCE
+summary(fit)</code></pre>
+<pre><code>## 
+## Call:
+## pcount(formula = ~1 ~ 1, data = data, K = 50)
+## 
+## Abundance (log-scale):
+##  Estimate    SE    z  P(&gt;|z|)
+##      1.78 0.275 6.48 9.44e-11
+## 
+## Detection (logit-scale):
+##  Estimate   SE     z P(&gt;|z|)
+##    -0.694 0.34 -2.04  0.0411
+## 
+## AIC: 292.0911 
+## Number of sites: 6
+## optim convergence code: 0
+## optim iterations: 26 
+## Bootstrap iterations: 0</code></pre>
+<pre class="r"><code>plogis(coef(fit)[2])</code></pre>
+<pre><code>##    p(Int) 
+## 0.3332116</code></pre>
+<pre class="r"><code># estimates of N
+N_hat&lt;- bup(ranef(fit)) # s4 class
+plot(trueValues,N_hat, xlab=&quot;True density&quot;, ylab=&quot;Predicted density&quot;)
+abline(0,1)# a 1:1 line</code></pre>
+<p><img src="Class-18_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>Well I’ll be, that looks much better than before!</p>
+</div>
 </div>
 <div id="application-to-estimating-abundance" class="section level2">
 <h2><span class="header-section-number">2.2</span> Application to estimating abundance</h2>

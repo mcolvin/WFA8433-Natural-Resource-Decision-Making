@@ -56,6 +56,24 @@ abline(0,1) # add a 1:1 line
  
  
  
+## ----unnamed-chunk-8---- ##
+library(unmarked)
+data <- unmarkedFramePCount(y = ourData)
+
+# ~DETECTION ~ ABUNDANCE
+fit <- pcount(~1 ~ 1, # P THEN LAMBDA
+    data=data, 
+    K=50) # SET THIS HIGHER THAN YOUR EXPECTED ABUNDANCE
+summary(fit)
+plogis(coef(fit)[2])
+
+# estimates of N
+N_hat<- bup(ranef(fit)) # s4 class
+plot(trueValues,N_hat, xlab="True density", ylab="Predicted density")
+abline(0,1)# a 1:1 line
+ 
+ 
+ 
 ## ----message=FALSE---- ##
 # Prepare data
 library(unmarked)
@@ -69,7 +87,7 @@ summary(fit)
  
  
  
-## ----unnamed-chunk-8---- ##
+## ----unnamed-chunk-9---- ##
 nsamples<- 50 # i = 1,2,3,...20
 beta_0<- 1.386 # UNDERLYING DENSITY
 gamma_0<- -0.405 # LOG ODDS CAPTURE PROBABILITY
@@ -82,20 +100,20 @@ p # close to 0.4
  
  
  
-## ----unnamed-chunk-9---- ##
+## ----unnamed-chunk-10---- ##
 # SIMULATE ABUNDANCES 
 set.seed(1985)# FOR REPRODUCABILITY; LAST YEAR DLR WAS IN VAN HALEN
 sa$N<- rpois(nrow(sa),lambda)
  
  
  
-## ----unnamed-chunk-10---- ##
+## ----unnamed-chunk-11---- ##
 sample_indx<- sample(1:nrow(sa),nsamples,replace=FALSE)
 sampleSites<- sa[sample_indx,]
  
  
  
-## ----unnamed-chunk-11---- ##
+## ----unnamed-chunk-12---- ##
 # GENERATE CAPTURE HISTORIES
 visits<-5 # k = 1,2,3,4,5
 # MATRIX TO HOLD VALUES
@@ -110,12 +128,12 @@ for(i in 1:nsamples) # LOOP OVER EACH SAMPLE SITE
  
  
  
-## ----unnamed-chunk-12---- ##
+## ----unnamed-chunk-13---- ##
 head(y)
  
  
  
-## ----unnamed-chunk-13---- ##
+## ----unnamed-chunk-14---- ##
 # Density
 lambda
 # ESTIMATE IS ON LOG SCALE
@@ -128,19 +146,19 @@ exp(coef(fit)[2])/(1+exp(coef(fit)[2])) # should be close p
  
  
  
-## ----unnamed-chunk-14---- ##
+## ----unnamed-chunk-15---- ##
 plot(N~depth,sa,ylab="Abundance",xlab="Depth",las=1)
  
  
  
-## ----unnamed-chunk-15---- ##
+## ----unnamed-chunk-16---- ##
 nsamples<- 40
 indx<- sample(1:nrow(sa),nsamples)
 sampleSites<- sa[indx,]
  
  
  
-## ----unnamed-chunk-16---- ##
+## ----unnamed-chunk-17---- ##
 # GENERATE CAPTURE HISTORIES
 visits<-5
 p<- exp(gamma_0+gamma_1*sampleSites$depth)/
@@ -153,7 +171,7 @@ for(i in 1:nsamples)
  
  
  
-## ----unnamed-chunk-17---- ##
+## ----unnamed-chunk-18---- ##
 # PREPARE DATA
 data <- unmarkedFramePCount(y = y,
     siteCovs=data.frame(depth=sampleSites$depth))
@@ -165,7 +183,7 @@ fit
  
  
  
-## ----unnamed-chunk-18---- ##
+## ----unnamed-chunk-19---- ##
 n_reps<- 10000
 N_sim<- matrix(0,nrow=nrow(sa),ncol=n_reps)
 
@@ -181,7 +199,7 @@ abline(v=sum(sa$N))
  
  
  
-## ----unnamed-chunk-19---- ##
+## ----unnamed-chunk-20---- ##
 brks<-c(0,2000,2300,10000)#breakpoints
 labs<-c("Small (<2000)","Medium (2000-2300)",
     "Large (2300+)")
