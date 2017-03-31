@@ -25,6 +25,45 @@ rm(list=objects())
 ##     lty=c(1,2,3),bty='n')
 ## axis(side=1, at=c(1:6),labels=dat[,1])
 
+## ------------------------------------------------------------------------
+lambda<- 5
+
+## ------------------------------------------------------------------------
+kernalsPerBag<- rpois(6,lambda)
+
+## ------------------------------------------------------------------------
+ourData<- matrix(c(0,1,0,1,2,0,
+    3,2,3,2,2,0,
+    2,3,4,4,4,1,
+    2,3,1,1,4,1,
+    1,4,3,1,5,1,
+    1,2,5,1,5,0,
+    2,2,3,3,6,0,
+    2,4,1,4,5,0,
+    0,1,5,0,5,0,
+    2,1,1,1,2,0,
+    2,2,1,2,6,0,
+    2,2,1,2,2,1,
+    3,3,3,2,6,1,
+    0,1,0,2,2,0,
+    2,1,2,0,2,0),ncol=6,nrow=15,byrow=TRUE)
+ourData
+
+## ------------------------------------------------------------------------
+# TRANSPOSE THE DATA TO HAVE 'VISITS' AS COLUMNS   
+# AND SITES AS ROWS 
+ourData<-t(ourData) 
+head(ourData)
+
+## ------------------------------------------------------------------------
+maxCounts<- apply(ourData,1, max)
+maxCounts
+
+## ------------------------------------------------------------------------
+trueValues<- c(4, 5, 6, 4, 11, 1)
+plot(x=trueValues,y=maxCounts)
+abline(0,1) # add a 1:1 line
+
 ## ----echo=FALSE----------------------------------------------------------
 ## make a dataset
 x<- c(1,2,3,4,5,6,5,4,3,2,1)
@@ -57,10 +96,10 @@ y<-as.numeric(names(z[-1]))
 z<- as.matrix(z[,-1])
 sa<-irc
 ## end make dataset
-save(sa,x,y,z, file="study-area.Rdata")
+#save(sa,x,y,z, file="study-area.Rdata")
 
 ## ----message=FALSE,warning=FALSE-----------------------------------------
-load("study-area.Rdata")
+load("study-area.Rdata") # a study area
 library(fields)
 library(reshape2)
 image.plot(x,y,z,xlim=c(0,7),
@@ -97,40 +136,43 @@ image.plot(x=x,y=y,z=z,
     col=heat.colors(n=20),
     asp=1)
 points(y~x,sampleSites, pch=3,col="black")
-legend("topleft",legend="Sample Site",pch=19,bty='n')
+legend("topleft",legend="Sample Site",pch=3,bty='n')
 
 ## ------------------------------------------------------------------------
-
 nsamples<- 50 # i = 1,2,3,...20
 beta_0<- 1.386 # UNDERLYING DENSITY
 gamma_0<- -0.405 # LOG ODDS CAPTURE PROBABILITY
 
 # TRANSFORM TO REAL VALUES
-lambda <- exp(beta_0)
+lambda <- exp(beta_0)# close to 4
 lambda
 p<- exp(gamma_0)/(1+exp(gamma_0) )
-p
+p # close to 0.4
 
+## ------------------------------------------------------------------------
 # SIMULATE ABUNDANCES 
 set.seed(1985)# FOR REPRODUCABILITY; LAST YEAR DLR WAS IN VAN HALEN
 sa$N<- rpois(nrow(sa),lambda)
 
+## ------------------------------------------------------------------------
+sample_indx<- sample(1:nrow(sa),nsamples,replace=FALSE)
+sampleSites<- sa[sample_indx,]
+
+## ------------------------------------------------------------------------
 # GENERATE CAPTURE HISTORIES
 visits<-5 # k = 1,2,3,4,5
 # MATRIX TO HOLD VALUES
-y<- matrix(0,nrow(sa),visits) # matrix for all possible sites
-for(i in 1:nrow(sa))
+y<- matrix(0,nsamples,visits) # ROW FOR EAC SAMPLE SITE
+for(i in 1:nsamples) # LOOP OVER EACH SAMPLE SITE
 	{
-    for(k in 1:visits)
+    for(k in 1:visits)# LOOP OVER EACH VISIT AT EACH SITE
         {
-        y[i,k]<- rbinom(1,sa$N[i],p)#obs count for visit k and site i
+        y[i,k]<- rbinom(1,sampleSites$N[i],p)#obs count for visit k and site i
         }
 	}
 
 ## ------------------------------------------------------------------------
-sample_indx<- sample(1:nrow(sa),nsamples,replace=FALSE)
-obs<- y[sample_indx,]
-obs
+head(y)
 
 ## ----message=FALSE, warning=FALSE----------------------------------------
 # Prepare data
@@ -138,7 +180,7 @@ library(unmarked)
 data <- unmarkedFramePCount(y = y)
 
 # ~DETECTION ~ ABUNDANCE
-fit <- pcount(~1 ~ 1, 
+fit <- pcount(~1 ~ 1, # P THEN LAMBDA
     data=data, 
     K=50) # SET THIS HIGHER THAN YOUR EXPECTED ABUNDANCE
 summary(fit)
@@ -146,10 +188,12 @@ summary(fit)
 ## ------------------------------------------------------------------------
 # Density
 lambda
+# ESTIMATE IS ON LOG SCALE
 exp(coef(fit)[1]) # should be close to lambda
 
 # Capture probability
 p
+# ESTIMATE IS ON LOG ODDS SCALE
 exp(coef(fit)[2])/(1+exp(coef(fit)[2])) # should be close p
 
 ## ----echo=FALSE----------------------------------------------------------
@@ -168,8 +212,12 @@ plot(depth, # VECTOR OF X VALUES
     las=1)
 
 ## ----echo=FALSE----------------------------------------------------------
-sa$abundance <- rpois(nrow(sa),exp(beta_0+beta_1*sa$depth))
-plot(abundance~depth,sa,ylab="Abundance",xlab="Depth",las=1)
+sa$N <- rpois(nrow(sa),exp(beta_0+beta_1*sa$depth))
+
+## ------------------------------------------------------------------------
+plot(N~depth,sa,ylab="Abundance",xlab="Depth",las=1)
+
+## ------------------------------------------------------------------------
 nsamples<- 40
 indx<- sample(1:nrow(sa),nsamples)
 sampleSites<- sa[indx,]
@@ -177,11 +225,13 @@ sampleSites<- sa[indx,]
 ## ----echo=FALSE----------------------------------------------------------
 gamma_0<- 1
 gamma_1<- -0.5
-y<- gamma_0+gamma_1*depth
-p<- exp(y)/(1+exp(y))
+y<- gamma_0+gamma_1*sampleSites$depth
+sampleSites$p<- exp(y)/(1+exp(y))
 
 ## ----echo=FALSE----------------------------------------------------------
-plot(depth,p,xlab="Depth",
+plot(p~depth,
+    data=sampleSites,
+    xlab="Depth",
     ylab="Capture probability",
     las=1,
     type='l')
@@ -198,7 +248,7 @@ for(i in 1:nsamples)
 	}
 
 ## ---- echo=FALSE---------------------------------------------------------
-y
+head(y)
 
 ## ------------------------------------------------------------------------
 # PREPARE DATA
@@ -251,4 +301,19 @@ image.plot(x,y,z,
     las=1,
     main="Predicted")
 
+
+## ------------------------------------------------------------------------
+n_reps<- 10000
+N_sim<- matrix(0,nrow=nrow(sa),ncol=n_reps)
+
+for(i in 1:n_reps)
+    {
+    N_sim[,i]<- rpois(nrow(sa),
+        lambda=sa$pred)
+    
+    }
+    totalN<- colSums(N_sim)
+    hist(totalN) 
+abline(v=sum(sa$N))   
+    
 
