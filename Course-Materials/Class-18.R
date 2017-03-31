@@ -317,3 +317,15 @@ for(i in 1:n_reps)
 abline(v=sum(sa$N))   
     
 
+## ------------------------------------------------------------------------
+brks<-c(0,2000,2300,10000)#breakpoints
+labs<-c("Small (<2000)","Medium (2000-2300)",
+    "Large (2300+)")
+
+totalN_b<-cut(x=totalN,
+    breaks=brks,
+    labels=labs,
+    inlude.lowest=TRUE)
+table(totalN_b)
+table(totalN_b)/n_reps
+
