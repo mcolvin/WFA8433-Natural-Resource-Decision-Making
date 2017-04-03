@@ -22,6 +22,10 @@ system(paste("xcopy",
 
 ## Announcements
 
+* Read Bieber, C., and T. Ruf. 2005. Population dynamics in wild boar 
+_Sus scrofa_: ecology, elasticity of growth rate and implications for the 
+management of pulsed resource consumers. Journal 
+of Applied Ecology 42:1203-1213. [pdf](pdfs/B268.pdf)
 * Guidance about the final project is posted here [here](final-project.html)
 * In part II of homework 3 do not use `expand.grid()`
 be sure to use `data.frame` instead to make `outcomes`

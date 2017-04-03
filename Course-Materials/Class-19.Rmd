@@ -1,0 +1,60 @@
+---
+title: ""
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true   
+    collapsed: false
+---
+
+ <!--
+
+library(knitr)
+rmarkdown::render_site("Class-19.Rmd")# build website
+
+source("_build.R")
+build("Class-19",bld="PAGE",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
+
+# PURL THIS SHIT & MOVE FILES TO DOCS
+build("Class-19",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
+
+source("_build.R");build("Class-19",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
+
+-->
+
+
+```{r echo=FALSE, out.width="100%"}
+include_graphics("media/banner-03.jpg")
+rm(list=objects())
+```
+
+
+# Class 19: Population dynamics & decisions {-}
+
+# Class preliminaries
+
+* Supplemental background reading for next class(es):
+<!--
+********** add some reading
+-->
+* Assignment due: None
+* Class project: 
+    * Be developing your decision model
+    * Final exam period-April 28th at 3pm.
+* Link to class recording  [YouTube]()
+* Today's R script [Class-19.R](scripts/Class-18.R)
+
+## Class overview & objectives 
+
+<!--
+********** add some reading
+-->
+
+
+## Getting ready to go
+
+
+# Population dynamics & decisions
+
+## Overview
