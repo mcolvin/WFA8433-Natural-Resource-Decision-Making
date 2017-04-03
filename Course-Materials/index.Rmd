@@ -22,7 +22,7 @@ system(paste("xcopy",
 
 ## Announcements
 
-* Read Bieber, C., and T. Ruf. 2005. Population dynamics in wild boar 
+* Read for 4/5: Bieber, C., and T. Ruf. 2005. Population dynamics in wild boar 
 _Sus scrofa_: ecology, elasticity of growth rate and implications for the 
 management of pulsed resource consumers. Journal 
 of Applied Ecology 42:1203-1213. [pdf](pdfs/B268.pdf)
