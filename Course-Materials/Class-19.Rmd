@@ -10,7 +10,7 @@ output:
 
  <!--
 
-library(knitr)
+
 rmarkdown::render_site("Class-19.Rmd")# build website
 
 source("_build.R")
@@ -20,12 +20,14 @@ build("Class-19",bld="PAGE",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
 build("Class-19",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
 
 source("_build.R");build("Class-19",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
+source("_build.R");build("Class-19",bld="SCRIPT",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
 
 -->
 
 
 ```{r echo=FALSE, out.width="100%"}
-include_graphics("media/banner-03.jpg")
+library(knitr)
+include_graphics("media/banner-07.jpg")
 rm(list=objects())
 ```
 
@@ -34,27 +36,625 @@ rm(list=objects())
 
 # Class preliminaries
 
-* Supplemental background reading for next class(es):
-<!--
-********** add some reading
--->
-* Assignment due: None
+* Guest password for the day: eyelash
+* Reading(s) for next class(es):
+    * Peterson, J. T., and J. W. Evans. 2003. Quantitative decision analysis 
+    for sport fisheries management. Fisheries 28:10-21. [PDF](pdfs/P210.pdf)    
+    * Conroy, M. J., and J. T. Peterson. 2009. Integrating management, 
+    research, and monitoring: balancing the 3-legged stool. Pages 2-10 in S. 
+    B. Cederbaum, B. C. Faircloth, T. M. Terhune, J. Thompson, and J. P. 
+    Carroll, editors. Gamebird 2006: Quail VI and Perdix XII. 31 May - 4 
+    June 2006. Warnell School of Forestry and Natural Resources, Athens, 
+    Georgia.  [PDF](pdfs/C213.pdf)
+    * Conroy, M. J., and J. T. Peterson. 2009. Integrating management, research, and monitoring: balancing the 3-legged stool. Pages 2-10 in S. B. Cederbaum, B. C. Faircloth, T. M. Terhune, J. Thompson, and J. P. Carroll, editors. Gamebird 2006: Quail VI and Perdix XII. 31 May - 4 June 2006. Warnell School of Forestry and Natural Resources, Athens, Georgia.
 * Class project: 
-    * Be developing your decision model
+    * Be developing and documenting your decision model
     * Final exam period-April 28th at 3pm.
 * Link to class recording  [YouTube]()
-* Today's R script [Class-19.R](scripts/Class-18.R)
+* Today's R script [Class-19.R](scripts/Class-19.R)
 
 ## Class overview & objectives 
 
-<!--
-********** add some reading
--->
+The objectives of this class are to
+
+1. Introduce population dynamics in decision making
+1. Temporal scale of decisions and equilibrium analysis
+2. Reinforce state dependent decisions
+3. Reinforce disconnect between scientific literature and applied decision making
+4. Further student exposure to building decision models in Netica.
 
 
 ## Getting ready to go
+
+* Netica file [here](pigs.neta)
+* Install libraries that we have not used yet. `install.packages("popbio")`
 
 
 # Population dynamics & decisions
 
 ## Overview
+
+In many cases we as scientists use tools like matrix population models
+to understand how demographic rates interact and influence long term population
+dynamics.  This is, at times, in conflict with management, where management may
+take a long term view for sustainability but needs to make decisions right now to 
+meet management objectives. 
+
+Here we will walk through an analysis of boar dynamics. The analysis itself is 
+done well, however we will see it is difficult to use this type of analysis to 
+make decisions. To be clear there is nothing wrong with the study but rather we are 
+looking at how one could use this type of analysis to make decisions and maybe take
+a different view.
+
+The life cycle of the boar is illustrated below, which can be crafted into a 
+matrix model. This study is pretty neat because it deals with demographics that
+are dependent on conditions (i.e., poor, intermediate, good). The P parameters represent
+transition probabilities, incorporating growth and survival as a simultaneous process.
+The F parameters represent fertilities. 
+
+
+```{r echo=FALSE, out.width="50%", fig.align="center"}
+include_graphics("media/class-19/lifecycle.png")
+```
+The circles represent stages: juvenile, yearling, and adult. Note there are
+3 stages modeled and therefore the transition matrix should be a 3x3 matrix.
+The figure above can be represented as the matrix below:
+
+$$\mathbf{A} = \left[\begin{array}
+{rrr}
+F_1   & F_2  & F_3 \\
+P_1   & 0     & 0 \\
+0       & P_2     & P_3
+\end{array}\right]
+$$.
+
+In poor conditions we can represent the demographic matrix as:
+
+
+$$\mathbf{A_{poor}} = \left[\begin{array}
+{rrr}
+0.13    & 0.56  & 1.64 \\
+0.25    & 0     & 0 \\
+0       & 0.31     & 0.58
+\end{array}\right]
+$$
+
+and code it up on R as
+
+```{r}
+A_poor<- matrix(c(
+    0.13, 0.56, 1.64,
+    0.25,0,0,
+    0, 0.31, 0.58),nrow=3, ncol=3,
+    byrow=TRUE)
+A_poor  
+```
+Similarly we can represent intermediate conditions as
+
+$$\mathbf{A_{intermediate}} = \left[\begin{array}
+{rrr}
+0.26   & 0.94  & 1.93 \\
+0.33    & 0     & 0 \\
+0       & 0.40     & 0.66
+\end{array}\right]
+$$
+
+in matrix notation and coded up as
+
+
+```{r}
+A_intermediate<- matrix(c(
+    0.26, 0.94, 1.93,
+    0.33,0,0,
+    0, 0.4, 0.66),nrow=3, ncol=3,
+    byrow=TRUE)
+A_intermediate   
+```
+Lastly we code up the good conditions demographic matrix as notation 
+$$\mathbf{A_{good}} = \left[\begin{array}
+{rrr}
+0.59  & 1.76  & 2.29 \\
+0.52   & 0     & 0 \\
+0       & 0.60     & 0.71
+\end{array}\right]
+$$
+
+and code
+
+```{r}
+A_good<- matrix(c(
+    0.59, 1.76, 2.29,
+    0.52,0,0,
+    0, 0.6, 0.71),nrow=3, ncol=3,
+    byrow=TRUE)
+A_good   
+```
+
+Good, we got the demographic matrices put together and we can potentially use that
+information to make management decisions.
+
+### Forecasting population dynamics
+
+We can use matrix multiplication to easily forecast population dynamics given the 
+demographic matrix and a vector of abundances for each stage.
+
+$$\mathbf{N_{t+1}} = \left[\begin{array}
+{rrr}
+F_1   & F_2  & F_3 \\
+P_1   & 0     & 0 \\
+0       & P_2     & P_3
+\end{array}\right] \cdot
+\left[\begin{array}{r}N_{juvenile} \\N_{Yearling} \\N_{Adult} \end{array}\right] 
+$$
+
+We already have the transition matrices coded up ($A$) but we need a vector
+of stage specific abundances to get the dynamics going. Here we assume that
+we have 100 juveniles, 20 yearlings, and 50 adult boars. 
+
+```{r}
+N<- c(100,20,50) # STAGE SPECIFIC ABUNDANCE
+```
+
+Now we need to specify how many years to run out the population, let's do 20.
+
+```{r}
+years<- 20
+```
+
+Now we can set up a 3x20 matrix to hold our population abundances in for 
+the forecast and we set the initial abundance to our vector of abundances.
+```{r}
+# A MATRIX TO HOLD ABUNDANCES
+output<- matrix(0,3, years)
+output[,1]<- N
+```
+Now we can use our old friend the for loop to forcast the dynamics.
+Note the use of `i-1` and we are going from 2 to 20. That is because we 
+have already set year 1 to the intial abundance.
+
+```{r}
+for(i in 2:years)
+    {
+    # SOME MATRIX MULTIPLICATION MAGIC
+    output[,i]<- A_poor %*% output[,i-1]  
+    }
+```
+We can use `matplot()` to easily plot the dynamics of the population given poor conditions.
+
+```{r}
+matplot(t(output),type='l',
+    xlab="Years",
+    ylab="Abundance",
+    main="Poor conditions")
+legend("topright",legend=c("Juvenile",
+    "Yearling","Adult"),
+    lty=c(1,2,3), 
+    col=c("black","red","green"))
+```
+We can redo the same process for intermediate conditions.
+
+```{r}
+N<- c(100,20,50) # STAGE SPECIFIC ABUNDANCE
+years<- 20
+# A MATRIX TO HOLD ABUNDANCES
+output<- matrix(0,3, years)
+output[,1]<- N
+for(i in 2:years)
+    {
+    # SOME MATRIX MULTIPLICATION MAGIC
+    output[,i]<- A_intermediate %*% output[,i-1]  
+    }
+matplot(t(output),type='l',
+    xlab="Years",
+    ylab="Abundance",
+    main="Intermediate conditions")
+legend("topleft",legend=c("Juvenile",
+    "Yearling","Adult"),
+    lty=c(1,2,3), 
+    col=c("black","red","green"))
+```
+
+And finally, we can redo the same process for good conditions.
+
+```{r}
+N<- c(100,20,50) # STAGE SPECIFIC ABUNDANCE
+years<- 20
+# A MATRIX TO HOLD ABUNDANCES
+output<- matrix(0,3, years)
+output[,1]<- N
+for(i in 2:years)
+    {
+    # SOME MATRIX MULTIPLICATION MAGIC
+    output[,i]<- A_good %*% output[,i-1]  
+    }
+matplot(t(output),type='l',
+    xlab="Years",
+    ylab="Abundance",
+    main="Good conditions")
+legend("topleft",legend=c("Juvenile",
+    "Yearling","Adult"),
+    lty=c(1,2,3), 
+    col=c("black","red","green"))
+```
+
+### Growth rate, Sensitivity & Elasticity
+
+#### Growth Rate: Lambda
+
+One neat thing from the transition matrix is that you can do an eigen analysis
+and figure out if the population is growing or not, a value referred to as lambda ($\lambda$).
+
+```{r}
+lambda_poor<-eigen(A_poor)$values[1]
+lambda_poor<-Re(lambda_poor)# convert from imaginary
+```
+That was a lot of work to get the $\lambda$. The `popbio` package has functions
+that will do this heavy lifting for us, `lambda()` specifically. 
+
+```{r}
+library("popbio")
+lambda_poor
+lambda(A_poor)
+```
+Ohhh, that does not look good for that population
+
+```{r}
+lambda_intermediate<- lambda(A_intermediate)
+lambda_good<- lambda(A_good)
+```
+That jives with the paper results in table 3 below. But keep in mind that $\lambda$ 
+represents long term population growth and is not dependeng on initial abundances!
+
+```{r echo=FALSE, out.width="50%", fig.align="center"}
+include_graphics("media/class-19/paper-results.png")
+```
+
+#### Sensitivity: s
+
+Matrix population models are commonly used to identify management strategies by 
+performing a sensitivity analysis of the transition matrix. Matrix values with a
+high sensitivity should have a disproportionate effect on population dynamics. For 
+example, if a sensitivity analysis showed that adult fertility had the highest
+sensitivity value then management actions that reduce adult fertility might be 
+effective. There is a lot of behind the scenes matrix stuff but the various
+functions in `popbio` to the work for us. Specifically we can use the following 
+functions:
+
+* `reproductive.value(A)` calculates reproductive value
+* `stable.stage(A)` calculates stable stage distribution
+* `sensitivity(A)` caluclates the sensitivity
+* `elasticity(A)`  calculates the elasticity
+
+
+```{r}
+library(popbio)
+
+reproductive.value(A_poor)
+stable.stage(A_poor)
+reproductive.value(A_intermediate)
+stable.stage(A_intermediate)
+reproductive.value(A_good)
+stable.stage(A_good)
+
+s_poor<-sensitivity(A_poor) # SENSITIVITY FOR MATRIX A
+s_poor # sensitivity matrix
+s_intermediate<-sensitivity(A_intermediate) # SENSITIVITY FOR MATRIX A
+s_intermediate # sensitivity matrix
+s_good<-sensitivity(A_good) # SENSITIVITY FOR MATRIX A
+s_good # sensitivity matrix
+```
+What is going on with all those numbers? Some of the values were 0, so why is there 
+as sensitivity value for them?
+
+#### Elasticity: e
+
+Elasticities take a sensitivity matrix and make the values proportional to the size
+of the matrix value, which clears out the zero values and puts the resulting matrix
+in terms of its effect on population growth rate. 
+
+```{r}
+e_poor<-elasticity(A_poor)
+e_poor # elasticity matrix
+e_intermediate<-elasticity(A_intermediate) 
+e_intermediate # elasticity matrix
+e_good<-elasticity(A_good) 
+e_good # elasticity matrix
+```
+Now these matrices generally form management recommendations and so on that come
+out of this type of work. But there are come issues here because conditions vary
+over time and the underlying demographics do was well.
+
+### Uncertainty in conditions
+
+We can start to look at the effect of uncertainty in conditions using a stochastic
+projection.
+
+```{r}
+out<-stoch.projection(
+    matrices=list(A_poor,A_intermediate,
+        A_good),
+    n0 = c(3000,900, 800),
+    tmax=100,
+    nreps=5000,
+    prob= c(0.35,0.35,0.30),
+    nmax=100000) # cut off at 100k all stages
+
+gr<-stoch.growth.rate(matrices=list(A_poor,A_intermediate,
+        A_good), prob = c(0.35,0.35,0.30))  
+gr        
+```
+The above code will give us some idea of the growth rate 
+
+#### Implications for management
+
+For the results the authors recommended the following 
+
+1. hunting, as a measure to control populations, should be adjusted to 
+changing environmental conditions (State dependent decision) 
+
+2. Growing populations under good environmental conditions, particularly 
+following a full mast of trees, yearly survival of juveniles should be 
+reduced most, to approximately 15% (including natural postnatal 
+mortality), assuming 60% survival in yearlings and 70% in adults, in 
+order to limit growth rate to $\lambda \leq 1$ 
+
+3. Our analysis shows that preferential hunting of adults in favourable 
+habitats would be ineffective, because even if survival of adults was 
+below 10% (assuming 50% survival in juveniles and 60% survival in 
+yearlings) population growth would not drop to $\lambda = 1$ 
+
+4. For poor environments, on the other hand, our elasticity analysis 
+indicated that decreasing adult survival would lead to the most 
+effective reduction of population growth 
+
+_Questions_
+
+1. As a decision maker how do you implement an action given these
+recommendations?
+2. How do you account for uncertainty?
+3. Do recommendations from equilibrium analyses like this match
+the temporal scale of management? 
+4. It was recommended that when conditions are poor (harsh winter
+poor acorn mast) managers should decrease
+adult survival by some management action. However, initial conditions 
+(i.e., how many pigs) _do not_ influence demographic
+sensitivity and elasticity analyses. What do you do when there are only
+a handful of adults around? Do you expend effort to decrease 
+survival or should you adapt your decision to the current system state?
+5. How do you incorporate management objectives.  
+
+
+## Reframing as a decision model
+
+Let's take this case study are try to recast it as a decision model. First we need
+to set up the model and influence diagram. Let's start with [Pig.neta](pig.neta), which
+for the sake of time has several nodes built in. You will notice nodes for the current
+abundance and future abundance as well as a node for conditions as they influence the 
+future population size by altering demographic rates. 
+
+```{r}
+n0<-N
+F<-c(0.13,0.56,1.64) 
+S<-c(0.25,0.31,0.58) 
+   
+yy<-c(sum(n0*F), # Juveniles
+    n0[1]*S[1] , # Yearlings
+    n0[2]*S[2]+n0[3]*S[3])# Adults
+   
+# COMPARE TO MATRIX CALCULATION
+y<-A_poor %*% N 
+
+cbind(y,yy)  # winner winner 
+```
+OK, we can use some conventional math to get the same dynamics and not have to 
+use the matrix. This gives us some flexibility in simulations, specifically, we can 
+add uncertainty. 
+
+Now let's be good and acknowledge at least some uncertainty. There is most certainly
+other bits of uncertainty at play (i.e., observation, structural) here but for sake of time we simply throw
+some parametric uncertainty in the process using the `rpois()` and `rbinom()` functions
+to simulate the number of juvenile, yearling, and adult pigs in the next year.
+
+```{r}
+n0<-N
+F<-c(0.13,0.56,1.64) 
+S<-c(0.25,0.31,0.58) 
+   
+yy<-c(sum(rpois(3,n0*F)), # Juveniles
+   rbinom(1,n0[1],S[1]), # Yearlings
+   rbinom(1,n0[2],S[2])+rbinom(1,n0[3],S[3]))# Adults
+```
+Now we can generalize the code above to do a big stochastic simulation 
+to generate the many many outcomes. First we need to set up the fertility and
+survivals a bit differently to efficiently simulate from.
+
+```{r}
+
+F_j=c(0.13,0.56,1.64)# poor, intermediate, good
+F_y=c(0.56,0.94,1.93)
+F_a =c(1.64,1.76,2.29)
+        
+S_j=c(0.25,0.31,0.58)
+S_y=c(0.31,0.40,0.66)
+S_a =c(0.58,0.60,0.71)       
+```
+Why did I do this? Well, `r` can handle vectors easily using brackets.
+What I mean here is if i have a vector with 3 values in it, I can use that indexing to
+make many many values. Let's demonstrate.
+
+```{r}
+x<- c(5,6,7)
+# a vector of indices
+indexes<- c(1,1,3,2,2,1,1)# 1,2,3 indexes condition
+x[indexes] # EXPANDS X GIVEN THE INDEX
+```
+We did that so we can efficiently use the conditions to 
+index the stage specific appropriate fertility and survival.
+First we will set up the `data.frame()` with randomly selected 
+conditions and initial abundances for each state.
+```{r}
+set.seed(8433)
+reps<- 250000
+outcomes<- data.frame(
+    condition=sample(c(1:3),reps,replace=TRUE),
+    n0_j=rpois(reps,N[1]),
+    n0_y=rpois(reps,N[2]),
+    n0_a= rpois(reps,N[3])) 
+```
+That gives us a 250k row of values.
+
+```{r}
+head(outcomes)
+```
+Now we can forecast the future abundance for each stage given the conditions.
+Note that we are only doing this for 1 year. First we will forecast juveniles.
+
+```{r}
+outcomes$n1_j<-rpois(reps,outcomes$n0_j*F_j[outcomes$condition])+
+    rpois(reps,outcomes$n0_y*F_y[outcomes$condition])+
+    rpois(reps,outcomes$n0_a*F_a[outcomes$condition])
+```
+Now we can do yearling and adults.
+```{r}
+outcomes$n1_y<- rbinom(reps,outcomes$n0_j,S_j[outcomes$condition])  
+outcomes$n1_a<- rbinom(reps,outcomes$n0_y,S_y[outcomes$condition])+
+    rbinom(reps,outcomes$n0_a,S_a[outcomes$condition])
+```
+
+Like we did before, we discretize the outcomes to put in a decision 
+model. First we need to summarize the output to make sure we discretize 
+appropriately. 
+
+```{r}
+rngs<- apply(outcomes,2,range)
+
+```
+Looks like the range for `n0` was `r min(outcomes$n0_j)` 
+to `r max(outcomes$n0_j)` for juveniles, 
+`r min(outcomes$n0_y)` 
+to `r max(outcomes$n0_y)` for yearlings, and  
+`r min(outcomes$n0_a)` 
+to `r max(outcomes$n0_a)` for adults. the future numbers were
+`r min(outcomes$n1_j)` 
+to `r max(outcomes$n1_j)` for juveniles, 
+`r min(outcomes$n1_y)` 
+to `r max(outcomes$n1_y)` for yearlings, and  
+`r min(outcomes$n1_a)` 
+to `r max(outcomes$n1_a)` for adults.
+
+
+### Discretizing outcomes
+
+Now we can discretize our outcomes for input into Netica.
+
+Now we can discretize Juveniles using the `cut()` function.
+
+```{r}
+# Juveniles Initial Abundance
+bins<- seq(0,150,length.out=5)
+labs<- paste(bins[-length(bins)],bins[-1],sep="-")
+outcomes$n0_j_bin<-cut(outcomes$n0_j,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE)
+# Juveniles Future Abundance
+bins<- seq(0,500,length.out=5)
+labs<- paste(bins[-length(bins)],bins[-1],sep="-")
+outcomes$n1_j_bin<-cut(outcomes$n1_j,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE) 
+```
+
+And Yearlings
+    
+```{r}
+# Yearling Initial Abundance
+bins<- seq(0,50,length.out=5)
+labs<- paste(bins[-length(bins)],bins[-1], sep = "-")
+outcomes$n0_y_bin<- cut(outcomes$n0_y,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE)
+# Yearling Future  Abundance
+bins<- seq(0,90,length.out=5)
+labs<- paste(bins[-length(bins)],bins[-1],sep="-")
+outcomes$n1_y_bin<- cut(outcomes$n1_y,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE) 
+```
+
+And now for adults
+
+```{r}
+# Adult Initial Abundance
+bins<- seq(0,90,length.out=5)
+labs<- paste(bins[-length(bins)],bins[-1],sep="-")
+outcomes$n0_a_bin<- cut(outcomes$n0_a,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE)  
+# Adult Future  Abundance
+bins<- seq(0,80,length.out=5)
+labs<- paste(bins[-length(bins)],bins[-1],sep="-")
+outcomes$n1_a_bin<- cut(outcomes$n1_a,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE)
+```
+
+Here I will use the `prop.table()` function to quickly calculate the 
+probability of each outcome. Recall before we used frequencies. Just a different
+way to do the same thing.
+
+```{r}
+prop.table(table(outcomes$n0_j_bin))
+prop.table(table(outcomes$n0_y_bin))
+prop.table(table(outcomes$n0_a_bin))
+```
+And now we can do it for the future population given the current population size.
+
+```{r}
+library(reshape2) # for the dcast function
+outcomes$tmp<-1 # a value to sum over for counts
+
+future_juveniles<- dcast(data=outcomes, 
+    formula=condition+n0_j_bin~n1_j_bin,
+    value.var="tmp",
+    fun.aggregate=sum,
+    drop=FALSE)  
+    
+future_yearlings<- dcast(data=outcomes, 
+    formula=condition+n0_y_bin~n1_y_bin,
+    value.var="tmp",
+    fun.aggregate=sum,
+    drop=FALSE)  
+    
+future_adults<- dcast(data=outcomes, 
+    formula=condition+n0_a_bin~n1_a_bin, 
+    value.var="tmp",
+    fun.aggregate=sum,
+    drop=FALSE) 
+```
+Using the tables we can calculate the conditional probabilities of each outcome.
+Notices the use of brackets and dropping the first 2 columns so I can calculate these 
+correctly. 
+
+```{r}
+future_juveniles[,-c(1,2)]<- prop.table(as.matrix(future_juveniles[,-c(1,2)]),1)
+future_yearlings[,-c(1,2)]<- prop.table(as.matrix(future_yearlings[,-c(1,2)]),1)
+future_adults[,-c(1,2)]<- prop.table(as.matrix(future_adults[,-c(1,2)]),1)
+```
+
+Tada! The conditional probability tables.
+
+```{r}
+future_juveniles
+future_yearlings
+future_adults
+write.csv(future_juveniles,"future_juveniles.csv")
+```
+
+Ok, now we are going to get into trying to cobble together a decision network for
+this case study.

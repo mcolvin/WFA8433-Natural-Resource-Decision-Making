@@ -349,10 +349,16 @@ div.tocify {
       <a href="Class-16.html">Class 16: Occupancy continued</a>
     </li>
     <li>
-      <a href="Class-17.html">Class 17: Influence diagrams &amp; N-Mixtures</a>
+      <a href="Class-17.html">Class 17: Influence diagrams, Sensitivity analyses &amp; N-Mixtures</a>
     </li>
     <li>
-      <a href="Class-18.html">Class 18: Sensitivity analyses &amp; Estimating abundance</a>
+      <a href="Class-18.html">Class 18: N-Mixtures &amp; Estimating abundance</a>
+    </li>
+    <li>
+      <a href="Class-19.html">Class 19: Population dynamics and decisions</a>
+    </li>
+    <li>
+      <a href="Class-20.html">Class 20</a>
     </li>
   </ul>
 </li>
@@ -1012,14 +1018,6 @@ cbind(betas,betas_est)</code></pre>
 <p>A generalized linear mixed model can be used to estimate the parameters for the model given the data above. We need to use a package to use a function <code>glmer()</code></p>
 <pre class="r"><code># install.packages(&quot;lme4&quot;) run this to install the package
 library(lme4)</code></pre>
-<pre><code>## Warning: package &#39;lme4&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre><code>## Warning: package &#39;Matrix&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;Matrix&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     crossprod, tcrossprod</code></pre>
 <p>Now we need a way to account for the extra variation. Recall we added to each observation, so it makes sense to allow for a random effect of each observation. The additional variation is added using the <code>+ (1 | id)</code> which tells <code>glm()</code> to fit a random effect of <code>id</code>.</p>
 <pre class="r"><code>my_data$id&lt;- c(1:nrow(my_data))
 head(my_data)</code></pre>
@@ -1542,11 +1540,10 @@ betas_est</code></pre>
 <p>When using a <code>glmer()</code> or an <code>lmer()</code> we use the <code>fixef()</code> function to extract the fixed effects.</p>
 <pre class="r"><code>betas_est&lt;-fixef(fit) # betsas</code></pre>
 <p>We use the <code>ranef()</code> function to get the random effects.</p>
-<pre class="r"><code>re&lt;-ranef(fit) # pull the random effects</code></pre>
+<pre class="r"><code>#re&lt;-ranef(fit) # pull the random effects</code></pre>
 <p>If we recall our predictive model there were a couple of assumptions, one of which was the random effect <span class="math inline">\(\epsilon\)</span> was normally distributed with mean 0 and some standard deviation <span class="math inline">\(\sigma\)</span>.</p>
 <p>Unfortunately <code>ranef()</code> returns a list so we have to unlist it to plot a histogram that we can use to evaluate this assumption. The code below plots a histogram of the random effects.</p>
-<pre class="r"><code>hist(unlist(re))</code></pre>
-<p><img src="Class-14_files/figure-html/unnamed-chunk-41-1.png" width="672" /></p>
+<pre class="r"><code>#hist(unlist(re))</code></pre>
 <p>These models can be a real bear to deal with in terms of getting predicted outcomes and typically require some sort of resampling technique (e.g., bootstrap). We won’t cover those here for the sake of time, but it is something to keep in mind when the urge to add a random effect comes up. Specifically, how do you incorporate the uncertainty in a management decision?</p>
 </div>
 </div>
@@ -1587,9 +1584,8 @@ dat$group&lt;- as.factor(dat$group)</code></pre>
 <pre class="r"><code>dat$obs&lt;- rnorm(ngroups*30,dat$obs,1)</code></pre>
 <p>We have used the <code>points()</code> function up to this point. Get it? This point?… There is another plotting function that is very convenient in the <code>lattice</code> package that can plot groups. The syntax is very similar to <code>plot()</code> but now we can add groups.</p>
 <pre class="r"><code># install.packages(&quot;lattice&quot;) # run if needed
-library(lattice)</code></pre>
-<pre><code>## Warning: package &#39;lattice&#39; was built under R version 3.1.3</code></pre>
-<pre class="r"><code>xyplot(obs~x,
+library(lattice)
+xyplot(obs~x,
     data=dat,
     group=group)</code></pre>
 <p><img src="Class-14_files/figure-html/unnamed-chunk-49-1.png" width="672" /> We can see all the data for each group.</p>

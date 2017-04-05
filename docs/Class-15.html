@@ -349,10 +349,16 @@ div.tocify {
       <a href="Class-16.html">Class 16: Occupancy continued</a>
     </li>
     <li>
-      <a href="Class-17.html">Class 17: Influence diagrams &amp; N-Mixtures</a>
+      <a href="Class-17.html">Class 17: Influence diagrams, Sensitivity analyses &amp; N-Mixtures</a>
     </li>
     <li>
-      <a href="Class-18.html">Class 18: Sensitivity analyses &amp; Estimating abundance</a>
+      <a href="Class-18.html">Class 18: N-Mixtures &amp; Estimating abundance</a>
+    </li>
+    <li>
+      <a href="Class-19.html">Class 19: Population dynamics and decisions</a>
+    </li>
+    <li>
+      <a href="Class-20.html">Class 20</a>
     </li>
   </ul>
 </li>
@@ -679,20 +685,6 @@ summary(fit)</code></pre>
 <p><img src="media/20170308_110321.jpg" width="50%" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>#install.packages(&quot;unmarked&quot;)
 library(unmarked)</code></pre>
-<pre><code>## Warning: package &#39;unmarked&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: reshape</code></pre>
-<pre><code>## 
-## Attaching package: &#39;reshape&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:Matrix&#39;:
-## 
-##     expand</code></pre>
-<pre><code>## Loading required package: Rcpp</code></pre>
-<pre><code>## Warning: package &#39;Rcpp&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;unmarked&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:lme4&#39;:
-## 
-##     ranef</code></pre>
 <p>Now we need to get our detections into a matrix for unmarked. In this example we don’t have any covariates so the <code>siteCovs</code> and the <code>obsCovs</code> are set to <code>NULL</code>.</p>
 <pre class="r"><code>#detections&lt;- matrix(c(),nrow=6, ncol=???)
 #detections&lt;-  unmarkedFrameOccu(detections, siteCovs=NULL, obsCovs=NULL)

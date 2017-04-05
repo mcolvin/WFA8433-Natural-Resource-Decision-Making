@@ -559,7 +559,7 @@ betas_est<-fixef(fit) # betsas
 We use the `ranef()` function to get the random effects.
 
 ```{r}
-re<-ranef(fit) # pull the random effects
+#re<-ranef(fit) # pull the random effects
 ```
 If we recall our predictive model there were a couple of assumptions, 
 one of which was the random effect $\epsilon$ was normally distributed 
@@ -570,7 +570,7 @@ a histogram that we can use to evaluate this assumption. The code below
 plots a histogram of the random effects. 
 
 ```{r}
-hist(unlist(re))
+#hist(unlist(re))
 ```
 
 These models can be a real bear to deal with in terms of getting 

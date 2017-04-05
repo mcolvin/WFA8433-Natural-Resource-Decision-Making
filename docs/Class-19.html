@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title></title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<link rel="stylesheet"
+      href="site_libs/highlight/textmate.css"
+      type="text/css" />
+<script src="site_libs/highlight/highlight.js"></script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script src="site_libs/navigation-1.0/tabsets.js"></script>
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.9em;
+  padding-left: 5px;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Course home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Course information
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="index.html">Course home</a>
+    </li>
+    <li>
+      <a href="syllabus.html">Course Syllabus</a>
+    </li>
+    <li>
+      <a href="course-overview.html">Course Overview</a>
+    </li>
+    <li>
+      <a href="final-project.html">About final project</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Classes
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="Class-01.html">Class 1: Introduction to decision making</a>
+    </li>
+    <li>
+      <a href="Class-02.html">Class 2: The PrOACT Process</a>
+    </li>
+    <li>
+      <a href="Class-03.html">Class 3: Uncertainty and decision making</a>
+    </li>
+    <li>
+      <a href="Class-04.html">Class 4: Decision trees and nets</a>
+    </li>
+    <li>
+      <a href="Class-05.html">Class 5: Intro to SDM and ARM</a>
+    </li>
+    <li>
+      <a href="Class-06.html">Class 6: Structuring and quantifying objectives</a>
+    </li>
+    <li>
+      <a href="Class-07.html">Class 7: Structuring objectives</a>
+    </li>
+    <li>
+      <a href="Class-08.html">Class 8: Intro to R</a>
+    </li>
+    <li>
+      <a href="Class-09.html">Class 9: Linear Models</a>
+    </li>
+    <li>
+      <a href="Class-10.html">Class 10: LMs and GLMs</a>
+    </li>
+    <li>
+      <a href="Class-11.html">Class 11: Prediction and GLMs</a>
+    </li>
+    <li>
+      <a href="Class-12.html">Class 12: GLMs continued</a>
+    </li>
+    <li>
+      <a href="Class-13.html">Class 13: Poissons</a>
+    </li>
+    <li>
+      <a href="Class-14.html">Class 14: HLMs</a>
+    </li>
+    <li>
+      <a href="Class-15.html">Class 15: HLMs and occupancy</a>
+    </li>
+    <li>
+      <a href="Class-16.html">Class 16: Occupancy continued</a>
+    </li>
+    <li>
+      <a href="Class-17.html">Class 17: Influence diagrams, Sensitivity analyses &amp; N-Mixtures</a>
+    </li>
+    <li>
+      <a href="Class-18.html">Class 18: N-Mixtures &amp; Estimating abundance</a>
+    </li>
+    <li>
+      <a href="Class-19.html">Class 19: Population dynamics and decisions</a>
+    </li>
+    <li>
+      <a href="Class-20.html">Class 20</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Assignments
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="hw-01.html">Homework 1</a>
+    </li>
+    <li>
+      <a href="hw-02.html">Homework 2</a>
+    </li>
+    <li>
+      <a href="hw-03.html">Homework 3</a>
+    </li>
+    <li>
+      <a href="hw-04.html">Homework 4</a>
+    </li>
+    <li>
+      <a href="hw-05.html">Homework 5</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Additional Resources
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="R-tutorials.html">R tutorials</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+
+</div>
+
+
+<p><!--
+
+
+rmarkdown::render_site("Class-19.Rmd")# build website
+
+source("_build.R")
+build("Class-19",bld="PAGE",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
+
+# PURL THIS SHIT & MOVE FILES TO DOCS
+build("Class-19",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
+
+source("_build.R");build("Class-19",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
+source("_build.R");build("Class-19",bld="SCRIPT",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
+
+--></p>
+<p><img src="media/banner-07.jpg" width="100%" /></p>
+<div id="class-19-population-dynamics-decisions" class="section level1 unnumbered">
+<h1>Class 19: Population dynamics &amp; decisions</h1>
+</div>
+<div id="class-preliminaries" class="section level1">
+<h1><span class="header-section-number">1</span> Class preliminaries</h1>
+<ul>
+<li>Guest password for the day: eyelash</li>
+<li>Reading(s) for next class(es):
+<ul>
+<li>Peterson, J. T., and J. W. Evans. 2003. Quantitative decision analysis for sport fisheries management. Fisheries 28:10-21. <a href="pdfs/P210.pdf">PDF</a><br />
+</li>
+<li>Conroy, M. J., and J. T. Peterson. 2009. Integrating management, research, and monitoring: balancing the 3-legged stool. Pages 2-10 in S. B. Cederbaum, B. C. Faircloth, T. M. Terhune, J. Thompson, and J. P. Carroll, editors. Gamebird 2006: Quail VI and Perdix XII. 31 May - 4 June 2006. Warnell School of Forestry and Natural Resources, Athens, Georgia. <a href="pdfs/C213.pdf">PDF</a></li>
+<li>Conroy, M. J., and J. T. Peterson. 2009. Integrating management, research, and monitoring: balancing the 3-legged stool. Pages 2-10 in S. B. Cederbaum, B. C. Faircloth, T. M. Terhune, J. Thompson, and J. P. Carroll, editors. Gamebird 2006: Quail VI and Perdix XII. 31 May - 4 June 2006. Warnell School of Forestry and Natural Resources, Athens, Georgia.</li>
+</ul></li>
+<li>Class project:
+<ul>
+<li>Be developing and documenting your decision model</li>
+<li>Final exam period-April 28th at 3pm.</li>
+</ul></li>
+<li>Link to class recording <a href="">YouTube</a></li>
+<li>Today’s R script <a href="scripts/Class-19.R">Class-19.R</a></li>
+</ul>
+<div id="class-overview-objectives" class="section level2">
+<h2><span class="header-section-number">1.1</span> Class overview &amp; objectives</h2>
+<p>The objectives of this class are to</p>
+<ol style="list-style-type: decimal">
+<li>Introduce population dynamics in decision making</li>
+<li>Temporal scale of decisions and equilibrium analysis</li>
+<li>Reinforce state dependent decisions</li>
+<li>Reinforce disconnect between scientific literature and applied decision making</li>
+<li>Further student exposure to building decision models in Netica.</li>
+</ol>
+</div>
+<div id="getting-ready-to-go" class="section level2">
+<h2><span class="header-section-number">1.2</span> Getting ready to go</h2>
+<ul>
+<li>Netica file <a href="pigs.neta">here</a></li>
+<li>Install libraries that we have not used yet. <code>install.packages(&quot;popbio&quot;)</code></li>
+</ul>
+</div>
+</div>
+<div id="population-dynamics-decisions" class="section level1">
+<h1><span class="header-section-number">2</span> Population dynamics &amp; decisions</h1>
+<div id="overview" class="section level2">
+<h2><span class="header-section-number">2.1</span> Overview</h2>
+<p>In many cases we as scientists use tools like matrix population models to understand how demographic rates interact and influence long term population dynamics. This is, at times, in conflict with management, where management may take a long term view for sustainability but needs to make decisions right now to meet management objectives.</p>
+<p>Here we will walk through an analysis of boar dynamics. The analysis itself is done well, however we will see it is difficult to use this type of analysis to make decisions. To be clear there is nothing wrong with the study but rather we are looking at how one could use this type of analysis to make decisions and maybe take a different view.</p>
+<p>The life cycle of the boar is illustrated below, which can be crafted into a matrix model. This study is pretty neat because it deals with demographics that are dependent on conditions (i.e., poor, intermediate, good). The P parameters represent transition probabilities, incorporating growth and survival as a simultaneous process. The F parameters represent fertilities.</p>
+<p><img src="media/class-19/lifecycle.png" width="50%" style="display: block; margin: auto;" /> The circles represent stages: juvenile, yearling, and adult. Note there are 3 stages modeled and therefore the transition matrix should be a 3x3 matrix. The figure above can be represented as the matrix below:</p>
+<p><span class="math display">\[\mathbf{A} = \left[\begin{array}
+{rrr}
+F_1   &amp; F_2  &amp; F_3 \\
+P_1   &amp; 0     &amp; 0 \\
+0       &amp; P_2     &amp; P_3
+\end{array}\right]
+\]</span>.</p>
+<p>In poor conditions we can represent the demographic matrix as:</p>
+<p><span class="math display">\[\mathbf{A_{poor}} = \left[\begin{array}
+{rrr}
+0.13    &amp; 0.56  &amp; 1.64 \\
+0.25    &amp; 0     &amp; 0 \\
+0       &amp; 0.31     &amp; 0.58
+\end{array}\right]
+\]</span></p>
+<p>and code it up on R as</p>
+<pre class="r"><code>A_poor&lt;- matrix(c(
+    0.13, 0.56, 1.64,
+    0.25,0,0,
+    0, 0.31, 0.58),nrow=3, ncol=3,
+    byrow=TRUE)
+A_poor  </code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,] 0.13 0.56 1.64
+## [2,] 0.25 0.00 0.00
+## [3,] 0.00 0.31 0.58</code></pre>
+<p>Similarly we can represent intermediate conditions as</p>
+<p><span class="math display">\[\mathbf{A_{intermediate}} = \left[\begin{array}
+{rrr}
+0.26   &amp; 0.94  &amp; 1.93 \\
+0.33    &amp; 0     &amp; 0 \\
+0       &amp; 0.40     &amp; 0.66
+\end{array}\right]
+\]</span></p>
+<p>in matrix notation and coded up as</p>
+<pre class="r"><code>A_intermediate&lt;- matrix(c(
+    0.26, 0.94, 1.93,
+    0.33,0,0,
+    0, 0.4, 0.66),nrow=3, ncol=3,
+    byrow=TRUE)
+A_intermediate   </code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,] 0.26 0.94 1.93
+## [2,] 0.33 0.00 0.00
+## [3,] 0.00 0.40 0.66</code></pre>
+<p>Lastly we code up the good conditions demographic matrix as notation <span class="math display">\[\mathbf{A_{good}} = \left[\begin{array}
+{rrr}
+0.59  &amp; 1.76  &amp; 2.29 \\
+0.52   &amp; 0     &amp; 0 \\
+0       &amp; 0.60     &amp; 0.71
+\end{array}\right]
+\]</span></p>
+<p>and code</p>
+<pre class="r"><code>A_good&lt;- matrix(c(
+    0.59, 1.76, 2.29,
+    0.52,0,0,
+    0, 0.6, 0.71),nrow=3, ncol=3,
+    byrow=TRUE)
+A_good   </code></pre>
+<pre><code>##      [,1] [,2] [,3]
+## [1,] 0.59 1.76 2.29
+## [2,] 0.52 0.00 0.00
+## [3,] 0.00 0.60 0.71</code></pre>
+<p>Good, we got the demographic matrices put together and we can potentially use that information to make management decisions.</p>
+<div id="forecasting-population-dynamics" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> Forecasting population dynamics</h3>
+<p>We can use matrix multiplication to easily forecast population dynamics given the demographic matrix and a vector of abundances for each stage.</p>
+<p><span class="math display">\[\mathbf{N_{t+1}} = \left[\begin{array}
+{rrr}
+F_1   &amp; F_2  &amp; F_3 \\
+P_1   &amp; 0     &amp; 0 \\
+0       &amp; P_2     &amp; P_3
+\end{array}\right] \cdot
+\left[\begin{array}{r}N_{juvenile} \\N_{Yearling} \\N_{Adult} \end{array}\right] 
+\]</span></p>
+<p>We already have the transition matrices coded up (<span class="math inline">\(A\)</span>) but we need a vector of stage specific abundances to get the dynamics going. Here we assume that we have 100 juveniles, 20 yearlings, and 50 adult boars.</p>
+<pre class="r"><code>N&lt;- c(100,20,50) # STAGE SPECIFIC ABUNDANCE</code></pre>
+<p>Now we need to specify how many years to run out the population, let’s do 20.</p>
+<pre class="r"><code>years&lt;- 20</code></pre>
+<p>Now we can set up a 3x20 matrix to hold our population abundances in for the forecast and we set the initial abundance to our vector of abundances.</p>
+<pre class="r"><code># A MATRIX TO HOLD ABUNDANCES
+output&lt;- matrix(0,3, years)
+output[,1]&lt;- N</code></pre>
+<p>Now we can use our old friend the for loop to forcast the dynamics. Note the use of <code>i-1</code> and we are going from 2 to 20. That is because we have already set year 1 to the intial abundance.</p>
+<pre class="r"><code>for(i in 2:years)
+    {
+    # SOME MATRIX MULTIPLICATION MAGIC
+    output[,i]&lt;- A_poor %*% output[,i-1]  
+    }</code></pre>
+<p>We can use <code>matplot()</code> to easily plot the dynamics of the population given poor conditions.</p>
+<pre class="r"><code>matplot(t(output),type=&#39;l&#39;,
+    xlab=&quot;Years&quot;,
+    ylab=&quot;Abundance&quot;,
+    main=&quot;Poor conditions&quot;)
+legend(&quot;topright&quot;,legend=c(&quot;Juvenile&quot;,
+    &quot;Yearling&quot;,&quot;Adult&quot;),
+    lty=c(1,2,3), 
+    col=c(&quot;black&quot;,&quot;red&quot;,&quot;green&quot;))</code></pre>
+<p><img src="Class-19_files/figure-html/unnamed-chunk-10-1.png" width="672" /> We can redo the same process for intermediate conditions.</p>
+<pre class="r"><code>N&lt;- c(100,20,50) # STAGE SPECIFIC ABUNDANCE
+years&lt;- 20
+# A MATRIX TO HOLD ABUNDANCES
+output&lt;- matrix(0,3, years)
+output[,1]&lt;- N
+for(i in 2:years)
+    {
+    # SOME MATRIX MULTIPLICATION MAGIC
+    output[,i]&lt;- A_intermediate %*% output[,i-1]  
+    }
+matplot(t(output),type=&#39;l&#39;,
+    xlab=&quot;Years&quot;,
+    ylab=&quot;Abundance&quot;,
+    main=&quot;Intermediate conditions&quot;)
+legend(&quot;topleft&quot;,legend=c(&quot;Juvenile&quot;,
+    &quot;Yearling&quot;,&quot;Adult&quot;),
+    lty=c(1,2,3), 
+    col=c(&quot;black&quot;,&quot;red&quot;,&quot;green&quot;))</code></pre>
+<p><img src="Class-19_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>And finally, we can redo the same process for good conditions.</p>
+<pre class="r"><code>N&lt;- c(100,20,50) # STAGE SPECIFIC ABUNDANCE
+years&lt;- 20
+# A MATRIX TO HOLD ABUNDANCES
+output&lt;- matrix(0,3, years)
+output[,1]&lt;- N
+for(i in 2:years)
+    {
+    # SOME MATRIX MULTIPLICATION MAGIC
+    output[,i]&lt;- A_good %*% output[,i-1]  
+    }
+matplot(t(output),type=&#39;l&#39;,
+    xlab=&quot;Years&quot;,
+    ylab=&quot;Abundance&quot;,
+    main=&quot;Good conditions&quot;)
+legend(&quot;topleft&quot;,legend=c(&quot;Juvenile&quot;,
+    &quot;Yearling&quot;,&quot;Adult&quot;),
+    lty=c(1,2,3), 
+    col=c(&quot;black&quot;,&quot;red&quot;,&quot;green&quot;))</code></pre>
+<p><img src="Class-19_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+</div>
+<div id="growth-rate-sensitivity-elasticity" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> Growth rate, Sensitivity &amp; Elasticity</h3>
+<div id="growth-rate-lambda" class="section level4">
+<h4><span class="header-section-number">2.1.2.1</span> Growth Rate: Lambda</h4>
+<p>One neat thing from the transition matrix is that you can do an eigen analysis and figure out if the population is growing or not, a value referred to as lambda (<span class="math inline">\(\lambda\)</span>).</p>
+<pre class="r"><code>lambda_poor&lt;-eigen(A_poor)$values[1]
+lambda_poor&lt;-Re(lambda_poor)# convert from imaginary</code></pre>
+<p>That was a lot of work to get the <span class="math inline">\(\lambda\)</span>. The <code>popbio</code> package has functions that will do this heavy lifting for us, <code>lambda()</code> specifically.</p>
+<pre class="r"><code>library(&quot;popbio&quot;)</code></pre>
+<pre><code>## Warning: package &#39;popbio&#39; was built under R version 3.1.3</code></pre>
+<pre class="r"><code>lambda_poor</code></pre>
+<pre><code>## [1] 0.8496202</code></pre>
+<pre class="r"><code>lambda(A_poor)</code></pre>
+<pre><code>## [1] 0.8496202</code></pre>
+<p>Ohhh, that does not look good for that population</p>
+<pre class="r"><code>lambda_intermediate&lt;- lambda(A_intermediate)
+lambda_good&lt;- lambda(A_good)</code></pre>
+<p>That jives with the paper results in table 3 below. But keep in mind that <span class="math inline">\(\lambda\)</span> represents long term population growth and is not dependeng on initial abundances!</p>
+<p><img src="media/class-19/paper-results.png" width="50%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="sensitivity-s" class="section level4">
+<h4><span class="header-section-number">2.1.2.2</span> Sensitivity: s</h4>
+<p>Matrix population models are commonly used to identify management strategies by performing a sensitivity analysis of the transition matrix. Matrix values with a high sensitivity should have a disproportionate effect on population dynamics. For example, if a sensitivity analysis showed that adult fertility had the highest sensitivity value then management actions that reduce adult fertility might be effective. There is a lot of behind the scenes matrix stuff but the various functions in <code>popbio</code> to the work for us. Specifically we can use the following functions:</p>
+<ul>
+<li><code>reproductive.value(A)</code> calculates reproductive value</li>
+<li><code>stable.stage(A)</code> calculates stable stage distribution</li>
+<li><code>sensitivity(A)</code> caluclates the sensitivity</li>
+<li><code>elasticity(A)</code> calculates the elasticity</li>
+</ul>
+<pre class="r"><code>library(popbio)
+
+reproductive.value(A_poor)</code></pre>
+<pre><code>## [1] 1.000000 2.878481 6.082630</code></pre>
+<pre class="r"><code>stable.stage(A_poor)</code></pre>
+<pre><code>## [1] 0.6125324 0.1802371 0.2072304</code></pre>
+<pre class="r"><code>reproductive.value(A_intermediate)</code></pre>
+<pre><code>## [1] 1.000000 2.513282 4.494819</code></pre>
+<pre class="r"><code>stable.stage(A_intermediate)</code></pre>
+<pre><code>## [1] 0.6308679 0.1911048 0.1780273</code></pre>
+<pre class="r"><code>reproductive.value(A_good)</code></pre>
+<pre><code>## [1] 1.000000 1.998144 2.491744</code></pre>
+<pre class="r"><code>stable.stage(A_good)</code></pre>
+<pre><code>## [1] 0.6546196 0.2089594 0.1364210</code></pre>
+<pre class="r"><code>s_poor&lt;-sensitivity(A_poor) # SENSITIVITY FOR MATRIX A
+s_poor # sensitivity matrix</code></pre>
+<pre><code>##           [,1]       [,2]       [,3]
+## [1,] 0.2560917 0.07535477 0.08664031
+## [2,] 0.7371551 0.21690726 0.24939248
+## [3,] 1.5577114 0.45835521 0.52700101</code></pre>
+<pre class="r"><code>s_intermediate&lt;-sensitivity(A_intermediate) # SENSITIVITY FOR MATRIX A
+s_intermediate # sensitivity matrix</code></pre>
+<pre><code>##           [,1]       [,2]       [,3]
+## [1,] 0.3300608 0.09998323 0.09314126
+## [2,] 0.8295360 0.25128610 0.23409029
+## [3,] 1.4835635 0.44940657 0.41865313</code></pre>
+<pre class="r"><code>s_good&lt;-sensitivity(A_good) # SENSITIVITY FOR MATRIX A
+s_good # sensitivity matrix</code></pre>
+<pre><code>##           [,1]      [,2]       [,3]
+## [1,] 0.4635864 0.1479802 0.09661017
+## [2,] 0.9263124 0.2956858 0.19304104
+## [3,] 1.1551387 0.3687288 0.24072784</code></pre>
+<p>What is going on with all those numbers? Some of the values were 0, so why is there as sensitivity value for them?</p>
+</div>
+<div id="elasticity-e" class="section level4">
+<h4><span class="header-section-number">2.1.2.3</span> Elasticity: e</h4>
+<p>Elasticities take a sensitivity matrix and make the values proportional to the size of the matrix value, which clears out the zero values and puts the resulting matrix in terms of its effect on population growth rate.</p>
+<pre class="r"><code>e_poor&lt;-elasticity(A_poor)
+e_poor # elasticity matrix</code></pre>
+<pre><code>##            [,1]       [,2]      [,3]
+## [1,] 0.03918448 0.04966769 0.1672396
+## [2,] 0.21690726 0.00000000 0.0000000
+## [3,] 0.00000000 0.16723957 0.3597614</code></pre>
+<pre class="r"><code>e_intermediate&lt;-elasticity(A_intermediate) 
+e_intermediate # elasticity matrix</code></pre>
+<pre><code>##            [,1]       [,2]      [,3]
+## [1,] 0.07877467 0.08627289 0.1650132
+## [2,] 0.25128610 0.00000000 0.0000000
+## [3,] 0.00000000 0.16501321 0.2536399</code></pre>
+<pre class="r"><code>e_good&lt;-elasticity(A_good) 
+e_good # elasticity matrix</code></pre>
+<pre><code>##           [,1]      [,2]      [,3]
+## [1,] 0.1679006 0.1598770 0.1358088
+## [2,] 0.2956858 0.0000000 0.0000000
+## [3,] 0.0000000 0.1358088 0.1049190</code></pre>
+<p>Now these matrices generally form management recommendations and so on that come out of this type of work. But there are come issues here because conditions vary over time and the underlying demographics do was well.</p>
+</div>
+</div>
+<div id="uncertainty-in-conditions" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> Uncertainty in conditions</h3>
+<p>We can start to look at the effect of uncertainty in conditions using a stochastic projection.</p>
+<pre class="r"><code>out&lt;-stoch.projection(
+    matrices=list(A_poor,A_intermediate,
+        A_good),
+    n0 = c(3000,900, 800),
+    tmax=100,
+    nreps=5000,
+    prob= c(0.35,0.35,0.30),
+    nmax=100000) # cut off at 100k all stages
+
+gr&lt;-stoch.growth.rate(matrices=list(A_poor,A_intermediate,
+        A_good), prob = c(0.35,0.35,0.30))  </code></pre>
+<pre><code>## [1] Calculating stochastic growth at time 1
+## [1] Calculating stochastic growth at time 10000
+## [1] Calculating stochastic growth at time 20000
+## [1] Calculating stochastic growth at time 30000
+## [1] Calculating stochastic growth at time 40000
+## [1] Calculating stochastic growth at time 50000</code></pre>
+<pre class="r"><code>gr        </code></pre>
+<pre><code>## $approx
+## [1] 0.08642614
+## 
+## $sim
+## [1] 0.1068048
+## 
+## $sim.CI
+## [1] 0.1041358 0.1094739</code></pre>
+<p>The above code will give us some idea of the growth rate</p>
+<div id="implications-for-management" class="section level4">
+<h4><span class="header-section-number">2.1.3.1</span> Implications for management</h4>
+<p>For the results the authors recommended the following</p>
+<ol style="list-style-type: decimal">
+<li><p>hunting, as a measure to control populations, should be adjusted to changing environmental conditions (State dependent decision)</p></li>
+<li><p>Growing populations under good environmental conditions, particularly following a full mast of trees, yearly survival of juveniles should be reduced most, to approximately 15% (including natural postnatal mortality), assuming 60% survival in yearlings and 70% in adults, in order to limit growth rate to <span class="math inline">\(\lambda \leq 1\)</span></p></li>
+<li><p>Our analysis shows that preferential hunting of adults in favourable habitats would be ineffective, because even if survival of adults was below 10% (assuming 50% survival in juveniles and 60% survival in yearlings) population growth would not drop to <span class="math inline">\(\lambda = 1\)</span></p></li>
+<li><p>For poor environments, on the other hand, our elasticity analysis indicated that decreasing adult survival would lead to the most effective reduction of population growth</p></li>
+</ol>
+<p><em>Questions</em></p>
+<ol style="list-style-type: decimal">
+<li>As a decision maker how do you implement an action given these recommendations?</li>
+<li>How do you account for uncertainty?</li>
+<li>Do recommendations from equilibrium analyses like this match the temporal scale of management?</li>
+<li>It was recommended that when conditions are poor (harsh winter poor acorn mast) managers should decrease adult survival by some management action. However, initial conditions (i.e., how many pigs) <em>do not</em> influence demographic sensitivity and elasticity analyses. What do you do when there are only a handful of adults around? Do you expend effort to decrease survival or should you adapt your decision to the current system state?</li>
+<li>How do you incorporate management objectives.</li>
+</ol>
+</div>
+</div>
+</div>
+<div id="reframing-as-a-decision-model" class="section level2">
+<h2><span class="header-section-number">2.2</span> Reframing as a decision model</h2>
+<p>Let’s take this case study are try to recast it as a decision model. First we need to set up the model and influence diagram. Let’s start with <a href="pig.neta">Pig.neta</a>, which for the sake of time has several nodes built in. You will notice nodes for the current abundance and future abundance as well as a node for conditions as they influence the future population size by altering demographic rates.</p>
+<pre class="r"><code>n0&lt;-N
+F&lt;-c(0.13,0.56,1.64) 
+S&lt;-c(0.25,0.31,0.58) 
+   
+yy&lt;-c(sum(n0*F), # Juveniles
+    n0[1]*S[1] , # Yearlings
+    n0[2]*S[2]+n0[3]*S[3])# Adults
+   
+# COMPARE TO MATRIX CALCULATION
+y&lt;-A_poor %*% N 
+
+cbind(y,yy)  # winner winner </code></pre>
+<pre><code>##               yy
+## [1,] 106.2 106.2
+## [2,]  25.0  25.0
+## [3,]  35.2  35.2</code></pre>
+<p>OK, we can use some conventional math to get the same dynamics and not have to use the matrix. This gives us some flexibility in simulations, specifically, we can add uncertainty.</p>
+<p>Now let’s be good and acknowledge at least some uncertainty. There is most certainly other bits of uncertainty at play (i.e., observation, structural) here but for sake of time we simply throw some parametric uncertainty in the process using the <code>rpois()</code> and <code>rbinom()</code> functions to simulate the number of juvenile, yearling, and adult pigs in the next year.</p>
+<pre class="r"><code>n0&lt;-N
+F&lt;-c(0.13,0.56,1.64) 
+S&lt;-c(0.25,0.31,0.58) 
+   
+yy&lt;-c(sum(rpois(3,n0*F)), # Juveniles
+   rbinom(1,n0[1],S[1]), # Yearlings
+   rbinom(1,n0[2],S[2])+rbinom(1,n0[3],S[3]))# Adults</code></pre>
+<p>Now we can generalize the code above to do a big stochastic simulation to generate the many many outcomes. First we need to set up the fertility and survivals a bit differently to efficiently simulate from.</p>
+<pre class="r"><code>F_j=c(0.13,0.56,1.64)# poor, intermediate, good
+F_y=c(0.56,0.94,1.93)
+F_a =c(1.64,1.76,2.29)
+        
+S_j=c(0.25,0.31,0.58)
+S_y=c(0.31,0.40,0.66)
+S_a =c(0.58,0.60,0.71)       </code></pre>
+<p>Why did I do this? Well, <code>r</code> can handle vectors easily using brackets. What I mean here is if i have a vector with 3 values in it, I can use that indexing to make many many values. Let’s demonstrate.</p>
+<pre class="r"><code>x&lt;- c(5,6,7)
+# a vector of indices
+indexes&lt;- c(1,1,3,2,2,1,1)# 1,2,3 indexes condition
+x[indexes] # EXPANDS X GIVEN THE INDEX</code></pre>
+<pre><code>## [1] 5 5 7 6 6 5 5</code></pre>
+<p>We did that so we can efficiently use the conditions to index the stage specific appropriate fertility and survival. First we will set up the <code>data.frame()</code> with randomly selected conditions and initial abundances for each state.</p>
+<pre class="r"><code>set.seed(8433)
+reps&lt;- 250000
+outcomes&lt;- data.frame(
+    condition=sample(c(1:3),reps,replace=TRUE),
+    n0_j=rpois(reps,N[1]),
+    n0_y=rpois(reps,N[2]),
+    n0_a= rpois(reps,N[3])) </code></pre>
+<p>That gives us a 250k row of values.</p>
+<pre class="r"><code>head(outcomes)</code></pre>
+<pre><code>##   condition n0_j n0_y n0_a
+## 1         2  106   12   46
+## 2         2  115   16   54
+## 3         2  101   23   43
+## 4         1  119   19   49
+## 5         1  108   28   46
+## 6         1  121   21   49</code></pre>
+<p>Now we can forecast the future abundance for each stage given the conditions. Note that we are only doing this for 1 year. First we will forecast juveniles.</p>
+<pre class="r"><code>outcomes$n1_j&lt;-rpois(reps,outcomes$n0_j*F_j[outcomes$condition])+
+    rpois(reps,outcomes$n0_y*F_y[outcomes$condition])+
+    rpois(reps,outcomes$n0_a*F_a[outcomes$condition])</code></pre>
+<p>Now we can do yearling and adults.</p>
+<pre class="r"><code>outcomes$n1_y&lt;- rbinom(reps,outcomes$n0_j,S_j[outcomes$condition])  
+outcomes$n1_a&lt;- rbinom(reps,outcomes$n0_y,S_y[outcomes$condition])+
+    rbinom(reps,outcomes$n0_a,S_a[outcomes$condition])</code></pre>
+<p>Like we did before, we discretize the outcomes to put in a decision model. First we need to summarize the output to make sure we discretize appropriately.</p>
+<pre class="r"><code>rngs&lt;- apply(outcomes,2,range)</code></pre>
+<p>Looks like the range for <code>n0</code> was 53 to 151 for juveniles, 3 to 43 for yearlings, and<br />
+22 to 86 for adults. the future numbers were 50 to 476 for juveniles, 4 to 90 for yearlings, and<br />
+14 to 80 for adults.</p>
+<div id="discretizing-outcomes" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Discretizing outcomes</h3>
+<p>Now we can discretize our outcomes for input into Netica.</p>
+<p>Now we can discretize Juveniles using the <code>cut()</code> function.</p>
+<pre class="r"><code># Juveniles Initial Abundance
+bins&lt;- seq(0,150,length.out=5)
+labs&lt;- paste(bins[-length(bins)],bins[-1],sep=&quot;-&quot;)
+outcomes$n0_j_bin&lt;-cut(outcomes$n0_j,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE)
+# Juveniles Future Abundance
+bins&lt;- seq(0,500,length.out=5)
+labs&lt;- paste(bins[-length(bins)],bins[-1],sep=&quot;-&quot;)
+outcomes$n1_j_bin&lt;-cut(outcomes$n1_j,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE) </code></pre>
+<p>And Yearlings</p>
+<pre class="r"><code># Yearling Initial Abundance
+bins&lt;- seq(0,50,length.out=5)
+labs&lt;- paste(bins[-length(bins)],bins[-1], sep = &quot;-&quot;)
+outcomes$n0_y_bin&lt;- cut(outcomes$n0_y,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE)
+# Yearling Future  Abundance
+bins&lt;- seq(0,90,length.out=5)
+labs&lt;- paste(bins[-length(bins)],bins[-1],sep=&quot;-&quot;)
+outcomes$n1_y_bin&lt;- cut(outcomes$n1_y,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE) </code></pre>
+<p>And now for adults</p>
+<pre class="r"><code># Adult Initial Abundance
+bins&lt;- seq(0,90,length.out=5)
+labs&lt;- paste(bins[-length(bins)],bins[-1],sep=&quot;-&quot;)
+outcomes$n0_a_bin&lt;- cut(outcomes$n0_a,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE)  
+# Adult Future  Abundance
+bins&lt;- seq(0,80,length.out=5)
+labs&lt;- paste(bins[-length(bins)],bins[-1],sep=&quot;-&quot;)
+outcomes$n1_a_bin&lt;- cut(outcomes$n1_a,
+    breaks=bins,
+    labels=labs,
+    include.lowest=TRUE)</code></pre>
+<p>Here I will use the <code>prop.table()</code> function to quickly calculate the probability of each outcome. Recall before we used frequencies. Just a different way to do the same thing.</p>
+<pre class="r"><code>prop.table(table(outcomes$n0_j_bin))</code></pre>
+<pre><code>## 
+##      0-37.5     37.5-75    75-112.5   112.5-150 
+## 0.000000000 0.005520022 0.885583542 0.108896436</code></pre>
+<pre class="r"><code>prop.table(table(outcomes$n0_y_bin))</code></pre>
+<pre><code>## 
+##   0-12.5  12.5-25  25-37.5  37.5-50 
+## 0.038296 0.849056 0.112428 0.000220</code></pre>
+<pre class="r"><code>prop.table(table(outcomes$n0_a_bin))</code></pre>
+<pre><code>## 
+##   0-22.5  22.5-45  45-67.5  67.5-90 
+## 0.000004 0.266392 0.724720 0.008884</code></pre>
+<p>And now we can do it for the future population given the current population size.</p>
+<pre class="r"><code>library(reshape2) # for the dcast function</code></pre>
+<pre><code>## Warning: package &#39;reshape2&#39; was built under R version 3.1.3</code></pre>
+<pre class="r"><code>outcomes$tmp&lt;-1 # a value to sum over for counts
+
+future_juveniles&lt;- dcast(data=outcomes, 
+    formula=condition+n0_j_bin~n1_j_bin,
+    value.var=&quot;tmp&quot;,
+    fun.aggregate=sum,
+    drop=FALSE)  
+    
+future_yearlings&lt;- dcast(data=outcomes, 
+    formula=condition+n0_y_bin~n1_y_bin,
+    value.var=&quot;tmp&quot;,
+    fun.aggregate=sum,
+    drop=FALSE)  
+    
+future_adults&lt;- dcast(data=outcomes, 
+    formula=condition+n0_a_bin~n1_a_bin, 
+    value.var=&quot;tmp&quot;,
+    fun.aggregate=sum,
+    drop=FALSE) </code></pre>
+<p>Using the tables we can calculate the conditional probabilities of each outcome. Notices the use of brackets and dropping the first 2 columns so I can calculate these correctly.</p>
+<pre class="r"><code>future_juveniles[,-c(1,2)]&lt;- prop.table(as.matrix(future_juveniles[,-c(1,2)]),1)
+future_yearlings[,-c(1,2)]&lt;- prop.table(as.matrix(future_yearlings[,-c(1,2)]),1)
+future_adults[,-c(1,2)]&lt;- prop.table(as.matrix(future_adults[,-c(1,2)]),1)</code></pre>
+<p>Tada! The conditional probability tables.</p>
+<pre class="r"><code>future_juveniles</code></pre>
+<pre><code>##    condition  n0_j_bin      0-125    125-250      250-375    375-500
+## 1          1    0-37.5        NaN        NaN          NaN        NaN
+## 2          1   37.5-75 0.90184049 0.09815951 0.000000e+00 0.00000000
+## 3          1  75-112.5 0.89073605 0.10926395 0.000000e+00 0.00000000
+## 4          1 112.5-150 0.85807667 0.14192333 0.000000e+00 0.00000000
+## 5          1      &lt;NA&gt;        NaN        NaN          NaN        NaN
+## 6          2    0-37.5        NaN        NaN          NaN        NaN
+## 7          2   37.5-75 0.10786517 0.89213483 0.000000e+00 0.00000000
+## 8          2  75-112.5 0.02288305 0.97710338 1.357239e-05 0.00000000
+## 9          2 112.5-150 0.00384362 0.99615638 0.000000e+00 0.00000000
+## 10         2      &lt;NA&gt;        NaN        NaN          NaN        NaN
+## 11         3    0-37.5        NaN        NaN          NaN        NaN
+## 12         3   37.5-75 0.00000000 0.19058296 8.094170e-01 0.00000000
+## 13         3  75-112.5 0.00000000 0.01075804 9.718460e-01 0.01739599
+## 14         3 112.5-150 0.00000000 0.00000000 8.618566e-01 0.13814342
+## 15         3      &lt;NA&gt; 0.00000000 0.00000000 0.000000e+00 1.00000000</code></pre>
+<pre class="r"><code>future_yearlings</code></pre>
+<pre><code>##    condition n0_y_bin     0-22.5    22.5-45      45-67.5   67.5-90
+## 1          1   0-12.5 0.31868132 0.68131868 0.000000e+00 0.0000000
+## 2          1  12.5-25 0.32130645 0.67860842 8.512933e-05 0.0000000
+## 3          1  25-37.5 0.32118991 0.67870231 1.077818e-04 0.0000000
+## 4          1  37.5-50 0.17647059 0.82352941 0.000000e+00 0.0000000
+## 5          2   0-12.5 0.06202532 0.93291139 5.063291e-03 0.0000000
+## 6          2  12.5-25 0.05840470 0.93417793 7.417369e-03 0.0000000
+## 7          2  25-37.5 0.06123751 0.93132043 7.442058e-03 0.0000000
+## 8          2  37.5-50 0.10526316 0.89473684 0.000000e+00 0.0000000
+## 9          3   0-12.5 0.00000000 0.04087953 8.445339e-01 0.1145866
+## 10         3  12.5-25 0.00000000 0.04614974 8.455818e-01 0.1082684
+## 11         3  25-37.5 0.00000000 0.04987796 8.410273e-01 0.1090948
+## 12         3  37.5-50 0.00000000 0.10526316 8.947368e-01 0.0000000</code></pre>
+<pre class="r"><code>future_adults</code></pre>
+<pre><code>##    condition n0_a_bin         0-20      20-40      40-60        60-80
+## 1          1   0-22.5 1.0000000000 0.00000000 0.00000000 0.000000e+00
+## 2          1  22.5-45 0.0132829033 0.97640596 0.01031114 0.000000e+00
+## 3          1  45-67.5 0.0002001167 0.76297840 0.23680480 1.667639e-05
+## 4          1  67.5-90 0.0000000000 0.09541985 0.90203562 2.544529e-03
+## 5          2   0-22.5          NaN        NaN        NaN          NaN
+## 6          2  22.5-45 0.0050230973 0.94488048 0.05009643 0.000000e+00
+## 7          2  45-67.5 0.0000000000 0.56880521 0.43094574 2.490536e-04
+## 8          2  67.5-90 0.0000000000 0.03262411 0.94468085 2.269504e-02
+## 9          3   0-22.5          NaN        NaN        NaN          NaN
+## 10         3  22.5-45 0.0000000000 0.33799565 0.66168749 3.168568e-04
+## 11         3  45-67.5 0.0000000000 0.03610606 0.90560283 5.829111e-02
+## 12         3  67.5-90 0.0000000000 0.00000000 0.33561644 6.643836e-01</code></pre>
+<pre class="r"><code>write.csv(future_juveniles,&quot;future_juveniles.csv&quot;)</code></pre>
+<p>Ok, now we are going to get into trying to cobble together a decision network for this case study.</p>
+</div>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+$(document).ready(function () {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+});
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

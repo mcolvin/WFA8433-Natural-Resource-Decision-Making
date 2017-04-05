@@ -21,6 +21,7 @@ eval_answers<-TRUE
 ```
 
 ```{r,echo=FALSE,eval=FALSE}
+
 ## create data for analysis
 set.seed(8433)
 tmp<-data.frame(elevation=runif(167,10,300),
@@ -46,6 +47,7 @@ write.csv(basal, "basal.csv",row.names = FALSE)
 
 ```{r echo=FALSE, out.width="100%"}
 knitr::include_graphics("media/banner-09.jpg")
+source("C:/Users/mcolvin/Documents/myFunctions.R")
 ```
 
 # Homework 3: Predicting outcomes
