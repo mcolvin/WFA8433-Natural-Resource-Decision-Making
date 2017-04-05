@@ -3,7 +3,7 @@ title: ""
 ---
 
 ```{r echo=FALSE, out.width="95%"}
-include_graphics("media/banner-01.jpg")
+knitr::include_graphics("media/banner-01.jpg")
 ```
 <!--
 
@@ -22,6 +22,7 @@ system(paste("xcopy",
 
 ## Announcements
 
+* Class 19 [here](Class-19.html)
 * Read for 4/5: Bieber, C., and T. Ruf. 2005. Population dynamics in wild boar 
 _Sus scrofa_: ecology, elasticity of growth rate and implications for the 
 management of pulsed resource consumers. Journal 
