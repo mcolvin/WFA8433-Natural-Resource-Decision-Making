@@ -360,6 +360,12 @@ div.tocify {
     <li>
       <a href="Class-20.html">Class 20</a>
     </li>
+    <li>
+      <a href="Class-21.html">Class 21</a>
+    </li>
+    <li>
+      <a href="Class-22.html">Class 22</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -549,9 +555,8 @@ outcomes$n1_a_bin&lt;- cut(outcomes$n1_a,
     include.lowest=TRUE)</code></pre>
 <p>Whoa, that is done, what a bit of work to discretize all those values of future abundance.</p>
 <p>Now we can use the <code>dcast()</code> function again to summarize the frequencies and calculate the conditional probabilities of the outcomes.</p>
-<pre class="r"><code>library(reshape2) # for the dcast function</code></pre>
-<pre><code>## Warning: package &#39;reshape2&#39; was built under R version 3.1.3</code></pre>
-<pre class="r"><code>outcomes$tmp&lt;-1 # a value to sum over for counts
+<pre class="r"><code>library(reshape2) # for the dcast function
+outcomes$tmp&lt;-1 # a value to sum over for counts
 
 future_juveniles&lt;- dcast(data=outcomes, 
     formula=n0_j_bin+n0_y_bin+n0_a_bin+condition~n1_j_bin,
@@ -948,9 +953,8 @@ stocking$U&lt;- (stocking$uc_scaled+stocking$pol_scaled+
 fish_we_want &lt;- as.integer(stocking$requested)</code></pre>
 <p>We can use a tool called dynamic programming. Dynamic programming is difficult to comprehend and beyond the scope of what we are up to here but the gist is it calculates the local maximum values for each value and then it passes back though the matrix of values to find the combination that maximizes the utility. Fortunately we don’t have to program this in, some good folks have put a package together that will solve this knapsack problem. Essentially, we have objects that have size and value that need to be fitted in a knapsack of limited size. In the case of the trout stocking case we have 3 knapsacks.</p>
 <p>First thing to do is call up the <code>adagio</code> package and specify the value as an integer.</p>
-<pre class="r"><code>library(adagio)</code></pre>
-<pre><code>## Warning: package &#39;adagio&#39; was built under R version 3.1.3</code></pre>
-<pre class="r"><code>value&lt;- as.integer(stocking$U*100)</code></pre>
+<pre class="r"><code>library(adagio)
+value&lt;- as.integer(stocking$U*100)</code></pre>
 <p>Now we can use the <code>mknapsack()</code> function that returns what fish to take from what hatchery to maximize the utility of stocking.</p>
 <pre class="r"><code>solution &lt;- mknapsack(value, fish_we_want, troutAvailable)
 solution</code></pre>

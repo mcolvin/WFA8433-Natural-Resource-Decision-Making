@@ -54,6 +54,10 @@ navbar:
           href: "Class-19.html"          
         - text: "Class 20"
           href: "Class-20.html"           
+        - text: "Class 21"
+          href: "Class-21.html"    
+        - text: "Class 22"
+          href: "Class-22.html"    
     - text: "Assignments"
       menu: 
         - text: "Homework 1"

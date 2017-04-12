@@ -360,6 +360,12 @@ div.tocify {
     <li>
       <a href="Class-20.html">Class 20</a>
     </li>
+    <li>
+      <a href="Class-21.html">Class 21</a>
+    </li>
+    <li>
+      <a href="Class-22.html">Class 22</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -626,9 +632,8 @@ legend(&quot;topleft&quot;,legend=c(&quot;Juvenile&quot;,
 <pre class="r"><code>lambda_poor&lt;-eigen(A_poor)$values[1]
 lambda_poor&lt;-Re(lambda_poor)# convert from imaginary</code></pre>
 <p>That was a lot of work to get the <span class="math inline">\(\lambda\)</span>. The <code>popbio</code> package has functions that will do this heavy lifting for us, <code>lambda()</code> specifically.</p>
-<pre class="r"><code>library(&quot;popbio&quot;)</code></pre>
-<pre><code>## Warning: package &#39;popbio&#39; was built under R version 3.1.3</code></pre>
-<pre class="r"><code>lambda_poor</code></pre>
+<pre class="r"><code>library(&quot;popbio&quot;)
+lambda_poor</code></pre>
 <pre><code>## [1] 0.8496202</code></pre>
 <pre class="r"><code>lambda(A_poor)</code></pre>
 <pre><code>## [1] 0.8496202</code></pre>
@@ -730,10 +735,10 @@ gr&lt;-stoch.growth.rate(matrices=list(A_poor,A_intermediate,
 ## [1] 0.08642614
 ## 
 ## $sim
-## [1] 0.1063518
+## [1] 0.1049746
 ## 
 ## $sim.CI
-## [1] 0.1036778 0.1090259</code></pre>
+## [1] 0.1023211 0.1076281</code></pre>
 <p>The above code will give us some idea of the growth rate</p>
 <div id="implications-for-management" class="section level4">
 <h4><span class="header-section-number">2.1.3.1</span> Implications for management</h4>

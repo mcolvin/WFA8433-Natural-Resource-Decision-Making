@@ -145,8 +145,8 @@ harvest_matrix[1,] <- c(0,0,0.05)
 harvest_matrix[2,] <- c(0,0,0.10)   
 harvest_matrix[3,] <- c(0,0,0.15)   
 harvest_matrix[4,] <- c(0.05,0.05,0.05)  
-harvest_matrix[5,] <- c(0.05,0.05,0.05)   
-harvest_matrix[6,] <- c(0.05,0.05,0.05)   
+harvest_matrix[5,] <- c(0.10,0.10,0.10)   
+harvest_matrix[6,] <- c(0.15,0.15,0.15)   
 harvest_matrix[7,] <- c(0.00,0.00,0.00)  
  
  
@@ -159,7 +159,8 @@ outcomes$n1_j<-rpois(reps,rbinom(reps,outcomes$n0_j,1-harvest_matrix[outcomes$de
  
  
 ## ----unnamed-chunk-10---- ##
-outcomes$n1_y<- rbinom(reps,outcomes$n0_j,1-harvest_matrix[outcomes$decision,1]*S_j[outcomes$condition])  
+outcomes$n1_y<- rbinom(reps,outcomes$n0_j,
+    1-harvest_matrix[outcomes$decision,1]*S_j[outcomes$condition])  
 outcomes$n1_a<- rbinom(reps,outcomes$n0_y,1-harvest_matrix[outcomes$decision,2]*S_y[outcomes$condition])+
     rbinom(reps,outcomes$n0_a,1-harvest_matrix[outcomes$decision,3]*S_a[outcomes$condition])
  
@@ -256,7 +257,9 @@ S_add<- S*(1-H)
 # compensatory
 C<- 1-S
 b<-ifelse(H > C,1,0)
-S_comp<-ifelse (H > C, (S*(1-b*H))/(1-C), S*(1-b*H))
+S_comp<-ifelse (H > C, 
+    (S*(1-b*H))/(1-C), 
+    S*(1-b*H))
 
 # plot results
 plot(x=H,y=S_add,
@@ -309,7 +312,8 @@ outcomes$S_j<- S_j[outcomes$condition]# condition specific survival
 
 ## ADDITIVE
 indx_add<- which(outcomes$mortalityType==1)
-outcomes[indx_add,]$S_j<-outcomes[indx_add,]$S_j*(1-harvest_matrix[outcomes[indx_add,]$decision,3])
+outcomes[indx_add,]$S_j<-outcomes[indx_add,]$S_j*
+    (1-harvest_matrix[outcomes[indx_add,]$decision,3])
 
 ## COMPENSATORY
 indx_c<- which(outcomes$mortalityType==2)
@@ -455,7 +459,9 @@ write.csv(future_adults,"future_adults-with-decisions-and-su.csv")
  
  
 ## ----unnamed-chunk-24---- ##
-outcomes$abundance<- outcomes$n1_j+outcomes$n1_y+outcomes$n1_a
+outcomes$abundance<- outcomes$n1_j+
+  outcomes$n1_y+
+  outcomes$n1_a
  
  
  
@@ -494,8 +500,11 @@ stocking$uc_scaled<-propscale(stocking$urbanCenter_km)
 stocking$pol_scaled<-propscale(stocking$politician)
 stocking$priv_scaled<-propscale(stocking$troutPrivileges)
 stocking$stocked_scaled<-1-propscale(stocking$consectutiveYearsStocked)
-stocking$U<- (stocking$uc_scaled+stocking$pol_scaled+
-    stocking$priv_scaled+stocking$stocked_scaled)/4
+
+stocking$U<- (stocking$uc_scaled+
+    stocking$pol_scaled+
+    stocking$priv_scaled+
+    stocking$stocked_scaled)/4
  
  
  
@@ -512,7 +521,9 @@ value<- as.integer(stocking$U*100)
  
  
 ## ----unnamed-chunk-31---- ##
-solution <- mknapsack(value, fish_we_want, troutAvailable)
+solution <- mknapsack(value, 
+      fish_we_want, 
+  troutAvailable)
 solution
 
 stocking$hatchery<- solution$ksack
