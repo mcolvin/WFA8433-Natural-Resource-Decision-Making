@@ -1,0 +1,800 @@
+---
+title: ""
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true   
+    collapsed: false
+---
+
+ <!--
+
+
+rmarkdown::render_site("Class-22.Rmd")# build website
+library(knitr)
+rmarkdown::render_site()# build website
+
+source("_build.R")
+build("Class-21",bld="PAGE",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
+
+# PURL THIS SHIT & MOVE FILES TO DOCS
+build("Class-21",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
+
+source("_build.R");build("Class-21",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
+
+-->
+
+
+```{r echo=FALSE, out.width="100%"}
+library(knitr)
+include_graphics("media/banner-11.jpg")
+```
+
+
+# Class 22: Monitoring, Information, and ARM Continued {-}
+
+# Class preliminaries
+
+* Supplemental background reading for next class(es):
+<!--
+********** add some reading
+-->
+* Reading(s) for next time:
+    * Conroy and Peterson Chapter 7
+    * Conroy and Peterson Chapter 9
+    * Moore, J. L., and M. C. Runge. 2012. Combining Structured Decision 
+    Making and Value-of-Information Analyses to Identify Robust Management 
+    Strategies. Conservation Biology 26:810-820.[PDF](pdfs/M234.pdf) 
+    * Canessa, S., G. Guillera-Arroita, J. J. Lahoz-Monfort, D. M. 
+    Southwell, D. P. Armstrong, I. Chadès, R. C. Lacy, and S. J. Converse. 
+    2015. When do we need more data? A primer on calculating the value of 
+    information for applied ecologists. Methods in Ecology and 
+    Evolution:1219-1228. [PDF](pdfs/C262.pdf)
+* Class project: 
+    * Be developing your decision model
+    * Final exam period-April 28th at 3pm.
+* Link to class recording  [YouTube]()
+* Today's R script [Class-21.R](scripts/Class-21.R)
+
+## Class overview & objectives 
+
+The objectives of this class are to:
+
+1. Formally incorporate monitoring into decision making
+2. Calculate the value of perfect and imperfect information
+3. Formally use monitoring to learn
+
+## Getting ready to go
+
+A couple of networks we will be working with
+
+* [Value of perfect information](nets/class-21/EVPI.neta)
+* [Value of imperfect information](nets/class-21/EVII.neta)
+
+Packages you may want to install to play along.
+
+```{r}
+#install.packages("msm")
+#install.packages("MDPtoolbox")
+```
+
+```{r echo=FALSE, out.width="100%"}
+library(knitr)
+include_graphics("media/class-21/Picture1.png")
+```
+
+# Bayes Theorem
+
+The core of Bayesian inference and Bayes approaches to updating 
+information is Bayes' Theorem. To understand Bayes' Theorem (BT) we 
+first have to understand what a conditional probability is. A 
+conditional probability (or distribution) is simply the probability of 
+an event $y$ given that some other event $x$ occurs. 
+
+As a simple example, $y$ could be the event of drawing a spade from a 
+poker deck and $x$ is the event of drawing a heart. Either of these 
+events can occur by themselves with probability $p(y=Spade)$, 
+$p(x=Heart)$ respectively with $p=1/4$ each in this case). 
+
+
+```{r}
+deck<- expand.grid(
+    suit = c("Diamond", "Club", "Heart", "Spade"),
+    card = c("Ace", "Deuce", "Three", "Four","Five", 
+             "Six", "Seven", "Eight", "Nine", "Ten", 
+             "Jack", "Queen", "King"))
+deck$id<-1:nrow(deck) # for sampling later
+ncards<-nrow(deck)
+prX<- nrow(deck[deck$suit=="Heart",])/ncards #p(x=Heart)
+prY<-  nrow(deck[deck$suit=="Spade",])/ncards #p(x=Spade) 
+```
+
+Let's confirm that the probability of drawing a Heart is in fact 0.25 and drawing
+a Spade is 0.25.
+
+```{r}
+prX
+prY
+```
+Good, these numbers jive. 
+
+Now what if we were curious what the probability of the drawing a Heart 
+or a Spade? This is a joint probability and it specifies the probability 
+of outcome $y$ or $x$ occurring. The rule for joint probabilities 
+specifies that the probability of the events $y$ and $x$ jointly 
+occurring is: 
+
+
+$$P(y \cap x) = p(y \textpipe x) p(x)$$
+
+
+where $p(y \textpipe x)$ is the conditional probability of outcome $y$ 
+given outcome $x$. For example, $p(y \textpipe x)$ might be the 
+probability of drawing a Spade if a Heart has already been drawn (and 
+not replaced in the deck, in this case, $P(y \textpipe x) = 13/51$. Thus, the joint 
+probability of drawing a heart or a spade is 
+
+$$P(y \bigcap x) = p(y \textpipe x) p(x) = 0.064 = \frac{13}{51}\cdot \frac{1}{4}.$$
+
+Let's confirm this by simulation.
+
+```{r}
+reps<-50000
+indx<-sample(nrow(deck),reps,replace=TRUE) # index for card selected
+out<-data.frame(firstCardSuit=deck[indx,]$suit)
+prop.table(table(out)) # all close to 0.25
+```
+
+Now we need to simulate the second part of the process where 
+we select a card given one card has been removed.
+
+
+```{r}
+out$secondCardSuite<-NA
+# SIMULATE THE PROCESS
+for(i in 1:reps)
+    {
+    # SAMPLE ANOTHER CARD AND GET THE SUITE
+    id<- sample(deck$id[-indx[i]],1)
+    out$secondCardSuit[i]<- as.character(deck$suit[id])
+    }
+```
+
+
+```{r}
+out$tmp<-1
+outcomes<-aggregate(tmp~firstCardSuit+secondCardSuit,out,FUN=sum)
+outcomes$p<- outcomes$tmp/reps
+```
+Let's check and see if the probabilities for the first suit being a heart and
+the second being a Spade is close to 0.064. 
+
+```{r}
+outcomes
+```
+Yes, they are pretty close, if you run for a large numbers of replicates they will
+converge to 0.064. How about the joint probability of selecting a heart or a spade?
+
+```{r}
+out$tmp<-0
+out[out$firstCardSuit %in% c("Spade","Heart"),]$tmp<-1
+out[out$secondCardSuit %in% c("Spade","Heart"),]$tmp<-1
+mean(out$tmp)
+```
+
+<!--
+https://betterexplained.com/articles/an-intuitive-and-short-explanation-of-bayes-theorem/
+-->
+
+$$Pr(A|X)= \frac{Pr(X|A)\cdot Pr(A)}{Pr(x|A)}
+
+
+
+This is the joint probability of 
+
+The conditioning can occur in either direction so
+
+
+
+
+
+Ok, so why are probabilities important? Good question, they are important because 
+it is how we quantify our belief in something and the uncertainty in that belief. 
+If we know something absolutely there is no uncertainty and the probability is 1.
+If we acknowledge our incomplete understanding, we need to put some value on our 
+beliefs of how a system works and we have to have 2 or more explanations that are 
+framed as hypotheses which in turn provide predictions that can be compared to 
+monitoring. 
+
+firstCardSuite
+
+
+Application of Bayesian Updating to Model Weights Above our focus has 
+been on using data to update information about uncertainty in a 
+parameter’s value. Another important application of BT is in updating 
+our knowledge about which hypothesis or model is "true", when, as often 
+is the case, our predictions and management decisions have to be based 
+on more than 1 model. Now let $h_i$ stand for the event "Hypothesis i is 
+true", while x still stands for the sample data, we can re-write BT as 
+
+$$p(H_i | x)\cdot p(x) = p(x | H_i)\cdot p(H_i)$$
+
+The above quantities now have the following interpretations
+* $p(H_i)$ expresses knowledge (uncertainty) about the truth of 
+hypothesis i in the absence of (before collecting) data, and is also 
+known as the prior probability that i H is true. 
+* $p(x)$ expresses the probability 
+
+* $p(H_i | x)$ expresses knowledge (uncertainty) about the truth of 
+hypothesis i in the presence (after collecting) data, and is also known 
+as the posterior probability that i H is true. 
+* $p(x|H_i)$ expresses the probability or likelihood of having obtained 
+the data result, given that hypothesis i H is true. 
+
+
+
+It is convenient to re-arrange BT as
+
+
+Note that this is the same relationship as before, just that the 
+denominator now involves summation over the discrete alternative models 
+we are considering, rather than integration over the continuous 
+parameter space. 
+
+This is really a straightforward application of BT, and the only real 
+technical question is what is the appropriate likelihood to use. In 
+general we are going to want to form likelihoods under our alternative 
+models, and use data to estimate the parameters via maximum likelihood. 
+
+## Prediction under 4 alternative models, Normal likelihood with equal and known variances
+
+To keep things simple for illustration, we will take a case in which it 
+is quite easy to produce likelihood values under each model. Take a case 
+where we are harvesting a population and predicting its response under 4 
+alternative models of harvest impact. Given an initial population size 
+of 125, the models produce predictions for next year’s population of 
+100, 150, 125, and 135. We will start with equal belief in the 4 
+alternative models (1/4 each). We will assume a Normal likelihood and a 
+fixed sd of 100. Finally, next year comes and we observe that the 
+population is 140. 
+
+
+First, we calculate the likelihood values under each models as
+
+
+$$p(x|H_i) = Normal(140,\mu_i, 100)$$
+
+where 
+
+* $p(x|H_i)$ is the probability of observing 140 given hypothesis $i$,
+* $\mu_i$ is the predicted value under each model, and
+* $i$ indexes each hypothesis.
+
+
+The `dnorm()` function returns this probability, for instance producing 
+
+```{r}
+dnorm(140,125,100) #p(x|H_i)
+```
+for the third model, or (by replacing 125 with the array of predictions) likelihoods for all 4
+models
+
+```{r}
+dnorm(140,c(100,150,125,130),100)
+```
+Finally we use BT to put the model priors and likelihoods together:
+
+```{r}
+priors<-rep(.25,4)# prior weights
+observed<-140
+predicted<-c(100,150,125,135)
+sd<-10
+like<-dnorm(observed,predicted,sd)
+post<-like*priors/sum(like*priors)
+summ<-cbind(priors,predicted, like,post)
+models<-data.frame(priors=priors, pred=predicted,like=like,post=post)
+```
+Producing the summary table
+
+
+```{r}
+models
+```
+In this example, the posterior evidence quickly begins to favor model 4 
+over the other models; model 1 has practically no weight. 
+
+
+Let's see what happens when SD is 100 and 25.
+
+```{r}
+models$sd<- 10
+```
+
+
+```{r}
+sd<-25
+like<-dnorm(observed,predicted,sd)
+post<-like*priors/sum(like*priors)
+summ<-cbind(priors,predicted, like,post)
+app<-data.frame(priors=priors, pred=predicted,like=like,post=post,sd=sd)
+models<-rbind(models,app)
+```
+
+```{r}
+sd<-100
+like<-dnorm(observed,predicted,sd)
+post<-like*priors/sum(like*priors)
+summ<-cbind(priors,predicted, like,post)
+app<-data.frame(priors=priors, pred=predicted,like=like,post=post,sd=sd)
+models<-rbind(models,app)
+```
+
+
+```{r}
+weights<- matrix(models$post,
+    ncol=4,nrow=3,
+    dimnames=list(c("10","25","100"),c("H1","H2","H3","H4")),
+    byrow=TRUE)
+barplot(weights,beside=TRUE,ylim=c(0,0.5),
+    las=1,
+    xlab="Hypothesis",
+    ylab="Posterior probability",
+    col=c("grey10","grey40","grey80"))
+legend("topleft",
+    legend=c("SD=10","SD=25","SD=100"),
+    fill=c("grey10","grey40","grey80"))
+abline(h=0.25, col="red",lty=2)
+text(x=0.75,y=0.265,
+    labels="Prior probability",
+    pos=4)
+box()
+```
+The rate of learning is very low when SD is high!
+The posterior probabilities for each hypothesis have not deviated to far from
+the prior highlighted in the red dotted line. 
+
+### Iterating over time to learn
+
+
+The process can repeat: if new data (a second survey year) become 
+available, we can again form likelihoods under the 4 models. But this 
+time, the prior we should use is our current knowledge—which we just 
+updated. So we would start with 0.0002,0.33,0.18, and 0.49 as our priors 
+and then apply BT with the new data. 
+
+
+Maintain the above predictions and sd=100. Suppose in each of the next 5 
+years we have observe the following 
+
+
+* Year 1 – 140
+* Year 2 – 139
+* Year 3 – 143
+* Year 4 – 125
+* Year 5 - 138
+
+
+```{r}
+models<-data.frame()
+observed<- 140
+sd<-100
+like<-dnorm(observed,predicted,sd)
+priors<-rep(.25,4)# prior weights
+post<-like*priors/sum(like*priors)
+summ<-cbind(priors,predicted, like,post)
+app<-data.frame(hypothesis=c(1:4),priors=priors, 
+    pred=predicted,like=like,post=post,year=1)
+models<-rbind(models,app)
+```
+
+
+```{r}
+observed<- 139
+sd<-100
+like<-dnorm(observed,predicted,sd)
+priors<-post # make posterior for year 1 as priors for year 2
+post<-like*priors/sum(like*priors)
+summ<-cbind(priors,predicted, like,post)
+app<-data.frame(hypothesis=c(1:4),priors=priors, 
+    pred=predicted,like=like,post=post,year=2)
+models<-rbind(models,app)
+```
+
+```{r}
+observed<- 143
+sd<-100
+like<-dnorm(observed,predicted,sd)
+priors<-post # make posterior for year 2 as priors for year 3
+post<-like*priors/sum(like*priors)
+summ<-cbind(priors,predicted, like,post)
+app<-data.frame(hypothesis=c(1:4),priors=priors, 
+    pred=predicted,like=like,post=post,year=3)
+models<-rbind(models,app)
+```
+
+
+```{r}
+observed<- 125
+sd<-100
+like<-dnorm(observed,predicted,sd)
+priors<-post # make posterior for year 3 as priors for year 4
+post<-like*priors/sum(like*priors)
+summ<-cbind(priors,predicted, like,post)
+app<-data.frame(hypothesis=c(1:4),priors=priors, 
+    pred=predicted,like=like,post=post,year=4)
+models<-rbind(models,app)
+```
+
+
+```{r}
+observed<- 138
+sd<-100
+like<-dnorm(observed,predicted,sd)
+priors<-post # make posterior for year 4 as priors for year 5
+post<-like*priors/sum(like*priors)
+summ<-cbind(priors,predicted, like,post)
+app<-data.frame(hypothesis=c(1:4),priors=priors, 
+    pred=predicted,like=like,post=post,year=5)
+models<-rbind(models,app)
+```
+
+
+```{r}
+models
+```
+
+```{r}
+plot(post~year,
+    data=models,
+    xlab="Year",
+    ylab="Posterior probability",
+    type='n')
+points(post~year,
+    data=models,
+    subset=hypothesis==1,
+    type='b',
+    col="black")
+ points(post~year,
+    data=models,
+    subset=hypothesis==2,
+    type='b',
+    col="red")   
+points(post~year,
+    data=models,
+    subset=hypothesis==3,
+    type='b',
+    col="green")    
+points(post~year,
+    data=models,
+    subset=hypothesis==4,
+    type='b',
+    col="blue")   
+legend("bottomleft",
+    legend=c("H1","H2","H3","H4"),
+    lty=1,
+    pch=1,
+    col=c("black","red","green","blue"))
+```
+
+# Adaptive resource management
+
+## Calculating posterior probabilities (model weights) using monitoring data
+
+Let's revisit the robust redhorse example from the previous class and 
+build on using `r` to update model weights given monitoring results. the 
+robust redhorse (_Moxostoma robustum_) that was believed extinct but was 
+rediscovered in the Oconee River Georgia USA in 1991 by fishery 
+biologists with the Georgia Department of Natural Resources (cite). 
+Initially, there was scientific disagreement about the factors 
+responsible for depressing robust redhorse populations. Some scientists 
+believed that flathead catfish (_Pylodictis olivaris_), large non-native 
+piscivore, were depressing redhorse populations through predation. Other 
+scientists believed that redhorse were rare because upstream hydropower 
+generation increased streamflow variability, negatively affecting the 
+population. It follows then that the optimal decision for increasing 
+redhorse populations differed based on what mechanism was responsible 
+for the relative rarity of redhorse. If predation was responsible, then 
+the best management alternative might be to control the nonnative 
+catfish populations, whereas the best alternative would be to decrease 
+power generation if the mechanism was flow variability. Here we have a 
+large amount of uncertainty about the factors affecting redhorse 
+populations and that uncertainty likely has a substantial effect on the 
+optimal management decision. If decision-making was dynamic and 
+sequential in time or space, this would be a good candidate for ARM. 
+
+Let’s assume that biologists developed two simple models for 
+predicting redhorse abundance in response to two management actions: 
+1. decrease power generation and 
+2. control flathead catfish. 
+
+The first model 
+assumes that flow variability primarily controls redhorse populations. 
+The model predicts that there will be 30 redhorse if power generation is 
+decreased and 15 redhorse if flathead catfish are controlled. The second 
+model assumes that redhorse populations are primarily controlled by 
+flathead catfish. The model predicts that there will be 25 redhorse if 
+flathead catfish are controlled and 15 redhorse if power generation is 
+decreased. Notice that the estimated number of redhorse is greatest when 
+the correct decision is matched with the corresponding system dynamics. 
+This means that if decision-makers knew that flow variability was the 
+mechanism, they would always choose to decrease power generation (i.e., 
+the optimal decision, 30 redhorse) or if they knew that predation by 
+flatheads was the mechanism, they would always choose to control 
+flatheads (i.e., the optimal decision, 25 redhorse). However, 
+decision-makers were unsure and the decision could not wait. Therefore, 
+this structural uncertainty was incorporated using two models each with 
+equal weight (0.5/0.5). The optimal decision then is identified by 
+calculating the uncertainty weighted outcomes. For example, the expected 
+number of redhorse for decreasing power generation is the top half of 
+this decision tree: 0.5*30 + 0.5*15 = 22.5 and the controlling catfish 
+is 0.5*15 + 0.5*25 = 20. The optimal decision alternative then is to 
+decrease power generation. After implementing this alternative, 21 
+redhorse are counted during annual monitoring. Notice that this value is 
+closer to the outcome estimated using the predation model. This suggests 
+that there is greater evidence that predation is controlling the 
+redhorse population. We use this evidence to update the model weights. 
+
+
+
+Predictions from flow modification models given the 2 management alternatives. 
+
+```{r}
+est_flow_decreasePower <- 30
+est_flow_controlFlatheads <- 15
+```
+
+Predictions from the predation models given the 2 management alternatives. 
+
+```{r}
+est_predation_decreasePower <- 15
+est_predation_controlFlatheads <- 25
+```
+
+
+
+# Model weights and decision making
+
+
+Initially we give model weights of 0.5 and 0.5 to the flow and the predation hypothotheses.
+Recall these hypotheses are represented as models and therefore have associated predictions. 
+
+```{r}
+Flow <- 0.5 # PRIOR PROBABILITY FOR FLOW MODEL
+Predation <- 0.5 # PRIOR PROBABILITY FOR PREDATION MODEL
+```
+## Expected values given model uncertainty
+
+```{r}
+decreasePowerGeneration<- Flow*est_flow_decreasePower + 
+    Predation*est_predation_decreasePower
+```
+
+```{r}
+controlFlatheads <- Flow*est_flow_controlFlatheads + 
+    Predation*est_predation_controlFlatheads
+```
+
+```{r}
+decreasePowerGeneration
+controlFlatheads
+```
+
+
+
+```{r}
+## observed abundance after management action to decrease power generation
+obs<- 21
+```
+
+
+```{r}
+## conditional Likelihoods for Decrease.power.generation action
+flow_like<-dpois(obs,est_flow_decreasePower)
+predation_like<-dpois(obs,est_predation_controlFlatheads)
+```
+
+
+### Posterior probabilities
+
+```{r}
+## used Bayes rule to calculate posterior probabilities
+flow_post<-flow_like*Flow/(flow_like*Flow + predation_like*Predation)
+predation_post<- predation_like*Predation/(flow_like*Flow + predation_like*Predation)
+
+# New model weights 
+flow_post
+predation_post
+```
+
+### Updating weights
+
+```{r}
+## These posteriors become the weights for the next time step
+Flow <- flow_post
+Predation <- predation_post
+```
+
+```{r}
+decreasePowerGeneration<- Flow*est_flow_decreasePower + 
+    Predation*est_predation_decreasePower
+```
+
+```{r}
+controlFlatheads <- Flow*est_flow_controlFlatheads + 
+    Predation*est_predation_controlFlatheads
+```
+
+```{r}
+decreasePowerGeneration
+controlFlatheads
+```
+
+```{r}
+## observed abundance after management action to control flathead catfish
+obs<- 18
+```
+
+```{r}
+## conditional Likelihoods for Decrease.power.generation action
+flow_like<-dpois(obs,est_flow_decreasePower)
+predation_like<-dpois(obs,est_predation_controlFlatheads)
+```
+
+
+### Posterior probabilities
+
+```{r}
+## used Bayes rule to calculate posterior probabilities
+flow_post<-flow_like*Flow/(flow_like*Flow + predation_like*Predation)
+predation_post<- predation_like*Predation/(flow_like*Flow + predation_like*Predation)
+
+# New model weights 
+flow_post
+predation_post
+```
+
+
+And now we can iterate the process over time to make good management decisions
+given what learning has happened. Keep in mind that this process does not guaruntee 
+the perfect decision, there are things that happen that may result in less than
+ideal outcomes but this approach provides a way to identify when this happens and 
+hopefully 
+
+In double loop learning, the management objectives, decision 
+alternatives, and models are reassessed and potentially revised to 
+reflect changes in scientific knowledge and management objectives and 
+alternatives. Learning in the outer loop occurs at a much slower rate 
+and with slower frequency (e.g., decanally) compared to single loop 
+learning. There is no general rule when to initiate the reassessment as 
+it will vary from program to program and largely depends on the decision 
+makers, stakeholders, and technical experts. For example, the US Fish 
+and Wildlife Service conducts endangered species status assessments 
+approximately every 5 years, so the reassessment of objectives, 
+alternatives and models (i.e., the outer loop) may coincide with 
+planned. However, decision-makers should try to minimize the frequency 
+of the reassessments to allow for sufficient amount of time to 
+accumulate information. 
+
+
+
+```{r echo=FALSE, out.width="100%"}
+library(knitr)
+include_graphics("media/class-22/loop-learning.png")
+```
+
+
+
+# Population dynamics & decisions
+
+## Overview
+
+### Using stochastic dynamic programming
+
+
+```{r,message=FALSE,warning=FALSE}
+### Library needed for truncated normal
+library(msm)
+### library needed for SDP
+library(MDPtoolbox)
+
+```
+We will create transition matrices by simulating 
+harvest and population dynamics note that the way it is set up
+indicates that the harvest decision was based on the spring population
+before reproduction Also note that we are not keeping track of the number of 
+ponds to aid in decision making.
+
+
+
+```{r}
+combo<-merge(c(1:15),c(0:4*0.1))
+colnames(combo)<-c("N_t","H_t")
+
+H_t<- rep(H_t,500)
+N_t<- rep(N_t,500)
+## choose harvest mortality model
+har_type<-'AMH'
+R_t<- 16
+P_t <- 2
+# KEEP FROM GOING NEGATIVE (equation 10 (Anderson 1975))  
+P_t_N=max(0.0001,-2.76+0.391*P_t+0.233*R_t)
+#  young production to be added to fall population (equation 2 (Anderson 1975))
+Y_t  = 1/((1/(12.48*P_t^0.851))+(0.519/N_t)) 
+
+Y_t <- rtnorm(length(Y_t),Y_t,Y_t*0.3,lower = 1)
+
+# Fall population at time t (equation 5 (Anderson 1975))
+F_t	= (0.92*N_t) + Y_t 
+harvest<-ifelse(F_t < H_t*F_t,F_t, H_t*F_t)# harvest at time t (need to keep track of this)
+
+# AMH: ADDITIVE MORTALITY
+survival_adult_amh<- (1-0.27*exp(2.08*H_t))
+survival_young_amh<- (1-0.40*exp(0.67*H_t))
+
+# CMH: COMPENSATORY MORTALITY
+survival_adult_cmh<- ifelse(H_t<0.25,0.57,(0.57-1.2*(H_t-0.25)))
+survival_young_cmh<-  ifelse(H_t<0.25,0.5,(0.5-1*(H_t-0.25)))
+
+# Pop size after spring migration
+# AMH: ADDITIVE MORTALITY
+N.t1.amh<- N_t*survival_adult_amh + Y_t*survival_young_amh
+
+# CMH: COMPENSATORY MORTALITY
+N.t1.cmh<- N_t*survival_adult_cmh + Y_t*survival_young_cmh
+
+## Weight and add model specific population size estimates
+harvest_type<- ifelse(har_type=='AMH', 1, 0)   
+N_t_N<- N.t1.amh*harvest_type + N.t1.cmh*(1-harvest_type)
+
+
+# Discretize population sizes into 3 states
+# Could do more classes this is just to simplify
+Initial_N<-floor(N_t/5.5)
+### prevents new pop states from arising
+N_t_N <- ifelse(N_t_N < 1, 1, N_t_N)
+End_N <-ifelse(floor(N_t_N/5.5)> 2, 2,floor(N_t_N/5.5)) 
+
+## create a table of transition frequencies that will be turned into 
+## state transition probabilities one for each decision alternative
+TM<- table(Initial_N,End_N,H_t)
+
+### These are now transition matrices one for each  harvest decision alternative
+TM_1 <- prop.table(TM[,,1],1)
+TM_2 <- prop.table(TM[,,2],1)
+TM_3 <- prop.table(TM[,,3],1)
+TM_4 <- prop.table(TM[,,4],1)
+TM_5 <- prop.table(TM[,,5],1)
+
+
+## calculate the average (expected) return for each population
+## state / decision alternative combination
+Return<-tapply(harvest,list(Initial_N,H_t), mean)
+
+
+# Set up arrays for solving 
+P <- array(0, c(3,3,5))
+P[,,1] <- TM_1
+P[,,2] <- TM_2
+P[,,3] <- TM_3
+P[,,4] <- TM_4
+P[,,5] <- TM_5
+R <- Return
+
+
+### now find optimal state dependent harvest 
+mdp_policy_iteration(P, R, discount=.99999)
+
+
+######### plot state dependent policies fir current time
+x<-unique(states[,1])
+y<-unique(states[,2])
+z<-matrix(zz[,3], ncol = length(unique(states[,2]))
+## create plot of state specific
+filled.contour(x,y,z,color.palette=heat.colors,xlab="Number of ducks (100k)",ylab="Number of ponds" )
+
+  
+```
+
+-->
+
