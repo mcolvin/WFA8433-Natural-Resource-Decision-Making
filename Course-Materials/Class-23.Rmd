@@ -173,5 +173,549 @@ filled.contour(x,y,z,color.palette=heat.colors,xlab="Number of ducks (100k)",yla
   
 ```
 
--->
+Week 8 - Eliciting and quantifying expert judgment 
+========================================================
+
+In previous laboratories, we learned how to calculate summary statistics using data and posterior 
+probabilities using prior probabilities and new information. Here we integrate both approaches 
+to quantify information provided by experts that is then incorporated into decision models. 
+ 
+** Note: this lab requires the R libraries ```corpcor``` and ```fitdistrplus```. Please have these downloaded prior to beginning the lab.** 
+
+```{r}
+# install.packages("corpcor")
+# install.packages("fitdistrplus")
+require("corpcor")
+require("fitdistrplus")
+```
+
+## Elicitation of expert judgment 
+As we discussed in the lecture portion of this course, expert information can be used to parameterize decision models. If you have not completed those lessons, please review them before taking this lesson. The use of expert judgment involves asking one or more experts that are familiar with the phenomenon being modeled (e.g., the effects of disease on wildlife populations) to parameterize the relationship between two or more model components. Eliciting useful expert information can be a difficult task and several approaches have been developed to help analysts elicit information. In lecture, we introduced these approaches that are categorized by the means of elicitation: direct elicitation and indirect elicitation, and the type of measure provided by the experts: quantitative or qualitative. In this lab, we will learn how to quantify expert judgment conduct the analysis using quantitative direct elicitation and indirect elicitation methods. 
+
+## Probability elicitation 
+Probability elicitation is a direct, quantitative method that requires experts that are familiar and comfortable with statistical concepts, such as probability. Typical type of question for probability elicitation is: Given that the maximum summer water temperature is 33C or greater, what is the probability that an amphibian species will survive? Assume that we asked 6 experts this question and received the following, values 0.5, 0.6, 0.45, 0.65, 0.45, 0.7. We could combine the values across experts by treating these values as data and calculating a mean. Uncertainty in among experts can be estimated by calculating the variance. 
+
+```{r}
+Surv<- c(0.5, 0.6, 0.45, 0.65, 0.45, 0.7) 
+s.mean<-mean(Surv) 
+s.var<- var(Surv)
+```
+
+As we learned earlier, uncertainty in a probability can be modeled using a beta distribution. Thus, we could use the method of moments to estimate the parameters of the beta. 
+
+```{r}
+### beta method of moments 
+beta.mom<-function(mean,v){ 
+x<-mean 
+a<-x*(x*(1-x)/v-1) 
+b<-(1-x)*(x*(1-x)/v-1) 
+c(a,b) 
+} 
+beta.mom(s.mean,s.var) 
+
+```
+
+Often one or more experts have greater experience than others and hence, we have greater faith in the values they provide. Weights are represented using positive numbers with larger numbers representing greater weight. The absolute values of the weights do not matter. Rather it is the relative differences among the weights that are used to weight the values provided by the experts. For example, the weights 1,1,2,1,2,4 are equal to 0.091,0.091,0.182,0.091,0.182,0.364 because the relative proportions are equal. To demonstrate: 
+
+```{r}
+# weights as whole numbers 
+wt1<-c(1,1,2,1,2,4) 
+# weights as proportions 
+wt2<- c(0.091,0.091,0.182,0.091,0.182,0.364) 
+#means 
+weighted.mean(Surv,wt1) 
+weighted.mean(Surv,wt2) 
+#variance 
+wt.var(Surv,wt1) 
+wt.var(Surv,wt2) 
+```
+
+### Exercise 1: calculate weighted and unweighted means and variances of these probability values provided by experts. Using those values, calculate the parameters of a beta distribution using either method of movements or maximum likelihood. Do the values differ and why? 
+
+Type  | Expert 1 | Expert 2 | Expert 3 | Expert 4 |Expert  5 |Expert  6 
+------------- | -------------| -------------| -------------| -------------| -------------| -------------
+Expert value |0.32 |0.44| 0.42| 0.35| 0.47| 0.53 
+Expert weight | 1| 3| 6| 4| 7 |8
+
+In some instances, you will need to ask experts to fill out conditional probability tables that are used in influence diagrams and combine values across experts. For example, assume that we asked 3 experts to fill out the following tables for estimating species status:
+
+
+Expert   | Snag density | Forest canopy | Absent   | Rare | Abundant
+------------- | -------------| -------------| -------------| -------------| --------
+expert 1 | Many | Open | 0.36 | 0.36 | 0.29
+ | Many | Closed | 0.15 | 0.35 | 0.5
+ | Few | Open | 0.67 | 0.25 | 0.08
+ | Few | Closed | 0.44 | 0.38 | 0.19
+expert2 | Many | Open | 0.37 | 0.45 | 0.18
+ | Many | Closed | 0.17 | 0.41 | 0.41
+ | Few | Open | 0.69 | 0.28 | 0.03
+ | Few | Closed | 0.51 | 0.47 | 0.01
+expert3 | Many | Open | 0.36 | 0.38 | 0.26
+ | Many | Closed | 0.17 | 0.43 | 0.41
+ | Few | Open | 0.66 | 0.3 | 0.03
+ | Few | Closed | 0.56 | 0.42 | 0.03
+
+Here as before, we can calculate the means and weighted means of the probabilities in corresponding cells. However, be careful that the same cells are selected as below or that you read each expert table as a matrix.
+
+```{r}
+Many.Open<-c(0.36,0.37,0.36) 
+Many.Closed<-c(0.15,0.17,0.17) 
+Few.Open<-c(0.67,0.69,0.66) 
+Few.Closed<-c(0.44,0.51,0.56) 
+#means 
+mean(Many.Open) 
+mean(Many.Closed) 
+mean(Few.Open) 
+mean(Few.Closed) 
+#expert weights 
+wt<-c(5,10,100) 
+#weighted means 
+weighted.mean(Many.Open,wt) 
+weighted.mean(Many.Closed,wt) 
+weighted.mean(Few.Open,wt) 
+weighted.mean(Few.Closed,wt) 
+```
+
+## Frequency elicitation 
+Frequency elicitation is an indirect, quantitative method that does not require experts that are familiar and comfortable with statistical concepts. Typical type of question for frequency elicitation is: 100 individuals from an amphibian species are exposed to temperatures > 33C, how many will survive? These values can be used to calculate probabilities and average across experts. For example assume, that 4 experts answered the above question by providing the following values: 50, 30, 25, and 40. 
+
+```{r}
+n.surv<-c(50, 30, 25, 40) 
+#remember 100 individuals 
+p.surv<-n.surv/100 
+mean(p.surv) 
+var(p.surv) 
+```
+
+Here we also could use weighting scheme as demonstrated above and use the method of moment or maximum likelihood approach to estimate the parameters of a beta distribution, if we desired. Alternatively, we could use the values directly to estimate the parameters of a beta distribution. Remember that the parameters of a beta distribution represent: a = number of successes (e.g., survivors) and b = the number of losses (e.g. deaths), so we have 
+
+```{r}
+n.surv<-c(50, 30, 25, 40) 
+n.die<-100- n.surv 
+#let's see what that gets us in terms of means and variance for probability 
+p.s<-rbeta(1000,n.surv,n.die) 
+mean(p.s) 
+0.3631856 
+var(p.s) 
+```
+
+The mean value was fairly close as was the variance. If we wanted to weight experts differently, we could rescale the values. For example, assume that expert 1 and 2, should receive half the weight of experts 3 and 4. We could do the following: 
+
+```{r}
+n.surv<-c(25, 15, 25, 40) 
+n.die<-c(25, 35, 75, 60) 
+## notice that the sum of survive and die for expert 1 and 2 is 50 
+n.surv+n.die 
+p.s<-rbeta(1000,n.surv,n.die) 
+mean(p.s) 
+var(p.s) 
+```
+
+Keep in mind that the variance on the beta is influenced by the size of the parameters for example:
+
+```{r}
+p.s<-rbeta(1000,1,1) 
+mean(p.s) 
+var(p.s) 
+#expected value the same, variance different 
+p.s<-rbeta(1000,100,100) 
+mean(p.s) 
+var(p.s) 
+```
+
+### Exercise 2: Using the above values elicited from the 4 experts, rescale the number surviving to correspond to the same proportion assuming 20 individuals from an amphibian species are exposed to temperatures > 33C and 1000 individuals from an amphibian species are exposed to temperatures > 33C. e.g., expert 1’s values would be 10 and 500, respectively. For each set of values, calculate the mean and variance of survival probabilities by 1) first calculating survival probabilities then estimating the mean and variance and 2) using the number animals surviving and dying with a beta random number generator. What changed? Does it matter? 
+
+## Value elicitation 
+Value elicitation is a direct, quantitative method that does not require experts that are familiar and comfortable with statistical concepts. Typical type of question for value elicitation is: 
+
+
+* What is the LD50 temperature for an amphibian species? * (LD50 is the temperature where 50% of animals die). Assume that we received the following answer from 6 different experts: 30, 31, 35, 37, 32, 34.5 
+
+```{r}
+temp<-c(30, 31, 35, 37, 32, 34.5) 
+mean(temp) 
+sd(temp) 
+```
+
+These parameters can then be used to parameterize relations among model components. For example, to estimate the probability that 50% of the amphibians will die is temperatures reach 34 degrees: 
+
+```{r}
+pnorm(34,mean(temp),sd(temp)) 
+
+```
+
+## Function elicitation 
+
+Function elicitation is an indirect, quantitative method that does not require experts that are familiar and comfortable with statistical concepts. Here, experts define the functional relationship between two or more model components using a graphical representation. For example, an expert is asked to define the relation between amphibian survival and summer temperatures by drawing a line on paper or in a spreadsheet. For example, the figure below was drawn by an expert: 
+
+```{r, echo=FALSE}
+expertDat<- data.frame(Ave.summer.temp = c(25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40),
+Estimated.survival = c(0.85,0.825,0.8,0.75,0.725,0.7,0.65,0.6,0.55,0.5,0.45,0.4,0.35,0.3,0.275,0.225))
+plot(Estimated.survival~Ave.summer.temp,expertDat,las=1, ylab="Survival", 
+    xlab="Average summer temperature",ylim=c(0,1), type='l')
+
+```
+
+This drawn relationship needs to be turned into a function. The first step is to estimate the survival values where the cross the summer temperatures. Doing so would get you the data contained in the ```data.frame: expertDat``` below. Because we are modeling a probability, logit-linear regression model seems appropriate. However, R requires the response to be binary and in live, dead format. For convenience, assume that we began with 100 individuals and calculate the number surviving and dying based on the probabilities estimates from the figure drawn by the expert. We then have: 
+
+Data from the figure
+```{r}
+expertDat<- data.frame(Ave.summer.temp = c(25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40),
+Estimated.survival = c(0.85,0.825,0.8,0.75,0.725,0.7,0.65,0.6,0.55,0.5,0.45,0.4,0.35,0.3,0.275,0.225))
+expertDat
+```
+
+
+```{r}
+surv<-round(expertDat$Estimated.survival*100) 
+died<-100-surv 
+response<-cbind(surv,died) 
+glm(response ~ expertDat$Ave.summer.temp, fam=binomial) 
+```
+
+
+The function for defining this relationship is a logit linear model $6.689 - 0.197 \cdot temperature$. To incorporate the variability among experts, the slopes and intercepts would be averaged and the averages used to parameterize the model. 
+
+### Exercise 3: Using the graph below created from ```data.frame:musselDat``` to estimate a function that will close approximate the expert’s belief of the relationship between mussel growth and temperature. 
+
+```{r}
+musselDat<- data.frame(Ave.summer.temp=c(14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35),
+  Mussel.growth=c(23.314,24.115,24.716,25.317,25.718,25.919,26.120,26.121,26.122,25.923,25.524,25.125,24.526,23.927,23.128,22.129,21.130,19.931,18.732,17.333,15.734,14.135))
+
+plot(Mussel.growth~Ave.summer.temp, musselDat, xlab= "Average summer temperature",ylab="Mussel growth",las=1,type='l')
+```
+
+
+
+## Quantifying uncertainty in expert judgment
+To minimize the effect of overconfidence, we recommend the four step process to uncertainty elicitation proposed by Speirs-Bridge et al. (2010). In the 4 step process, experts are asked the following 4 questions:
+
+1. What do you think the lowest value could be? ____
+2. What do you think the highest value could be? ____ 
+3. What is your most likely estimate?___ 
+4. How confident (%) are you that the interval you created, from lowest highest, will capture the true value? ___ 
+
+For example, 100 individuals from an amphibian species are exposed 33C temperatures. 
+
+1. What are the fewest number that would survive? ____ 
+2. What are the most that would survive? ____ 
+3. What is your most likely estimate of the number surviving?___ 
+4. How confident (%) are you that the interval you created, from lowest highest, will capture the true value? ___
+
+Let’s assume that we asked an expert the first question above: Given that the maximum summer water temperature is 33C or greater, what is the probability that an amphibian species will survive 
+
+1. What do you think the lowest value could be? **0.25**
+2. What do you think the highest value could be? **0.9**
+3. What is your most likely estimate?  **0.55**
+4. How confident (%) are you that the interval you created, from lowest highest,will capture the true value? **0.9**
+
+To estimate the parameters, we need to find the beta distribution that best fits those conditions, i.e., a median value of 0.5 and upper and lower 90% confidence limits of 0.25 to 0.9. WE can fit these parameters in R with the following code: 
+
+```{r}
+## lower, median, and upper values 
+w<-c(0.25, 0.55, 0.9) 
+### load library first 
+library(fitdistrplus) 
+# 90% confidence so specify lower 5 and upper 95 percentiles 
+est<-qmedist(w, "beta", probs=c(0.05, 0.95)) 
+parms<-est$estimate 
+parms 
+## let’s see how close we got 
+test<-rbeta(1000,parms[1],parms[2]) 
+quantile(test,c(0.05,0.5,0.95)) 
+```
+
+Not too bad considering expert’s judgments don’t always follow the laws of probability. Note that shape1 is alpha and shape2 is beta for the beta distribution. We could combine these across experts using the Bayesian methods we used earlier.
+
+Let’s try the same thing, but this time asking: What is the LD50 temperature for an amphibian species? 
+
+1. What do you think the lowest value could be? **33**
+2. What do you think the highest value could be? **39**
+3. What is your most likely estimate?**35**
+4. How confident (%) are you that the interval you created, from lowest highest, will capture the true value? **0.8**
+
+The corresponding R code and output are:
+```{r}
+## lower, mean, and upper values 
+w<-c(33, 35, 39) 
+library(fitdistrplus) 
+# 80% confidence so specify lower 10 and upper 90 percentiles 
+est<-qmedist(w, "norm", probs=c(0.10, 0.90)) 
+```
+
+Don't worry about the warnings, the functios is just being evaluated at some boundary locations 
+
+```{r}
+parms<-est$estimate 
+parms 
+## lets see how close we got 
+test<-rnorm(1000,parms[1],parms[2]) 
+quantile(test,c(0.10,0.5,0.90)) 
+```
+
+As before, the estimates are not too bad and they can be combined across experts using prior and 
+posterior techniques we learned in lab 6. 
+ 
+### Exercise 4: You need to ask 2 friends the following question: What will be the maximum temperature tomorrow? Use the 4 step process to obtain their estimates and levels of confidence. Then estimate the parameters for a normal distribution using the above process in R. Combine the estimates for the two experts using the Bayesian prior and posterior approach detailed in Lab 6. Note the sample size you should use to calculate the posterior values should be 1, (i.e., n=1).
+
+
+
+
+
+Week 8 In Depth Answers
+========================================================
+```{r, echo=FALSE}
+#setwd("C:/Documents and Settings/mcolvin/My Documents/Classes/2013/FW 537 SDM/FW 538/Week 8/Wk_8_in_depth_answers")
+setwd("C:/Users/colvinm/Documents/Classes/2013/FW 537 SDM/FW 538/Week 8/Wk_8_in_depth_answers")
+```
+
+Lets first load some packages we might need. 
+
+```{r}
+library(corpcor)
+library(fitdistrplus)
+```
+
+#### Exercise 1) calculated weighted and unweighted means and variances of these probability values provided by experts. Using those values, calculate the parameters of a beta distribution using either method of movements or maximum likelihood.
+
+```{r}
+p<- c(0.32,0.44,0.42,0.35,0.47,0.53)
+p.mean<-mean(p)
+p.var<- var(p)
+```
+
+We need to pull up that old method of moments calculator to calculate the parameters of a beta distribution from a mean and a variance.    
+
+```{r}
+beta.mom<-function(mean,v){
+ x<-mean
+ a<-x*(x*(1-x)/v-1)
+ b<-(1-x)*(x*(1-x)/v-1)
+ c(a,b)
+ }
+```
+
+Use the function above to return the 2 parameters (a, b) required for the beta distribution.
+
+```{r}
+beta.mom(p.mean,p.var)
+```
+
+
+We could also use maximum liklihood to estimate the 2 beta distribution parameters.  We might as well use the method of moments estimates for to start the optimatization!
+
+```{r}
+fit<- fitdist(p,"beta",start=c(16.78345,23.01920))
+fit
+```
+
+#### Weighted estimates
+
+The numbers returned are the a and b parameters based on the unweighted mean and variance.  The next step is to use the weights to calculate the weighted mean and variance using the vector of weights below.  
+
+```{r}
+wt<-c(1,3,6,4,7,8)
+```
+
+
+We can use the weighted.mean() and wt.var() function to calculate the weighted mean and variance. Those values can then be used to calculate the beta distribution parameters (a,b). 
+
+```{r}
+p.mean<-weighted.mean(p,wt)
+p.var<- wt.var(p,wt)
+beta.mom(p.mean,p.var)
+```
+
+The unweighted and weighted estimates of a and b provide a different shape and location for the beta distribution, so in the weighted case you are accounting for the experience of the experts.  Weighting the values would take a bit of effort to make work in maximum liklihood so we will stick to method of moments here.    
+
+We can visualize the effect by plotting the probability density for the beta distribution estimated from the unweighted and weighted mean and variance.  Lets take a look.  
+
+```{r}
+p<- seq(0,1,0.01)
+unweighted<-dbeta(p, shape1=11.502, shape2= 9.098)
+plot(p,unweighted,col="black",type='l', ylab="Density", lwd=2, ylim=c(0,6),las=1)
+weighted<-dbeta(p, shape1=21.57, shape2= 26.22)
+points(p,weighted,col="red",type='l', lwd=2)
+legend("topleft", c("unweighted", "weighted"), lty=1, col=c("black","red"))
+```
+
+Weighting the experts' estimates moved the location to be closer to 0.4 and reduced the uncertainty (spread) around the location. 
+
+*Things to consider here are that the use of expert information and weighted can be good, but it can also be bad... It may be possible to 'game' the system if an expert or experts are given an undue amount of weight.  So it might be prudent to run analysis/simulations both ways to assess whether the effect of weigthing has a dramatic effect on the decision.*
+
+#### Exercise 2) Using the above values elicited from the 4 experts, rescale the number surviving to correspond to the same proportion assuming 20 individuals from an amphibian species are exposed to temperatures > 33C and 1000 individuals from an amphibian species are exposed to temperatures > 33C. e.g., expert 1's values would be 10 and 500, respectively. For each set of values, calculate the mean and variance of survival probabilities by 1) first calculating survival probabilities then estimating the mean and variance and 2) using the number animals surviving and dying with a beta random number generator.   What changed? Does it matter?
+
+Here are the original numbers.
+
+```{r}
+n.surv <- c(50, 30, 25, 40)
+```
+
+If we assume there were only 20 animals
+
+```{r}
+n.new<- 20*n.surv/100 # originally 100 animals
+n.surv<- round(n.new,0)# round to keep to whole animals
+n.surv
+```
+
+Now we can calculate mean and variance of the survival estimates.
+
+```{r}
+p.surv<-n.surv/20
+mean(p.surv)
+var(p.surv)
+```
+
+We can calculate the number that did not survive easily.  
+
+```{r}
+n.die<-20- n.surv
+```
+
+Let's see what that gets us in terms of means and variance for probability.  Remember the beta terms are for the number of successes and failures.  We can feed in the number surviving and number dead to simulate survival probabilities.  Note that R recycles the 4 n values, so that there are 250 observations for each surv/dead combination.  
+
+
+```{r}
+p.s<-rbeta(1000,shape1=n.surv,shape2=n.die)
+mean(p.s)
+var(p.s)
+```
+
+Lets try the same thing with 1000 animals.  
+
+```{r}
+n.surv <- c(50, 30, 25, 40)# we overwrote this above
+n.new<- 1000*n.surv/100 # originally 100 animals
+n.surv<- round(n.new,0)# round to keep to whole animals
+n.surv
+n.die<-1000- n.surv
+p.surv<-n.surv/1000
+mean(p.surv)
+var(p.surv)
+```
+
+The mean is the same, variance is lower
+
+Again, let's see what 1000 animals gets us in terms of means and variance for probability
+
+```{r}
+p.s<-rbeta(1000,n.surv,n.die)
+mean(p.s)
+var(p.s)
+```
+
+Again the mean is the same but the variance is smaller. *The important thing to realize here is that simply taking the mean and the variance of the estimated survivals does not account for sample size.  Regardless of sample size the mean was 0.3625 and variance was 0.01229.  While the simulated values of the mean were the same approximately 0.36 the variance decreased as the sample size increasd from 0.01908 for n = 20, to 0.009406 for n = 1000.  This should make sense as more trials reduces the variability in the estimate of the expected (mean) survival.*  
+
+
+#### Exercise 3) Using the graph below to estimate a function that will close approximate the expert’s belief of the relationship between mussel growth and temperature.
+
+First lets set the working directory.  
+
+```{r}
+# setwd("C://R_stuff")
+```
+
+```{r}
+####### Estimated data contained in file mussel.visual.data.csv
+mussel.data<-read.table("mussel.visual.data.csv",header=T,sep=",")
+names(mussel.data)
+```
+
+The relationship looks nonlinear maybe need a quadratic term
+
+```{r}
+
+mussel.data$Ave.temp.sq<-mussel.data$Ave.summer.temp^2
+mod<-lm(Mussel.growth ~ Ave.summer.temp + Ave.temp.sq, mussel.data)
+```
+
+Plot the function to make sure it represents the expert figure
+
+```{r}
+temp<-c(14:35)
+pred<-predict(mod,Ave.summer.temp = temp)
+plot(pred~temp,lty=1,type = "l",lwd=1,ylab="Mussel growth",xlab="Average temperature",las=1)
+points(Mussel.growth~Ave.summer.temp,mussel.data)
+legend("topright",c("Predicted","Elicited"),pch=c(NA,1),lty=c(1,NA))
+```
+
+#### Exercise 4: You need to ask 2 friends the following question: What will be the maximum temperature tomorrow? Use the 4 step process to obtain their estimates and levels of confidence. Then estimate the parameters for a normal distribution using the above process in R. Combine the estimates for the two experts using the Bayesian prior and posterior approach detailed in Lab 6. Note the sample size you should use to calculate the posterior values should be 1, (i.e., n=1).
+
+For this example our data is as follows:
+
+| Value | Expert 1 | Expert 2
+| :----------- | :----------: | :----------:
+| Lowest value |	50|	50
+| Highest value|	75|	63
+| Most likely value|	65|	60
+| Confidence level (%)|	99|	98
+
+Note: Your data will be different here.  
+
+```{r}
+w<-c(50,65,75)
+c<-0.99 # CONFIDENCE
+CI<-c((1-c)/2,1-(1-c)/2) # CONFIDENCE INTERVALE
+est<-qmedist(w,"norm",probs=CI) # WE CAN 
+#Estimates
+parms1<-est$estimate
+parms1
+test<-rnorm(1000,parms1[1],parms1[2])
+quantile(test,c(0.005,0.5,0.995))
+```
+
+```{r}
+#lower, median, and upper values from Expert 2
+w<-c(50,60,63)
+c<-0.98
+CI<-c((1-c)/2,1-(1-c)/2)
+est<-qmedist(w,"norm",probs=CI)
+#Estimates
+parms2<-est$estimate
+parms2
+test<-rnorm(1000,parms2[1],parms2[2])
+quantile(test,c(0.01,0.5,0.99))
+```
+
+Note: The NAs produced are just part of the optimization.  
+
+We can combine the estimates for the two experts using the Bayesian prior and posterior approach detailed in Lab 6. Note the sample size you should use to calculate the posterior values should be 1, (i.e., n=1).
+
+Here are the estimates for expert 1 which is used as the prior.   
+```{r}
+mu_0<-parms1[1]
+s_0<-parms1[2]
+mu<-seq(0,90,1)
+prior<-dnorm(mu,mu_0,s_0)
+plot(mu,prior,col="red",lty=2,lwd=3,type='l')
+```
+
+Now we add the data from expert 2 and update the posterior.  
+
+```{r}
+#Addition of second expert
+n<-1
+xbar<-parms2[1]
+sd<-parms2[2]
+v_1<-(1/s_0^2+n/sd^2)^(-1)
+mu_1<-(mu_0/s_0^2+n*xbar/sd^2)*v_1
+s_1<-sqrt(v_1)
+post<-dnorm(mu,mu_1,s_1)
+```
+
+Lets look at this and see what the prior (expert 1 data only) and posterior (expert 1 and expert 2's data).
+
+```{r}
+plot(mu,post,xlim=c(20,90),type='l',lwd=3)
+lines(mu,prior,col="red",lty=2,lwd=3)
+legend("topleft",c("Prior","Posterior"), lty=c(2,1),col=c("red","black"))
+```
+
+The mean and variance are:
+
+```{r}
+mu_1
+s_1
+```
 
