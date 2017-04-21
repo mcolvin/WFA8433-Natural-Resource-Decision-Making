@@ -37,10 +37,17 @@ include_graphics("media/banner-10.jpg")
 
 # Class preliminaries
 
-* Supplemental background reading for next class(es):
-<!--
-********** add some reading
--->
+* Supplemental background reading:
+    * Marescot, L., G. Chapron, I. Chadès, P. L. Fackler, C. Duchamp, E. 
+    Marboutin, and O. Gimenez. 2013. Complex decisions made simple: A primer 
+    on stochastic dynamic programming. Methods in Ecology and Evolution 
+    4:872-884. [PDF](pdfs/M292.pdf )
+    * Conroy, M. J., M. W. Miller, and J. E. Hines. 2002. Identification 
+    and Synthetic Modeling of Factors Affecting American Black Duck 
+    Populations. Wildlife Monographs:1-64. [PDF](pdfs/C267.pdf ) 
+    * Anderson, D. R. 1975. Optimal Exploitation Strategies for an Animal 
+    Population in a Markovian Environment: A Theory and an Example. Ecology 
+    56:1281-1297.[PDF](pdfs/A192.pdf )  
 * Reading(s) for next time:
     * Conroy and Peterson Chapter 6
     * Conroy and Peterson Chapter 9
