@@ -624,11 +624,11 @@ In passive ARM, decisions are chosen as if the current uncertainty about the sys
 <h3><span class="header-section-number">2.1.8</span> Myths about ARM</h3>
 <p><strong>There are some common misconceptions about ARM; chief among these is:</strong></p>
 <ul>
-<li>Itâ€™s research, no it is management
+<li>It’s research, no it is management
 <ul>
 <li>Adaptive Resource Management is first and foremost, management. All decisions are made to maximize management objectives. Learning occurs as a byproduct of management and it improves decision making thereby increasing the long term gain to managers.</li>
 </ul></li>
-<li>Itâ€™s too risky
+<li>It’s too risky
 <ul>
 <li>All natural resource management decision making involves risk in one form or another (e.g., over harvesting a population vs. aggravating user groups) and uncertainty increases risk. ARM reduces uncertainty and risk.</li>
 </ul></li>
@@ -636,7 +636,7 @@ In passive ARM, decisions are chosen as if the current uncertainty about the sys
 <ul>
 <li>ARM also does not distract from management goals because learning is focused at improving management.</li>
 </ul></li>
-<li>Itâ€™s too complicated and technical
+<li>It’s too complicated and technical
 <ul>
 <li>Most agencies already incorporate most, if not all, of the components of ARM!
 <ul>
@@ -652,7 +652,12 @@ In passive ARM, decisions are chosen as if the current uncertainty about the sys
 </div>
 <div id="case-study-adaptive-harvest-management-for-american-black-ducks" class="section level2">
 <h2><span class="header-section-number">2.2</span> Case study: Adaptive harvest management for American black ducks</h2>
-<p>For more background see * Conroy and Peterson Chapter 9 * Anderson 1975 * Conroy, Nichols, and Hines</p>
+<p>For more background see</p>
+<ul>
+<li>Conroy and Peterson Chapter 9</li>
+<li>Anderson 1975</li>
+<li>Conroy, Nichols, and Hines</li>
+</ul>
 <div id="black-ducks-have-issues" class="section level3">
 <h3><span class="header-section-number">2.2.1</span> Black ducks have issues</h3>
 <ul>
@@ -780,18 +785,6 @@ In passive ARM, decisions are chosen as if the current uncertainty about the sys
 <p>Example from Conroy and Peterson 2013 Passive ARM SDP example in Appendix E</p>
 <pre class="r"><code>## Stochastic dynamic programming requires this library
 library(MDPtoolbox)</code></pre>
-<pre><code>## Warning: package &#39;MDPtoolbox&#39; was built under R version 3.1.2</code></pre>
-<pre><code>## Loading required package: Matrix</code></pre>
-<pre><code>## Warning: package &#39;Matrix&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## 
-## Attaching package: &#39;Matrix&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     crossprod, tcrossprod</code></pre>
-<pre><code>## Loading required package: linprog</code></pre>
-<pre><code>## Warning: package &#39;linprog&#39; was built under R version 3.1.2</code></pre>
-<pre><code>## Loading required package: lpSolve</code></pre>
-<pre><code>## Warning: package &#39;lpSolve&#39; was built under R version 3.1.3</code></pre>
 <pre class="r"><code>decisions&lt;- c(0.1,0.2,0.3)
 abundance&lt;- c(5,10,15)
 # With a decision specific transition matrices matrix
@@ -841,9 +834,8 @@ combo&lt;-expand.grid(
 combo$Y_t  = 1/((1/(12.48*combo$P_t^0.851))+
     (0.519/combo$N_t)) 
 # add uncertainty
-library(msm) </code></pre>
-<pre><code>## Warning: package &#39;msm&#39; was built under R version 3.1.3</code></pre>
-<pre class="r"><code>set.seed(8483)#for reproducability
+library(msm) 
+set.seed(8483)#for reproducability
 combo$Y_t &lt;- rtnorm(length(combo$Y_t),
     combo$Y_t,
     combo$Y_t*0.3,
@@ -1047,9 +1039,8 @@ out&lt;-beta.mom(s.mean,s.var)
 out</code></pre>
 <pre><code>## [1] 11.501531  9.098226</code></pre>
 <p>We could also use maximum likelihood to estimate the 2 beta distribution parameters. We might as well use the method of moments estimates for to start the optimization!</p>
-<pre class="r"><code>library(fitdistrplus) </code></pre>
-<pre><code>## Warning: package &#39;fitdistrplus&#39; was built under R version 3.1.3</code></pre>
-<pre class="r"><code>fit&lt;- fitdist(Surv,&quot;beta&quot;,
+<pre class="r"><code>library(fitdistrplus) 
+fit&lt;- fitdist(Surv,&quot;beta&quot;,
     start=c(shape1=out[1],
     shape2=out[2]))
 fit</code></pre>
@@ -1059,24 +1050,8 @@ fit</code></pre>
 ## shape1 14.25455   8.170572
 ## shape2 11.26283   6.425610</code></pre>
 <p>Often one or more experts have greater experience than others and we have greater faith in the values they provide. Weights are represented using positive numbers with larger numbers representing greater weight. The absolute values of the weights do not matter. Rather it is the relative differences among the weights that are used to weight the values provided by the experts. For example, the weights 1,1,2,1,2,4 are equal to 0.091,0.091,0.182,0.091,0.182,0.364 because the relative proportions are equal. To demonstrate we can use the <code>wtd.mean()</code> and <code>wtd.var()</code> function to estimate the mean and the variance incorporating the expert weights.</p>
-<pre class="r"><code>library(Hmisc)</code></pre>
-<pre><code>## Warning: package &#39;Hmisc&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## Warning: package &#39;lattice&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: survival</code></pre>
-<pre><code>## Warning: package &#39;survival&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: Formula</code></pre>
-<pre><code>## Warning: package &#39;Formula&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Loading required package: ggplot2</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 3.1.3</code></pre>
-<pre><code>## Stackoverflow is a great place to get help:
-## http://stackoverflow.com/tags/ggplot2.</code></pre>
-<pre><code>## 
-## Attaching package: &#39;Hmisc&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     format.pval, round.POSIXt, trunc.POSIXt, units</code></pre>
-<pre class="r"><code># weights as whole numbers 
+<pre class="r"><code>library(Hmisc)
+# weights as whole numbers 
 wt1&lt;-c(1,1,2,1,2,4) 
 # weights as proportions 
 wt2&lt;- wt1/sum(wt1) 

@@ -314,19 +314,19 @@ can be used to reveal these potential problems.
 
 **There are some common misconceptions about ARM; chief among these is:**
 
-* It’s research, no it is management
+* It's research, no it is management
     * Adaptive Resource Management is first and foremost, 
     management. All decisions are made to maximize management objectives. 
     Learning occurs as a byproduct of management and it improves decision 
     making thereby increasing the long term gain to managers.
-* It’s too risky
+* It's too risky
     * All natural resource management decision making involves risk in one 
     form or another (e.g., over harvesting a population vs. aggravating user 
     groups) and uncertainty increases risk. ARM reduces uncertainty and risk. 
 * It distracts from management goals
     * ARM also does not distract from management goals because learning is 
     focused at improving management. 
-* It’s too complicated and technical
+* It's too complicated and technical
     * Most agencies already incorporate most, if not all, of the components of ARM!
         * Decisions
         * Objectives
@@ -338,7 +338,8 @@ can be used to reveal these potential problems.
     
 ## Case study: Adaptive harvest management for American black ducks
 
-For more background see
+For more background see  
+
 * Conroy and Peterson Chapter 9
 * Anderson 1975
 * Conroy, Nichols, and Hines
