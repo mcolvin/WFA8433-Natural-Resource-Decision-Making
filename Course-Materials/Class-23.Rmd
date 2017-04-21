@@ -124,9 +124,10 @@ value.
 ### What to monitor?
 
 *Monitoring other decision model components should include*
-    * key drivers of outcomes
-    * values needed to estimate expected outcome after decision
-    * values useful for explaining unanticipated outcomes
+
+* key drivers of outcomes
+* values needed to estimate expected outcome after decision
+* values useful for explaining unanticipated outcomes
 
 Choosing what to monitoring as part of an adaptive resource management 
 plan will vary from plan to plan and depends largely on the resources 
