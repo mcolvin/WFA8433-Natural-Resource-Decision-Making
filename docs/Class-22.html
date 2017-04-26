@@ -364,7 +364,13 @@ div.tocify {
       <a href="Class-21.html">Class 21</a>
     </li>
     <li>
-      <a href="Class-22.html">Class 22</a>
+      <a href="Class-22.html">Class 22: ARM</a>
+    </li>
+    <li>
+      <a href="Class-23.html">Class 23: ARM continued</a>
+    </li>
+    <li>
+      <a href="Class-24.html">Class 24: Expert elicitation</a>
     </li>
   </ul>
 </li>
@@ -499,7 +505,7 @@ out&lt;-data.frame(firstCardSuit=deck[indx,]$suit)
 prop.table(table(out)) # all close to 0.25</code></pre>
 <pre><code>## out
 ## Diamond    Club   Heart   Spade 
-## 0.25162 0.24706 0.25254 0.24878</code></pre>
+## 0.25188 0.25120 0.24826 0.24866</code></pre>
 <p>Now we need to simulate the second part of the process where we select a card given one card has been removed.</p>
 <pre class="r"><code>out$secondCardSuite&lt;-NA
 # SIMULATE THE PROCESS
@@ -515,31 +521,31 @@ outcomes$p&lt;- outcomes$tmp/reps</code></pre>
 <p>Let’s check and see if the probabilities for the first suit being a heart and the second being a Spade is close to 0.064.</p>
 <pre class="r"><code>outcomes</code></pre>
 <pre><code>##    firstCardSuit secondCardSuit  tmp       p
-## 1        Diamond           Club 3167 0.06334
-## 2           Club           Club 2869 0.05738
-## 3          Heart           Club 3204 0.06408
-## 4          Spade           Club 3185 0.06370
-## 5        Diamond        Diamond 2984 0.05968
-## 6           Club        Diamond 3156 0.06312
-## 7          Heart        Diamond 3180 0.06360
-## 8          Spade        Diamond 3109 0.06218
-## 9        Diamond          Heart 3175 0.06350
-## 10          Club          Heart 3221 0.06442
-## 11         Heart          Heart 2980 0.05960
-## 12         Spade          Heart 3206 0.06412
-## 13       Diamond          Spade 3255 0.06510
-## 14          Club          Spade 3107 0.06214
-## 15         Heart          Spade 3263 0.06526
-## 16         Spade          Spade 2939 0.05878</code></pre>
+## 1        Diamond           Club 3206 0.06412
+## 2           Club           Club 3007 0.06014
+## 3          Heart           Club 3132 0.06264
+## 4          Spade           Club 3094 0.06188
+## 5        Diamond        Diamond 2997 0.05994
+## 6           Club        Diamond 3157 0.06314
+## 7          Heart        Diamond 3189 0.06378
+## 8          Spade        Diamond 3122 0.06244
+## 9        Diamond          Heart 3184 0.06368
+## 10          Club          Heart 3268 0.06536
+## 11         Heart          Heart 2876 0.05752
+## 12         Spade          Heart 3230 0.06460
+## 13       Diamond          Spade 3207 0.06414
+## 14          Club          Spade 3128 0.06256
+## 15         Heart          Spade 3216 0.06432
+## 16         Spade          Spade 2987 0.05974</code></pre>
 <p>Yes, they are pretty close, if you run for a large numbers of replicates they will converge to 0.064. The key to Bayes rule is that the conditioning can go either way, so</p>
 <p><span class="math display">\[P(y \cap x) = p(y | x) p(x) = p(x | y) p(y)\]</span></p>
 <p>Let’s confirm with simulation again. Here are the outcomes formally</p>
 <p><span class="math display">\[P(y \cap x) = p(y=Spade | x =Heart) p(x = Heart) \]</span> and</p>
 <p><span class="math display">\[P(y \cap x) = p(x = Heart | y=Spade) p(y=Spade)\]</span></p>
 <pre class="r"><code>nrow(out[out$firstCardSuit==&quot;Heart&quot; &amp; out$secondCardSuit==&quot;Spade&quot;,])/reps</code></pre>
-<pre><code>## [1] 0.06526</code></pre>
+<pre><code>## [1] 0.06432</code></pre>
 <pre class="r"><code>nrow(out[out$firstCardSuit==&quot;Spade&quot; &amp; out$secondCardSuit==&quot;Heart&quot;,])/reps</code></pre>
-<pre><code>## [1] 0.06412</code></pre>
+<pre><code>## [1] 0.0646</code></pre>
 <p>The simulation shows this is true, within rounding error. is also true. BT follows by equating 2 expressions above</p>
 <p><span class="math display">\[p(y | x ) p(x) = p(x | y) p(y)\]</span></p>
 <p>Ok, so why are probabilities important? Good question, they are important because it is how we quantify our belief in something and the uncertainty in that belief. If we know something absolutely there is no uncertainty and the probability is 1. If we acknowledge our incomplete understanding, we need to put some value on our beliefs of how a system works and we have to have 2 or more explanations that are framed as hypotheses which in turn provide predictions that can be compared to monitoring.</p>

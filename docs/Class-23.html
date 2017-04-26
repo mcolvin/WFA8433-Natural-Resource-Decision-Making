@@ -364,7 +364,13 @@ div.tocify {
       <a href="Class-21.html">Class 21</a>
     </li>
     <li>
-      <a href="Class-22.html">Class 22</a>
+      <a href="Class-22.html">Class 22: ARM</a>
+    </li>
+    <li>
+      <a href="Class-23.html">Class 23: ARM continued</a>
+    </li>
+    <li>
+      <a href="Class-24.html">Class 24: Expert elicitation</a>
     </li>
   </ul>
 </li>
@@ -421,8 +427,6 @@ div.tocify {
 
 
 <p><!--
-
-
 rmarkdown::render_site("Class-23.Rmd")# build website
 library(knitr)
 rmarkdown::render_site()# build website
@@ -434,11 +438,10 @@ build("Class-23",bld="PAGE",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
 build("Class-23",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
 
 source("_build.R");build("Class-23",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
-
 --></p>
-<p><img src="media/banner-10.jpg" width="100%" /></p>
-<div id="class-23-adaptive-management-case-studies-and-expert-elicitation" class="section level1 unnumbered">
-<h1>Class 23: Adaptive management case studies and expert elicitation</h1>
+<p><img src="media/banner-06.jpg" width="100%" /></p>
+<div id="class-23-adaptive-management-case-studies" class="section level1 unnumbered">
+<h1>Class 23: Adaptive management case studies</h1>
 </div>
 <div id="class-preliminaries" class="section level1">
 <h1><span class="header-section-number">1</span> Class preliminaries</h1>
@@ -456,7 +459,7 @@ source("_build.R");build("Class-23",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCR
 <li>Conroy and Peterson Chapter 9</li>
 </ul></li>
 <li>Class project presentation during final exam period-April 28th at 3pm.</li>
-<li>Link to class recording <a href="">YouTube</a></li>
+<li>Link to class recording <a href="https://youtu.be/j4SMWCkOevs">YouTube</a></li>
 <li>Today’s R script <a href="scripts/Class-23.R">Class-23.R</a></li>
 </ul>
 <pre class="r"><code># install.packages(&quot;MDPtoolbox&quot;)
@@ -1007,238 +1010,6 @@ policyTable</code></pre>
 <!-- #######################################################-->
 <!-- #######################################################-->
 <!-- #######################################################-->
-</div>
-</div>
-<div id="eliciting-and-quantifying-expert-judgment" class="section level1">
-<h1><span class="header-section-number">3</span> Eliciting and quantifying expert judgment</h1>
-<p>Expert information can be used to parameterize decision models. If you have not completed those lessons, please review them before taking this lesson. The use of expert judgment involves asking one or more experts that are familiar with the phenomenon being modeled (e.g., the effects of disease on wildlife populations) to parameterize the relationship between two or more model components. Eliciting useful expert information can be a difficult task and several approaches have been developed to help analysts elicit information. There are two approaches that are categorized by the means of elicitation: direct elicitation and indirect elicitation, and the type of measure provided by the experts: quantitative or qualitative. We will learn how to quantify expert judgment conduct the analysis using quantitative direct elicitation and indirect elicitation methods. Specifically, we will cover</p>
-<ol style="list-style-type: decimal">
-<li>Probability elicitation</li>
-<li>Frequency elicitation</li>
-<li>Value elicitation</li>
-<li>Function elicitation</li>
-</ol>
-<div id="probability-elicitation" class="section level2">
-<h2><span class="header-section-number">3.1</span> Probability elicitation</h2>
-<p>Probability elicitation is a direct, quantitative method that requires experts that are familiar and comfortable with statistical concepts, such as probability. Typical type of question for probability elicitation is:</p>
-<p>Given that the maximum summer water temperature is 33C or greater, what is the probability that an amphibian species will survive?</p>
-<p>Suppose we asked 6 experts this question and received the following, values 0.5, 0.6, 0.45, 0.65, 0.45, 0.7. We could combine the values across experts by treating these values as data and calculating a mean. Uncertainty among experts can be estimated by calculating the variance.</p>
-<pre class="r"><code>Surv&lt;- c(0.5, 0.6, 0.45, 0.65, 0.45, 0.7) 
-s.mean&lt;-mean(Surv) 
-s.var&lt;- var(Surv)</code></pre>
-<p>Uncertainty in a probability can be modeled using a beta distribution. Thus, we could use the method of moments to estimate the parameters of the beta (a, b) from the mean and the standard deviation.</p>
-<pre class="r"><code>### beta method of moments 
-beta.mom&lt;-function(mean,v)
-    { 
-    x&lt;-mean 
-    a&lt;-x*(x*(1-x)/v-1) 
-    b&lt;-(1-x)*(x*(1-x)/v-1) 
-    c(a,b) 
-    } 
-out&lt;-beta.mom(s.mean,s.var) 
-out</code></pre>
-<pre><code>## [1] 11.501531  9.098226</code></pre>
-<p>We could also use maximum likelihood to estimate the 2 beta distribution parameters. We might as well use the method of moments estimates for to start the optimization!</p>
-<pre class="r"><code>library(fitdistrplus) 
-fit&lt;- fitdist(Surv,&quot;beta&quot;,
-    start=c(shape1=out[1],
-    shape2=out[2]))
-fit</code></pre>
-<pre><code>## Fitting of the distribution &#39; beta &#39; by maximum likelihood 
-## Parameters:
-##        estimate Std. Error
-## shape1 14.25455   8.170572
-## shape2 11.26283   6.425610</code></pre>
-<p>Often one or more experts have greater experience than others and we have greater faith in the values they provide. Weights are represented using positive numbers with larger numbers representing greater weight. The absolute values of the weights do not matter. Rather it is the relative differences among the weights that are used to weight the values provided by the experts. For example, the weights 1,1,2,1,2,4 are equal to 0.091,0.091,0.182,0.091,0.182,0.364 because the relative proportions are equal. To demonstrate we can use the <code>wtd.mean()</code> and <code>wtd.var()</code> function to estimate the mean and the variance incorporating the expert weights.</p>
-<pre class="r"><code>library(Hmisc)
-# weights as whole numbers 
-wt1&lt;-c(1,1,2,1,2,4) 
-# weights as proportions 
-wt2&lt;- wt1/sum(wt1) 
-#means 
-wtd.mean(Surv,wt1) </code></pre>
-<pre><code>## [1] 0.5772727</code></pre>
-<pre class="r"><code>wtd.mean(Surv,wt2) </code></pre>
-<pre><code>## [1] 0.5772727</code></pre>
-<pre class="r"><code>#variance 
-wtd.var(Surv,wt1) </code></pre>
-<pre><code>## [1] 0.01368182</code></pre>
-<pre class="r"><code>wtd.var(Surv,wt2) </code></pre>
-<pre><code>## [1] Inf</code></pre>
-<pre class="r"><code>out_w&lt;-beta.mom(mean=wtd.mean(Surv,wt1),
-    v=wtd.var(Surv,wt2)) 
-out_w</code></pre>
-<pre><code>## [1] -0.5772727 -0.4227273</code></pre>
-<p>Here we calculate weighted and unweighted means and variances of these probability values provided by experts. Using those values we then calculate the parameters of a beta distribution using either method of movements or maximum likelihood.</p>
-<p>We can visualize the effect by plotting the probability density for the beta distribution estimated from the unweighted and weighted mean and variance. Lets take a look.</p>
-<pre class="r"><code>S&lt;- seq(0,1,0.01)
-unweighted&lt;-dbeta(S, 
-    shape1=out[1], 
-    shape2=out[2])
-plot(S,unweighted,
-    col=&quot;black&quot;,
-    type=&#39;l&#39;, 
-    ylab=&quot;Density&quot;, 
-    lwd=2, 
-    ylim=c(0,6),
-    las=1)
-weighted&lt;-dbeta(S, 
-    shape1=out_w[1], 
-    shape2= out_w[2])</code></pre>
-<pre><code>## Warning in dbeta(S, shape1 = out_w[1], shape2 = out_w[2]): NaNs produced</code></pre>
-<pre class="r"><code>points(S,weighted,
-    col=&quot;red&quot;,
-    type=&#39;l&#39;, 
-    lwd=2)
-legend(&quot;topleft&quot;, 
-    legend=c(&quot;unweighted&quot;, &quot;weighted&quot;), 
-    lty=1, 
-    col=c(&quot;black&quot;,&quot;red&quot;))</code></pre>
-<p><img src="Class-23_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
-<p>Weighting the experts’ estimates moved the location to be closer to 0.6 and increased the uncertainty (spread) around the location.</p>
-<p><strong>Things to consider here are that the use of expert information and weighted can be good, but it can also be bad… It may be possible to ‘game’ the system if an expert or experts are given an undue amount of weight. So it might be prudent to run analysis/simulations both ways to assess whether the effect of weighting has a dramatic effect on the decision.</strong></p>
-<div id="conditional-probability-tables" class="section level3">
-<h3><span class="header-section-number">3.1.1</span> Conditional probability tables</h3>
-<p>In some instances, you will need to ask experts to fill out conditional probability tables that are used in influence diagrams and combine values across experts. For example, suppose that we asked 3 experts to fill out the following tables for estimating species status:</p>
-<table>
-<thead>
-<tr class="header">
-<th>Expert</th>
-<th>Snag density</th>
-<th>Forest canopy</th>
-<th>Absent</th>
-<th>Rare</th>
-<th>Abundant</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>expert 1</td>
-<td>Many</td>
-<td>Open</td>
-<td>0.36</td>
-<td>0.36</td>
-<td>0.29</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Many</td>
-<td>Closed</td>
-<td>0.15</td>
-<td>0.35</td>
-<td>0.5</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>Few</td>
-<td>Open</td>
-<td>0.67</td>
-<td>0.25</td>
-<td>0.08</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Few</td>
-<td>Closed</td>
-<td>0.44</td>
-<td>0.38</td>
-<td>0.19</td>
-</tr>
-<tr class="odd">
-<td>expert2</td>
-<td>Many</td>
-<td>Open</td>
-<td>0.37</td>
-<td>0.45</td>
-<td>0.18</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Many</td>
-<td>Closed</td>
-<td>0.17</td>
-<td>0.41</td>
-<td>0.41</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>Few</td>
-<td>Open</td>
-<td>0.69</td>
-<td>0.28</td>
-<td>0.03</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Few</td>
-<td>Closed</td>
-<td>0.51</td>
-<td>0.47</td>
-<td>0.01</td>
-</tr>
-<tr class="odd">
-<td>expert3</td>
-<td>Many</td>
-<td>Open</td>
-<td>0.36</td>
-<td>0.38</td>
-<td>0.26</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Many</td>
-<td>Closed</td>
-<td>0.17</td>
-<td>0.43</td>
-<td>0.41</td>
-</tr>
-<tr class="odd">
-<td></td>
-<td>Few</td>
-<td>Open</td>
-<td>0.66</td>
-<td>0.3</td>
-<td>0.03</td>
-</tr>
-<tr class="even">
-<td></td>
-<td>Few</td>
-<td>Closed</td>
-<td>0.56</td>
-<td>0.42</td>
-<td>0.03</td>
-</tr>
-</tbody>
-</table>
-<p>As before, we can calculate the means and weighted means of the probabilities in corresponding cells. However, be careful that the same cells are selected as below or that you read each expert table as a matrix.</p>
-<pre class="r"><code># Absent
-Many.Open&lt;-c(0.36,0.37,0.36) 
-Many.Closed&lt;-c(0.15,0.17,0.17) 
-Few.Open&lt;-c(0.67,0.69,0.66) 
-Few.Closed&lt;-c(0.44,0.51,0.56) 
-
-#means 
-mean(Many.Open) </code></pre>
-<pre><code>## [1] 0.3633333</code></pre>
-<pre class="r"><code>mean(Many.Closed) </code></pre>
-<pre><code>## [1] 0.1633333</code></pre>
-<pre class="r"><code>mean(Few.Open) </code></pre>
-<pre><code>## [1] 0.6733333</code></pre>
-<pre class="r"><code>mean(Few.Closed) </code></pre>
-<pre><code>## [1] 0.5033333</code></pre>
-<p>Let’s try weighting like we did before.</p>
-<pre class="r"><code>#expert weights 
-wt&lt;-c(5,10,100) 
-#weighted means
-wtd.mean(Many.Open,wt) </code></pre>
-<pre><code>## [1] 0.3608696</code></pre>
-<pre class="r"><code>wtd.mean(Many.Closed,wt) </code></pre>
-<pre><code>## [1] 0.1691304</code></pre>
-<pre class="r"><code>wtd.mean(Few.Open,wt) </code></pre>
-<pre><code>## [1] 0.6630435</code></pre>
-<pre class="r"><code>wtd.mean(Few.Closed,wt) </code></pre>
-<pre><code>## [1] 0.5504348</code></pre>
-</div>
 </div>
 </div>
 

@@ -10,8 +10,6 @@ output:
 ---
 
  <!--
-
-
 rmarkdown::render_site("Class-23.Rmd")# build website
 library(knitr)
 rmarkdown::render_site()# build website
@@ -23,17 +21,16 @@ build("Class-23",bld="PAGE",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
 build("Class-23",bld="SCRIPT",docs=TRUE) # bld = PAGE,ENTIRE,SCRIPT
 
 source("_build.R");build("Class-23",bld="PAGE",docs=TRUE)# bld = PAGE,ENTIRE,SCRIPT
-
 -->
 
 
 ```{r echo=FALSE, out.width="100%"}
 library(knitr)
-include_graphics("media/banner-10.jpg")
+include_graphics("media/banner-06.jpg")
 ```
 
 
-# Class 23: Adaptive management case studies and expert elicitation {-}
+# Class 23: Adaptive management case studies {-}
 
 # Class preliminaries
 
@@ -52,7 +49,7 @@ include_graphics("media/banner-10.jpg")
     * Conroy and Peterson Chapter 6
     * Conroy and Peterson Chapter 9
 * Class project presentation during final exam period-April 28th at 3pm.
-* Link to class recording  [YouTube]()
+* Link to class recording  [YouTube](https://youtu.be/j4SMWCkOevs)
 * Today's R script [Class-23.R](scripts/Class-23.R)
 
 
@@ -806,223 +803,3 @@ Monitoring plays a crucial role is ARM. It provides:
 <!-- #######################################################-->
 <!-- #######################################################-->
 <!-- #######################################################-->
-
-# Eliciting and quantifying expert judgment 
-
-
-Expert information can be used to parameterize decision models. If you 
-have not completed those lessons, please review them before taking this 
-lesson. The use of expert judgment involves asking one or more experts 
-that are familiar with the phenomenon being modeled (e.g., the effects 
-of disease on wildlife populations) to parameterize the relationship 
-between two or more model components. Eliciting useful expert 
-information can be a difficult task and several approaches have been 
-developed to help analysts elicit information. There are two approaches 
-that are categorized by the means of elicitation: direct elicitation and 
-indirect elicitation, and the type of measure provided by the experts: 
-quantitative or qualitative. We will learn how to quantify expert 
-judgment conduct the analysis using quantitative direct elicitation and 
-indirect elicitation methods. Specifically, we will cover
-
-1. Probability elicitation
-2. Frequency elicitation
-2. Value elicitation
-2. Function elicitation
-
-
-## Probability elicitation 
-
-Probability elicitation is a direct, quantitative method that requires 
-experts that are familiar and comfortable with statistical concepts, 
-such as probability. Typical type of question for probability 
-elicitation is: 
-
-Given that the maximum summer water temperature is 33C or greater, what 
-is the probability that an amphibian species will survive? 
-
-Suppose we asked 6 experts this question and received the following, 
-values 0.5, 0.6, 0.45, 0.65, 0.45, 0.7. We could combine the values 
-across experts by treating these values as data and calculating a mean. 
-Uncertainty among experts can be estimated by calculating the 
-variance. 
-
-```{r}
-Surv<- c(0.5, 0.6, 0.45, 0.65, 0.45, 0.7) 
-s.mean<-mean(Surv) 
-s.var<- var(Surv)
-```
-
-Uncertainty in a probability can be modeled using a beta distribution. 
-Thus, we could use the method of moments to estimate the parameters of 
-the beta (a, b) from the mean and the standard deviation. 
-
-
-```{r}
-### beta method of moments 
-beta.mom<-function(mean,v)
-    { 
-    x<-mean 
-    a<-x*(x*(1-x)/v-1) 
-    b<-(1-x)*(x*(1-x)/v-1) 
-    c(a,b) 
-    } 
-out<-beta.mom(s.mean,s.var) 
-out
-```
-
-
-
-
-We could also use maximum likelihood to estimate the 2 beta distribution 
-parameters. We might as well use the method of moments estimates for to 
-start the optimization! 
-
-
-```{r}
-library(fitdistrplus) 
-fit<- fitdist(Surv,"beta",
-    start=c(shape1=out[1],
-    shape2=out[2]))
-fit
-```
-
-
-Often one or more experts have greater experience than others and we 
-have greater faith in the values they provide. Weights are represented 
-using positive numbers with larger numbers representing greater weight. 
-The absolute values of the weights do not matter. Rather it is the 
-relative differences among the weights that are used to weight the 
-values provided by the experts. For example, the weights 1,1,2,1,2,4 are 
-equal to 0.091,0.091,0.182,0.091,0.182,0.364 because the relative 
-proportions are equal. To demonstrate we can use the `wtd.mean()` 
-and `wtd.var()` function to estimate the mean and the variance 
-incorporating the expert weights. 
-
-
-```{r}
-library(Hmisc)
-# weights as whole numbers 
-wt1<-c(1,1,2,1,2,4) 
-# weights as proportions 
-wt2<- wt1/sum(wt1) 
-#means 
-wtd.mean(Surv,wt1) 
-wtd.mean(Surv,wt2) 
-#variance 
-wtd.var(Surv,wt1) 
-wtd.var(Surv,wt2) 
-
-out_w<-beta.mom(mean=wtd.mean(Surv,wt1),
-    v=wtd.var(Surv,wt2)) 
-out_w
-```
-
-Here we calculate weighted and unweighted means and variances of these 
-probability values provided by experts. Using those values we then 
-calculate the parameters of a beta distribution using either method of 
-movements or maximum likelihood. 
-
-We can visualize the effect by plotting the probability density for the 
-beta distribution estimated from the unweighted and weighted mean and 
-variance. Lets take a look. 
-
-
-```{r}
-S<- seq(0,1,0.01)
-unweighted<-dbeta(S, 
-    shape1=out[1], 
-    shape2=out[2])
-plot(S,unweighted,
-    col="black",
-    type='l', 
-    ylab="Density", 
-    lwd=2, 
-    ylim=c(0,6),
-    las=1)
-weighted<-dbeta(S, 
-    shape1=out_w[1], 
-    shape2= out_w[2])
-points(S,weighted,
-    col="red",
-    type='l', 
-    lwd=2)
-legend("topleft", 
-    legend=c("unweighted", "weighted"), 
-    lty=1, 
-    col=c("black","red"))
-```
-
-Weighting the experts' estimates moved the location to be closer to 0.6 
-and increased the uncertainty (spread) around the location. 
-
-
-**Things to consider here are that the use of expert information and 
-weighted can be good, but it can also be bad... It may be possible to 
-'game' the system if an expert or experts are given an undue amount of 
-weight. So it might be prudent to run analysis/simulations both ways to 
-assess whether the effect of weighting has a dramatic effect on the 
-decision.** 
-
-### Conditional probability tables
-
-In some instances, you will need to ask experts to fill out conditional 
-probability tables that are used in influence diagrams and combine 
-values across experts. For example, suppose that we asked 3 experts to 
-fill out the following tables for estimating species status: 
-
-
-
-| Expert   	| Snag density 	| Forest canopy 	| Absent 	| Rare 	| Abundant 	|
-|----------	|--------------	|---------------	|--------	|------	|----------	|
-| expert 1 	| Many         	| Open          	| 0.36   	| 0.36 	| 0.29     	|
-|          	| Many         	| Closed        	| 0.15   	| 0.35 	| 0.5      	|
-|          	| Few          	| Open          	| 0.67   	| 0.25 	| 0.08     	|
-|          	| Few          	| Closed        	| 0.44   	| 0.38 	| 0.19     	|
-| expert2  	| Many         	| Open          	| 0.37   	| 0.45 	| 0.18     	|
-|          	| Many         	| Closed        	| 0.17   	| 0.41 	| 0.41     	|
-|          	| Few          	| Open          	| 0.69   	| 0.28 	| 0.03     	|
-|          	| Few          	| Closed        	| 0.51   	| 0.47 	| 0.01     	|
-| expert3  	| Many         	| Open          	| 0.36   	| 0.38 	| 0.26     	|
-|          	| Many         	| Closed        	| 0.17   	| 0.43 	| 0.41     	|
-|          	| Few          	| Open          	| 0.66   	| 0.3  	| 0.03     	|
-|          	| Few          	| Closed        	| 0.56   	| 0.42 	| 0.03     	|
-
- 
-As before, we can calculate the means and weighted means of the 
-probabilities in corresponding cells. However, be careful that the same 
-cells are selected as below or that you read each expert table as a 
-matrix. 
-
-
-
-
-
-
-
-```{r}
-# Absent
-Many.Open<-c(0.36,0.37,0.36) 
-Many.Closed<-c(0.15,0.17,0.17) 
-Few.Open<-c(0.67,0.69,0.66) 
-Few.Closed<-c(0.44,0.51,0.56) 
-
-#means 
-mean(Many.Open) 
-mean(Many.Closed) 
-mean(Few.Open) 
-mean(Few.Closed) 
-```
-
-Let's try weighting like we did before.
-
-```{r}
-#expert weights 
-wt<-c(5,10,100) 
-#weighted means
-wtd.mean(Many.Open,wt) 
-wtd.mean(Many.Closed,wt) 
-wtd.mean(Few.Open,wt) 
-wtd.mean(Few.Closed,wt) 
-
-
-```

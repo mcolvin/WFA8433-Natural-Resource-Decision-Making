@@ -364,7 +364,13 @@ div.tocify {
       <a href="Class-21.html">Class 21</a>
     </li>
     <li>
-      <a href="Class-22.html">Class 22</a>
+      <a href="Class-22.html">Class 22: ARM</a>
+    </li>
+    <li>
+      <a href="Class-23.html">Class 23: ARM continued</a>
+    </li>
+    <li>
+      <a href="Class-24.html">Class 24: Expert elicitation</a>
     </li>
   </ul>
 </li>
@@ -905,8 +911,16 @@ ev[which.min(ev)]</code></pre>
 <pre><code>##        6 
 ## 181.0305</code></pre>
 <p>The one shortcoming of using Monte Carlo sampling is that it is more difficult to add certainty like we did in the BDN. For example, we need to do a subset by mortality type to evaluate the decision alternatives is we knew with 100% certainty that harvest mortality was addtive or compensatory. Cool beans regardless.</p>
-<pre class="r"><code>library(plyr)
-outcomes$abundance&lt;- outcomes$n1_j+outcomes$n1_y+outcomes$n1_a
+<pre class="r"><code>library(plyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;plyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:maps&#39;:
+## 
+##     ozone</code></pre>
+<pre><code>## The following objects are masked from &#39;package:reshape&#39;:
+## 
+##     rename, round_any</code></pre>
+<pre class="r"><code>outcomes$abundance&lt;- outcomes$n1_j+outcomes$n1_y+outcomes$n1_a
 ev_comp&lt;- dcast(outcomes,decision~&quot;ev&quot;,
     value.var=&quot;abundance&quot;,
     subset=.(mortalityType==2),
@@ -953,8 +967,9 @@ stocking$U&lt;- (stocking$uc_scaled+stocking$pol_scaled+
 fish_we_want &lt;- as.integer(stocking$requested)</code></pre>
 <p>We can use a tool called dynamic programming. Dynamic programming is difficult to comprehend and beyond the scope of what we are up to here but the gist is it calculates the local maximum values for each value and then it passes back though the matrix of values to find the combination that maximizes the utility. Fortunately we don’t have to program this in, some good folks have put a package together that will solve this knapsack problem. Essentially, we have objects that have size and value that need to be fitted in a knapsack of limited size. In the case of the trout stocking case we have 3 knapsacks.</p>
 <p>First thing to do is call up the <code>adagio</code> package and specify the value as an integer.</p>
-<pre class="r"><code>library(adagio)
-value&lt;- as.integer(stocking$U*100)</code></pre>
+<pre class="r"><code>library(adagio)</code></pre>
+<pre><code>## Warning: package &#39;adagio&#39; was built under R version 3.1.3</code></pre>
+<pre class="r"><code>value&lt;- as.integer(stocking$U*100)</code></pre>
 <p>Now we can use the <code>mknapsack()</code> function that returns what fish to take from what hatchery to maximize the utility of stocking.</p>
 <pre class="r"><code>solution &lt;- mknapsack(value, fish_we_want, troutAvailable)
 solution</code></pre>

@@ -22,6 +22,8 @@ system(paste("xcopy",
 
 ## Announcements
 
+
+* Class 24 [here](Class-24.html)
 * Class 23 [here](Class-23.html)
 * Class 22 [here](Class-22.html)
 * Class 21 [here](Class-21.html)

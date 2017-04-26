@@ -364,7 +364,13 @@ div.tocify {
       <a href="Class-21.html">Class 21</a>
     </li>
     <li>
-      <a href="Class-22.html">Class 22</a>
+      <a href="Class-22.html">Class 22: ARM</a>
+    </li>
+    <li>
+      <a href="Class-23.html">Class 23: ARM continued</a>
+    </li>
+    <li>
+      <a href="Class-24.html">Class 24: Expert elicitation</a>
     </li>
   </ul>
 </li>
@@ -514,13 +520,13 @@ probs&lt;- prop.table(counts)
 probs</code></pre>
 <pre><code>## states
 ##     0-8    8-11   11-20     20+ 
-## 0.33314 0.36184 0.30328 0.00174</code></pre>
+## 0.33426 0.36176 0.30268 0.00130</code></pre>
 <p>Assume that the expected values of the optimal decisions, given abundance was with 100% probability in states 1 through 4 (i.e., we used our space age sensor or clairvoyant) are 10, 15, 21, and 23, respectively. The weighted expected value of when we have perfect information is:</p>
 <pre class="r"><code>values&lt;-c(10,15,21,23)
 weightedValues&lt;- values*probs
 # EXPECTED VALUE WITH PERFECT INFORMATION
 ev&lt;- sum(weightedValues) </code></pre>
-<p>Now if the the expected value for the optimal decision was 9.8 then the value of perfect information is <span class="math inline">\(15.17-9.8\)</span> which is <span class="math inline">\(5.37\)</span>.</p>
+<p>Now if the the expected value for the optimal decision was 9.8 then the value of perfect information is <span class="math inline">\(15.16-9.8\)</span> which is <span class="math inline">\(5.36\)</span>.</p>
 </div>
 </div>
 <div id="expected-value-of-imperfect-information" class="section level2">
@@ -557,10 +563,10 @@ counts&lt;- table(detections)
 probs&lt;- prop.table(counts)
 probs[1] # Present and not detected</code></pre>
 <pre><code>##        0 
-## 0.199898</code></pre>
+## 0.200238</code></pre>
 <pre class="r"><code>probs[2] # Present and detected</code></pre>
 <pre><code>##        1 
-## 0.800102</code></pre>
+## 0.799762</code></pre>
 <!--
 Bayes Theorem
 
@@ -599,13 +605,13 @@ in this example we can break out the the components as:
     (probs[1]*priorPresent + nonDetecionProbability*priorAbsent) 
 post </code></pre>
 <pre><code>##         0 
-## 0.1665958</code></pre>
+## 0.1668319</code></pre>
 <p>The probability of absence given the species was not detected is the compliment <span class="math inline">\(1- 0.1667 = 0.8333\)</span>. But let’s make sure we can prove this.</p>
 <pre class="r"><code>post&lt;-nonDetecionProbability*priorAbsent/
     (probs[1]*priorPresent + nonDetecionProbability*priorAbsent) 
 post </code></pre>
 <pre><code>##         0 
-## 0.8334042</code></pre>
+## 0.8331681</code></pre>
 <p>If we are really interested we can pretty easily calculate the posterior probabilities for population statuses given sampling outcomes. First we need to make a matrix for the outcomes of sampling given the population status.</p>
 <pre class="r"><code>Z&lt;-matrix(c(0.8,0.2,0,1),
     ncol=2, 
@@ -1660,16 +1666,16 @@ mdp_policy_iteration(P, R, discount=.99999)
 
 ```
 ## $V
-## [1] 533191.9 533205.0 533211.9
+## [1] 529416.3 529429.6 529437.2
 ## 
 ## $policy
 ## [1] 1 4 4
 ## 
 ## $iter
-## [1] 2
+## [1] 3
 ## 
 ## $time
-## Time difference of 0.1650159 secs
+## Time difference of 0.09009886 secs
 ```
 
 -->

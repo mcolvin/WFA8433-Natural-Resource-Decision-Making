@@ -56,8 +56,12 @@ navbar:
           href: "Class-20.html"           
         - text: "Class 21"
           href: "Class-21.html"    
-        - text: "Class 22"
+        - text: "Class 22: ARM"
           href: "Class-22.html"    
+        - text: "Class 23: ARM continued"
+          href: "Class-23.html"    
+        - text: "Class 24: Expert elicitation"
+          href: "Class-24.html"    
     - text: "Assignments"
       menu: 
         - text: "Homework 1"
