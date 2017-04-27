@@ -42,6 +42,7 @@ include_graphics("media/banner-07.jpg")
 * Class project presentation during final exam period-April 28th at 3pm.
 * Link to class recording  [YouTube]()
 * Today's R script [Class-24.R](scripts/Class-24.R)
+* Today's Class deck [PDF](pdfs/class-24.pdf)
 * A couple of `R` packages we will be using
 
 ```{r}

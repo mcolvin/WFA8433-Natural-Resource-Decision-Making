@@ -22,7 +22,8 @@ system(paste("xcopy",
 
 ## Announcements
 
-
+* Final will be Friday April 28th at 12 pm in TH132.
+* Class 24 deck is up[PDF](pdfs/class-24.pdf)
 * Class 24 [here](Class-24.html)
 * Class 23 [here](Class-23.html)
 * Class 22 [here](Class-22.html)
