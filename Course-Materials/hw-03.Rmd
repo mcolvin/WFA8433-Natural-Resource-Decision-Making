@@ -347,8 +347,12 @@ juv_prod<- data.frame(
     survivors= round(runif(130,1,300),0))
 X<- model.matrix(as.formula("~out_loc+survivors"),juv_prod)
 betas<- c(0,0.25,0.1,0.015)
+# 
 
 juv_prod$prod<-  rpois(130, exp(X %*% betas))
+#presPlot()
+#plot(prod~survivors, juv_prod,xlab="Survivors",ylab="Juvenile production",
+ #   las=1)
 write.csv(juv_prod,"juvenile-production.csv",row.names=FALSE)
 
 
@@ -362,6 +366,13 @@ X<- model.matrix(as.formula("~handle_time+transport_time"),
     tran_surv)
 betas<- c(0.75,-0.1,-0.01)
 tran_surv$survivors<- rbinom(130,tran_surv$n_fish,plogis(X %*% betas))
+#presPlot()
+#plot(I(survivors/n_fish)~handle_time, tran_surv,xlab="Handling time",
+ #   ylab="Survival",
+#    las=1)
+#plot(I(survivors/n_fish)~transport_time, tran_surv,xlab="Transport time",
+#    ylab="Survival",
+#    las=1)    
 write.csv(tran_surv,"transport-survivals.csv",row.names=FALSE)
 
 ```

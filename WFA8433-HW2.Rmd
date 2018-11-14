@@ -1,0 +1,58 @@
+
+
+Homework 2: 
+Assignment due: Homework-01: Blind review of a personal means network
+Careeer objectives has been anonymized and a assigned to a reviewer in the table below.
+Review your assigned network and provide a 1 paragraph review.
+Work through your assigned network and see if you can follow the logic.
+Ask the questions ‘how do I achieve this’ and ‘why is this important’ as you move through the network.
+Was there anything missed? Is there a way to meet the fundamental objectives that was not specified?
+Submit your review by 12 pm February 15th as a pdf.
+Name the pdf file as “lastname-firstinitial-homework-01.pdf”. For example I would name mine colvin-m-homework-01.pdf.
+SUBMIT your review TO: https://dropitto.me/WFA8433 (the upload password is ‘critter’)
+
+
+
+1) Working with stochastic values and expectations
+a. Generate  a vector named `Y` with 1001 stochastic replicates for a normal distribution
+with mean 10 and standard deviation of 1.
+b. Calculate the mean and standard deviation of `Y` and assign them as `Y_mean` and `Y_sd` respectively.
+c. Make a histogram of `Y`, labeling the x-axis as `Y values` and the y-axis as `Frequency`
+d. Calculate the probability that `Y` is less than 11. (HINT: you can use the `sort()` function
+to sort a vector in ascending order; `?sort`)
+
+2) Making a function to do useful things
+a. Make a function that multiplies an input vector by 2 and returns the sum of the 
+vector times 2.
+b. Run the function created in 2a on the vector `Y` created in 1a.
+c. Create another function called `risk` that returns the probability of an achieving
+an expected outcome or less from a vector of stochastic replicates. (HINT: `subset()`
+and `length()` functions might be useful.
+d. Run the function crated in 2d on the vector `Y` created in 1a for an outcome of 11.
+How does it compare to the value for 1d?
+
+3) Linear modeling and prediction
+a. Read in the dataset `elevation-counts.csv` and assign it as `ele_data`.
+b. Plot counts (y-axis) versus elevation (x-axis) and label each axis as you see fit.
+c. Create the same plot as above, but make group 1 red, group 2 blue, and group 3 green.
+d. Fit a linear model that predicts counts from elevation, group, and an interaction of 
+group and elevation.
+e. Plot the residuals (y-axis) versus the predicted to evaluate whether you have 
+violated any assumptions and a plot of the observed `count` versus the fitted values.  (HINT: recall `resid()` and `fitted()`?)
+f. Now create another field in `ele_data`  named `lcount` that is the natural log of counts.
+g. Refit the linear model from 3.a. using `lcount`.
+h. Plot the residuals (y-axis) versus the predicted (x-axis) to evaluate whether you have 
+violated any assumptions and a plot of the observed `lcount` versus the fitted values.
+i. Create a dataset named `predicted_data` using the `expand.grid()` function to predict values for the range 
+of elevations in `ele_data` in increments of 1 and each group.
+k. Add columns to `predicted_data` for the predicted value, lower 95% prediction interval and 
+upper 95% prediction interval.
+l. Make a plot of predicted values and 95% prediction intervals for group 2 as lines. The line for 
+the predicted value should be solid and the lines for the prediction intervals should by dotted.
+(Recall that `lty=1` is a solid line and `lty=2` is a dotted line)
+
+
+
+
+
+

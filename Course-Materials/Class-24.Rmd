@@ -45,7 +45,7 @@ include_graphics("media/banner-07.jpg")
 * Today's Class deck [PDF](pdfs/class-24.pdf)
 * A couple of `R` packages we will be using
 
-```{r}
+```{r, echo=FALSE}
 
 # install.packages("fitdistrplus")
 # install.packages("Hmisc")
