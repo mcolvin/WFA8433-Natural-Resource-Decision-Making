@@ -8,7 +8,6 @@ This folder contains the original source code for WFA8433.
 The source is rendered the folder _site and those files transfered to the \doc folder by compile.R.
 Indvidual *.Rmd files are class materials.
 
-
 # Master Course Outline WFA8433 Nat. Res. Con. Decision Making
 
 _NOTE: each lower case sub topic represents 1 contact hour_
