@@ -1,8 +1,0 @@
-Node,Minimum,Maximum,dif,id
-Handling time (minutes),78.63,78.58,0.05,1
-Transport time (Minutes),78.66,78.57,0.09,2
-Number to translocate,78.56,78.96,0.4,3
-Pr(Survival),78.6,79.27,0.67,4
-Juvenile production,308.76,18.72,290.04,5
-Translocation Survivors,78.53,559.89,481.36,6
-Cost (x100),78.48,1047.85,969.37,7
