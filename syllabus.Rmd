@@ -173,7 +173,7 @@ Report presentation (10 Points)
 
 ## Grading Scale
 
-A= 90 to 100  	B = 80 to 89.9		C = 70 to 79.9		D = 69.9 to 69.9
+A= 90 to 100  	B = 80 to 89.9		C = 70 to 79.9		D = 60 to 69.9
 F = 0 to 59.9
 
 ## Late assignment policy
