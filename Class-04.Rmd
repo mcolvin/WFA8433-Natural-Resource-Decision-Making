@@ -31,14 +31,14 @@ Assign students to groups
 * Supplemental background reading for next class(es):
     * Smart choices: 7-9
 * Assignment due: None
-* Group work: Assign group and discuss potential class projects
-* Link to class deck [PDF](pdfs/class-04.pdf)
-* Link to class recording [YouTube](https://youtu.be/_UEuizyVEw8)
+* 
+* Link to class deck [PDF](/pdfs/class-04.pdf)
+
 
 
 <!--
 
--->
+
 
 ## Code to randomly assign groups
 
@@ -79,4 +79,4 @@ class
 ```
 Much better.
 
-
+-->
